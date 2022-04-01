@@ -1,0 +1,32 @@
+{
+  "name": "guilded.ts",
+  "version": "0.0.2-placeholder",
+  "description": "A powerful NPM package for easily interacting with the Guilded API.",
+  "main": "lib/index.js",
+  "types": "typings/index.d.ts",
+  "scripts": {
+    "build": "rimraf lib typings && tsc",
+    "prepublishOnly": "rimraf lib typings && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gamertike/guilded.ts.git"
+  },
+  "keywords": [
+    "guilded",
+    "api",
+    "js",
+    "ts",
+    "types"
+  ],
+  "author": "Gamertike",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/gamertike/guilded.ts/issues"
+  },
+  "homepage": "https://github.com/gamertike/guilded.ts#readme",
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.3"
+  }
+}
