@@ -1,7 +1,7 @@
 {
-  "name": "guilded.ts",
+  "name": "@guildedts/ws",
   "version": "0.0.1-pre",
-  "description": "A powerful NPM package for easily interacting with the Guilded API.",
+  "description": "The WebSocket manager for Guilded.ts.",
   "main": "lib/index.js",
   "types": "typings/index.d.ts",
   "files": [
@@ -21,7 +21,9 @@
     "api",
     "js",
     "ts",
-    "types"
+    "types",
+    "websocket",
+    "ws"
   ],
   "author": "Gamertike",
   "license": "Apache-2.0",
