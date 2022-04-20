@@ -1,0 +1,21 @@
+{
+	"name": "Guilded.TS",
+	"entryPointStrategy": "packages",
+	"entryPoints": [
+		"packages/guilded.ts",
+		"packages/builders",
+		"packages/guilded-api-typings",
+		"packages/rest",
+		"packages/ws"
+	],
+	"exclude": ["**/*.d.ts"],
+	"lightHighlightTheme": "github-light",
+	"darkHighlightTheme": "github-dark",
+    "excludeExternals": true,
+	"media": "static",
+	"out": "docs",
+	"readme": "README.md",
+	"tsconfig": "tsconfig.json",
+	"sort": ["alphabetical"],
+	"hideGenerator": true
+}

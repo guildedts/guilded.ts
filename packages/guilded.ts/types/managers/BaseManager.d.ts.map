@@ -1,0 +1,1 @@
+{"version":3,"file":"BaseManager.d.ts","sourceRoot":"","sources":["../../src/managers/BaseManager.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,IAAI,CAAC;AAE5B,wDAAwD;AACxD,qBAAa,WAAW,CAAC,CAAC,GAAG,MAAM,EAAE,CAAC,GAAG,GAAG;aAKf,MAAM,EAAE,MAAM;IAJ1C,2BAA2B;IAC3B,SAAgB,KAAK,YAAmB;IAExC,+DAA+D;gBACnC,MAAM,EAAE,MAAM;CAC1C"}

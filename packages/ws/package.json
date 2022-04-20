@@ -1,38 +1,40 @@
 {
-  "name": "@guildedts/ws",
-  "version": "0.0.1-pre",
-  "description": "The WebSocket manager for Guilded.ts.",
-  "main": "lib/index.js",
-  "types": "typings/index.d.ts",
-  "files": [
-    "lib",
-    "typings"
-  ],
-  "scripts": {
-    "build": "rimraf lib typings && tsc",
-    "prepublishOnly": "rimraf lib typings && tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gamertike/guilded.ts.git"
-  },
-  "keywords": [
-    "guilded",
-    "api",
-    "js",
-    "ts",
-    "types",
-    "websocket",
-    "ws"
-  ],
-  "author": "Gamertike",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/gamertike/guilded.ts/issues"
-  },
-  "homepage": "https://github.com/gamertike/guilded.ts#readme",
-  "devDependencies": {
-    "rimraf": "^3.0.2",
-    "typescript": "^4.6.3"
-  }
+	"name": "@guildedts/ws",
+	"version": "1.0.0",
+	"description": "The Websocket manager for Guilded.ts.",
+	"main": "lib/index.js",
+	"types": "types/index.d.ts",
+	"files": [
+		"lib",
+		"types"
+	],
+	"scripts": {
+		"build": "rimraf lib types && tsc",
+		"prepublishOnly": "yarn build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/gamertike/guilded.ts.git"
+	},
+	"keywords": [
+		"guilded",
+		"api",
+		"js",
+		"ts",
+		"types",
+		"ws",
+		"websocket"
+	],
+	"contributors": [
+		"Gamertike <contact@gamertike.com> (https://www.gamertike.com)"
+	],
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/gamertike/guilded.ts/issues"
+	},
+	"homepage": "https://github.com/gamertike/guilded.ts#readme",
+	"dependencies": {
+		"guilded-api-typings": "workspace:^",
+		"ws": "^8.5.0"
+	}
 }

@@ -1,0 +1,1 @@
+{"version":3,"file":"MessageManager.d.ts","sourceRoot":"","sources":["../../src/managers/MessageManager.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,WAAW,EAAE,OAAO,EAAE,OAAO,EAAE,MAAM,IAAI,CAAC;AAEnD,sDAAsD;AACtD,qBAAa,cAAe,SAAQ,WAAW,CAAC,MAAM,EAAE,OAAO,CAAC;IAE5C,OAAO,EAAE,OAAO;IADnC,8DAA8D;gBAC3C,OAAO,EAAE,OAAO;IAInC;;;;OAIG;IACU,KAAK,CAAC,EAAE,EAAE,MAAM;CAkB7B"}
