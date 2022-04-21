@@ -29,11 +29,11 @@ export class User extends Base {
 		this.name = data.name;
 		this.createdAt = 'createdAt' in data ? new Date(data.createdAt) : null;
 	}
-    
-    /**
-     * Whether the user is a bot.
-     */
-    public get isBot() {
-        return this.type ? this.type === 'bot' : false;
-    }
+
+	/**
+	 * Whether the user is a bot.
+	 */
+	public get isBot() {
+		return this.type ? this.type === 'bot' : false;
+	}
 }

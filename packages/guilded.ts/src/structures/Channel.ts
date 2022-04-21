@@ -28,7 +28,7 @@ export class Channel extends Base {
 
 		const response = await this.client.rest.post<{ message: APIChatMessage }>(
 			Routes.channelMessages(this.id),
-			body
+			body,
 		);
 
 		return await this.messages.fetch(response.message.id);

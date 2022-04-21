@@ -1,5 +1,6 @@
 {
 	"name": "Guilded.TS",
+	"includeVersion": true,
 	"entryPointStrategy": "packages",
 	"entryPoints": [
 		"packages/guilded.ts",
@@ -11,8 +12,8 @@
 	"exclude": ["**/*.d.ts"],
 	"lightHighlightTheme": "github-light",
 	"darkHighlightTheme": "github-dark",
-    "excludeExternals": true,
-	"media": "static",
+	"excludeExternals": true,
+	"media": "media",
 	"out": "docs",
 	"readme": "README.md",
 	"tsconfig": "tsconfig.json",

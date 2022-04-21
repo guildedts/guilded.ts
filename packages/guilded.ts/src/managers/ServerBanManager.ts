@@ -17,9 +17,9 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	public async fetch(id: string) {
 		let ban = this.cache.get(id);
 		if (ban) return ban;
-		const response = await this.client.rest.get<{ serverMemberBan: APIServerMemberBan }>(
-			Routes.serverBan(this.server.id, id)
-		);
+		const response = await this.client.rest.get<{
+			serverMemberBan: APIServerMemberBan;
+		}>(Routes.serverBan(this.server.id, id));
 		const user = new User(response.serverMemberBan.user, this.client);
 		const creator = (await this.server.members.fetch(response.serverMemberBan.createdBy)).user;
 		ban = new ServerBan(
@@ -29,7 +29,7 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 			},
 			this.server,
 			user,
-			creator
+			creator,
 		);
 		this.cache.set(id, ban);
 		return ban;
@@ -46,7 +46,7 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 			Routes.serverBan(this.server.id, userId),
 			{
 				reason,
-			}
+			},
 		);
 
 		return this.fetch(userId);

@@ -9,12 +9,12 @@ export class GuildedAPIError extends Error {
 	 * @param body The body used.
 	 */
 	constructor(
-        public readonly code: string,
+		public readonly code: string,
 		public readonly message: string,
-        public readonly status: number,
+		public readonly status: number,
 		public readonly method: string,
-        public readonly path: string,
-        public readonly body?: any,
+		public readonly path: string,
+		public readonly body?: any,
 	) {
 		super(message);
 	}

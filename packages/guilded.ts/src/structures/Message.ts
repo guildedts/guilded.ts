@@ -32,7 +32,11 @@ export class Message extends Base {
 	 * @param author The author of the message.
 	 * @param channel The channel that the message belongs to.
 	 */
-	constructor(data: APIChatMessage, public readonly author: User, public readonly channel: Channel) {
+	constructor(
+		data: APIChatMessage,
+		public readonly author: User,
+		public readonly channel: Channel,
+	) {
 		super(channel.client);
 		this.id = data.id;
 		this.channelId = data.channelId;
@@ -73,10 +77,9 @@ export class Message extends Base {
 	 * @returns The message.
 	 */
 	public async edit(content: string) {
-		await this.client.rest.put(
-			Routes.channelMessage(this.channelId, this.id),
-			{ content }
-		);
+		await this.client.rest.put(Routes.channelMessage(this.channelId, this.id), {
+			content,
+		});
 
 		return await this.fetch();
 	}

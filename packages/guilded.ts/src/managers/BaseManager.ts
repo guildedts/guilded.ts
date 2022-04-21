@@ -5,7 +5,7 @@ export class BaseManager<K = string, V = any> {
 	/** This manager's cache. */
 	public readonly cache: CacheCollection<K, V>;
 	/** Whether caching is enabled for this manager. */
-	public cachingEnabled: boolean = true;
+	public cachingEnabled = true;
 
 	/**
 	 * @param client The client that instantiated this manager.

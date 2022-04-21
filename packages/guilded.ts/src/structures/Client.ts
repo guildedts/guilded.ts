@@ -16,7 +16,7 @@ export class Client extends EventEmitter {
 	public readonly servers: ServerManager;
 
 	/** Whether the client is ready to use. */
-	public ready: boolean = false;
+	public ready = false;
 	/** When the client was ready to use. */
 	public readyAt: Date | null = null;
 	/** The client user. */
@@ -95,15 +95,15 @@ export class Client extends EventEmitter {
 export interface Client {
 	on<Event extends keyof ClientEvents>(
 		event: Event,
-		listener: (...args: ClientEvents[Event]) => any
+		listener: (...args: ClientEvents[Event]) => any,
 	): this;
 	once<Event extends keyof ClientEvents>(
 		event: Event,
-		listener: (...args: ClientEvents[Event]) => any
+		listener: (...args: ClientEvents[Event]) => any,
 	): this;
 	off<Event extends keyof ClientEvents>(
 		event: Event,
-		listener: (...args: ClientEvents[Event]) => any
+		listener: (...args: ClientEvents[Event]) => any,
 	): this;
 	emit<Event extends keyof ClientEvents>(event: Event, ...args: ClientEvents[Event]): boolean;
 }

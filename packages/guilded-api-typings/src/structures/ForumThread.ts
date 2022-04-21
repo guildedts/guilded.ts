@@ -3,15 +3,15 @@
  * @see https://www.guilded.gg/docs/api/forums/ForumThread
  */
 export interface APIForumThread {
-    id: number;
-    serverId: string;
-    channelId: string;
-    title?: string;
-    content?: string;
-    createdAt: string;
-    createdBy: string;
-    createdByWebhookId?: string;
-    updatedAt?: string;
+	id: number;
+	serverId: string;
+	channelId: string;
+	title?: string;
+	content?: string;
+	createdAt: string;
+	createdBy: string;
+	createdByWebhookId?: string;
+	updatedAt?: string;
 }
 
 /**
@@ -19,6 +19,6 @@ export interface APIForumThread {
  * @see https://www.guilded.gg/docs/api/forums/ForumThreadCreate
  */
 export interface APIForumThreadPayload {
-    title: string;
-    content: string;
+	title: string;
+	content: string;
 }

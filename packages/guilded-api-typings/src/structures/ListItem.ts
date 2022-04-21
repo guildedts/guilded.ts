@@ -44,8 +44,8 @@ export interface APIListItemNote {
  * @See https://www.guilded.gg/docs/api/listItems/ListItemCreate
  */
 export interface APIListItemPayload {
-    message: string;
-    note?: APIListItemNotePayload;
+	message: string;
+	note?: APIListItemNotePayload;
 }
 
 /**
@@ -53,5 +53,5 @@ export interface APIListItemPayload {
  * @see https://www.guilded.gg/docs/api/listItems/ListItemCreate
  */
 export interface APIListItemNotePayload {
-    content: string;
+	content: string;
 }

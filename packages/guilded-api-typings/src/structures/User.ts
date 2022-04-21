@@ -3,7 +3,7 @@
  * @see https://www.guilded.gg/docs/api/members/User
  */
 export interface APIUser extends APIUserSummary {
-    createdAt: string;
+	createdAt: string;
 }
 
 /**

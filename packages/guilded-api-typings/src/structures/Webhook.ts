@@ -3,14 +3,14 @@
  * @see https://www.guilded.gg/docs/api/webhook/Webhook
  */
 export interface APIWebhook {
-    id: string;
-    name: string;
-    serverId: string;
-    channelId: string;
-    createdAt: string;
-    createdBy: string;
-    deletedAt?: string;
-    token?: string;
+	id: string;
+	name: string;
+	serverId: string;
+	channelId: string;
+	createdAt: string;
+	createdBy: string;
+	deletedAt?: string;
+	token?: string;
 }
 
 /**
@@ -18,8 +18,8 @@ export interface APIWebhook {
  * @see https://www.guilded.gg/docs/api/webhook/WebhookCreate
  */
 export interface APIWebhookPayload {
-    name: string;
-    channelId: string;
+	name: string;
+	channelId: string;
 }
 
 /**
@@ -27,5 +27,5 @@ export interface APIWebhookPayload {
  * @see https://www.guilded.gg/docs/api/webhook/WebhookReadMany
  */
 export interface APIGetWebhooksQuery {
-    channelId: string;
+	channelId: string;
 }

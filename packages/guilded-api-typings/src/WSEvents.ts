@@ -1,4 +1,4 @@
-import { APIChatMessage, APIDeletedChatMessage } from ".";
+import { APIChatMessage, APIDeletedChatMessage } from '.';
 
 /**
  * Guilded API websocket events.

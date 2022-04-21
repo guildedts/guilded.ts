@@ -12,8 +12,8 @@ export interface APIChatMessage {
 	isPrivate?: boolean;
 	createdAt: string;
 	createdBy: string;
-    createdByWebhookId?: string;
-    updatedAt?: string;
+	createdByWebhookId?: string;
+	updatedAt?: string;
 }
 
 /**
@@ -21,11 +21,11 @@ export interface APIChatMessage {
  * @see https://www.guilded.gg/docs/api/websockets/ChatMessageDeleted
  */
 export interface APIDeletedChatMessage {
-    id: string;
-    serverId: string;
-    channelId: string;
-    deletedAt: string;
-    isPrivate: boolean;
+	id: string;
+	serverId: string;
+	channelId: string;
+	deletedAt: string;
+	isPrivate: boolean;
 }
 
 /**
@@ -39,9 +39,9 @@ export type APIChatMessageType = 'default' | 'system';
  * @see https://www.guilded.gg/docs/api/chat/ChannelMessageCreate
  */
 export interface APIChatMessagePayload {
-    isPrivate?: boolean;
-    replyMessageIds?: string[];
-    content: string;
+	isPrivate?: boolean;
+	replyMessageIds?: string[];
+	content: string;
 }
 
 /**
@@ -49,10 +49,10 @@ export interface APIChatMessagePayload {
  * @see https://www.guilded.gg/docs/api/chat/ChannelMessageReadMany
  */
 export interface APIGetChatMessagesQuery {
-    before?: string;
-    after?: string;
-    limit?: number;
-    includePrivate?: boolean;
+	before?: string;
+	after?: string;
+	limit?: number;
+	includePrivate?: boolean;
 }
 
 /**
@@ -60,9 +60,9 @@ export interface APIGetChatMessagesQuery {
  * @see https://www.guilded.gg/docs/api/reactions/ContentReaction
  */
 export interface APIMessageReaction {
-    id: string;
-    serverId?: string;
-    createdAt: string;
-    createdBy: string;
-    createdByWebhookId?: string;
+	id: string;
+	serverId?: string;
+	createdAt: string;
+	createdBy: string;
+	createdByWebhookId?: string;
 }

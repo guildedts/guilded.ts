@@ -11,7 +11,7 @@ export class ChannelManager extends BaseManager<string, Channel> {
 		let channel = this.cache.get(id);
 		if (channel) return channel;
 		channel = new Channel({ id }, this.client);
-		if(this.cachingEnabled) this.cache.set(id, channel);
+		if (this.cachingEnabled) this.cache.set(id, channel);
 		return channel;
 	}
 }

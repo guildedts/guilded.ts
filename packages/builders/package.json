@@ -1,7 +1,7 @@
 {
 	"name": "@guildedts/builders",
 	"version": "1.0.0",
-	"description": "A set of builders for creating a Guilded.ts bot.",
+	"description": "A set of builders for creating a Guilded bot.",
 	"main": "lib/index.js",
 	"types": "types/index.d.ts",
 	"files": [
@@ -12,25 +12,23 @@
 		"build": "rimraf lib types && tsc",
 		"prepublishOnly": "yarn build"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/gamertike/guilded.ts.git"
-	},
 	"keywords": [
 		"guilded",
 		"api",
 		"js",
 		"ts",
-		"types",
-		"builder",
-		"builders"
+		"types"
 	],
 	"contributors": [
-		"Gamertike <contact@gamertike.com> (https://www.gamertike.com)"
+		"Gamertike <contact@gamertike.com> (https://gamertike.com)"
 	],
-	"license": "Apache-2.0",
-	"bugs": {
-		"url": "https://github.com/gamertike/guilded.ts/issues"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GuildedTS/Guilded.TS.git"
 	},
-	"homepage": "https://github.com/gamertike/guilded.ts#readme"
+	"bugs": {
+		"url": "https://github.com/GuildedTS/Guilded.TS/issues"
+	},
+	"homepage": "https://guildedts.js.org",
+	"license": "Apache-2.0"
 }

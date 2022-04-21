@@ -3,16 +3,16 @@
  * @see https://www.guilded.gg/docs/api/members/User
  */
 export interface APIUser extends APIUserSummary {
-    createdAt: string;
+	createdAt: string;
 }
 /**
  * The API user summary object.
  * @see https://www.guilded.gg/docs/api/members/UserSummary
  */
 export interface APIUserSummary {
-    id: string;
-    type?: APIUserType;
-    name: string;
+	id: string;
+	type?: APIUserType;
+	name: string;
 }
 /**
  * The API user types.

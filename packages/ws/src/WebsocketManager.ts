@@ -55,15 +55,15 @@ export class WebsocketManager extends EventEmitter {
 export interface WebsocketManager {
 	on<Event extends keyof WSManagerEvents>(
 		event: Event,
-		listener: (...args: WSManagerEvents[Event]) => any
+		listener: (...args: WSManagerEvents[Event]) => any,
 	): this;
 	once<Event extends keyof WSManagerEvents>(
 		event: Event,
-		listener: (...args: WSManagerEvents[Event]) => any
+		listener: (...args: WSManagerEvents[Event]) => any,
 	): this;
 	off<Event extends keyof WSManagerEvents>(
 		event: Event,
-		listener: (...args: WSManagerEvents[Event]) => any
+		listener: (...args: WSManagerEvents[Event]) => any,
 	): this;
 	emit<Event extends keyof WSManagerEvents>(
 		event: Event,

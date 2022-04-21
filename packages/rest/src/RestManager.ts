@@ -22,7 +22,7 @@ export class RestManager {
 	 */
 	public async make<R = any, B = any, P extends Record<string, string> = Record<string, string>>(
 		options: MakeOptions<B, P>,
-		authenticated: boolean = true
+		authenticated = true,
 	): Promise<R> {
 		const searchParams = new URLSearchParams();
 		const headers: any = {
@@ -31,7 +31,7 @@ export class RestManager {
 
 		if (options.params)
 			Object.entries(options.params).forEach(([key, value]) =>
-				searchParams.append(key, value)
+				searchParams.append(key, value),
 			);
 		if (authenticated && this.token) headers.Authorization = `Bearer ${this.token}`;
 
@@ -50,7 +50,7 @@ export class RestManager {
 				response.status,
 				options.method,
 				options.path,
-				options.body
+				options.body,
 			);
 		}
 
@@ -67,8 +67,8 @@ export class RestManager {
 	 */
 	public async get<R = any, P extends Record<string, string> = Record<string, string>>(
 		path: string,
-		authenticated: boolean = true,
-		params?: P
+		authenticated = true,
+		params?: P,
 	) {
 		return this.make<R, any, P>({ method: 'GET', path, params }, authenticated);
 	}
@@ -81,7 +81,7 @@ export class RestManager {
 	 * @returns The response from the REST api.
 	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async post<R = any, B = any>(path: string, body: B, authenticated: boolean = true) {
+	public async post<R = any, B = any>(path: string, body: B, authenticated = true) {
 		return this.make<R, B>({ method: 'POST', path, body }, authenticated);
 	}
 
@@ -93,7 +93,7 @@ export class RestManager {
 	 * @returns The response from the REST api.
 	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async put<R = any, B = any>(path: string, body: B, authenticated: boolean = true) {
+	public async put<R = any, B = any>(path: string, body: B, authenticated = true) {
 		return this.make<R, B>({ method: 'PUT', path, body }, authenticated);
 	}
 
@@ -104,7 +104,7 @@ export class RestManager {
 	 * @returns The response from the REST api.
 	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async delete<R>(path: string, authenticated: boolean = true) {
+	public async delete<R>(path: string, authenticated = true) {
 		return this.make<R>({ method: 'DELETE', path }, authenticated);
 	}
 }

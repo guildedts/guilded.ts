@@ -9,17 +9,17 @@ export class CacheCollection<K, V> extends Collection<K, V> {
 	public constructor(public maxSize: number | null = null, entries: [K, V][] = []) {
 		super(entries);
 		if (maxSize && maxSize <= 1) throw new Error('Max cache size must be greater than 1.');
-    }
-    
-    /**
-     * Set the max cache size.
-     * @param maxSize The maximum size of the cache.
-     * @returns The cache collection.
-     */
-    public setMaxSize(maxSize: number) {
-        this.maxSize = maxSize;
-        return this;
-    }
+	}
+
+	/**
+	 * Set the max cache size.
+	 * @param maxSize The maximum size of the cache.
+	 * @returns The cache collection.
+	 */
+	public setMaxSize(maxSize: number) {
+		this.maxSize = maxSize;
+		return this;
+	}
 
 	/**
 	 * Adds an entry to the cache.

@@ -5,12 +5,12 @@ export const Routes = {
 
 	channelMessage: (
 		channelId: string,
-		messageId: string
+		messageId: string,
 	): `/channels/${string}/messages/${string}` => `/channels/${channelId}/messages/${messageId}`,
 
 	userNickname: (
 		serverId: string,
-		userId: string
+		userId: string,
 	): `/servers/${string}/users/${string}/nickname` =>
 		`/servers/${serverId}/users/${userId}/nickname`,
 
@@ -33,7 +33,7 @@ export const Routes = {
 
 	channelListItem: (
 		channelId: string,
-		listItemId: string
+		listItemId: string,
 	): `/channels/${string}/items/${string}` => `/channels/${channelId}/items/${listItemId}`,
 
 	channelDocs: (channelId: string): `/channels/${string}/docs` => `/channels/${channelId}/docs`,
@@ -44,7 +44,7 @@ export const Routes = {
 	messageReaction: (
 		channelId: string,
 		contentId: string,
-		emoteId: string
+		emoteId: string,
 	): `/channels/${string}/content/${string}/emotes/${string}` =>
 		`/channels/${channelId}/content/${contentId}/emotes/${emoteId}`,
 
@@ -57,7 +57,7 @@ export const Routes = {
 	memberSocialLink: (
 		serverId: string,
 		userId: string,
-		type: string
+		type: string,
 	): `/servers/${string}/members/${string}/social-links/${string}` =>
 		`/servers/${serverId}/members/${userId}/social-links/${type}`,
 
@@ -67,7 +67,7 @@ export const Routes = {
 	memberRole: (
 		serverId: string,
 		userId: string,
-		roleId: string
+		roleId: string,
 	): `/servers/${string}/members/${string}/roles/${string}` =>
 		`/servers/${serverId}/members/${userId}/roles/${roleId}`,
 

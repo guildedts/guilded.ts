@@ -1,6 +1,6 @@
 node_modules
 .turbo
 lib
-typings
-.yarn
+types
+.yarn/cache
 testing

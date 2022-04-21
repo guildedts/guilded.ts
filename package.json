@@ -1,0 +1,51 @@
+{
+	"name": "@guildedts/guilded.ts",
+	"version": "1.0.0",
+	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
+	"private": true,
+	"scripts": {
+		"build": "turbo run build",
+		"lint": "yarn eslint 'packages/**/*.ts' --fix",
+		"format": "yarn prettier --write '**/*.{ts,js,json}'",
+		"docs": "typedoc --options tsdoc.json",
+		"setup": "yarn install && yarn build",
+		"prepare": "yarn format && yarn lint"
+	},
+	"keywords": [
+		"guilded",
+		"api",
+		"js",
+		"ts",
+		"types"
+	],
+	"contributors": [
+		"Gamertike <contact@gamertike.com> (https://gamertike.com)"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/GuildedTS/Guilded.TS.git"
+	},
+	"bugs": {
+		"url": "https://github.com/GuildedTS/Guilded.TS/issues"
+	},
+	"homepage": "https://guildedts.js.org",
+	"license": "Apache-2.0",
+	"workspaces": [
+		"packages/*"
+	],
+	"devDependencies": {
+		"@types/node": "^17.0.25",
+		"@types/node-fetch": "^2.6.1",
+		"@types/ws": "^8.5.3",
+		"@typescript-eslint/eslint-plugin": "latest",
+		"@typescript-eslint/parser": "latest",
+		"eslint": "^8.13.0",
+		"eslint-config-prettier": "^8.5.0",
+		"prettier": "^2.6.2",
+		"rimraf": "^3.0.2",
+		"turbo": "^1.2.4",
+		"typedoc": "^0.22.15",
+		"typescript": "^4.6.3"
+	},
+	"packageManager": "yarn@3.2.0"
+}

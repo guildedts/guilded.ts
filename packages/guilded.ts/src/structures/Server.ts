@@ -1,4 +1,4 @@
-import { Base, Client, ServerBanManager, ServerMemberManager } from "..";
+import { Base, Client, ServerBanManager, ServerMemberManager } from '..';
 /**
  * Represents a server on Guilded.
  */
@@ -14,7 +14,7 @@ export class Server extends Base {
 	/**
 	 * A manager of bans that belong to a server.
 	 */
-    public readonly bans: ServerBanManager;
+	public readonly bans: ServerBanManager;
 
 	/**
 	 * @param data The data of the server.
@@ -22,8 +22,8 @@ export class Server extends Base {
 	constructor(data: { id: string }, client: Client) {
 		super(client);
 		this.id = data.id;
-        this.members = new ServerMemberManager(this);
-        this.bans = new ServerBanManager(this);
+		this.members = new ServerMemberManager(this);
+		this.bans = new ServerBanManager(this);
 	}
 
 	/**

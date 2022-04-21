@@ -15,15 +15,15 @@ export class ServerBan extends Base {
 
 	/**
 	 * @param data The data of the ban.
-     * @param server The server that the ban belongs to.
+	 * @param server The server that the ban belongs to.
 	 * @param user The user this ban applies to.
 	 * @param creator The user who created the ban.
 	 */
 	constructor(
-        data: { reason?: string; createdAt: string },
-        public readonly server: Server,
+		data: { reason?: string; createdAt: string },
+		public readonly server: Server,
 		public readonly user: User,
-		public readonly creator: User
+		public readonly creator: User,
 	) {
 		super(creator.client);
 		this.reason = data.reason ?? null;
@@ -34,7 +34,7 @@ export class ServerBan extends Base {
 	 * Fetch the ban.
 	 * @returns The ban.
 	 */
-    public async fetch() {
-        return await this.server.bans.fetch(this.user.id);
-    }
+	public async fetch() {
+		return await this.server.bans.fetch(this.user.id);
+	}
 }

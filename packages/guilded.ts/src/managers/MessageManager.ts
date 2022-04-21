@@ -18,7 +18,7 @@ export class MessageManager extends BaseManager<string, Message> {
 		let message = this.cache.get(id);
 		if (message) return message;
 		const response = await this.client.rest.get<{ message: APIChatMessage }>(
-			Routes.channelMessage(this.channel.id, id)
+			Routes.channelMessage(this.channel.id, id),
 		);
 		message = new Message(
 			response.message,
@@ -27,7 +27,7 @@ export class MessageManager extends BaseManager<string, Message> {
 					.fetch(response.message.serverId!)
 					.members.fetch(response.message.createdBy)
 			).user,
-			this.channel
+			this.channel,
 		);
 		this.cache.set(id, message);
 		return message;
