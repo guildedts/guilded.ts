@@ -37,8 +37,10 @@ We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to man
 To get started, run the following script:
 
 ```
-# Setup the project
-yarn setup
+# Install all dependencies
+yarn install
+# Build all local packages
+yarn build
 ```
 
 ## Commiting your changes
