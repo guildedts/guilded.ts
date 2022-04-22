@@ -3,13 +3,13 @@
 	"version": "1.0.0",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"main": "lib/index.js",
-	"types": "types/index.d.ts",
+	"types": "typings/index.d.ts",
 	"files": [
 		"lib",
-		"types"
+		"typings"
 	],
 	"scripts": {
-		"build": "rimraf lib types && tsc",
+		"build": "tsc",
 		"prepublishOnly": "yarn build"
 	},
 	"keywords": [
@@ -36,5 +36,8 @@
 		"@guildedts/rest": "workspace:^",
 		"@guildedts/ws": "workspace:^",
 		"guilded-api-typings": "workspace:^"
+	},
+	"devDependencies": {
+		"typescript": "^4.6.3"
 	}
 }

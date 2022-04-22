@@ -1,40 +1,36 @@
+import { APIServerMemberBan } from 'guilded-api-typings';
 import { Base, Server, User } from '..';
 
-/**
- * Represents a server ban on Guilded.
- */
+/** Represents a server ban. */
 export class ServerBan extends Base {
-	/**
-	 * The reason for the ban.
-	 */
-	public readonly reason: string | null;
-	/**
-	 * The date the ban was created.
-	 */
+	/** The user of the member that was banned. */
+	public readonly user: User;
+	/** The reason for the ban. */
+	public readonly reason?: string;
+	/** The ID of the user that created the ban. */
+	public readonly createdBy: string;
+	/** The time the ban was created. */
 	public readonly createdAt: Date;
 
 	/**
+	 * @param server The server that this ban belongs to.
 	 * @param data The data of the ban.
-	 * @param server The server that the ban belongs to.
-	 * @param user The user this ban applies to.
-	 * @param creator The user who created the ban.
 	 */
-	constructor(
-		data: { reason?: string; createdAt: string },
-		public readonly server: Server,
-		public readonly user: User,
-		public readonly creator: User,
-	) {
-		super(creator.client);
-		this.reason = data.reason ?? null;
+	public constructor(public readonly server: Server, data: APIServerMemberBan) {
+		super(server.client);
+		this.user = new User(server.client, data.user);
+		this.reason = data.reason;
+		this.createdBy = data.createdBy;
 		this.createdAt = new Date(data.createdAt);
 	}
 
-	/**
-	 * Fetch the ban.
-	 * @returns The ban.
-	 */
-	public async fetch() {
-		return await this.server.bans.fetch(this.user.id);
+	/** The author of the ban. */
+	public get author() {
+		return this.client.users.cache.get(this.createdBy);
+	}
+
+	/** The timestamp of when the ban was created. */
+	public get createdTimestamp() {
+		return this.createdAt.getTime();
 	}
 }

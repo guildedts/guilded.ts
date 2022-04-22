@@ -9,10 +9,11 @@
 		"packages/rest",
 		"packages/ws"
 	],
-	"exclude": ["**/*.d.ts"],
+	"cleanOutputDir": true,
 	"lightHighlightTheme": "github-light",
 	"darkHighlightTheme": "github-dark",
 	"excludeExternals": true,
+	"excludePrivate": true,
 	"media": "media",
 	"out": "docs",
 	"readme": "README.md",

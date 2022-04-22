@@ -1,4 +1,4 @@
-import { CacheCollection, Client } from '..';
+import Client, { CacheCollection } from '..';
 
 /** Manager for managing API methods of a data model. */
 export class BaseManager<K = string, V = any> {

@@ -3,13 +3,13 @@
 	"version": "1.0.0",
 	"description": "The REST API manager for Guilded.TS.",
 	"main": "lib/index.js",
-	"types": "types/index.d.ts",
+	"types": "typings/index.d.ts",
 	"files": [
 		"lib",
-		"types"
+		"typings"
 	],
 	"scripts": {
-		"build": "rimraf lib types && tsc",
+		"build": "yarn tsc",
 		"prepublishOnly": "yarn build"
 	},
 	"keywords": [
@@ -32,6 +32,10 @@
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
 	"dependencies": {
+		"form-data": "^4.0.0",
 		"node-fetch": "^2.6.7"
+	},
+	"devDependencies": {
+		"typescript": "^4.6.3"
 	}
 }

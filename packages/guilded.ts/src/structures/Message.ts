@@ -1,86 +1,160 @@
-import { Routes } from '@guildedts/rest';
-import { APIChatMessage, APIChatMessageType } from 'guilded-api-typings';
-import { Base, Channel, User } from '..';
+import {
+	APIChatMessage,
+	APIChatMessagePayload,
+	APIChatMessageType,
+	APIDeletedChatMessage,
+	Routes,
+} from 'guilded-api-typings';
+import { Base, Channel } from '..';
+import { CacheCollection } from './CacheCollection';
 
-/** Represents a message on Guilded. */
+/** Represents a message in a chanel. */
 export class Message extends Base {
 	/** The ID of the message. */
 	public readonly id: string;
-	/** The ID of the channel that the message belongs to. */
-	public readonly channelId: string;
-	/** The ID of the server that the message belongs to. */
+	/** The type of message. */
+	public readonly type?: APIChatMessageType;
+	/** The ID of the server the message was sent from. */
 	public readonly serverId?: string;
+	/** The ID of the channel the message was sent from. */
+	public readonly channelId: string;
 	/** The content of the message. */
-	public readonly content: string;
-	/** The timestamp of when the message was sent. */
-	public readonly createdAt: Date;
-	/** The id of the user who created the message. */
-	public readonly createdBy: string;
-	/** If the message was sent by a webhook, this will be the ID of the webhook. */
-	public readonly webhookId?: string;
+	public content?: string;
+	/** Message IDs that were replied to. */
+	public replyMessageIds: string[];
 	/** Whether the message is private. */
-	public readonly private?: boolean;
-	/** An array of IDs of messages that were replied to. */
-	public readonly replies?: string[];
-	/** When the message was last edited. */
-	public readonly editedAt?: Date;
-	/** The type of the message. */
-	public readonly type: APIChatMessageType;
+	public readonly isPrivate?: boolean;
+	/** The time the message was sent. */
+	public readonly createdAt?: Date;
+	/** The ID of the user who sent the message. */
+	public readonly createdBy?: string;
+	/** The ID of the webhook that sent the message. */
+	public readonly createdByWebhookId?: string;
+	/** The time the message was edited. */
+	public editedAt?: Date;
+	/** Whether this message is deleted. */
+	public isDeleted?: boolean;
+	/** The time the message was deleted. */
+	public deletedAt?: Date;
 
 	/**
+	 * @param channel The channel that owns this message.
 	 * @param data The data of the message.
-	 * @param author The author of the message.
-	 * @param channel The channel that the message belongs to.
 	 */
-	constructor(
-		data: APIChatMessage,
-		public readonly author: User,
+	public constructor(
 		public readonly channel: Channel,
+		data: APIChatMessage | APIDeletedChatMessage,
 	) {
 		super(channel.client);
 		this.id = data.id;
-		this.channelId = data.channelId;
+		this.type = 'type' in data ? data.type : undefined;
 		this.serverId = data.serverId;
-		this.content = data.content;
-		this.createdAt = new Date(data.createdAt);
-		this.createdBy = data.createdBy;
-		this.webhookId = data.createdByWebhookId;
-		this.private = data.isPrivate;
-		this.replies = data.replyMessageIds;
-		this.editedAt = data.updatedAt ? new Date(data.updatedAt) : undefined;
-		this.type = data.type;
+		this.channelId = data.channelId;
+		this.content = 'content' in data ? data.content : undefined;
+		this.replyMessageIds = 'replyMessageIds' in data ? data.replyMessageIds ?? [] : [];
+		this.isPrivate = data.isPrivate;
+		this.createdAt = 'createdAt' in data ? new Date(data.createdAt) : undefined;
+		this.createdBy = 'createdBy' in data ? data.createdBy : undefined;
+		this.createdByWebhookId =
+			'createdByWebhookId' in data ? data.createdByWebhookId : undefined;
+		this.editedAt =
+			'updatedAt' in data
+				? data.updatedAt
+					? new Date(data.updatedAt)
+					: undefined
+				: undefined;
+	}
+
+	/** The server the message was sent from. */
+	public get server() {
+		return this.serverId ? this.client.servers.cache.get(this.serverId) : undefined;
+	}
+
+	/** The timestamp of when the message was sent. */
+	public get createdTimestamp() {
+		return this.createdAt?.getTime();
+	}
+
+	/** The timestamp of when the message was edited. */
+	public get editedTimestamp() {
+		return this.editedAt?.getTime();
+	}
+
+	/** The author of the message. */
+	public get author() {
+		return this.createdBy ? this.client.users.cache.get(this.createdBy) : undefined;
+	}
+
+	/** The ID of the author. */
+	public get authorId() {
+		return this.createdByWebhookId ?? this.createdBy;
+	}
+
+	/** The messages that were replied to. */
+	public get replies() {
+		const messages = new CacheCollection<string, Message>();
+
+		for (const id of this.replyMessageIds) {
+			const message = this.channel.messages.cache.get(id);
+			if (message) messages.set(id, message);
+		}
+
+		return messages;
+	}
+
+	/** The timestamp of when the message was deleted. */
+	public get deletedTimestamp() {
+		return this.deletedAt?.getTime();
 	}
 
 	/**
-	 * Fetch the message.
+	 * Fetch this message.
+	 * @param cache Whether to cache the message.
 	 * @returns The message.
 	 */
-	public async fetch() {
-		return await this.channel.messages.fetch(this.id);
+	public async fetch(cache: boolean = this.channel.messages.cachingEnabled) {
+		const response = await this.client.rest.get<{ message: APIChatMessage }>(
+			Routes.channelMessage(this.channel.id, this.id),
+		);
+
+		const message = new Message(this.channel, response.message);
+
+		if (cache) this.channel.messages.cache.set(this.id, message);
+
+		return message;
 	}
 
 	/**
-	 * Delete the message.
-	 * @returns The message.
+	 * Delete this message.
+	 * @returns The deleted message.
 	 */
 	public async delete() {
-		await this.client.rest.delete(Routes.channelMessage(this.channelId, this.id));
-
-		this.channel.messages.cache.delete(this.id);
-
-		return this;
+		return this.channel.messages.delete(this.id);
 	}
 
 	/**
-	 * Edit the message.
+	 * Edit this message.
 	 * @param content The new content of the message.
-	 * @returns The message.
+	 * @returns The edited message.
 	 */
 	public async edit(content: string) {
-		await this.client.rest.put(Routes.channelMessage(this.channelId, this.id), {
-			content,
-		});
+		return this.channel.messages.edit(this.id, content);
+	}
 
-		return await this.fetch();
+	/**
+	 * Reply to this message.
+	 * @param payload The message payload.
+	 * @returns The sent message.
+	 */
+	public async reply(payload: string | APIChatMessagePayload) {
+		return this.channel.messages.create({
+			content: typeof payload === 'string' ? payload : payload.content,
+			isPrivate: typeof payload !== 'string' ? payload.isPrivate : undefined,
+			replyMessageIds: [
+				...this.replyMessageIds,
+				this.id,
+				...(typeof payload !== 'string' ? payload.replyMessageIds ?? [] : []),
+			],
+		});
 	}
 }

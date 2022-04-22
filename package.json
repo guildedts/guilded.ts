@@ -4,13 +4,16 @@
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"private": true,
 	"scripts": {
-		"build": "turbo run build",
+		"build": "yarn clear && turbo run build",
 		"lint": "yarn eslint 'packages/**/*.ts' --fix",
 		"format": "yarn prettier --write '**/*.{ts,js,json}'",
 		"docs": "yarn rimraf docs && typedoc --options tsdoc.json && echo 'guildedts.js.org' > docs/CNAME",
 		"prepare": "yarn format && yarn lint",
-		"clear": "yarn rimraf '**/lib' '**/types' '**/.turbo'",
-		"refresh": "yarn clear && yarn rimraf node_modules && yarn install && yarn build"
+		"clear": "yarn rimraf '**/lib' '**/typings' '**/.turbo'",
+		"refresh": "yarn clear && yarn rimraf node_modules && yarn install && yarn build",
+		"setchanges": "yarn changeset",
+		"version": "yarn setchanges version",
+		"publish": "yarn setchanges && yarn version && yarn publish"
 	},
 	"keywords": [
 		"guilded",
@@ -35,6 +38,7 @@
 		"packages/*"
 	],
 	"devDependencies": {
+		"@changesets/cli": "^2.22.0",
 		"@types/node": "^17.0.25",
 		"@types/node-fetch": "^2.6.1",
 		"@types/ws": "^8.5.3",

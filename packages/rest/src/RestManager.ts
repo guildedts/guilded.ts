@@ -1,43 +1,57 @@
 import { GuildedAPIError } from '.';
 import fetch from 'node-fetch';
 
-/** The REST manager for the Guilded API. */
+/**
+ * The REST manager for the Guilded API.
+ * Inspired by Guilded.JS' {@link https://github.com/guildedjs/guilded.js/blob/main/packages/rest/lib/RestManager.ts#L9 REST manager}.
+ */
 export class RestManager {
 	/** The authoization token for the REST api. */
-	public token: string | null = null;
-	/** The base url for the REST api. */
-	public get baseUrl(): string {
-		return `https://www.guilded.gg/api/v${this.version}/`;
-	}
+	public token?: string;
 
 	/** @param version The API version for the REST api. */
 	public constructor(public readonly version: number) {}
 
+	/** The base URL for the REST api. */
+	public get baseUrl(): `https://www.guilded.gg/api/v${number}/` {
+		return `https://www.guilded.gg/api/v${this.version}/`;
+	}
+
+	/**
+	 * Set the authorization token for the REST api.
+	 * @param token The authorization token.
+	 * @returns The REST manager.
+	 */
+	public setToken(token?: string) {
+		this.token = token;
+		return this;
+	}
+
 	/**
 	 * Make a request to the REST api.
+	 * @param path The path to resource.
+	 * @param method The HTTP method.
 	 * @param options The options for the request.
-	 * @param authenticated Whether the request should be authenticated.
 	 * @returns The response from the REST api.
-	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async make<R = any, B = any, P extends Record<string, string> = Record<string, string>>(
-		options: MakeOptions<B, P>,
-		authenticated = true,
+	public async fetch<R = any, B = any, P extends Record<string, any> = Record<string, any>>(
+		path: string,
+		method: string,
+		options: FetchOptions<B, P> = {},
 	): Promise<R> {
 		const searchParams = new URLSearchParams();
-		const headers: any = {
-			'Content-Type': 'application/json',
-		};
 
 		if (options.params)
 			Object.entries(options.params).forEach(([key, value]) =>
-				searchParams.append(key, value),
+				searchParams.append(key, value.toString()),
 			);
-		if (authenticated && this.token) headers.Authorization = `Bearer ${this.token}`;
 
-		const response = await fetch(this.baseUrl + options.path + searchParams, {
-			method: options.method,
-			headers,
+		const response = await fetch(this.baseUrl + path + searchParams, {
+			method,
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${this.token}`,
+			},
 			body: options.body ? JSON.stringify(options.body) : undefined,
 		});
 
@@ -48,8 +62,8 @@ export class RestManager {
 				data.code,
 				data.message,
 				response.status,
-				options.method,
-				options.path,
+				method,
+				path,
 				options.body,
 			);
 		}
@@ -61,60 +75,49 @@ export class RestManager {
 	 * Make a GET request to the REST api.
 	 * @param path The path to the resource.
 	 * @param params The query parameters.
-	 * @param authenticated Whether the request should be authenticated.
 	 * @returns The response from the REST api.
-	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async get<R = any, P extends Record<string, string> = Record<string, string>>(
+	public async get<R = any, P extends Record<string, any> = Record<string, any>>(
 		path: string,
-		authenticated = true,
 		params?: P,
 	) {
-		return this.make<R, any, P>({ method: 'GET', path, params }, authenticated);
+		return this.fetch<R, any, P>(path, 'GET', { params });
 	}
 
 	/**
 	 * Make a POST request to the REST api.
 	 * @param path The path to the resource.
 	 * @param body The body of the request.
-	 * @param authenticated Whether the request should be authenticated.
 	 * @returns The response from the REST api.
-	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async post<R = any, B = any>(path: string, body: B, authenticated = true) {
-		return this.make<R, B>({ method: 'POST', path, body }, authenticated);
+	public async post<R = any, B = any>(path: string, body: B) {
+		return this.fetch<R, B>(path, 'POST', { body });
 	}
 
 	/**
 	 * Make a PUT request to the REST api.
 	 * @param path The path to the resource.
 	 * @param body The body of the request.
-	 * @param authenticated Whether the request should be authenticated.
 	 * @returns The response from the REST api.
-	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async put<R = any, B = any>(path: string, body: B, authenticated = true) {
-		return this.make<R, B>({ method: 'PUT', path, body }, authenticated);
+	public async put<R = any, B = any>(path: string, body: B) {
+		return this.fetch<R, B>(path, 'PUT', { body });
 	}
 
 	/**
 	 * Make a DELETE request to the REST api.
 	 * @param path The path to the resource.
-	 * @param authenticated Whether the request should be authenticated.
 	 * @returns The response from the REST api.
-	 * @throws {GuildedAPIError} if the request fails.
 	 */
-	public async delete<R>(path: string, authenticated = true) {
-		return this.make<R>({ method: 'DELETE', path }, authenticated);
+	public async delete<R>(path: string) {
+		return this.fetch<R>(path, 'DELETE');
 	}
 }
 
-/**
- * The options for making a request to the REST api.
- */
-export interface MakeOptions<B = any, P extends Record<string, string> = Record<string, string>> {
-	method: string;
-	path: string;
+/** The options for making a request to the REST api. */
+export interface FetchOptions<B = any, P extends Record<string, any> = Record<string, any>> {
+	/** The URL query parameters. */
 	params?: P;
+	/** The body of the request. */
 	body?: B;
 }

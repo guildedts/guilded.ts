@@ -1,49 +1,39 @@
-import { Routes } from '@guildedts/rest';
-import { APIChatMessage, APIChatMessagePayload } from 'guilded-api-typings';
-import { Client, MessageManager, Base } from '..';
+import { APIChatMessagePayload } from 'guilded-api-typings';
+import Client, { Base, MessageManager } from '..';
 
 /** Represents a channel on Guilded. */
 export class Channel extends Base {
 	/** The ID of the channel. */
 	public readonly id: string;
+
 	/** A manager of messages that belong to this channel. */
 	public readonly messages: MessageManager;
 
-	/** @param data The data of the channel. */
-	constructor(data: { id: string }, client: Client) {
+	/**
+	 * @param client The client that owns this channel.
+	 * @param data The data of the channel.
+	 */
+	public constructor(client: Client, data: { id: string }) {
 		super(client);
 		this.id = data.id;
 		this.messages = new MessageManager(this);
 	}
 
 	/**
-	 * Send a message to the channel.
-	 * @param payload The payload of the message.
+	 * Fetch this channel.
+	 * @param cache Whether to cache the channel.
+	 * @returns The channel.
 	 */
-	public async send(payload: string | MessagePayload) {
-		const body: APIChatMessagePayload =
-			typeof payload === 'string'
-				? { content: payload }
-				: { content: payload.content, isPrivate: payload.private };
-
-		const response = await this.client.rest.post<{ message: APIChatMessage }>(
-			Routes.channelMessages(this.id),
-			body,
-		);
-
-		return await this.messages.fetch(response.message.id);
+	public async fetch(cache: boolean) {
+		return cache;
 	}
 
 	/**
-	 * Fetch the channel.
-	 * @returns The channel.
+	 * Send a message to the channel.
+	 * @param payload The messgae payload.
+	 * @returns The message.
 	 */
-	public fetch() {
-		return this.client.channels.fetch(this.id);
+	public async send(payload: string | APIChatMessagePayload) {
+		return this.messages.create(typeof payload === 'string' ? { content: payload } : payload);
 	}
-}
-
-export interface MessagePayload {
-	content: string;
-	private?: boolean;
 }
