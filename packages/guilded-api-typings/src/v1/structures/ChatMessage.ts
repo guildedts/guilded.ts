@@ -57,6 +57,8 @@ export type APIChatMessageType = 'default' | 'system';
 export interface APIChatMessagePayload {
 	/** Whether the message is private. */
 	isPrivate?: boolean;
+	/** Whether the message is silent. */
+	isSilent?: boolean;
 	/** Message IDs to reply to. */
 	replyMessageIds?: string[];
 	/** The content of the message. */

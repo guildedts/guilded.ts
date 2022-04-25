@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/ws",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "The Websocket API manager for Guilded.TS.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
@@ -32,10 +32,10 @@
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"guilded-api-typings": "workspace:^",
 		"ws": "^8.5.0"
 	},
 	"devDependencies": {
+		"guilded-api-typings": "workspace:^",
 		"typescript": "^4.6.3"
 	}
 }

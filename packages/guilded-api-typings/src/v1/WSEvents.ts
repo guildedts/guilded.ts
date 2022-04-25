@@ -1,4 +1,10 @@
-import { APIChatMessage, APIDeletedChatMessage, APIServerMember, APIServerMemberBan } from '.';
+import {
+	APIChatMessage,
+	APIDeletedChatMessage,
+	APIServerMember,
+	APIServerMemberBan,
+	APIWebhook,
+} from '.';
 
 /**
  * Guilded API websocket events.
@@ -75,6 +81,30 @@ export interface WSEvents {
 		};
 	};
 	/**
-	 *
+	 * Emitted when team roles are updated.
+	 * @see https://www.guilded.gg/docs/api/websockets/teamRolesUpdated
 	 */
+	teamRolesUpdated: {
+		serverId: string;
+		memberRoleIds: {
+			userId: string;
+			roleIds: number[];
+		}[];
+	};
+	/**
+	 * Emitted when a webhook is created.
+	 * @see https://www.guilded.gg/docs/api/websockets/TeamWebhookCreated
+	 */
+	TeamWebhookCreated: {
+		serverId: string;
+		webhook: APIWebhook;
+	};
+	/**
+	 * Emitted when a webhook is updated.
+	 * @see https://www.guilded.gg/docs/api/websockets/TeamWebhookUpdated
+	 */
+	TeamWebhookUpdated: {
+		serverId: string;
+		webhook: APIWebhook;
+	};
 }

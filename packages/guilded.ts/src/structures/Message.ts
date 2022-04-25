@@ -67,7 +67,7 @@ export class Message extends Base {
 
 	/** The server the message was sent from. */
 	public get server() {
-		return this.serverId ? this.client.servers.cache.get(this.serverId) : undefined;
+		return this.serverId ? this.client.servers.fetch(this.serverId) : undefined;
 	}
 
 	/** The timestamp of when the message was sent. */

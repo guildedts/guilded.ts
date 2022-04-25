@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/builders",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "A set of builders for creating a Guilded bot.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
@@ -9,7 +9,7 @@
 		"typings"
 	],
 	"scripts": {
-		"build": "tsc",
+		"build": "yarn tsc",
 		"prepublishOnly": "yarn build"
 	},
 	"keywords": [
