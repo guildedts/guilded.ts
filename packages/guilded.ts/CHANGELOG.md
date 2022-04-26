@@ -1,5 +1,14 @@
 # guilded.ts
 
+## 0.0.2
+
+### Patch Changes
+
+-   All issues with dependencies should now be fixed.
+-   Updated dependencies
+    -   @guildedts/rest@0.0.2
+    -   @guildedts/ws@0.0.2
+
 ## 0.0.1
 
 ### Patch Changes

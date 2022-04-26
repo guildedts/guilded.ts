@@ -1,5 +1,11 @@
 # @guildedts/rest
 
+## 0.0.2
+
+### Patch Changes
+
+-   All issues with dependencies should now be fixed.
+
 ## 0.0.1
 
 ### Patch Changes
