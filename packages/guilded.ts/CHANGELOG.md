@@ -1,5 +1,38 @@
 # guilded.ts
 
+## 0.1.0
+
+### Minor Changes
+
+-   Added support for message embeds and a few events.
+
+    ## New events
+
+    -   `memberAdd`
+    -   `memberRemove`
+    -   `memberBan`
+    -   `memberUnban`
+    -   `memberEdit`
+    -   `serverRolesEdit`
+
+    ## Features
+
+    -   Message embeds
+
+    ## Fixes
+
+    -   Completed `fetch` function that have been left uncomnplete.
+
+    > **Note:** There have been a few other changes regarding managing imports and more.
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @guildedts/builders@0.1.0
+    -   guilded-api-typings@0.1.0
+    -   @guildedts/rest@0.1.0
+    -   @guildedts/ws@0.1.0
+
 ## 0.0.2
 
 ### Patch Changes

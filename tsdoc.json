@@ -18,6 +18,5 @@
 	"out": "docs",
 	"readme": "README.md",
 	"tsconfig": "tsconfig.json",
-	"sort": ["alphabetical"],
 	"hideGenerator": true
 }

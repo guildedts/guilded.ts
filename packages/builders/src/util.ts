@@ -4,17 +4,20 @@
  * @returns The resolved color.
  * Inspired by {@link https://github.com/guildedjs/guilded.js/blob/main/packages/webhook-client/lib/util.ts#L8 Guilded.JS}'s color resolver.
  */
-export function resolveColor(
-	color: ColorResolvable,
-) {
-	if (typeof color === `string`) color = COLORS[color as keyof typeof COLORS] ?? parseInt(color.replace('#', ''), 16);
+export function resolveColor(color: ColorResolvable) {
+	if (typeof color === `string`)
+		color = COLORS[color as keyof typeof COLORS] ?? parseInt(color.replace('#', ''), 16);
 	else if (Array.isArray(color)) color = (color[0] << 16) + (color[1] << 8) + color[2];
 
 	return color;
 }
 
 /** The color resolvable type. */
-export type ColorResolvable = `#${string}` | keyof typeof COLORS | number | [r: number, g: number, b: number];
+export type ColorResolvable =
+	| `#${string}`
+	| keyof typeof COLORS
+	| number
+	| [r: number, g: number, b: number];
 
 /** A set of coloe presets. */
 export const COLORS = {

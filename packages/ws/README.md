@@ -12,9 +12,9 @@
 
 # Links
 
--   [Github](https://github.com/GuildedTS/Guilded.TS)
--   [NPM](https://www.npmjs.com/package/@guildedts/ws)
--   [Guilded.TS Guilded Server](https://www.guilded.gg/GuildedTS)
+-   [GitHub](https://github.com/guildedts/guilded.ts)
+-   [NPM](https://www.npmjs.com/package/guilded.ts)
+-   [Guilded.TS Guilded Server](https://www.guilded.gg/guildedts)
 -   [Guilded API Guilded server](https://www.guilded.gg/API-Official)
 -   [Documentation](https://guildedts.js.org)
 

@@ -12,9 +12,9 @@
 
 # Links
 
--   [Github](https://github.com/GuildedTS/Guilded.TS)
+-   [GitHub](https://github.com/guildedts/guilded.ts)
 -   [NPM](https://www.npmjs.com/package/guilded.ts)
--   [Guilded.TS Guilded Server](https://www.guilded.gg/GuildedTS)
+-   [Guilded.TS Guilded Server](https://www.guilded.gg/guildedts)
 -   [Guilded API Guilded server](https://www.guilded.gg/API-Official)
 -   [Documentation](https://guildedts.js.org)
 
@@ -38,9 +38,9 @@ pnpm add guilded.ts
 
 ```js
 // ESM
-import Client from 'guilded.ts';
+import Client, { Embed } from 'guilded.ts';
 // CommonJS
-const { Client } = require('guilded.ts');
+const { Client, Embed } = require('guilded.ts');
 
 // Create a new client
 const client = new Client();
@@ -50,9 +50,14 @@ client.once('ready', () => console.log(`[READY] Logged in as ${client.user.name}
 
 // This event is emitted when a message is sent on Guilded.
 client.on('messageCreate', (message) => {
-	if (message.author?.isBot) return;
+    if (message.content?.toLowerCase() !== 'ping') return;
 
-	if (message.content === '!ping') message.channel.send('Pong!');
+	const embed = new Embed()
+        .setTitle('Pong!')
+        .setDescription('This is the ping command!')
+        .setColor('GREEN');
+
+	message.reply({ content: 'Pong!', embeds: [embed] });
 });
 
 // Log into guilded
@@ -63,11 +68,11 @@ client.login('YOUR_BOT_TOKEN');
 
 Contributing helps us maintain Guilded.TS. All contributions are greatly appreciated.
 
-We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute, we highly recommend knowing the basics of these two.
+We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of these two.
 
 ## Getting started
 
-To get started, run the following script:
+To get started, run the following scripts:
 
 ```
 # Install all dependencies

@@ -38,9 +38,9 @@ pnpm add guilded.ts
 
 ```js
 // ESM
-import Client from 'guilded.ts';
+import Client, { Embed } from 'guilded.ts';
 // CommonJS
-const { Client } = require('guilded.ts');
+const { Client, Embed } = require('guilded.ts');
 
 // Create a new client
 const client = new Client();
@@ -50,9 +50,14 @@ client.once('ready', () => console.log(`[READY] Logged in as ${client.user.name}
 
 // This event is emitted when a message is sent on Guilded.
 client.on('messageCreate', (message) => {
-	if (message.author?.isBot) return;
+    if (message.content?.toLowerCase() !== 'ping') return;
 
-	if (message.content === '!ping') message.channel.send('Pong!');
+	const embed = new Embed()
+        .setTitle('Pong!')
+        .setDescription('This is the ping command!')
+        .setColor('GREEN');
+
+	message.reply({ content: 'Pong!', embeds: [embed] });
 });
 
 // Log into guilded

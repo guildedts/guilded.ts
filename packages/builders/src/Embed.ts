@@ -82,7 +82,7 @@ export class Embed {
 	 */
 	public setColor(color?: ColorResolvable) {
 		this.color = color ? resolveColor(color) : undefined;
-		
+
 		return this;
 	}
 
@@ -95,66 +95,66 @@ export class Embed {
 		if (typeof footer === 'string') this.footer = { text: footer };
 		else this.footer = footer;
 		return this;
-    }
-    
-    /**
-     * Set the timestamp of the embed.
-     * @param timestamp The timestamp of the embed.
-     * @returns This embed builder.
-     */
-    public setTimestamp(timestamp?: string | Date) {
-        if (typeof timestamp === 'string') this.timestamp = timestamp;
-        else this.timestamp = timestamp?.toISOString();
-        return this;
-    }
+	}
 
-    /**
-     * Set the thumbnail of the embed.
-     * @param thumbnail The thumbnail of the embed.
-     * @returns This embed builder.
-     */
-    public setThumbnail(thumbnail?: string) {
-        this.thumbnail = { url: thumbnail };
-        return this;
-    }
+	/**
+	 * Set the timestamp of the embed.
+	 * @param timestamp The timestamp of the embed.
+	 * @returns This embed builder.
+	 */
+	public setTimestamp(timestamp?: string | Date) {
+		if (typeof timestamp === 'string') this.timestamp = timestamp;
+		else this.timestamp = timestamp?.toISOString();
+		return this;
+	}
 
-    /**
-     * Set the image of the embed.
-     * @param image The image of the embed.
-     * @returns This embed builder.
-     */
-    public setImage(image?: string) {
-        this.image = { url: image };
-        return this;
-    }
+	/**
+	 * Set the thumbnail of the embed.
+	 * @param thumbnail The thumbnail of the embed.
+	 * @returns This embed builder.
+	 */
+	public setThumbnail(thumbnail?: string) {
+		this.thumbnail = { url: thumbnail };
+		return this;
+	}
 
-    /**
-     * Set the author of the embed.
-     * @param author The author of the embed.
-     * @returns This embed builder.
-     */
-    public setAuthor(author?: string | APIEmbedAuthor) {
-        if (typeof author === 'string') this.author = { name: author };
-        else this.author = author;
-        return this;
-    }
+	/**
+	 * Set the image of the embed.
+	 * @param image The image of the embed.
+	 * @returns This embed builder.
+	 */
+	public setImage(image?: string) {
+		this.image = { url: image };
+		return this;
+	}
 
-    /** @ignore */
-    public addField(arg1: string | APIEmbedField, arg2?: string, arg3?: boolean) {
-        if (typeof arg1 === 'string') this.fields.push({ name: arg1, value: arg2!, inline: arg3 });
-        else this.fields.push(arg1);
-        return this;
-    }
+	/**
+	 * Set the author of the embed.
+	 * @param author The author of the embed.
+	 * @returns This embed builder.
+	 */
+	public setAuthor(author?: string | APIEmbedAuthor) {
+		if (typeof author === 'string') this.author = { name: author };
+		else this.author = author;
+		return this;
+	}
 
-    /**
-     * Set the fields of the embed.
-     * @param fields The fields of the embed.
-     * @returns This embed builder.
-     */
-    public setFields(fields: APIEmbedField[]) {
-        this.fields = fields;
-        return this;
-    }
+	/** @ignore */
+	public addField(arg1: string | APIEmbedField, arg2?: string, arg3?: boolean) {
+		if (typeof arg1 === 'string') this.fields.push({ name: arg1, value: arg2!, inline: arg3 });
+		else this.fields.push(arg1);
+		return this;
+	}
+
+	/**
+	 * Set the fields of the embed.
+	 * @param fields The fields of the embed.
+	 * @returns This embed builder.
+	 */
+	public setFields(fields: APIEmbedField[]) {
+		this.fields = fields;
+		return this;
+	}
 }
 
 export declare interface Embed {

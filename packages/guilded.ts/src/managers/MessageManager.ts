@@ -102,7 +102,10 @@ export class MessageManager extends BaseManager<string, Message> {
 		const response = await this.client.rest.put<
 			{ message: APIChatMessage },
 			Omit<APIChatMessagePayload, 'isPrivate' | 'isSilent' | 'replyMessageIds'>
-		>(Routes.channelMessage(this.channel.id, id), typeof payload === 'string' ? { content: payload } : payload);
+		>(
+			Routes.channelMessage(this.channel.id, id),
+			typeof payload === 'string' ? { content: payload } : payload,
+		);
 
 		const message = new Message(this.channel, response.message);
 
