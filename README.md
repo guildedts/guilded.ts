@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 also a test
 <div align="center">
+=======
+<div align="center"> test
+>>>>>>> 89849ab148c650d11a3494baaa2d978f6e741a6b
     <br />
     <a href="https://guildedts.js.org"><img src="https://guildedts.js.org/media/banner.jpg" width="500" alt="Guilded.TS"/></a>
     <h3><strong>A powerful NPM module that allows you to easily interact with the <a href="https://www.guilded.gg">Guilded</a> API.</strong></h3>
