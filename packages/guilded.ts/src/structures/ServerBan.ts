@@ -1,5 +1,5 @@
 import { APIServerMemberBan } from 'guilded-api-typings';
-import { Base, Server, User } from '..';
+import { Base, Server, User } from '.';
 
 /** Represents a server ban. */
 export class ServerBan extends Base {
@@ -24,6 +24,11 @@ export class ServerBan extends Base {
 		this.createdAt = new Date(data.createdAt);
 	}
 
+	/** The ID of the server ban. */
+	public get id() {
+		return this.user.id;
+	}
+
 	/** The author of the ban. */
 	public get author() {
 		return this.client.users.cache.get(this.createdBy);
@@ -32,5 +37,15 @@ export class ServerBan extends Base {
 	/** The timestamp of when the ban was created. */
 	public get createdTimestamp() {
 		return this.createdAt.getTime();
+	}
+
+	/**
+	 * Fetch this server ban.
+	 * @param cache Whether to cache the server ban.
+	 * @returns The server ban.
+	 */
+	public fetch(cache: boolean = this.server.bans.cachingEnabled) {
+		this.server.bans.cache.delete(this.id);
+		return this.server.bans.fetch(this.id, cache);
 	}
 }

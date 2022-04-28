@@ -1,3 +1,6 @@
+export * from './Embed';
+export * from './util';
+
 /**
  * Crate bold text.
  * @param text The text to be formatted.

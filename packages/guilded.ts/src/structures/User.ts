@@ -1,5 +1,5 @@
 import { APIUser, APIUserSummary, APIUserType } from 'guilded-api-typings';
-import Client, { Base } from '..';
+import { Base, Client } from '.';
 
 /** Represents a user on Guilded. */
 export class User extends Base {
@@ -22,5 +22,20 @@ export class User extends Base {
 		this.type = data.type;
 		this.name = data.name;
 		this.createdAt = 'createdAt' in data ? new Date(data.createdAt) : undefined;
+	}
+
+	/** The timestamp of when the user was created. */
+	public get createdTimestamp() {
+		return this.createdAt ? this.createdAt.getTime() : undefined;
+	}
+
+	/** Whether this user is a bot. */
+	public get isBot() {
+		return this.type === 'bot';
+	}
+
+	/** Whether this user is a human. */
+	public get isHuman() {
+		return this.type === 'user';
 	}
 }

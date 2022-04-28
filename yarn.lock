@@ -315,7 +315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guildedts/builders@workspace:packages/builders":
+"@guildedts/builders@workspace:^, @guildedts/builders@workspace:packages/builders":
   version: 0.0.0-use.local
   resolution: "@guildedts/builders@workspace:packages/builders"
   dependencies:
@@ -1567,6 +1567,7 @@ __metadata:
   resolution: "guilded.ts@workspace:packages/guilded.ts"
   dependencies:
     "@discordjs/collection": ^0.6.0
+    "@guildedts/builders": "workspace:^"
     "@guildedts/rest": "workspace:^"
     "@guildedts/ws": "workspace:^"
     guilded-api-typings: "workspace:^"

@@ -1,3 +1,5 @@
+import { APIEmbed } from '..';
+
 /**
  * The API chat message object.
  * @see https://www.guilded.gg/docs/api/chat/ChatMessage
@@ -13,6 +15,8 @@ export interface APIChatMessage {
 	channelId: string;
 	/** The content of the message. */
 	content: string;
+	/** The embeds of the message. */
+	embeds: APIEmbed[];
 	/** Message IDs that were replied to. */
 	replyMessageIds?: string[];
 	/** Whether the message is private. */
@@ -62,7 +66,9 @@ export interface APIChatMessagePayload {
 	/** Message IDs to reply to. */
 	replyMessageIds?: string[];
 	/** The content of the message. */
-	content: string;
+	content?: string;
+	/** The embeds of the message. */
+	embeds?: APIEmbed[];
 }
 
 /**
@@ -81,7 +87,7 @@ export interface APIGetChatMessagesQuery {
 }
 
 /**
- * The API message reaction object.
+ * The API chat message reaction object.
  * @see https://www.guilded.gg/docs/api/reactions/ContentReaction
  */
 export interface APIMessageReaction {

@@ -1,4 +1,5 @@
-import Client, { Base, ServerBanManager, ServerMemberManager } from '..';
+import { Client, Base } from '.';
+import { ServerBanManager, ServerMemberManager } from '../managers';
 
 /** Represents a server on Guilded. */
 export class Server extends Base {
@@ -19,5 +20,15 @@ export class Server extends Base {
 		this.id = data.id;
 		this.members = new ServerMemberManager(this);
 		this.bans = new ServerBanManager(this);
+	}
+
+	/**
+	 * Fetch this server.
+	 * @param cache Whether to cache the server.
+	 * @returns The server.
+	 */
+	public async fetch(cache: boolean = this.client.servers.cachingEnabled) {
+		this.client.servers.cache.delete(this.id);
+		return this.client.servers.fetch(this.id, cache);
 	}
 }

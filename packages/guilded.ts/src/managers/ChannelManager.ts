@@ -1,4 +1,5 @@
-import Client, { BaseManager, Channel } from '..';
+import { BaseManager } from '.';
+import { Client, Channel } from '../structures';
 
 /** A manager of channels that belong to the client. */
 export class ChannelManager extends BaseManager<string, Channel> {

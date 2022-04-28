@@ -12,9 +12,9 @@
 
 # Links
 
--   [Github](https://github.com/GuildedTS/Guilded.TS)
+-   [GitHub](https://github.com/guildedts/guilded.ts)
 -   [NPM](https://www.npmjs.com/package/guilded.ts)
--   [Guilded.TS Guilded Server](https://www.guilded.gg/GuildedTS)
+-   [Guilded.TS Guilded Server](https://www.guilded.gg/guildedts)
 -   [Guilded API Guilded server](https://www.guilded.gg/API-Official)
 -   [Documentation](https://guildedts.js.org)
 
@@ -63,11 +63,15 @@ client.login('YOUR_BOT_TOKEN');
 
 Contributing helps us maintain Guilded.TS. All contributions are greatly appreciated.
 
+<<<<<<< HEAD
+We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of these two.
+=======
 We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute, we highly recommend knowing the basics of these two.
+>>>>>>> dfcc0e3b44107b5f2ac626e21d9eb7265de8d1c1
 
 ## Getting started
 
-To get started, run the following script:
+To get started, run the following scripts:
 
 ```
 # Install all dependencies

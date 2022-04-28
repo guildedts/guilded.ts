@@ -1,5 +1,6 @@
-import { APIChatMessagePayload } from 'guilded-api-typings';
-import Client, { Base, MessageManager } from '..';
+import { Client } from './Client';
+import { Base } from '.';
+import { MessageManager, MessagePayload } from '../managers';
 
 /** Represents a channel on Guilded. */
 export class Channel extends Base {
@@ -25,7 +26,8 @@ export class Channel extends Base {
 	 * @returns The channel.
 	 */
 	public async fetch(cache: boolean) {
-		return cache;
+		this.client.channels.cache.delete(this.id);
+		return this.client.channels.fetch(this.id, cache);
 	}
 
 	/**
@@ -33,7 +35,7 @@ export class Channel extends Base {
 	 * @param payload The messgae payload.
 	 * @returns The message.
 	 */
-	public async send(payload: string | APIChatMessagePayload) {
-		return this.messages.create(typeof payload === 'string' ? { content: payload } : payload);
+	public async send(payload: string | MessagePayload) {
+		return this.messages.create(payload);
 	}
 }
