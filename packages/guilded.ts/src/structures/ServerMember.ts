@@ -5,7 +5,7 @@ import {
 	APISocialLinkType,
 	Routes,
 } from 'guilded-api-typings';
-import { Base, CacheCollection, Server, User } from '..';
+import { Base, CacheCollection, Server, User } from '.';
 
 /** Represents a member of a server. */
 export class ServerMember extends Base {
@@ -42,6 +42,16 @@ export class ServerMember extends Base {
 	/** The ID of the member. */
 	public get id() {
 		return this.user.id;
+	}
+
+	/**
+	 * Fetch this server member.
+	 * @param cache Whether to cache the server member.
+	 * @returns The server member.
+	 */
+	public async fetch(cache: boolean = this.server.members.cachingEnabled) {
+		this.server.members.cache.delete(this.id);
+		return this.server.members.fetch(this.id, cache);
 	}
 
 	/**

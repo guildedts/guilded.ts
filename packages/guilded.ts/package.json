@@ -20,7 +20,8 @@
 		"types"
 	],
 	"contributors": [
-		"Gamertike <contact@gamertike.com> (https://gamertike.com)"
+		"Gamertike <contact@gamertike.com> (https://gamertike.com)",
+		"Bruno Lepis (https://brunolepis.xyz)"
 	],
 	"repository": {
 		"type": "git",
@@ -33,6 +34,7 @@
 	"license": "Apache-2.0",
 	"dependencies": {
 		"@discordjs/collection": "^0.6.0",
+		"@guildedts/builders": "workspace:^",
 		"@guildedts/rest": "workspace:^",
 		"@guildedts/ws": "workspace:^",
 		"guilded-api-typings": "workspace:^"

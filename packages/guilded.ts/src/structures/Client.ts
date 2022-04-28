@@ -1,7 +1,8 @@
 import EventEmitter from 'events';
 import RestManager from '@guildedts/rest';
 import WebsocketManager from '@guildedts/ws';
-import { ChannelManager, Message, ServerManager, User, UserManager } from '..';
+import { CacheCollection, Message, Server, ServerBan, ServerMember, User } from '.';
+import { ChannelManager, ServerManager, UserManager } from '../managers';
 
 /** The main hub for interacting with the Guilded API. */
 export class Client extends EventEmitter {
@@ -73,6 +74,8 @@ export class Client extends EventEmitter {
 
 		this.ws.on('data', async (type, data) => {
 			let message: Message | undefined;
+			let server: Server | undefined;
+			let members: CacheCollection<string, ServerMember> | undefined;
 
 			switch (type) {
 				case 'ChatMessageCreated':
@@ -101,6 +104,40 @@ export class Client extends EventEmitter {
 
 					this.emit('messageDelete', message);
 					break;
+				case 'TeamMemberJoined':
+					server = this.servers.fetch(data.serverId);
+
+					this.emit('memberAdd', await server.members.fetch(data.member.user.id));
+					break;
+				case 'TeamMemberRemoved':
+					this.emit('memberRemove', await this.users.fetch(data.serverId, data.userId));
+					break;
+				case 'TeamMemberUpdated':
+					server = this.servers.fetch(data.serverId);
+
+					this.emit('memberEdit', await server.members.fetch(data.userInfo.id));
+					break;
+				case 'TeamMemberBanned':
+					server = this.servers.fetch(data.serverId);
+
+					this.emit('memberBan', await server.bans.fetch(data.serverMemberBan.user.id));
+					break;
+				case 'TeamMemberUnbanned':
+					server = this.servers.fetch(data.serverId);
+
+					this.emit('memberUnban', await server.bans.fetch(data.serverMemberBan.user.id));
+					break;
+				case 'teamRolesUpdated':
+					server = this.servers.fetch(data.serverId);
+
+					members = new CacheCollection<string, ServerMember>();
+
+					for (const { userId } of data.memberRoleIds) {
+						members.set(userId, await server.members.fetch(userId));
+					}
+
+					this.emit('serverRolesEdit', members);
+					break;
 			}
 		});
 
@@ -110,6 +147,18 @@ export class Client extends EventEmitter {
 	/** Log out of Guilded. */
 	public logout() {
 		this.ws.disconnect();
+	}
+
+	/**
+	 * Debug the client.
+	 * @param message The debug message.
+	 * @param data The debug data.
+	 * @returns The client.
+	 */
+	public debug(data?: any) {
+		this.emit('debug', this, data);
+
+		return this;
 	}
 }
 
@@ -138,12 +187,26 @@ export interface ClientEvents {
 	ready: [client: Client];
 	/** Emitted when the client is disconnected from the API. */
 	disconnect: [client: Client];
+	/** Emitted when debug data is received. */
+	debug: [client: Client, data: any];
 	/** Emitted when a message is sent. */
 	messageCreate: [message: Message];
 	/** Emitted when a message is edited. */
 	messageEdit: [message: Message];
 	/** Emitted when a message is deleted. */
 	messageDelete: [message: Message];
+	/** Emitted when a member joins a server. */
+	memberAdd: [member: ServerMember];
+	/** Emitted when a member leaves a server. */
+	memberRemove: [user: User];
+	/** Emitted when a member is banned from a server. */
+	memberBan: [ban: ServerBan];
+	/** Emitted when a member is unbanned from a server. */
+	memberUnban: [ban: ServerBan];
+	/** Emitted when a member is edited. */
+	memberEdit: [member: ServerMember];
+	/** Emitted when a server's roles are edited. */
+	serverRolesEdit: [members: CacheCollection<string, ServerMember>];
 }
 
 /** The client options */

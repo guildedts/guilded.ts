@@ -1,5 +1,6 @@
 import { APIServerMemberBan, Routes } from 'guilded-api-typings';
-import { BaseManager, CacheCollection, Server, ServerBan } from '..';
+import { BaseManager } from '.';
+import { CacheCollection, Server, ServerBan } from '../structures';
 
 /** A manager of bans that belong to a server. */
 export class ServerBanManager extends BaseManager<string, ServerBan> {

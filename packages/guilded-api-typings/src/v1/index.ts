@@ -1,5 +1,6 @@
 // Structures
 export * from './structures/ChatMessage';
+export * from './structures/Embed';
 export * from './structures/Doc';
 export * from './structures/ForumThread';
 export * from './structures/ListItem';

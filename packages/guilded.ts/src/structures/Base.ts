@@ -1,4 +1,4 @@
-import Client from '..';
+import { Client } from '.';
 
 /** Represents a data model from Guilded. */
 export class Base {
