@@ -90,7 +90,7 @@ export class RestManager {
 	 * @param body The body of the request.
 	 * @returns The response from the REST api.
 	 */
-	public async post<R = any, B = any>(path: string, body: B) {
+	public async post<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, 'POST', { body });
 	}
 
@@ -100,7 +100,7 @@ export class RestManager {
 	 * @param body The body of the request.
 	 * @returns The response from the REST api.
 	 */
-	public async put<R = any, B = any>(path: string, body: B) {
+	public async put<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, 'PUT', { body });
 	}
 

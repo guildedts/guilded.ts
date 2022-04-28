@@ -1,5 +1,6 @@
 import { APIServerMember, APIServerMemberSummary, Routes } from 'guilded-api-typings';
-import { BaseManager, CacheCollection, Server, ServerMember, User } from '..';
+import { BaseManager } from '.';
+import { CacheCollection, Server, ServerMember, User } from '../structures';
 
 /** A manager of members that belong to a server. */
 export class ServerMemberManager extends BaseManager<string, ServerMember> {

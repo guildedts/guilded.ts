@@ -3,10 +3,9 @@ import {
 	APIChatMessagePayload,
 	APIChatMessageType,
 	APIDeletedChatMessage,
-	Routes,
 } from 'guilded-api-typings';
-import { Base, Channel } from '..';
-import { CacheCollection } from './CacheCollection';
+import { MessagePayload } from '../managers';
+import { CacheCollection, Base, Channel } from '.';
 
 /** Represents a message in a chanel. */
 export class Message extends Base {
@@ -113,15 +112,8 @@ export class Message extends Base {
 	 * @returns The message.
 	 */
 	public async fetch(cache: boolean = this.channel.messages.cachingEnabled) {
-		const response = await this.client.rest.get<{ message: APIChatMessage }>(
-			Routes.channelMessage(this.channel.id, this.id),
-		);
-
-		const message = new Message(this.channel, response.message);
-
-		if (cache) this.channel.messages.cache.set(this.id, message);
-
-		return message;
+		this.channel.messages.cache.delete(this.id);
+		return this.channel.messages.fetch(this.id, cache);
 	}
 
 	/**
@@ -134,11 +126,11 @@ export class Message extends Base {
 
 	/**
 	 * Edit this message.
-	 * @param content The new content of the message.
+	 * @param payload The new content of the message.
 	 * @returns The edited message.
 	 */
-	public async edit(content: string) {
-		return this.channel.messages.edit(this.id, content);
+	public async edit(payload: string | MessagePayload) {
+		return this.channel.messages.edit(this.id, payload);
 	}
 
 	/**
@@ -148,13 +140,24 @@ export class Message extends Base {
 	 */
 	public async reply(payload: string | APIChatMessagePayload) {
 		return this.channel.messages.create({
-			content: typeof payload === 'string' ? payload : payload.content,
 			isPrivate: typeof payload !== 'string' ? payload.isPrivate : undefined,
+			isSilent: typeof payload !== 'string' ? payload.isSilent : undefined,
 			replyMessageIds: [
 				...this.replyMessageIds,
 				this.id,
 				...(typeof payload !== 'string' ? payload.replyMessageIds ?? [] : []),
 			],
+			content: typeof payload === 'string' ? payload : payload.content,
+			embeds: typeof payload !== 'string' ? payload.embeds : undefined,
 		});
+	}
+
+	/**
+	 * React to this message.
+	 * @param emojiId The ID of the emoji to react with.
+	 * @returns The message.
+	 */
+	public async react(emojiId: string) {
+		return this.channel.messages.react(this.id, emojiId);
 	}
 }

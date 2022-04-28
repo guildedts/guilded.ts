@@ -1,4 +1,5 @@
-import Client, { BaseManager, CacheCollection, User } from '..';
+import { Client, CacheCollection, User } from '../structures';
+import { BaseManager } from '.';
 
 /** A manager of users that belong to the client. */
 export class UserManager extends BaseManager<string, User> {

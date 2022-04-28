@@ -63,7 +63,7 @@ client.login('YOUR_BOT_TOKEN');
 
 Contributing helps us maintain Guilded.TS. All contributes are greatly appreciated.
 
-We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of thes two.
+We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of these two.
 
 ## Getting started
 

@@ -1,4 +1,5 @@
-import Client, { BaseManager, Server } from '..';
+import { Client, Server } from '../structures';
+import { BaseManager } from '.';
 
 /** A manager of servers that belong to the client. */
 export class ServerManager extends BaseManager<string, Server> {
