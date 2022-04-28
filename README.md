@@ -61,9 +61,13 @@ client.login('YOUR_BOT_TOKEN');
 
 # Contributing
 
-Contributing helps us maintain Guilded.TS. All contributes are greatly appreciated.
+Contributing helps us maintain Guilded.TS. All contributions are greatly appreciated.
 
+<<<<<<< HEAD
 We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of these two.
+=======
+We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute, we highly recommend knowing the basics of these two.
+>>>>>>> dfcc0e3b44107b5f2ac626e21d9eb7265de8d1c1
 
 ## Getting started
 
@@ -76,9 +80,9 @@ yarn install
 yarn build
 ```
 
-## Commiting your changes
+## Committing your changes
 
-After you have made your desired changes, Make sure you run the following script before commiting your changes:
+After you have made your desired changes, make sure you run the following script before committing your changes:
 
 ```
 # Prepare your code
