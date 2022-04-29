@@ -9,7 +9,8 @@
 		"typings"
 	],
 	"scripts": {
-		"build": "yarn tsc",
+		"build": "yarn clear && yarn tsc",
+		"clear": "yarn rimraf lib typings",
 		"prepublishOnly": "yarn build"
 	},
 	"keywords": [
@@ -33,6 +34,7 @@
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
 	"devDependencies": {
+		"rimraf": "^3.0.2",
 		"typescript": "^4.6.3"
 	}
 }

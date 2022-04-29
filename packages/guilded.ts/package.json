@@ -1,6 +1,6 @@
 {
 	"name": "guilded.ts",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
@@ -9,7 +9,8 @@
 		"typings"
 	],
 	"scripts": {
-		"build": "yarn tsc",
+		"build": "yarn clear && yarn tsc",
+		"clear": "yarn rimraf lib typings",
 		"prepublishOnly": "yarn build"
 	},
 	"keywords": [
@@ -40,6 +41,7 @@
 		"guilded-api-typings": "workspace:^"
 	},
 	"devDependencies": {
+		"rimraf": "^3.0.2",
 		"typescript": "^4.6.3"
 	}
 }

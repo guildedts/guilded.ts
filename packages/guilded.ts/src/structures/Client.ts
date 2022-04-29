@@ -7,7 +7,7 @@ import { ChannelManager, ServerManager, UserManager } from '../managers';
 /** The main hub for interacting with the Guilded API. */
 export class Client extends EventEmitter {
 	/** The REST API manager for the client. */
-	public readonly rest = new RestManager(1);
+	public readonly rest: RestManager;
 	/** The websocket API manager for the client. */
 	public readonly ws = new WebsocketManager(1);
 
@@ -28,6 +28,11 @@ export class Client extends EventEmitter {
 		super();
 
 		this.token = options.token;
+		this.rest = new RestManager({
+			version: 1,
+			maxRetries: options.maxRestAPIRetries,
+			retryInterval: options.restAPIRetryInterval,
+		});
 		this.channels = new ChannelManager(this);
 		this.users = new UserManager(this);
 		this.servers = new ServerManager(this);
@@ -213,6 +218,10 @@ export interface ClientEvents {
 export interface ClientOptions {
 	/** The client authorization token. */
 	token?: string;
+	/** The max retries for REST API requests. */
+	maxRestAPIRetries?: number;
+	/** The retry interval for REST API requests. */
+	restAPIRetryInterval?: number;
 	/** Whether to cache channels. */
 	cacheChannels?: boolean;
 	/** The maximum of channels cache. */

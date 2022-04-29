@@ -1,5 +1,6 @@
 import { GuildedAPIError } from '.';
 import fetch from 'node-fetch';
+import { sleep } from './util';
 
 /**
  * The REST manager for the Guilded API.
@@ -8,9 +9,15 @@ import fetch from 'node-fetch';
 export class RestManager {
 	/** The authoization token for the REST api. */
 	public token?: string;
+	/** The API version for the REST api. */
+	public readonly version: number;
 
-	/** @param version The API version for the REST api. */
-	public constructor(public readonly version: number) {}
+	/**
+	 * @param options The options for the REST manager.
+	 */
+	public constructor(public options: RestManagerOptions) {
+		this.version = options.version;
+	}
 
 	/** The base URL for the REST api. */
 	public get baseUrl(): `https://www.guilded.gg/api/v${number}/` {
@@ -38,6 +45,7 @@ export class RestManager {
 		path: string,
 		method: string,
 		options: FetchOptions<B, P> = {},
+		retries = 0
 	): Promise<R> {
 		const searchParams = new URLSearchParams();
 
@@ -58,6 +66,11 @@ export class RestManager {
 		const data = await response.json().catch(() => ({}));
 
 		if (!response.ok) {
+			if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
+				await sleep(this.options?.retryInterval ?? 3000);
+				return this.fetch<R, B, P>(path, method, options, retries++);
+			}
+
 			throw new GuildedAPIError(
 				data.code,
 				data.message,
@@ -112,6 +125,16 @@ export class RestManager {
 	public async delete<R>(path: string) {
 		return this.fetch<R>(path, 'DELETE');
 	}
+}
+
+/** The options for the REST manager. */
+export interface RestManagerOptions {
+	/** The API version for the REST api. */
+	version: number;
+	/** The interval to wait between retries. */
+	retryInterval?: number;
+	/** The maximum number of retries. */
+	maxRetries?: number;
 }
 
 /** The options for making a request to the REST api. */

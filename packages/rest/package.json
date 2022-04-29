@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/rest",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "The REST API manager for Guilded.TS.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
@@ -9,7 +9,8 @@
 		"typings"
 	],
 	"scripts": {
-		"build": "yarn tsc",
+		"build": "yarn clear && yarn tsc",
+		"clear": "yarn rimraf lib typings",
 		"prepublishOnly": "yarn build"
 	},
 	"keywords": [
@@ -37,6 +38,7 @@
 	},
 	"devDependencies": {
 		"@types/node-fetch": "^2.6.1",
+		"rimraf": "^3.0.2",
 		"typescript": "^4.6.3"
 	}
 }

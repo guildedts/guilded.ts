@@ -1,5 +1,16 @@
 # guilded.ts
 
+## 0.2.0
+
+### Minor Changes
+
+-   Added retrying in REST API requests.
+
+### Patch Changes
+
+-   Updated dependencies
+    -   @guildedts/rest@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
