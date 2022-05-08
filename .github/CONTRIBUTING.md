@@ -17,10 +17,4 @@ yarn build
 
 ## Committing your changes
 
-After you have made your desired changes, make sure you run the following script before committing your changes:
-
-```
-# Prepare your code
-# Runs prettier along with eslint
-yarn prepare
-```
+After you have made your desired changes, create a pull request with our [pull request template](https://github.com/guildedts/guilded.ts/tree/main/.github/PULL_REQUEST_TEMPLATE.md).
