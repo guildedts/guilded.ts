@@ -350,7 +350,7 @@ __metadata:
   resolution: "@guildedts/rest@workspace:packages/rest"
   dependencies:
     "@types/node-fetch": ^2.6.1
-    node-fetch: cjs
+    node-fetch: ^2.6.7
     rimraf: ^3.0.2
     typescript: ^4.6.3
   languageName: unknown
@@ -1575,7 +1575,9 @@ __metadata:
     "@guildedts/builders": "workspace:^"
     "@guildedts/rest": "workspace:^"
     "@guildedts/ws": "workspace:^"
+    "@types/node-fetch": ^2.6.1
     guilded-api-typings: "workspace:^"
+    node-fetch: ^2.6.7
     rimraf: ^3.0.2
     typescript: ^4.6.3
   languageName: unknown
@@ -2072,7 +2074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:cjs":
+"node-fetch@npm:^2.6.7":
   version: 2.6.7
   resolution: "node-fetch@npm:2.6.7"
   dependencies:
