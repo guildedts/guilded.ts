@@ -45,7 +45,7 @@ export class RestManager {
 		path: string,
 		method: string,
 		options: FetchOptions<B, P> = {},
-		retries = 0
+		retries = 0,
 	): Promise<R> {
 		const searchParams = new URLSearchParams();
 
@@ -67,7 +67,10 @@ export class RestManager {
 
 		if (!response.ok) {
 			if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
-				await sleep(this.options?.retryInterval ?? 3000);
+				const retryAfter = response.headers.get('Retry-After');
+				const retryDelay = retryAfter ? parseInt(retryAfter) : undefined;
+
+				await sleep(retryDelay ?? this.options?.retryInterval ?? 3000);
 				return this.fetch<R, B, P>(path, method, options, retries++);
 			}
 

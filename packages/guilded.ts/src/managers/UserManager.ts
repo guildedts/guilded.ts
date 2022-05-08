@@ -6,44 +6,40 @@ export class UserManager extends BaseManager<string, User> {
 	/** @param client The client that owns the users. */
 	public constructor(client: Client) {
 		super(client, {
-			cachingEnabled: client.options.cacheUsers,
+			caching: client.options.cacheUsers,
 			maxCache: client.options.maxUserCache,
 		});
 	}
 
 	/** @ignore */
-	public async fetch(arg1: string, arg2?: string | boolean, arg3?: boolean) {
+	public async fetch(arg1: string, arg2: string | boolean = this.caching, arg3 = this.caching) {
 		if (typeof arg2 === 'string') return this.fetchSingle(arg1, arg2, arg3);
 
 		return this.fetchMany(arg1, arg2);
 	}
 
 	/** @ignore */
-	private async fetchSingle(
-		serverId: string,
-		userId: string,
-		cache: boolean = this.cachingEnabled,
-	) {
+	private async fetchSingle(serverId: string, userId: string, cache = this.caching) {
 		let user = this.cache.get(userId);
 		if (user) return user;
 
-		this.cachingEnabled = cache;
-
 		user = (await this.client.servers.fetch(serverId).members.fetch(userId)).user;
+
+		if (cache) this.cache.set(user.id, user);
 
 		return user;
 	}
 
 	/** @ignore */
-	private async fetchMany(serverId: string, cache: boolean = this.cachingEnabled) {
-		this.cachingEnabled = cache;
-
+	private async fetchMany(serverId: string, cache = this.caching) {
 		const members = await this.client.servers.fetch(serverId).members.fetch();
 
 		const users = new CacheCollection<string, User>();
 
 		for (const member of members.values()) {
 			users.set(member.id, member.user);
+
+			if (cache) this.cache.set(member.id, member.user);
 		}
 
 		return users;

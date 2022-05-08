@@ -1,5 +1,89 @@
 # guilded.ts
 
+## 0.3.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add new managers
+        -   `ChannelWebhookManager`
+        -   `GroupManager`
+        -   `GroupMemberManager`
+        -   `MessageReactionManager`
+        -   `ServerMemberRoleManager`
+        -   `ServerRoleManager`
+        -   `DocManager`
+        -   `ForumThreadManager`
+        -   `ListItemManager`
+    -   Add new structures
+        -   `ChatChannel`
+        -   `DocChannel`
+        -   `ForumChannel`
+        -   `ListChannel`
+        -   `StreamChannel`
+        -   `VoiceChannel`
+        -   `ListItem`
+        -   `Note`
+        -   `ServerMemberRole`
+        -   `ServerRole`
+        -   `Doc`
+        -   `ForumThread`
+        -   `Group`
+        -   `Webhook`
+    -   Update `Channel` to support official channel fetching
+    -   Update `ChannelManager` to support official channel fetching
+    -   Add `embeds` property to `Message`
+    -   Remove `is` prefix to properies like `isPrivate`
+    -   Add `cached` getter to all structures with a manager
+    -   Add `default` and `system` getters to `Message`
+    -   Add `group` getter to all structures that include `grooupId`
+    -   Add `deleted` getter to all structures that include `deletedAt`
+    -   Add `webhook` getter to all structures that include `createdByWebhookId`
+    -   Add `editable` getter to all structures that can be edited
+    -   Moved WS event handling to its own dedicated file
+    -   Change `memberRemove` event to return a `Server` instead of a `User`
+    -   Change `serverRolesEdit` event to return a `Server` instead of `CacheCollection<string, ServerMember>`
+    -   Add new `Client` events
+        -   `channelCreate`
+        -   `channelEdit`
+        -   `channelDelete`
+        -   `webhookCreate`
+        -   `webhookEdit`
+        -   `docCreate`
+        -   `docEdit`
+        -   `docDelete`
+        -   `listItemCreate`
+        -   `listItemEdit`
+        -   `listItemDelete`
+        -   `listItemComplete`
+        -   `listItemUncomplete`
+    -   Add new `Client` options
+        -   `cacheForumThreads`
+        -   `maxForumThreadCache`
+        -   `cacheListItems`
+        -   `maxListItemCache`
+        -   `cacheDocs`
+        -   `maxDocCache`
+        -   `cacheGroups`
+        -   `maxGroupCache`
+        -   `cacheServerRoles`
+        -   `maxServerRoleCache`
+        -   `cacheServerMemberRoles`
+        -   `maxServerMemberRoleCache`
+        -   `cacheWebhooks`
+        -   `maxWebhookCache`
+
+### Patch Changes
+
+-   Updated dependencies
+-   Updated dependencies
+-   Updated dependencies
+    -   @guildedts/rest@0.3.0
+    -   @guildedts/builders@0.1.1
+    -   guilded-api-typings@0.1.1
+    -   @guildedts/ws@0.1.0
+
 ## 0.2.0
 
 ### Minor Changes

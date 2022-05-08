@@ -1,12 +1,5 @@
 // Structures
-export * from './structures/ChatMessage';
-export * from './structures/Embed';
-export * from './structures/Doc';
-export * from './structures/ForumThread';
-export * from './structures/ListItem';
-export * from './structures/Server';
-export * from './structures/User';
-export * from './structures/Webhook';
+export * from './structures';
 
 // WS
 export * from './WSEvents';

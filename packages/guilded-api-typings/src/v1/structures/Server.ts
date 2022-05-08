@@ -1,4 +1,4 @@
-import { APIUser, APIUserSummary } from '..';
+import { APIUser, APIUserSummary } from '.';
 
 /**
  * The API server member object.

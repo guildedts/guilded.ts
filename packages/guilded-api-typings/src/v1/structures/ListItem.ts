@@ -4,10 +4,7 @@
  */
 export interface APIListItem extends APIListItemSummary {
 	/** The note of the list item. */
-	note?: {
-		/** The content of the note. */
-		content: string;
-	} & APIListItemNote;
+	note?: APIListItemNote;
 }
 
 /**
@@ -28,7 +25,7 @@ export interface APIListItemSummary {
 	/** The ID of the user who created the list item. */
 	createdBy: string;
 	/** The ID of the webhook that created the list item. */
-	creartedByWebhookId?: string;
+	createdByWebhookId?: string;
 	/** The time the list item was edited. */
 	updatedAt?: string;
 	/** The ID of the user who edited the list item. */
@@ -40,14 +37,23 @@ export interface APIListItemSummary {
 	/** The ID of the user who completed the list item. */
 	completedBy?: string;
 	/** The note of the list item. */
-	note?: APIListItemNote;
+	note?: APIListItemNoteSummary;
 }
 
 /**
  * The API list item note object.
  * @see https://www.guilded.gg/docs/api/listItems/ListItem
  */
-export interface APIListItemNote {
+export interface APIListItemNote extends APIListItemSummary {
+	/** The contern of the note. */
+	content: string;
+}
+
+/**
+ * The API list item note summary object.
+ * @see https://www.guilded.gg/docs/api/listItems/ListItem
+ */
+export interface APIListItemNoteSummary {
 	/** The time the note was created. */
 	createdAt: string;
 	/** The ID of the user who created the note. */

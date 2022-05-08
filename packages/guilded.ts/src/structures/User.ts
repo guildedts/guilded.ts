@@ -3,8 +3,6 @@ import { Base, Client } from '.';
 
 /** Represents a user on Guilded. */
 export class User extends Base {
-	/** The ID of the user. */
-	public readonly id: string;
 	/** The type of user. */
 	public readonly type?: APIUserType;
 	/** The name of the user. */
@@ -17,11 +15,16 @@ export class User extends Base {
 	 * @param data The data of the user.
 	 */
 	public constructor(client: Client, data: APIUser | APIUserSummary) {
-		super(client);
-		this.id = data.id;
+		super(client, data.id);
+
 		this.type = data.type;
 		this.name = data.name;
 		this.createdAt = 'createdAt' in data ? new Date(data.createdAt) : undefined;
+	}
+
+	/** Whether this user is cached. */
+	public get cached() {
+		return this.client.users.cache.has(this.id);
 	}
 
 	/** The timestamp of when the user was created. */
@@ -30,12 +33,22 @@ export class User extends Base {
 	}
 
 	/** Whether this user is a bot. */
-	public get isBot() {
+	public get bot() {
 		return this.type === 'bot';
 	}
 
 	/** Whether this user is a human. */
-	public get isHuman() {
+	public get human() {
 		return this.type === 'user';
+	}
+
+	/**
+	 * Cache this user.
+	 * @returns The user.
+	 */
+	public cache() {
+		this.client.users.cache.set(this.id, this);
+
+		return this;
 	}
 }

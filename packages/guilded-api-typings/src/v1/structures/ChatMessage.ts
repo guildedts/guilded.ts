@@ -1,4 +1,4 @@
-import { APIEmbed } from '..';
+import { APIEmbed } from '.';
 
 /**
  * The API chat message object.

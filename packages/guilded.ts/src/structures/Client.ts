@@ -1,8 +1,15 @@
 import EventEmitter from 'events';
 import RestManager from '@guildedts/rest';
 import WebsocketManager from '@guildedts/ws';
-import { CacheCollection, Message, Server, ServerBan, ServerMember, User } from '.';
-import { ChannelManager, ServerManager, UserManager } from '../managers';
+import { Doc, ListItem, Message, Server, ServerBan, ServerMember, User, Webhook } from '.';
+import {
+	ChannelManager,
+	ChannelResolvable,
+	GroupManager,
+	ServerManager,
+	UserManager,
+} from '../managers';
+import { handleWSEvent } from '../ws';
 
 /** The main hub for interacting with the Guilded API. */
 export class Client extends EventEmitter {
@@ -12,11 +19,13 @@ export class Client extends EventEmitter {
 	public readonly ws = new WebsocketManager(1);
 
 	/** A manager of channels that belong to the client. */
-	public channels: ChannelManager;
+	public readonly channels: ChannelManager;
 	/** A manager of users that belong to the client. */
-	public users: UserManager;
+	public readonly users: UserManager;
 	/** A manager of servers that belong to the client. */
-	public servers: ServerManager;
+	public readonly servers: ServerManager;
+	/** A manager of groups that belong to the client. */
+	public readonly groups: GroupManager;
 
 	/** The client authorization token. */
 	public token?: string;
@@ -36,6 +45,7 @@ export class Client extends EventEmitter {
 		this.channels = new ChannelManager(this);
 		this.users = new UserManager(this);
 		this.servers = new ServerManager(this);
+		this.groups = new GroupManager(this);
 	}
 
 	/** Whether the client is ready to use. */
@@ -78,72 +88,7 @@ export class Client extends EventEmitter {
 		});
 
 		this.ws.on('data', async (type, data) => {
-			let message: Message | undefined;
-			let server: Server | undefined;
-			let members: CacheCollection<string, ServerMember> | undefined;
-
-			switch (type) {
-				case 'ChatMessageCreated':
-					message = await this.channels
-						.fetch(data.message.channelId)
-						.messages.fetch(data.message.id);
-
-					this.emit('messageCreate', message);
-					break;
-				case 'ChatMessageUpdated':
-					message = await this.channels
-						.fetch(data.message.channelId)
-						.messages.fetch(data.message.id);
-
-					this.emit('messageEdit', message);
-					break;
-				case 'ChatMessageDeleted':
-					message = this.channels
-						.fetch(data.message.channelId)
-						.messages.cache.get(data.message.id);
-
-					if (!message) {
-						const channel = this.channels.fetch(data.message.channelId);
-						message = new Message(channel, data.message);
-					}
-
-					this.emit('messageDelete', message);
-					break;
-				case 'TeamMemberJoined':
-					server = this.servers.fetch(data.serverId);
-
-					this.emit('memberAdd', await server.members.fetch(data.member.user.id));
-					break;
-				case 'TeamMemberRemoved':
-					this.emit('memberRemove', await this.users.fetch(data.serverId, data.userId));
-					break;
-				case 'TeamMemberUpdated':
-					server = this.servers.fetch(data.serverId);
-
-					this.emit('memberEdit', await server.members.fetch(data.userInfo.id));
-					break;
-				case 'TeamMemberBanned':
-					server = this.servers.fetch(data.serverId);
-
-					this.emit('memberBan', await server.bans.fetch(data.serverMemberBan.user.id));
-					break;
-				case 'TeamMemberUnbanned':
-					server = this.servers.fetch(data.serverId);
-
-					this.emit('memberUnban', await server.bans.fetch(data.serverMemberBan.user.id));
-					break;
-				case 'teamRolesUpdated':
-					server = this.servers.fetch(data.serverId);
-
-					members = new CacheCollection<string, ServerMember>();
-
-					for (const { userId } of data.memberRoleIds) {
-						members.set(userId, await server.members.fetch(userId));
-					}
-
-					this.emit('serverRolesEdit', members);
-					break;
-			}
+			handleWSEvent(this, type as any, data as any);
 		});
 
 		this.ws.connect(this.token);
@@ -156,7 +101,6 @@ export class Client extends EventEmitter {
 
 	/**
 	 * Debug the client.
-	 * @param message The debug message.
 	 * @param data The debug data.
 	 * @returns The client.
 	 */
@@ -203,7 +147,7 @@ export interface ClientEvents {
 	/** Emitted when a member joins a server. */
 	memberAdd: [member: ServerMember];
 	/** Emitted when a member leaves a server. */
-	memberRemove: [user: User];
+	memberRemove: [server: Server];
 	/** Emitted when a member is banned from a server. */
 	memberBan: [ban: ServerBan];
 	/** Emitted when a member is unbanned from a server. */
@@ -211,7 +155,33 @@ export interface ClientEvents {
 	/** Emitted when a member is edited. */
 	memberEdit: [member: ServerMember];
 	/** Emitted when a server's roles are edited. */
-	serverRolesEdit: [members: CacheCollection<string, ServerMember>];
+	serverRolesEdit: [server: Server];
+	/** Emitted when a channel is created. */
+	channelCreate: [channel: ChannelResolvable];
+	/** Emitted when a channel is edited. */
+	channelEdit: [channel: ChannelResolvable];
+	/** Emitted when a channel is deleted. */
+	channelDelete: [channel: ChannelResolvable];
+	/** Emitted when a webhook is created. */
+	webhookCreate: [webhook: Webhook];
+	/** Emitted when a webhook is edited. */
+	webhookEdit: [webhook: Webhook];
+	/** Emitted when a doc is created. */
+	docCreate: [doc: Doc];
+	/** Emitted when a doc is edited. */
+	docEdit: [doc: Doc];
+	/** Emitted when a doc is deleted. */
+	docDelete: [doc: Doc];
+	/** Emitted when a list item is created. */
+	listItemCreate: [listItem: ListItem];
+	/** Emitted when a list item is edited. */
+	listItemEdit: [listItem: ListItem];
+	/** Emitted when a list item is deleted. */
+	listItemDelete: [listItem: ListItem];
+	/** Emitted when a list item is completed. */
+	listItemComplete: [listItem: ListItem];
+	/** Emitted when a list item is uncompleted. */
+	listItemUncomplete: [listItem: ListItem];
 }
 
 /** The client options */
@@ -246,4 +216,32 @@ export interface ClientOptions {
 	cacheServerMembers?: boolean;
 	/** The maximum size of server members cache. */
 	maxServerMemberCache?: number;
+	/** Whether to cache forum threads. */
+	cacheForumThreads?: boolean;
+	/** The maximum size of forum threads cache. */
+	maxForumThreadCache?: number;
+	/** Whether to cache list items. */
+	cacheListItems?: boolean;
+	/** The maximum size of list items cache. */
+	maxListItemCache?: number;
+	/** Whether to cache docs. */
+	cacheDocs?: boolean;
+	/** The maximum size of docs cache. */
+	maxDocCache?: number;
+	/** Whether to cache groups. */
+	cacheGroups?: boolean;
+	/** The maximum size of groups cache. */
+	maxGroupCache?: number;
+	/** Whether to cache server roles. */
+	cacheServerRoles?: boolean;
+	/** The maximum size of server roles cache. */
+	maxServerRoleCache?: number;
+	/** Whether to cache server member roles. */
+	cacheServerMemberRoles?: boolean;
+	/** The maximum size of server member roles cache. */
+	maxServerMemberRoleCache?: number;
+	/** Whether to cache webhooks. */
+	cacheWebhooks?: boolean;
+	/** The maximum size of webhooks cache. */
+	maxWebhookCache?: number;
 }

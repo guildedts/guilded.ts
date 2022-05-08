@@ -19,7 +19,7 @@ export type ColorResolvable =
 	| number
 	| [r: number, g: number, b: number];
 
-/** A set of coloe presets. */
+/** A set of color presets. */
 export const COLORS = {
 	WHITE: 0xffffff,
 	BLACK: 0x000000,

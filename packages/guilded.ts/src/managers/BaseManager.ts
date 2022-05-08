@@ -5,7 +5,7 @@ export class BaseManager<K = string, V = any> {
 	/** This manager's cache. */
 	public readonly cache: CacheCollection<K, V>;
 	/** Whether caching is enabled for this manager. */
-	public cachingEnabled = true;
+	public caching: boolean;
 
 	/**
 	 * @param client The client that instantiated this manager.
@@ -13,7 +13,7 @@ export class BaseManager<K = string, V = any> {
 	 */
 	constructor(public readonly client: Client, public readonly options: ManagerOptions = {}) {
 		this.cache = new CacheCollection(options.maxCache);
-		this.cachingEnabled = options.cachingEnabled ?? true;
+		this.caching = options.caching ?? true;
 	}
 
 	/**
@@ -22,7 +22,8 @@ export class BaseManager<K = string, V = any> {
 	 * @returns The manager.
 	 */
 	public toggleCache(enabled: boolean) {
-		this.cachingEnabled = enabled;
+		this.caching = enabled;
+
 		return this;
 	}
 
@@ -33,12 +34,15 @@ export class BaseManager<K = string, V = any> {
 	 */
 	public setMaxCache(maxSize: number) {
 		this.cache.setMaxSize(maxSize);
+
 		return this;
 	}
 }
 
 /** The manager options. */
 export interface ManagerOptions {
-	cachingEnabled?: boolean;
+	/** Whether caching is enabled. */
+	caching?: boolean;
+	/** The maximum cache size. */
 	maxCache?: number;
 }

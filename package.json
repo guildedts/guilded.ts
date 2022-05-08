@@ -1,10 +1,10 @@
 {
 	"name": "@guildedts/guilded.ts",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"private": true,
 	"scripts": {
-		"test": "ts-node example",
+		"test": "ts-node test",
 		"build": "yarn turbo run build",
 		"lint": "yarn eslint 'packages/**/*.ts' --fix",
 		"format": "yarn prettier --write 'packages/**/*.{ts,js,json}'",
@@ -23,15 +23,16 @@
 		"types"
 	],
 	"contributors": [
-		"Gamertike <contact@gamertike.com> (https://gamertike.com)",
-		"Bruno Lepis (https://brunolepis.xyz)"
+		"Gamertike (https://gamertike.com)",
+		"Bruno Lepis (https://brunolepis.xyz)",
+		"vyPal"
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/GuildedTS/Guilded.TS.git"
+		"url": "https://github.com/guildedts/guilded.ts.git"
 	},
 	"bugs": {
-		"url": "https://github.com/GuildedTS/Guilded.TS/issues"
+		"url": "https://github.com/guildedts/guilded.ts/issues"
 	},
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",

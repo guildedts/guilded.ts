@@ -7,5 +7,8 @@ export * from './structures';
 // Managers
 export * from './managers';
 
+// Handlers
+export * from './ws';
+
 // Builders
 export * from '@guildedts/builders';

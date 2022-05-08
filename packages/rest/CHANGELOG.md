@@ -1,5 +1,13 @@
 # @guildedts/rest
 
+## 0.3.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Added support for the `Retry-After` header.
+
 ## 0.2.0
 
 ### Minor Changes

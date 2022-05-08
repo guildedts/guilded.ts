@@ -4,7 +4,7 @@
  */
 export interface APIDoc {
 	/** The ID of the doc. */
-	id: string;
+	id: number;
 	/** The ID of the server the doc was created on. */
 	serverId: string;
 	/** The ID of the channel the doc was created in. */

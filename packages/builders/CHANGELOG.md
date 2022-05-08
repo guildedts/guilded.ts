@@ -1,5 +1,13 @@
 # @guildedts/builders
 
+## 0.1.1
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Fixed typo in `util.ts` ([#4](https://github.com/guildedts/guilded.ts/pull/4))
+
 ## 0.1.0
 
 ### Minor Changes

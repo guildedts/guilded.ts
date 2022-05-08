@@ -1,5 +1,37 @@
 # guilded-api-typings
 
+## 0.1.1
+
+### Patch Changes
+
+-   Added typings for channels.
+
+    # Features
+
+    -   Add channel typings
+    -   Add `APIListItemSummary`
+    -   Add new routes
+        -   `channels`
+        -   `channel`
+        -   `channelListItemComplete`
+    -   Add new WS events
+        -   `TeamChannelCreated`
+        -   `TeamChannelUpdated`
+        -   `TeamChannelDeleted`
+        -   `DocCreated`
+        -   `DocUpdated`
+        -   `DocDeleted`
+        -   `ListItemCreated`
+        -   `ListItemUpdated`
+        -   `ListItemDeleted`
+        -   `ListItemCompleted`
+        -   `ListItemUncompleted`
+
+    # Fixes
+
+    -   **APIDoc**: fix incorrect `id` type
+    -   Fix typo in `ListItem.ts`
+
 ## 0.1.0
 
 ### Minor Changes
