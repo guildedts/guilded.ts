@@ -3,6 +3,8 @@
  * @see https://www.guilded.gg/docs/api/members/User
  */
 export interface APIUser extends APIUserSummary {
+	/** The URL of the user's banner. */
+	banner?: string;
 	/** The time the user was created. */
 	createdAt: string;
 }
@@ -18,6 +20,8 @@ export interface APIUserSummary {
 	type?: APIUserType;
 	/** The name of the user. */
 	name: string;
+	/** The URL of the user's avatar. */
+	avatar?: string;
 }
 
 /**
