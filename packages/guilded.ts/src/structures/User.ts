@@ -7,6 +7,10 @@ export class User extends Base {
 	public readonly type?: APIUserType;
 	/** The name of the user. */
 	public readonly name: string;
+	/** The URL of this user's avatar. */
+	public readonly avatar?: string;
+	/** The URL of this user's banner. */
+	public readonly banner?: string;
 	/** The time the user was created. */
 	public readonly createdAt?: Date;
 
@@ -19,6 +23,8 @@ export class User extends Base {
 
 		this.type = data.type;
 		this.name = data.name;
+		this.avatar = data.avatar;
+		this.banner = 'banner' in data ? data.banner : undefined;
 		this.createdAt = 'createdAt' in data ? new Date(data.createdAt) : undefined;
 	}
 
