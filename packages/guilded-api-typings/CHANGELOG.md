@@ -1,5 +1,14 @@
 # guilded-api-typings
 
+## 0.1.2
+
+### Patch Changes
+
+-   # Features
+
+    -   Add `avatar` property to the `UserSummary` interface
+    -   Add `banner` property to the `User` interface
+
 ## 0.1.1
 
 ### Patch Changes

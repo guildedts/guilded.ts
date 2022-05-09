@@ -1,5 +1,20 @@
 # guilded.ts
 
+## 0.4.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `avatar` and `banner` properties to the `User` structure
+
+### Patch Changes
+
+-   Updated dependencies
+    -   guilded-api-typings@0.1.2
+    -   @guildedts/builders@0.1.1
+    -   @guildedts/ws@0.1.0
+
 ## 0.3.0
 
 ### Minor Changes
