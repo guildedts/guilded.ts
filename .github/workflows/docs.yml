@@ -22,13 +22,13 @@ jobs:
       - name: Generate documentation
         run: yarn docs
 
+      - name: Configure git
+        run: |
+          git config user.name "Documentation bot"
+          git config user.email "<>"
+          
       - name: Commit changes
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          source-directory: 'docs'
-          destination-github-username: 'guildedts'
-          destination-repository-name: 'docs'
-          user-email: <>
-          target-branch: main
+        run: |
+          git add docs
+          git commit -m "workflow: Generate docs"
+          git push origin main
