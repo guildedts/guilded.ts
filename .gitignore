@@ -2,5 +2,6 @@ node_modules
 .turbo
 lib
 typings
-.yarn/cache
+cache
+install-state.gz
 config.json
