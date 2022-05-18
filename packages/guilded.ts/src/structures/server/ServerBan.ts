@@ -1,32 +1,33 @@
-import { APIServerMemberBan } from 'guilded-api-typings';
-import { Base, Server, User } from '..';
+import { APIServerBan } from 'guilded-api-typings';
+import { Base } from '../Base';
+import { Server } from './Server';
+import { User } from '../User';
 
-/** Represents a server ban. */
+/** Represents a server ban on Guilded. */
 export class ServerBan extends Base {
-	/** The user of the member that was banned. */
+	/** The user that was banned. */
 	public readonly user: User;
 	/** The reason for the ban. */
 	public readonly reason?: string;
 	/** The ID of the user that created the ban. */
 	public readonly createdBy: string;
-	/** The time the ban was created. */
+	/** The date the ban was created. */
 	public readonly createdAt: Date;
 
 	/**
-	 * @param server The server that this ban belongs to.
-	 * @param data The data of the ban.
+	 * @param server The server that the ban belongs to.
+	 * @param raw The raw data of the ban.
 	 */
-	public constructor(public readonly server: Server, data: APIServerMemberBan) {
-		super(server.client, data.user.id);
-
-		this.user = new User(server.client, data.user);
-		this.reason = data.reason;
-		this.createdBy = data.createdBy;
-		this.createdAt = new Date(data.createdAt);
+	public constructor(public readonly server: Server, public readonly raw: APIServerBan) {
+		super(server.client, raw.user.id);
+		this.user = new User(server.client, raw.user);
+		this.reason = raw.reason;
+		this.createdBy = raw.createdBy;
+		this.createdAt = new Date(raw.createdAt);
 	}
 
-	/** Whether this server ban is cached. */
-	public get cached() {
+	/** Whether the server ban is cached. */
+	public get isCached() {
 		return this.server.bans.cache.has(this.id);
 	}
 
@@ -35,17 +36,17 @@ export class ServerBan extends Base {
 		return this.client.users.cache.get(this.createdBy);
 	}
 
-	/** The timestamp of when the ban was created. */
+	/** The timestamp the ban was created. */
 	public get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/**
-	 * Fetch this server ban.
-	 * @param cache Whether to cache the server ban.
-	 * @returns The server ban.
+	 * Fetch the server ban.
+	 * @param cache Whether to cache the fetched server ban.
+	 * @returns The fetched server ban.
 	 */
-	public fetch(cache = this.server.bans.caching) {
+	public fetch(cache?: boolean) {
 		this.server.bans.cache.delete(this.id);
 		return this.server.bans.fetch(this.id, cache);
 	}

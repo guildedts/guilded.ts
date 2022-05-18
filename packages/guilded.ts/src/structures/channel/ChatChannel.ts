@@ -1,31 +1,31 @@
 import { APIChannel } from 'guilded-api-typings';
-import { Channel, Client } from '..';
-import { MessageManager, MessagePayload } from '../../managers';
+import { Client } from '../Client';
+import { Channel } from './Channel';
+import { MessageManager, MessagePayload } from '../../managers/MessageManager';
 
 /** Represents a chat channel on Guilded. */
 export class ChatChannel extends Channel {
-	/** The type of this channel. */
+	/** The type of channel. */
 	public declare readonly type: 'chat' | 'stream' | 'voice';
 
-	/** A manager of messages that belong to this channel. */
+	/** A manager of messages that belong to the chat channel. */
 	public readonly messages: MessageManager;
 
 	/**
-	 * @param client The client that owns this channel.
-	 * @param data The data of the channel.
+	 * @param client The client that owns the chat channel.
+	 * @param raw The raw data of the chat channel.
 	 */
-	public constructor(client: Client, data: APIChannel) {
-		super(client, data);
-
+	constructor(client: Client, raw: APIChannel) {
+		super(client, raw);
 		this.messages = new MessageManager(this);
 	}
 
 	/**
-	 * Send a message to the channel.
-	 * @param payload The messgae payload.
-	 * @returns The message.
+	 * Send a message to the chat channel.
+	 * @param payload The payload to sent the message with.
+	 * @returns The sent message.
 	 */
-	public async send(payload: string | MessagePayload) {
+	public send(payload: string | MessagePayload) {
 		return this.messages.create(payload);
 	}
 }

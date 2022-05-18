@@ -1,12 +1,10 @@
-import { Client } from '.';
+import { Client } from './Client';
 
 /** Represents a data model from Guilded. */
 export class Base<ID = string> {
-	/** The ID of this structure. */
-	public readonly id: ID;
-
-	/** @param client The client that owns this structure. */
-	constructor(public readonly client: Client, id: ID) {
-		this.id = id;
-	}
+	/**
+	 * @param client The client that owns the structure.
+	 * @param id The ID of the structure.
+	 */
+	constructor(public readonly client: Client, public readonly id: ID) {}
 }

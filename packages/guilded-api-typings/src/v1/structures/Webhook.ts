@@ -1,5 +1,5 @@
 /**
- * The API webhook object.
+ * The API webhook model.
  * @see https://www.guilded.gg/docs/api/webhook/Webhook
  */
 export interface APIWebhook {
@@ -7,15 +7,15 @@ export interface APIWebhook {
 	id: string;
 	/** The name of the webhook. */
 	name: string;
-	/** The ID of the server the webhook is from. */
+	/** The ID of the server the webhook belongs to. */
 	serverId: string;
-	/** The ID of the channel the webhook is from. */
+	/** The ID of the channel the webhook belongs to. */
 	channelId: string;
-	/** The time the webhook was created. */
+	/** The date the webhook was created. */
 	createdAt: string;
 	/** The ID of the user who created the webhook. */
 	createdBy: string;
-	/** The time the webhook was deleted. */
+	/** The date the webhook was deleted. */
 	deletedAt?: string;
 	/** The token of the webhook. */
 	token?: string;
@@ -28,15 +28,15 @@ export interface APIWebhook {
 export interface APIWebhookPayload {
 	/** The name of the webhook. */
 	name: string;
-	/** The ID of the channel the webhook will be in. */
+	/** The ID of the channel the webhook belongs to. */
 	channelId: string;
 }
 
 /**
- * The query parameters for getting webhooks.
+ * The query parameters for fetching webhooks.
  * @see https://www.guilded.gg/docs/api/webhook/WebhookReadMany
  */
-export interface APIGetWebhooksQuery {
-	/** The ID of the channel to get webhooks from. */
+export interface APIFetchWebhooksQuery {
+	/** The ID of the channel to webhooks belong to. */
 	channelId: string;
 }

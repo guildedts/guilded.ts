@@ -1,105 +1,103 @@
 import { APIDoc } from 'guilded-api-typings';
-import { Base, DocChannel } from '.';
+import { Base } from './Base';
+import { DocChannel } from './channel/DocChannel';
 
 /** Represents a doc on Guilded. */
 export class Doc extends Base<number> {
-	/** The ID of the server this doc belongs to. */
+	/** The ID of the server the doc belongs to. */
 	public readonly serverId: string;
-	/** The ID of the channel this doc belongs to. */
+	/** The ID of the channel the doc belongs to. */
 	public readonly channelId: string;
-	/** The title of this doc. */
+	/** The title of the doc. */
 	public readonly title: string;
-	/** The content of this doc. */
+	/** The content of the doc. */
 	public readonly content: string;
-	/** The time this doc was created. */
+	/** The date the doc was created. */
 	public readonly createdAt: Date;
-	/** The ID of the user that created this doc. */
+	/** The ID of the user that created the doc. */
 	public readonly createdBy: string;
-	/** The time this doc was last edited. */
-	public editedAt?: Date;
-	/** The ID of the user that last edited this doc. */
-	public editedBy?: string;
+	/** The date the doc was edited. */
+	public readonly editedAt?: Date;
+	/** The ID of the user that edited the doc. */
+	public readonly editedBy?: string;
 
 	/**
-	 * @param channel The channel this doc belongs to.
-	 * @param data The data of this doc.
+	 * @param channel The doc channel the doc belongs to.
+	 * @param raw The raw data of the doc.
 	 */
-	public constructor(public readonly channel: DocChannel, data: APIDoc) {
-		super(channel.client, data.id);
-
-		this.serverId = data.serverId;
-		this.channelId = data.channelId;
-		this.title = data.title;
-		this.content = data.content;
-		this.createdAt = new Date(data.createdAt);
-		this.createdBy = data.createdBy;
-		this.editedAt = data.updatedAt ? new Date(data.updatedAt) : undefined;
-		this.editedBy = data.updatedBy;
+	public constructor(public readonly channel: DocChannel, public readonly raw: APIDoc) {
+		super(channel.client, raw.id);
+		this.serverId = raw.serverId;
+		this.channelId = raw.channelId;
+		this.title = raw.title;
+		this.content = raw.content;
+		this.createdAt = new Date(raw.createdAt);
+		this.createdBy = raw.createdBy;
+		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
+		this.editedBy = raw.updatedBy;
 	}
 
-	/** Whether this doc is cached. */
-	public get cached() {
+	/** Whether the doc is cached. */
+	public get isCached() {
 		return this.channel.docs.cache.has(this.id);
 	}
 
-	/** The server this doc belongs to. */
+	/** The server the doc belongs to. */
 	public get server() {
 		return this.channel.server;
 	}
 
-	/** The timestamp of when this doc was created. */
+	/** The timestamp the doc was created. */
 	public get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of this doc. */
+	/** The author of the doc. */
 	public get author() {
 		return this.client.users.cache.get(this.createdBy);
 	}
 
-	/** The ID of the author of this doc. */
+	/** The ID of the author of the doc. */
 	public get authorId() {
 		return this.createdBy;
 	}
 
-	/** The timestamp of when this doc was last edited. */
+	/** The timestamp the doc was edited. */
 	public get editedTimestamp() {
 		return this.editedAt ? this.editedAt.getTime() : undefined;
 	}
 
-	/** The editor of this doc. */
+	/** The editor of the doc. */
 	public get editor() {
 		return this.editedBy ? this.client.users.cache.get(this.editedBy) : undefined;
 	}
 
 	/**
-	 * Fetch this doc.
-	 * @param cache Whether to cache the doc.
-	 * @returns The doc.
+	 * Fetch the doc.
+	 * @param cache Whether to cache the fetched doc.
+	 * @returns The fetched doc.
 	 */
-	public fetch(cache = this.channel.docs.caching) {
+	public fetch(cache?: boolean) {
 		this.channel.docs.cache.delete(this.id);
 		return this.channel.docs.fetch(this.id, cache);
 	}
 
 	/**
-	 * Edit this doc.
-	 * @param title The new title of this doc.
-	 * @param content The new content of this doc.
-	 * @param cache Whether to cache this doc.
+	 * Edit the doc.
+	 * @param title The title to edit the doc with.
+	 * @param content The content to edit the doc with.
 	 * @returns The edited doc.
 	 */
-	public edit(title: string, content: string, cache = this.channel.docs.caching) {
-		return this.channel.docs.edit(this.id, title, content, cache);
+	public edit(title: string, content: string) {
+		return this.channel.docs.edit(this.id, title, content);
 	}
 
 	/**
-	 * Delete this doc.
-	 * @returns The doc.
+	 * Delete the doc.
+	 * @returns The deleted doc.
 	 */
 	public delete() {
 		this.channel.docs.delete(this.id);
-
 		return this;
 	}
 }

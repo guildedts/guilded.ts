@@ -1,75 +1,75 @@
 import { APIForumThread } from 'guilded-api-typings';
-import { Base, ForumChannel } from '.';
+import { Base } from './Base';
+import { ForumChannel } from './channel/ForumChannel';
 
 /** Represents a forum thread on Guilded. */
 export class ForumThread extends Base<number> {
-	/** The ID of the server this forum thread was created on. */
+	/** The ID of the server the forum thread belongs to. */
 	public readonly serverId: string;
-	/** The ID of the channel this forum thread was created in. */
+	/** The ID of the channel the forum thread belongs to. */
 	public readonly channelId: string;
-	/** The title of this thread. */
+	/** The title of the thread. */
 	public readonly title?: string;
-	/** The content of this thread. */
+	/** The content of the thread. */
 	public readonly content?: string;
-	/** The time this thread was created. */
+	/** The date the thread was created. */
 	public readonly createdAt: Date;
-	/** The ID of the author of this thread. */
+	/** The ID of the user that created the thread. */
 	public readonly createdBy: string;
-	/** The ID of the webhook who created this thread. */
+	/** The ID of the webhook that created the thread. */
 	public readonly createdByWebhookId?: string;
-	/** The time this thread was last edited. */
+	/** The date the thread was edited. */
 	public readonly editedAt?: Date;
 
 	/**
-	 * @param channel The channel this thread belongs to.
-	 * @param data The data of this thread.
+	 * @param channel The forum channel the thread belongs to.
+	 * @param raw The raw data of the thread.
 	 */
-	public constructor(public readonly channel: ForumChannel, data: APIForumThread) {
-		super(channel.client, data.id);
-
-		this.serverId = data.serverId;
-		this.channelId = data.channelId;
-		this.title = data.title;
-		this.content = data.content;
-		this.createdAt = new Date(data.createdAt);
-		this.createdBy = data.createdBy;
-		this.createdByWebhookId = data.createdByWebhookId;
-		this.editedAt = data.updatedAt ? new Date(data.updatedAt) : undefined;
+	public constructor(public readonly channel: ForumChannel, public readonly raw: APIForumThread) {
+		super(channel.client, raw.id);
+		this.serverId = raw.serverId;
+		this.channelId = raw.channelId;
+		this.title = raw.title;
+		this.content = raw.content;
+		this.createdAt = new Date(raw.createdAt);
+		this.createdBy = raw.createdBy;
+		this.createdByWebhookId = raw.createdByWebhookId;
+		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
 	}
 
-	/** Whether this thread is cached. */
-	public get cached() {
+	/** Whether the thread is cached. */
+	public get isCached() {
 		return this.channel.threads.cache.has(this.id);
 	}
 
-	/** The server this thread belongs to. */
+	/** The server the thread belongs to. */
 	public get server() {
 		return this.channel.server;
 	}
 
-	/** The timestamp this thread was created. */
+	/** The timestamp the thread was created. */
 	public get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of this thread. */
+	/** The author of the thread. */
 	public get author() {
 		return this.client.users.cache.get(this.createdBy);
 	}
 
-	/** The webhook who created this thread. */
+	/** The webhook that created the thread. */
 	public get webhook() {
 		return this.createdByWebhookId
 			? this.channel.webhooks.cache.get(this.createdByWebhookId)
 			: undefined;
 	}
 
-	/** The ID of the author of this thread. */
+	/** The ID of the author of the thread. */
 	public get authorId() {
 		return this.createdByWebhookId ?? this.createdBy;
 	}
 
-	/** The timestamp this thread was last edited. */
+	/** The timestamp the thread was edited. */
 	public get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}

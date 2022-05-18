@@ -1,81 +1,59 @@
 import { Routes } from 'guilded-api-typings';
-import { BaseManager } from '..';
-import { ServerRole, Server, CacheCollection, ServerMemberRole } from '../../structures';
+import { BaseManager } from '../BaseManager';
+import { ServerRole } from '../../structures/server/ServerRole';
+import { Server } from '../../structures/server/Server';
+import { CacheCollection } from '../../structures/CacheCollection';
+import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 
 /** A manager of roles that belong to a server. */
 export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	/** @param server The server that owns the roles. */
 	constructor(public readonly server: Server) {
-		super(server.client, {
-			caching: server.client.options.cacheServerRoles,
-			maxCache: server.client.options.maxServerRoleCache,
-		});
+		super(server.client, server.client.options.maxServerRoleCache);
 	}
 
 	/**
-	 * Fetch roles that belong to a user.
-	 * @param userId The ID of the user to fetch roles for.
-	 * @param cache Whether to cache the roles.
-	 * @returns The roles that belong to the user.
+	 * Fetch roles that belong to a member.
+	 * @param memberId The ID of the member to fetch roles from.
+	 * @param cache Whether to cache the fetched roles.
+	 * @returns The fetched roles that belong to the member.
 	 */
-	public async fetch(userId: string, cache = this.caching) {
+	public async fetch(memberId: string, cache = this.client.options.cacheServerRoles ?? true) {
 		const response = await this.client.rest.get<{ roleIds: number[] }>(
-			Routes.memberRoles(this.server.id, userId),
+			Routes.serverMemberRoles(this.server.id, memberId),
 		);
-
 		const roles = new CacheCollection<number, ServerRole>();
-		const member = this.server.members.cache.get(userId);
-
+		const member = this.server.members.cache.get(memberId);
 		for (const roleId of response.roleIds) {
-			const role = new ServerRole(this.server, roleId);
+			const role = new ServerRole(this.server, { id: roleId });
 			if (cache) this.cache.set(roleId, role);
-			if (member?.roles.caching)
-				member.roles.cache.set(roleId, new ServerMemberRole(member, roleId));
+			if (this.client.options.cacheServerMemberRoles)
+				member?.roles.cache.set(roleId, new ServerMemberRole(member, { id: roleId }));
 			member?.roleIds.push(roleId);
 			roles.set(roleId, role);
 		}
-
 		return roles;
 	}
 
 	/**
-	 * Assign a role to a user.
-	 * @param userId The ID of the user to add the role to.
-	 * @param roleId The ID of the role to add.
-	 * @param cache Whether to cache the role.
-	 * @returns The role that was added.
+	 * Assign a role to a member.
+	 * @param memberId The ID of the member to add the role to.
+	 * @param roleId The ID of the role to add to the member.
+	 * @returns The role that was added to the member.
 	 */
-	public async assign(userId: string, roleId: number, cache = this.caching) {
-		await this.server.client.rest.put(Routes.memberRole(this.server.id, userId, roleId));
-
-		const role = new ServerRole(this.server, roleId);
-		const member = this.server.members.cache.get(userId);
-
-		if (cache) this.cache.set(roleId, role);
-		if (member?.roles.caching)
-			member.roles.cache.set(roleId, new ServerMemberRole(member, roleId));
-		member?.roleIds.push(roleId);
-
-		return role;
+	public async assign(memberId: string, roleId: number) {
+		await this.client.rest.put(Routes.serverMemberRole(this.server.id, memberId, roleId));
+		return new ServerRole(this.server, { id: roleId });
 	}
 
 	/**
-	 * Unassign a role from a user.
-	 * @param userId The ID of the user to remove the role from.
-	 * @param roleId The ID of the role to remove.
-	 * @param cache Whether to cache the role.
-	 * @returns The role that was removed.
+	 * Unassign a role from a member.
+	 * @param userId The ID of the member to remove the role from.
+	 * @param roleId The ID of the role to remove from the member.
+	 * @returns The role that was removed from the member.
 	 */
-	public async unassign(userId: string, roleId: number, cache = this.caching) {
-		await this.server.client.rest.delete(Routes.memberRole(this.server.id, userId, roleId));
-
-		const role = new ServerRole(this.server, roleId);
-		const member = this.server.members.cache.get(userId);
-
-		if (cache) this.cache.set(roleId, role);
-		member?.roles.cache.delete(roleId);
-		member?.roleIds.splice(member.roleIds.indexOf(roleId), 1);
-
-		return role;
+	public async unassign(userId: string, roleId: number) {
+		await this.client.rest.delete(Routes.serverMemberRole(this.server.id, userId, roleId));
+		return new ServerRole(this.server, { id: roleId });
 	}
 }

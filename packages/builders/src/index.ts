@@ -1,5 +1,4 @@
 export * from './Embed';
-export * from './util';
 
 /**
  * Crate bold text.
@@ -62,3 +61,10 @@ export const h1 = (text: string): `# ${string}` => `# ${text}`;
  * @returns The formatted text.
  */
 export const h2 = (text: string): `## ${string}` => `## ${text}`;
+
+/**
+ * Create a user mention.
+ * @param userId The ID of the user to mention.
+ * @returns The formatted text.
+ */
+export const userMention = (userId: string): `<@${string}>` => `<@${userId}>`;

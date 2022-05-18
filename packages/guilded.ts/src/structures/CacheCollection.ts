@@ -12,25 +12,23 @@ export class CacheCollection<K, V> extends Collection<K, V> {
 	}
 
 	/**
-	 * Set the max cache size.
+	 * Set the maximum size of the cache.
 	 * @param maxSize The maximum size of the cache.
 	 * @returns The cache collection.
 	 */
 	public setMaxSize(maxSize?: number) {
 		this.maxSize = maxSize;
-
 		return this;
 	}
 
 	/**
-	 * Adds an entry to the cache.
+	 * Set an entry in the cache.
 	 * @param key The key of the entry.
 	 * @param value The value of the entry.
 	 * @returns The cache collection.
 	 */
 	public override set(key: K, value: V) {
 		if (this.maxSize && this.size >= this.maxSize) this.delete(this.firstKey()!);
-
 		return super.set(key, value);
 	}
 }

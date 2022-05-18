@@ -1,32 +1,32 @@
 import { APIChannel } from 'guilded-api-typings';
-import { Channel, Client } from '..';
-import { ForumThreadManager } from '../../managers';
+import { Client } from '../Client';
+import { Channel } from './Channel';
+import { ForumThreadManager } from '../../managers/ForumThreadManager';
 
 /** Represents a forum channel on Guilded. */
 export class ForumChannel extends Channel {
-	/** The type of this channel. */
+	/** The type of channel. */
 	public declare readonly type: 'forums';
 
-	/** A manager of forum threads that belong to this forum channel. */
+	/** A manager of threads that belong to the forum channel. */
 	public readonly threads: ForumThreadManager;
 
 	/**
-	 * @param client The client that owns this forum channel.
-	 * @param data The data of the forum channel.
+	 * @param client The client that owns the forum channel.
+	 * @param raw The raw data of the forum channel.
 	 */
-	public constructor(client: Client, data: APIChannel) {
-		super(client, data);
-
+	constructor(client: Client, raw: APIChannel) {
+		super(client, raw);
 		this.threads = new ForumThreadManager(this);
 	}
 
 	/**
-	 * Post a new topic to this forum channel.
-	 * @param title The title of the topic.
-	 * @param content The content of the topic.
-	 * @returns The created forum thread.
+	 * Post a new thread to the forum channel.
+	 * @param title The title to post the thread with.
+	 * @param content The content to post the thread with.
+	 * @returns The posted thread.
 	 */
-	public async post(title: string, content: string) {
+	public post(title: string, content: string) {
 		return this.threads.post(title, content);
 	}
 }

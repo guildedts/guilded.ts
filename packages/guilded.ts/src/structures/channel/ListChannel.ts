@@ -1,22 +1,22 @@
 import { APIChannel } from 'guilded-api-typings';
-import { Channel, Client } from '..';
-import { ListItemManager } from '../../managers';
+import { Client } from '../Client';
+import { Channel } from './Channel';
+import { ListItemManager } from '../../managers/ListItemManager';
 
 /** Represents a list channel on Guilded. */
 export class ListChannel extends Channel {
-	/** The type of this channel. */
+	/** The type of channel. */
 	public declare readonly type: 'list';
 
-	/** A manager of list items that belong to this list channel. */
+	/** A manager of items that belong to the list channel. */
 	public readonly items: ListItemManager;
 
 	/**
-	 * @param client The client that owns this list channel.
-	 * @param data The data of the list channel.
+	 * @param client The client that owns the list channel.
+	 * @param raw The raw data of the list channel.
 	 */
-	public constructor(client: Client, data: APIChannel) {
-		super(client, data);
-
+	constructor(client: Client, raw: APIChannel) {
+		super(client, raw);
 		this.items = new ListItemManager(this);
 	}
 
@@ -26,7 +26,7 @@ export class ListChannel extends Channel {
 	 * @param note The note of the list item.
 	 * @returns The created list item.
 	 */
-	public async addItem(content: string, note?: string) {
+	public addItem(content: string, note?: string) {
 		return this.items.add(content, note);
 	}
 }

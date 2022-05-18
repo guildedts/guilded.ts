@@ -1,13 +1,28 @@
 /** The Guilded REST API endpoints. */
 export const Routes = {
 	/**
+	 * The REST API enpoint for channels.
+	 *
+	 * @see https://www.guilded.gg/docs/api/channels/ChannelCreate
+	 */
+	channels: (): '/channels' => `/channels`,
+	/**
+	 * The REST API endpoint for a channel.
+	 * @param channelId The ID of the channel.
+	 *
+	 * @see https://www.guilded.gg/docs/api/channels/ChannelRead
+	 * @see https://www.guilded.gg/docs/api/channels/ChannelUpdate
+	 * @see https://www.guilded.gg/docs/api/channels/ChannelDelete
+	 */
+	channel: (channelId: string): `/channels/${string}` => `/channels/${channelId}`,
+	/**
 	 * The REST API endpoint for channel messages.
 	 * @param channelId The ID of the channel.
 	 *
 	 * @see https://www.guilded.gg/docs/api/chat/ChannelMessageCreate
 	 * @see https://www.guilded.gg/docs/api/chat/ChannelMessageReadMany
 	 */
-	channelMessages: (channelId: string): `/channels/${string}/messages` =>
+	messages: (channelId: string): `/channels/${string}/messages` =>
 		`/channels/${channelId}/messages`,
 	/**
 	 * The REST API endpoint for a channel message.
@@ -18,23 +33,21 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/chat/ChannelMessageUpdate
 	 * @see https://www.guilded.gg/docs/api/chat/ChannelMessageDelete
 	 */
-	channelMessage: (
-		channelId: string,
-		messageId: string,
-	): `/channels/${string}/messages/${string}` => `/channels/${channelId}/messages/${messageId}`,
+	message: (channelId: string, messageId: string): `/channels/${string}/messages/${string}` =>
+		`/channels/${channelId}/messages/${messageId}`,
 	/**
-	 * The REST API endpoint for a user nickname.
+	 * The REST API endpoint for a member nickname.
 	 * @param serverId The ID of the server.
 	 * @param userId The ID of the user.
 	 *
 	 * @see https://www.guilded.gg/docs/api/members/MemberNicknameUpdate
 	 * @see https://www.guilded.gg/docs/api/members/MemberNicknameDelete
 	 */
-	userNickname: (
+	serverMemberNickname: (
 		serverId: string,
 		userId: string,
-	): `/servers/${string}/users/${string}/nickname` =>
-		`/servers/${serverId}/users/${userId}/nickname`,
+	): `/servers/${string}/members/${string}/nickname` =>
+		`/servers/${serverId}/members/${userId}/nickname`,
 	/**
 	 * The REST API endpoint for a server member.
 	 * @param serverId The ID of the server.
@@ -72,27 +85,12 @@ export const Routes = {
 	 */
 	serverBans: (serverId: string): `/servers/${string}/bans` => `/servers/${serverId}/bans`,
 	/**
-	 * The REST API enpoint for channels.
-	 *
-	 * @see https://www.guilded.gg/docs/api/channels/ChannelCreate
-	 */
-	channels: (): '/channels' => `/channels`,
-	/**
-	 * The REST API endpoint for a channel.
-	 * @param channelId The ID of the channel.
-	 *
-	 * @see https://www.guilded.gg/docs/api/channels/ChannelRead
-	 * @see https://www.guilded.gg/docs/api/channels/ChannelDelete
-	 */
-	channel: (channelId: string): `/channels/${string}` => `/channels/${channelId}`,
-	/**
-	 * The REST API endpoint for a channel forum.
+	 * The REST API endpoint for channel forums.
 	 * @param channelId The ID of the channel.
 	 *
 	 * @see https://www.guilded.gg/docs/api/forums/ForumThreadCreate
 	 */
-	channelForum: (channelId: string): `/channels/${string}/forum` =>
-		`/channels/${channelId}/forum`,
+	forums: (channelId: string): `/channels/${string}/forum` => `/channels/${channelId}/forum`,
 	/**
 	 * The REST API endpoint for channel list items.
 	 * @param channelId The ID of the channel.
@@ -100,8 +98,7 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemCreate
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemReadMany
 	 */
-	channelListItems: (channelId: string): `/channels/${string}/items` =>
-		`/channels/${channelId}/items`,
+	listItems: (channelId: string): `/channels/${string}/items` => `/channels/${channelId}/items`,
 	/**
 	 * The REST API endpoint for a channel list item.
 	 * @param channelId The ID of the channel.
@@ -111,19 +108,17 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemUpdate
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemDelete
 	 */
-	channelListItem: (
-		channelId: string,
-		listItemId: string,
-	): `/channels/${string}/items/${string}` => `/channels/${channelId}/items/${listItemId}`,
+	listItem: (channelId: string, listItemId: string): `/channels/${string}/items/${string}` =>
+		`/channels/${channelId}/items/${listItemId}`,
 	/**
-	 * The REST API endpoint for completing and uncompleting a list item.
+	 * The REST API endpoint for completing and uncompleting a channel list item.
 	 *  @param channelId The ID of the channel.
 	 *  @param listItemId The ID of the list item.
 	 *
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemCompleteCreate
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemCompleteDelete
 	 */
-	channelListItemComplete: (
+	listItemComplete: (
 		channelId: string,
 		listItemId: string,
 	): `/channels/${string}/items/${string}/complete` =>
@@ -135,7 +130,7 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/docs/DocCreate
 	 * @see https://www.guilded.gg/docs/api/docs/DocReadMany
 	 */
-	channelDocs: (channelId: string): `/channels/${string}/docs` => `/channels/${channelId}/docs`,
+	docs: (channelId: string): `/channels/${string}/docs` => `/channels/${channelId}/docs`,
 	/**
 	 * The REST API endpoint for a channel doc.
 	 * @param channelId The ID of the channel.
@@ -145,49 +140,49 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/docs/DocUpdate
 	 * @see https://www.guilded.gg/docs/api/docs/DocDelete
 	 */
-	channelDoc: (channelId: string, docId: number): `/channels/${string}/docs/${number}` =>
+	doc: (channelId: string, docId: number): `/channels/${string}/docs/${number}` =>
 		`/channels/${channelId}/docs/${docId}`,
 	/**
-	 * The REST API endpoint for a message reaction.
+	 * The REST API endpoint for a content reaction.
 	 * @param channelId The ID of the channel.
-	 * @param messageId The ID of the message.
+	 * @param contentId The ID of the content.
 	 * @param emoteId The ID of the emote.
 	 *
 	 * @see https://www.guilded.gg/docs/api/reactions/ContentReactionCreate
 	 */
-	messageReaction: (
+	reaction: (
 		channelId: string,
-		messageId: string,
-		emoteId: string,
-	): `/channels/${string}/content/${string}/emotes/${string}` =>
-		`/channels/${channelId}/content/${messageId}/emotes/${emoteId}`,
+		contentId: string,
+		emoteId: number,
+	): `/channels/${string}/content/${string}/emotes/${number}` =>
+		`/channels/${channelId}/content/${contentId}/emotes/${emoteId}`,
 	/**
-	 * The REST API endpoint for member XP.
+	 * The REST API endpoint for server member XP.
 	 * @param serverId The ID of the server.
 	 * @param userId The ID of the user.
 	 *
 	 * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForUserCreate
 	 */
-	memberXP: (serverId: string, userId: string): `/servers/${string}/members/${string}/xp` =>
+	serverMemberXP: (serverId: string, userId: string): `/servers/${string}/members/${string}/xp` =>
 		`/servers/${serverId}/members/${userId}/xp`,
 	/**
-	 * The REST API endpoint for role XP.
+	 * The REST API endpoint for server role XP.
 	 * @param serverId The ID of the server.
 	 * @param roleId The ID of the role.
 	 *
 	 * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForRoleCreate
 	 */
-	roleXP: (serverId: string, roleId: number): `/servers/${string}/roles/${number}/xp` =>
+	serverRoleXP: (serverId: string, roleId: number): `/servers/${string}/roles/${number}/xp` =>
 		`/servers/${serverId}/roles/${roleId}/xp`,
 	/**
-	 * The REST API endpoint for a member social link.
+	 * The REST API endpoint for a server member social link.
 	 * @param serverId The ID of the server.
 	 * @param userId The ID of the user.
-	 * @param type The type of the social link.
+	 * @param type The type of social link.
 	 *
 	 * @see https://www.guilded.gg/docs/api/socialLinks/MemberSocialLinkRead
 	 */
-	memberSocialLink: (
+	socialLink: (
 		serverId: string,
 		userId: string,
 		type: string,
@@ -204,7 +199,7 @@ export const Routes = {
 	groupMember: (groupId: string, userId: string): `/groups/${string}/members/${string}` =>
 		`/groups/${groupId}/members/${userId}`,
 	/**
-	 * The REST API endpoint for a member role.
+	 * The REST API endpoint for a server member role.
 	 * @param serverId The ID of the server.
 	 * @param userId The ID of the user.
 	 * @param roleId The ID of the role.
@@ -212,20 +207,23 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/roleMembership/RoleMembershipCreate
 	 * @see https://www.guilded.gg/docs/api/roleMembership/RoleMembershipDelete
 	 */
-	memberRole: (
+	serverMemberRole: (
 		serverId: string,
 		userId: string,
 		roleId: number,
 	): `/servers/${string}/members/${string}/roles/${number}` =>
 		`/servers/${serverId}/members/${userId}/roles/${roleId}`,
 	/**
-	 * The REST API endpoint for member roles.
+	 * The REST API endpoint for server member roles.
 	 * @param serverId The ID of the server.
 	 * @param userId The ID of the user.
 	 *
 	 * @see https://www.guilded.gg/docs/api/roleMembership/RoleMembershipReadMany
 	 */
-	memberRoles: (serverId: string, userId: string): `/servers/${string}/members/${string}/roles` =>
+	serverMemberRoles: (
+		serverId: string,
+		userId: string,
+	): `/servers/${string}/members/${string}/roles` =>
 		`/servers/${serverId}/members/${userId}/roles`,
 	/**
 	 * The REST API endpoint for server webhooks.
@@ -234,8 +232,7 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/webhook/WebhookCreate
 	 * @see https://www.guilded.gg/docs/api/webhook/WebhookReadMany
 	 */
-	serverWebhooks: (serverId: string): `/servers/${string}/webhooks` =>
-		`/servers/${serverId}/webhooks`,
+	webhooks: (serverId: string): `/servers/${string}/webhooks` => `/servers/${serverId}/webhooks`,
 	/**
 	 * The REST API endpoint for a server webhook.
 	 * @param serverId The ID of the server.
@@ -245,6 +242,6 @@ export const Routes = {
 	 * @see https://www.guilded.gg/docs/api/webhook/WebhookUpdate
 	 * @see https://www.guilded.gg/docs/api/webhook/WebhookDelete
 	 */
-	serverWebhook: (serverId: string, webhookId: string): `/servers/${string}/webhooks/${string}` =>
+	webhook: (serverId: string, webhookId: string): `/servers/${string}/webhooks/${string}` =>
 		`/servers/${serverId}/webhooks/${webhookId}`,
 };

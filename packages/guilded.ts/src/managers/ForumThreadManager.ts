@@ -1,37 +1,29 @@
 import { APIForumThread, APIForumThreadPayload, Routes } from 'guilded-api-typings';
-import { BaseManager } from '.';
-import { ForumChannel, ForumThread } from '../structures';
+import { BaseManager } from './BaseManager';
+import { ForumChannel } from '../structures/channel/ForumChannel';
+import { ForumThread } from '../structures/ForumThread';
 
-/** A manager of forum threads that belong to a forum channel. */
+/** A manager of threads that belong to a forum channel. */
 export class ForumThreadManager extends BaseManager<number, ForumThread> {
-	/** @param channel The channel that owns the forum threads. */
+	/** @param channel The forum channel that owns the threads. */
 	public constructor(public readonly channel: ForumChannel) {
-		super(channel.client, {
-			caching: channel.client.options.cacheForumThreads,
-			maxCache: channel.client.options.maxForumThreadCache,
-		});
+		super(channel.client, channel.client.options.maxForumThreadCache);
 	}
 
 	/**
-	 * Post a new topic to the forum channel.
-	 * @param title The title of the topic.
-	 * @param content The content of the topic.
-	 * @param cache Whether to cache the topic.
-	 * @returns The forum thread.
+	 * Create a thread in the channel.
+	 * @param title The title to create the thread with.
+	 * @param content The content to create the thread with.
+	 * @returns The created thread.
 	 */
-	public async post(title: string, content: string, cache = this.caching) {
+	public async post(title: string, content: string) {
 		const response = await this.client.rest.post<
 			{ forumThread: APIForumThread },
 			APIForumThreadPayload
-		>(Routes.channelForum(this.channel.id), {
+		>(Routes.forums(this.channel.id), {
 			title,
 			content,
 		});
-
-		const thread = new ForumThread(this.channel, response.forumThread);
-
-		if (cache) this.cache.set(thread.id, thread);
-
-		return thread;
+		return new ForumThread(this.channel, response.forumThread);
 	}
 }

@@ -1,108 +1,89 @@
-import { APIServerMemberBan, Routes } from 'guilded-api-typings';
-import { BaseManager } from '..';
-import { CacheCollection, Server, ServerBan } from '../../structures';
+import { APIServerBan, Routes } from 'guilded-api-typings';
+import { BaseManager } from '../BaseManager';
+import { CacheCollection } from '../../structures/CacheCollection';
+import { Server } from '../../structures/server/Server';
+import { ServerBan } from '../../structures/server/ServerBan';
 
 /** A manager of bans that belong to a server. */
 export class ServerBanManager extends BaseManager<string, ServerBan> {
 	/** @param server The server the bans belongs to. */
 	public constructor(public readonly server: Server) {
-		super(server.client, {
-			caching: server.client.options.cacheServerBans,
-			maxCache: server.client.options.maxServerBanCache,
-		});
+		super(server.client, server.client.options.maxServerBanCache);
 	}
 
 	/** @ignore */
-	public fetch(arg1: string | boolean = this.caching, arg2 = this.caching) {
+	public fetch(
+		arg1: string | boolean = this.client.options.cacheServerBans ?? true,
+		arg2 = this.client.options.cacheServerBans ?? true,
+	) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
-
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(banId: string, cache = this.caching) {
+	private async fetchSingle(banId: string, cache: boolean) {
 		let ban = this.cache.get(banId);
 		if (ban) return ban;
-
-		const response = await this.client.rest.get<{ serverMemberBan: APIServerMemberBan }>(
+		const response = await this.client.rest.get<{ serverMemberBan: APIServerBan }>(
 			Routes.serverBan(this.server.id, banId),
 		);
-
 		ban = new ServerBan(this.server, response.serverMemberBan);
-
 		if (cache) this.cache.set(banId, ban);
-
 		return ban;
 	}
 
 	/** @ignore */
-	private async fetchMany(cache = this.caching) {
-		const response = await this.client.rest.get<{ serverMemberBans: APIServerMemberBan[] }>(
+	private async fetchMany(cache: boolean) {
+		const response = await this.client.rest.get<{ serverMemberBans: APIServerBan[] }>(
 			Routes.serverBans(this.server.id),
 		);
-
 		const bans = new CacheCollection<string, ServerBan>();
-
 		for (const data of response.serverMemberBans) {
 			const ban = new ServerBan(this.server, data);
 			bans.set(ban.user.id, ban);
 			if (cache) this.cache.set(ban.user.id, ban);
 		}
-
 		return bans;
 	}
 
 	/**
-	 * Create a new ban on this server.
-	 * @param userId The ID of the user to ban.
-	 * @param reason The reason for the ban.
-	 * @param cache Whether to cache the ban.
+	 * Create a ban in the server.
+	 * @param memberId The ID of the member to ban.
+	 * @param reason The reason to ban the member.
 	 * @returns The created ban.
 	 */
-	public async create(userId: string, reason?: string, cache = this.caching) {
+	public async create(memberId: string, reason?: string) {
 		const response = await this.client.rest.post<
-			{ serverMemberBan: APIServerMemberBan },
+			{ serverMemberBan: APIServerBan },
 			{ reason?: string }
-		>(Routes.serverBan(this.server.id, userId), {
+		>(Routes.serverBan(this.server.id, memberId), {
 			reason,
 		});
-
-		const ban = new ServerBan(this.server, response.serverMemberBan);
-
-		if (cache) this.cache.set(ban.user.id, ban);
-
-		return ban;
+		return new ServerBan(this.server, response.serverMemberBan);
 	}
 
 	/**
-	 * Remove a ban from this server.
-	 * @param userId The ID of the user to unban.
-	 * @returns The ban if cached.
+	 * Remove a ban in the server.
+	 * @param banId The ID of the ban to remove.
 	 */
-	public async remove(userId: string) {
-		await this.client.rest.delete(Routes.serverBan(this.server.id, userId));
-
-		const ban = this.cache.get(userId);
-
-		this.cache.delete(userId);
-
-		return ban;
+	public async remove(banId: string) {
+		await this.client.rest.delete(Routes.serverBan(this.server.id, banId));
 	}
 }
 
 export declare interface ServerBanManager {
 	/**
-	 * Fetch a single ban from this server, or cache if it's already cached.
-	 * @param banId The ID of the server ban.
-	 * @param cache Whether to cache the server ban.
-	 * @returns The server ban.
+	 * Fetch a single ban from the server, or cache.
+	 * @param banId The ID of the ban to fetch.
+	 * @param cache Whether to cache the fetched ban.
+	 * @returns The fetched ban.
 	 */
 	fetch(banId: string, cache?: boolean): Promise<ServerBan>;
 
 	/**
-	 * Fetch multiple bans from this server.
-	 * @param cache Whether to cache the bans.
-	 * @returns The bans.
+	 * Fetch multiple bans from thw server.
+	 * @param cache Whether to cache the fetched bans.
+	 * @returns The fetched bans.
 	 */
 	fetch(cache?: boolean): Promise<CacheCollection<string, ServerBan>>;
 }

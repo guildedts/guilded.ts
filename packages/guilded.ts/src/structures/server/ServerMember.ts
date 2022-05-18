@@ -2,63 +2,62 @@ import {
 	APIServerMember,
 	APIServerMemberSummary,
 	APISocialLink,
-	APISocialLinkType,
 	Routes,
 } from 'guilded-api-typings';
-import { Base, CacheCollection, Server, User } from '..';
-import { ServerMemberRoleManager } from '../../managers';
+import { Base } from '../Base';
+import { CacheCollection } from '../CacheCollection';
+import { Server } from './Server';
+import { User } from '../User';
+import { ServerMemberRoleManager } from '../../managers/server/ServerMemberRoleManager';
 
-/** Represents a member of a server. */
+/** Represents a server member on Guilded. */
 export class ServerMember extends Base {
-	/** The IDs of the roles this server member has. */
+	/** The IDs of roles the server member has. */
 	public readonly roleIds: number[];
 	/** The nickname of the server member. */
-	public nickname?: string;
-	/** The time the server member joined the server. */
+	public readonly nickname?: string;
+	/** The date the member joined the server. */
 	public readonly joinedAt?: Date;
-	/** The user that this member represents. */
+	/** The user that the member represents. */
 	public readonly user: User;
+	/** The social links of the server member. */
+	public readonly socialLinks = new CacheCollection<string, APISocialLink>();
 
-	/** The members social links. */
-	public readonly socialLinks = new CacheCollection<APISocialLinkType, APISocialLink>();
-	/** A manager of roles that belong to this server member. */
+	/** A manager of roles that belong to the server member. */
 	public readonly roles: ServerMemberRoleManager;
 
 	/**
-	 * @param server The server that this member belongs to.
-	 * @param user The user that this member represents.
-	 * @param data The data of the member.
+	 * @param server The server that the member belongs to.
+	 * @param raw The raw data of the server member.
 	 */
 	public constructor(
 		public readonly server: Server,
-		data: APIServerMember | APIServerMemberSummary,
+		public readonly raw: APIServerMember | APIServerMemberSummary,
 	) {
-		super(server.client, data.user.id);
-
+		super(server.client, raw.user.id);
 		this.roles = new ServerMemberRoleManager(this);
-
-		this.roleIds = data.roleIds;
-		this.nickname = 'nickname' in data ? data.nickname : undefined;
-		this.joinedAt = 'joinedAt' in data ? new Date(data.joinedAt) : undefined;
-		this.user = new User(this.server.client, data.user);
+		this.roleIds = raw.roleIds;
+		this.nickname = 'nickname' in raw ? raw.nickname : undefined;
+		this.joinedAt = 'joinedAt' in raw ? new Date(raw.joinedAt) : undefined;
+		this.user = new User(this.server.client, raw.user);
 	}
 
-	/** Whether this server member is cached. */
-	public get cached() {
+	/** Whether the server member is cached. */
+	public get isCached() {
 		return this.server.members.cache.has(this.id);
 	}
 
-	/** The timestamp of when the member joined the server. */
+	/** The timestamp the member joined the server. */
 	public get joinedTimestamp() {
 		return this.joinedAt?.getTime();
 	}
 
 	/**
-	 * Fetch this server member.
-	 * @param cache Whether to cache the server member.
-	 * @returns The server member.
+	 * Fetch the server member.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
 	 */
-	public async fetch(cache = this.server.members.caching) {
+	public async fetch(cache?: boolean) {
 		this.server.members.cache.delete(this.id);
 		return this.server.members.fetch(this.id, cache);
 	}
@@ -105,26 +104,23 @@ export class ServerMember extends Base {
 	/**
 	 * Award EX to the server member.
 	 * @param amount The amount of EX to award.
-	 * @returns The total amount of EX the member has.
+	 * @returns The total amount of EX the server member has.
 	 */
 	public async awardXP(amount: number) {
 		return this.server.members.awardXP(this.id, amount);
 	}
 
 	/**
-	 * Fetch one of the member's social links.
+	 * Fetch a social link of the server member.
 	 * @param type The type of social link to fetch.
-	 * @returns The social link.
+	 * @returns The fetched social link.
 	 */
-	public async fetchSocialLink(type: APISocialLinkType) {
+	public async fetchSocialLink(type: string) {
 		const response = await this.client.rest.get<{ socialLink: APISocialLink }>(
-			Routes.memberSocialLink(this.server.id, this.id, type),
+			Routes.socialLink(this.server.id, this.id, type),
 		);
-
 		const socialLink = response.socialLink;
-
 		this.socialLinks.set(socialLink.type, socialLink);
-
 		return socialLink;
 	}
 }

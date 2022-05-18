@@ -1,29 +1,27 @@
-import { BaseManager } from '..';
-import { ServerMember, ServerMemberRole } from '../../structures';
+import { BaseManager } from '../BaseManager';
+import { ServerMember } from '../../structures/server/ServerMember';
+import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 
 /** A manager of roles that belong to a server member. */
 export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRole> {
-	/** @param member The member that owns the roles. */
+	/** @param member The server member that owns the roles. */
 	constructor(public readonly member: ServerMember) {
-		super(member.client, {
-			caching: member.client.options.cacheServerMemberRoles,
-			maxCache: member.client.options.maxServerMemberRoleCache,
-		});
+		super(member.client, member.client.options.maxServerMemberRoleCache);
 	}
 
 	/**
 	 * Fetch roles that belong to the member.
-	 * @param cache Whether to cache the roles.
-	 * @returns The roles that belong to the member.
+	 * @param cache Whether to cache the fetched roles.
+	 * @returns The fetched roles that belong to the member.
 	 */
-	public fetch(cache = this.caching) {
+	public fetch(cache?: boolean) {
 		return this.member.server.roles.fetch(this.member.id, cache);
 	}
 
 	/**
 	 * Assign a role to the member.
-	 * @param roleId The ID of the role to add.
-	 * @returns The role that was added.
+	 * @param roleId The ID of the role to add to the member.
+	 * @returns The role that was added to the member.
 	 */
 	public assign(roleId: number) {
 		return this.member.server.roles.assign(this.member.id, roleId);
@@ -31,8 +29,8 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 
 	/**
 	 * Unassign a role from the member.
-	 * @param roleId The ID of the role to remove.
-	 * @returns The role that was removed.
+	 * @param roleId The ID of the role to remove from the member.
+	 * @returns The role that was removed from the member.
 	 */
 	public unassign(roleId: number) {
 		return this.member.server.roles.unassign(this.member.id, roleId);

@@ -1,65 +1,55 @@
-import { Client, CacheCollection, User } from '../structures';
-import { BaseManager } from '.';
+import { BaseManager } from './BaseManager';
+import { Client } from '../structures/Client';
+import { CacheCollection } from '../structures/CacheCollection';
+import { User } from '../structures/User';
 
 /** A manager of users that belong to the client. */
 export class UserManager extends BaseManager<string, User> {
 	/** @param client The client that owns the users. */
 	public constructor(client: Client) {
-		super(client, {
-			caching: client.options.cacheUsers,
-			maxCache: client.options.maxUserCache,
-		});
+		super(client, client.options.maxUserCache);
 	}
 
 	/** @ignore */
-	public async fetch(arg1: string, arg2: string | boolean = this.caching, arg3 = this.caching) {
-		if (typeof arg2 === 'string') return this.fetchSingle(arg1, arg2, arg3);
-
-		return this.fetchMany(arg1, arg2);
+	public async fetch(
+		arg1: string,
+		arg2: string | boolean = this.client.options.cacheUsers ?? true,
+	) {
+		if (typeof arg2 === 'string') return this.fetchSingle(arg1, arg2);
+		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(serverId: string, userId: string, cache = this.caching) {
-		let user = this.cache.get(userId);
+	private async fetchSingle(serverId: string, userId: string) {
+		const user = this.cache.get(userId);
 		if (user) return user;
-
-		user = (await this.client.servers.fetch(serverId).members.fetch(userId)).user;
-
-		if (cache) this.cache.set(user.id, user);
-
-		return user;
+		return (await this.client.servers.fetch(serverId).members.fetch(userId)).user;
 	}
 
 	/** @ignore */
-	private async fetchMany(serverId: string, cache = this.caching) {
+	private async fetchMany(serverId: string) {
 		const members = await this.client.servers.fetch(serverId).members.fetch();
-
 		const users = new CacheCollection<string, User>();
-
 		for (const member of members.values()) {
 			users.set(member.id, member.user);
-
-			if (cache) this.cache.set(member.id, member.user);
 		}
-
 		return users;
 	}
 }
 
 export declare interface UserManager {
 	/**
-	 * Fetch a single user from a server, or cache if it's already cached.
-	 * @param serverId The ID of the server the user belongs to.
-	 * @param userId The ID of the user.
-	 * @param cache Whether to cache the user.
-	 * @returns The user.
+	 * Fetch a single user from a server, or cache.
+	 * @param serverId The ID of the server to fetch the user from.
+	 * @param userId The ID of the user to fetch.
+	 * @returns The fetched user.
 	 */
-	fetch(serverId: string, userId: string, cache?: boolean): Promise<User>;
+	fetch(serverId: string, userId: string): Promise<User>;
+
 	/**
 	 * Fetch multiple users from a server.
-	 * @param serverId The ID of the server the users belong to.
-	 * @param cache Whether to cache the users.
-	 * @returns The users.
+	 * @param serverId The ID of the server to fetch the users from.
+	 * @returns The fetched users.
 	 */
-	fetch(serverId: string, cache?: boolean): Promise<CacheCollection<string, User>>;
+	fetch(serverId: string): Promise<CacheCollection<string, User>>;
 }

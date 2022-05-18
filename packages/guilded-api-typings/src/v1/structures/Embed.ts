@@ -1,6 +1,6 @@
 /**
- * The API embed object.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
+ * The API embed model.
+ * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbed {
 	/** The title of the embed. */
@@ -27,7 +27,7 @@ export interface APIEmbed {
 
 /**
  * The API embed footer object.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
+ * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedFooter {
 	/** The icon URL of the footer. */
@@ -38,7 +38,7 @@ export interface APIEmbedFooter {
 
 /**
  * The API embed thumbnail object.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
+ * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedThumbnail {
 	/** The URL of the thumbnail. */
@@ -47,7 +47,7 @@ export interface APIEmbedThumbnail {
 
 /**
  * The API embed image object.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
+ * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedImage {
 	/** The URL of the image. */
@@ -56,7 +56,7 @@ export interface APIEmbedImage {
 
 /**
  * The API embed author object.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
+ * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedAuthor {
 	/** The name of the author. */
@@ -69,7 +69,7 @@ export interface APIEmbedAuthor {
 
 /**
  * The API embed field object.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
+ * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedField {
 	/** The name of the field. */

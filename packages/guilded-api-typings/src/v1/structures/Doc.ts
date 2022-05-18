@@ -1,23 +1,23 @@
 /**
- * The API doc object.
+ * The API doc model.
  * @see https://www.guilded.gg/docs/api/docs/Doc
  */
 export interface APIDoc {
 	/** The ID of the doc. */
 	id: number;
-	/** The ID of the server the doc was created on. */
+	/** The ID of the server the doc belongs to. */
 	serverId: string;
-	/** The ID of the channel the doc was created in. */
+	/** The ID of the channel the doc belongs to. */
 	channelId: string;
 	/** The title of the doc. */
 	title: string;
 	/** The content of the doc. */
 	content: string;
-	/** The time the doc was created. */
+	/** The date the doc was created. */
 	createdAt: string;
 	/** The ID of the user who created the doc. */
 	createdBy: string;
-	/** The time the doc was edited. */
+	/** The date the doc was edited. */
 	updatedAt?: string;
 	/** The ID of the user who edited the doc. */
 	updatedBy?: string;
@@ -35,12 +35,12 @@ export interface APIDocPayload {
 }
 
 /**
- * The query parameters for getting docs.
+ * The query parameters for fetching docs.
  * @see https://www.guilded.gg/docs/api/docs/DocReadMany
  */
-export interface APIGetDocsQuery {
-	/** The time string to get docs before. */
+export interface APIFetchDocsQuery {
+	/** The date to fetch docs before. */
 	before?: string;
-	/** The kind of docs to get. */
+	/** The maximum number of docs to fetch. */
 	limit?: number;
 }

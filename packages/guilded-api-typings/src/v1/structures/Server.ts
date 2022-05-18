@@ -1,7 +1,7 @@
-import { APIUser, APIUserSummary } from '.';
+import { APIUser, APIUserSummary } from './User';
 
 /**
- * The API server member object.
+ * The API server member model.
  * @see https://www.guilded.gg/docs/api/members/ServerMember
  */
 export interface APIServerMember extends APIServerMemberSummary {
@@ -9,41 +9,49 @@ export interface APIServerMember extends APIServerMemberSummary {
 	user: APIUser;
 	/** The nickname of the server member. */
 	nickname?: string;
-	/** The time the server member joined. */
+	/** The date the server member joined the server. */
 	joinedAt: string;
+	/** Whether the server member is the owner of the server. */
+	isOwner?: boolean;
 }
 
 /**
- * The API server member summary object.
+ * The API server member summary model.
  * @see https://www.guilded.gg/docs/api/members/ServerMemberSummary
  */
 export interface APIServerMemberSummary {
 	/** The user of the server member. */
 	user: APIUserSummary;
-	/** The role IDs of the roles the server member has. */
+	/** The IDs of roles the server member has. */
 	roleIds: number[];
 }
 
 /**
- * The API server member ban object.
+ * The API server ban model.
  * @see https://www.guilded.gg/docs/api/member-bans/ServerMemberBan
  */
-export interface APIServerMemberBan {
+export interface APIServerBan {
 	/** The user that was banned. */
 	user: APIUserSummary;
 	/** The reason for the ban. */
 	reason?: string;
 	/** The ID of the user who created the ban. */
 	createdBy: string;
-	/** The time the ban was created. */
+	/** The date the ban was created. */
 	createdAt: string;
 }
 
+/** The payload for editing a server member nickname. */
+export interface APIServerMemberNicknamePayload {
+	/** The nickname of the server member. */
+	nickname: string;
+}
+
 /**
- * The payload for creating a server member ban.
+ * The payload for creating a server ban.
  * @see https://www.guilded.gg/docs/api/member-bans/ServerMemberBanCreate
  */
-export interface APIServerMemberBanPayload {
+export interface APIServerBanPayload {
 	/** The reason for the ban. */
 	reason?: string;
 }
@@ -52,34 +60,20 @@ export interface APIServerMemberBanPayload {
  * The payload for awarding xp.
  * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForUserCreate
  */
-export interface APIServerXpPayload {
+export interface APIServerXPPayload {
+	/** The amount of XP to award. */
 	amount: number;
 }
 
 /**
- * The API member social link object.
+ * The API social link model.
  * @see https://www.guilded.gg/docs/api/socialLinks/MemberSocialLinkRead
  */
 export interface APISocialLink {
+	/** The name of the external social link. */
 	handle?: string;
+	/** The ID of the external social link. */
 	serviceId?: string;
-	type: APISocialLinkType;
+	/** The type of social link. */
+	type: string;
 }
-
-/**
- * The API member social link types.
- * @see https://www.guilded.gg/docs/api/socialLinks/MemberSocialLinkRead
- */
-export type APISocialLinkType =
-	| 'twitch'
-	| 'bnet'
-	| 'psn'
-	| 'xbox'
-	| 'steam'
-	| 'origin'
-	| 'youtube'
-	| 'twitter'
-	| 'facebook'
-	| 'switch'
-	| 'patreon'
-	| 'roblox';

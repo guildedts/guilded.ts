@@ -8,7 +8,7 @@ import {
 } from 'guilded-api-typings';
 import { ColorResolvable, resolveColor } from './util';
 
-/** A embed builder for Guilded. */
+/** The embed builder for Guilded embeds. */
 export class Embed {
 	/** The title of the embed. */
 	public title?: string;
@@ -21,7 +21,7 @@ export class Embed {
 	/** The footer of the embed. */
 	public footer?: APIEmbedFooter;
 	/** The timestamp of the embed. */
-	public timestamp?: string;
+	public timestamp?: Date;
 	/** The thumbnail of the embed. */
 	public thumbnail?: APIEmbedThumbnail;
 	/** The image of the embed. */
@@ -38,7 +38,7 @@ export class Embed {
 		this.url = data?.url;
 		this.color = data?.color;
 		this.footer = data?.footer;
-		this.timestamp = data?.timestamp;
+		this.timestamp = data?.timestamp ? new Date(data.timestamp) : undefined;
 		this.thumbnail = data?.thumbnail;
 		this.image = data?.image;
 		this.author = data?.author;
@@ -82,18 +82,17 @@ export class Embed {
 	 */
 	public setColor(color?: ColorResolvable) {
 		this.color = color ? resolveColor(color) : undefined;
-
 		return this;
 	}
 
 	/**
 	 * Set the footer of the embed.
-	 * @param footer The footer of the embed.
+	 * @param text The text of the footer.
+	 * @param icon The icon URL of the footer.
 	 * @returns This embed builder.
 	 */
-	public setFooter(footer?: string | APIEmbedFooter) {
-		if (typeof footer === 'string') this.footer = { text: footer };
-		else this.footer = footer;
+	public setFooter(text: string, icon?: string) {
+		this.footer = { text, icon_url: icon };
 		return this;
 	}
 
@@ -102,9 +101,13 @@ export class Embed {
 	 * @param timestamp The timestamp of the embed.
 	 * @returns This embed builder.
 	 */
-	public setTimestamp(timestamp?: string | Date) {
-		if (typeof timestamp === 'string') this.timestamp = timestamp;
-		else this.timestamp = timestamp?.toISOString();
+	public setTimestamp(timestamp?: string | number | Date) {
+		this.timestamp =
+			timestamp instanceof Date
+				? timestamp
+				: typeof timestamp === 'string' || typeof timestamp === 'number'
+				? new Date(timestamp)
+				: undefined;
 		return this;
 	}
 
@@ -134,15 +137,19 @@ export class Embed {
 	 * @returns This embed builder.
 	 */
 	public setAuthor(author?: string | APIEmbedAuthor) {
-		if (typeof author === 'string') this.author = { name: author };
-		else this.author = author;
+		this.author = typeof author === 'string' ? { name: author } : author;
 		return this;
 	}
 
-	/** @ignore */
-	public addField(arg1: string | APIEmbedField, arg2?: string, arg3?: boolean) {
-		if (typeof arg1 === 'string') this.fields.push({ name: arg1, value: arg2!, inline: arg3 });
-		else this.fields.push(arg1);
+	/**
+	 * Add a field to the embed.
+	 * @param name The name of the field.
+	 * @param value The value of the field.
+	 * @param inline Whether the field is inline.
+	 * @returns This embed builder.
+	 */
+	public addField(name: string, value: string, inline?: boolean) {
+		this.fields.push({ name, value, inline });
 		return this;
 	}
 
@@ -155,22 +162,4 @@ export class Embed {
 		this.fields = fields;
 		return this;
 	}
-}
-
-export declare interface Embed {
-	/**
-	 * Add a field to the embed.
-	 * @param name The name of the field.
-	 * @param value The value of the field.
-	 * @param inline Whether the field is inline.
-	 * @returns This embed builder.
-	 */
-	addField(name: string, value: string, inline?: boolean): this;
-
-	/**
-	 * Add a field to the embed.
-	 * @param field The embed field.
-	 * @returns This embed builder.
-	 */
-	addField(field: APIEmbedField): this;
 }

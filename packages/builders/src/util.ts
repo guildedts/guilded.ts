@@ -1,11 +1,12 @@
 /**
  * Resolve a color from a string, number, RGB array or color preset.
+ * Inspired by Guilded.JS' {@link https://github.com/guildedjs/guilded.js/blob/main/packages/webhook-client/lib/util.ts#L8 color resolver}.
  * @param color The color to resolve.
  * @returns The resolved color.
- * Inspired by {@link https://github.com/guildedjs/guilded.js/blob/main/packages/webhook-client/lib/util.ts#L8 Guilded.JS}'s color resolver.
  */
 export function resolveColor(color: ColorResolvable) {
-	if (typeof color === `string`)
+	if (color === 'RANDOM') color = Math.floor(Math.random() * (0xffffff + 1));
+	else if (typeof color === `string`)
 		color = COLORS[color as keyof typeof COLORS] ?? parseInt(color.replace('#', ''), 16);
 	else if (Array.isArray(color)) color = (color[0] << 16) + (color[1] << 8) + color[2];
 
@@ -16,6 +17,7 @@ export function resolveColor(color: ColorResolvable) {
 export type ColorResolvable =
 	| `#${string}`
 	| keyof typeof COLORS
+	| 'RANDOM'
 	| number
 	| [r: number, g: number, b: number];
 

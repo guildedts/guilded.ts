@@ -1,16 +1,16 @@
 /**
- * The API user object.
+ * The API user model.
  * @see https://www.guilded.gg/docs/api/members/User
  */
 export interface APIUser extends APIUserSummary {
 	/** The URL of the user's banner. */
 	banner?: string;
-	/** The time the user was created. */
+	/** The date the user was created. */
 	createdAt: string;
 }
 
 /**
- * The API user summary object.
+ * The API user summary model.
  * @see https://www.guilded.gg/docs/api/members/UserSummary
  */
 export interface APIUserSummary {
@@ -27,5 +27,6 @@ export interface APIUserSummary {
 /**
  * The API user types.
  * @see https://www.guilded.gg/docs/api/members/User
+ * @see https://www.guilded.gg/docs/api/members/UserSummary
  */
 export type APIUserType = 'bot' | 'user';

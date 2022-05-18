@@ -1,13 +1,9 @@
-import {
-	APIChannel,
-	APIChatMessage,
-	APIDeletedChatMessage,
-	APIDoc,
-	APIListItem,
-	APIServerMember,
-	APIServerMemberBan,
-	APIWebhook,
-} from './structures';
+import { APIChannel } from './structures/Channel';
+import { APIMessage, APIMessageSummary } from './structures/Message';
+import { APIDoc } from './structures/Doc';
+import { APIListItem } from './structures/ListItem';
+import { APIServerMember, APIServerBan } from './structures/Server';
+import { APIWebhook } from './structures/Webhook';
 
 /**
  * Guilded API websocket events.
@@ -22,7 +18,7 @@ export interface WSEvents {
 		/** The ID of the server this message was sent in. */
 		serverId: string;
 		/** The message that was created. */
-		message: APIChatMessage;
+		message: APIMessage;
 	};
 	/**
 	 * Emitted when a chat message is edited.
@@ -32,7 +28,7 @@ export interface WSEvents {
 		/** The ID of the server this message was edited in. */
 		serverId: string;
 		/** The message that was edited. */
-		message: APIChatMessage;
+		message: APIMessage;
 	};
 	/**
 	 * Emitted when a chat message is deleted.
@@ -42,7 +38,7 @@ export interface WSEvents {
 		/** The ID of the server this message was deleted in. */
 		serverId: string;
 		/** The message that was deleted. */
-		message: APIDeletedChatMessage;
+		message: APIMessageSummary;
 	};
 	/**
 	 * Emitted whan a user joins a server.
@@ -64,9 +60,9 @@ export interface WSEvents {
 		/** The user that left the server. */
 		userId: string;
 		/** Whether the user was kicked from the server. */
-		isKick: boolean;
+		isKick?: boolean;
 		/** Whether the user was banned from the server. */
-		isBan: boolean;
+		isBan?: boolean;
 	};
 	/**
 	 * Emitted when a user is banned from a server.
@@ -76,7 +72,7 @@ export interface WSEvents {
 		/** The ID of the server this user was banned from. */
 		serverId: string;
 		/** The created server ban. */
-		serverMemberBan: APIServerMemberBan;
+		serverMemberBan: APIServerBan;
 	};
 	/**
 	 * Emitted when a user is unbanned from a server.
@@ -86,7 +82,7 @@ export interface WSEvents {
 		/** The ID of the server this user was unbanned from. */
 		serverId: string;
 		/** The deleted server ban. */
-		serverMemberBan: APIServerMemberBan;
+		serverMemberBan: APIServerBan;
 	};
 	/**
 	 * Emitted when a server member is edited.
@@ -100,7 +96,7 @@ export interface WSEvents {
 			/** The ID of the user that was edited. */
 			id: string;
 			/** The new nickname of the user. */
-			nickname: string;
+			nickname?: string;
 		};
 	};
 	/**

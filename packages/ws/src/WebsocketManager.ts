@@ -6,16 +6,27 @@ import { APIUser, WSEvents } from 'guilded-api-typings';
 export class WebsocketManager extends EventEmitter {
 	/** The authoization token for the websocket. */
 	public token?: string;
+	/** The API version for the Websocket. */
+	public readonly version: number;
 	/** The websocket. */
 	public socket?: Websocket;
-	/** Whether the websocket is connected. */
-	public connected = false;
-	/** The time of when the websocket connected. */
+	/** The date the websocket connected. */
 	public connectedAt?: Date;
+	/** The ping of the websocket connection. */
+	public ping?: number;
+	/** The date of the last ping. */
+	public pingedAt?: Date;
 
-	/** @param version The API version for the websocket. */
-	public constructor(public readonly version: number) {
+	/** @param options The options for the Websocket manager. */
+	public constructor(public readonly options: WebsocketOptions) {
 		super();
+		this.token = options.token;
+		this.version = options.version;
+	}
+
+	/** Whether the websocket is connected. */
+	public get isConnected() {
+		return !!this.connectedAt ?? false;
 	}
 
 	/** The timestamp of when the websocket connected. */
@@ -23,9 +34,14 @@ export class WebsocketManager extends EventEmitter {
 		return this.connectedAt?.getTime();
 	}
 
+	/** The timestamp of the last ping. */
+	public get pingedTimestamp() {
+		return this.pingedAt?.getTime();
+	}
+
 	/** How long the websocket has been connected. (in MS) */
 	public get uptime() {
-		return this.connected ? Date.now() - this.connectedTimestamp! : undefined;
+		return this.isConnected ? Date.now() - this.connectedTimestamp! : undefined;
 	}
 
 	/** The URL for the websocket. */
@@ -38,38 +54,20 @@ export class WebsocketManager extends EventEmitter {
 	 * @param token The authorization token.
 	 * @returns The websocket manager.
 	 */
-	public connect(token: string) {
+	public connect(token: string = this.token!) {
 		this.token = token;
-
 		this.socket = new Websocket(this.url, {
 			headers: {
 				Authorization: `Bearer ${this.token}`,
 			},
 		});
-
-		this.socket.on('close', () => {
-			this.token = undefined;
-			this.socket = undefined;
-			this.connected = false;
-			this.connectedAt = undefined;
-			this.emit('disconnect');
+		this.socket.on('close', this.onSocketClose.bind(this));
+		this.socket.on('message', (rawData) => {
+			const { op, t, d } = JSON.parse(rawData.toString());
+			this.onSocketData(op, t, d);
 		});
-
-		this.socket.on('message', (data) => {
-			const { op, t, d }: WSData = JSON.parse(data.toString());
-
-			switch (op) {
-				case 0:
-					this.emit('data', t, d);
-					break;
-				case 1:
-					this.connected = true;
-					this.connectedAt = new Date();
-					this.emit('connect', d.user);
-					break;
-			}
-		});
-
+		this.socket.on('ping', this.onSocketPing.bind(this));
+		this.socket.on('pong', this.onSocketPong.bind(this));
 		return this;
 	}
 
@@ -79,10 +77,41 @@ export class WebsocketManager extends EventEmitter {
 	 */
 	public disconnect() {
 		if (!this.socket || !this.socket.OPEN) throw new Error('Websocket is not connected.');
-
-		this.socket.close();
-
+		this.socket.terminate();
 		return this;
+	}
+
+	/** @ignore */
+	private onSocketClose() {
+		this.token = undefined;
+		this.socket = undefined;
+		this.connectedAt = undefined;
+		this.emit('disconnect');
+	}
+
+	/** @ignore */
+	private onSocketData(op: number, event: any, data: any) {
+		switch (op) {
+			case 0:
+				this.emit('data', event, data);
+				break;
+			case 1:
+				this.socket!.emit('ping');
+				this.connectedAt = new Date();
+				this.emit('connect', data.user as APIUser);
+				break;
+		}
+	}
+
+	/** @ignore */
+	private onSocketPing() {
+		this.pingedAt = new Date();
+		this.socket!.ping();
+	}
+
+	/** @ignore */
+	private onSocketPong() {
+		this.ping = Date.now() - this.pingedTimestamp!;
 	}
 }
 
@@ -109,6 +138,14 @@ export interface WebsocketManager {
 	): boolean;
 }
 
+/** The options for the Websocket manager. */
+export interface WebsocketOptions {
+	/** The authoization token for the websocket. */
+	token?: string;
+	/** The API version for the websocket. */
+	version: number;
+}
+
 /** The websocket manager events. */
 export interface WSManagerEvents {
 	/** Emitted when the websocket is connected. */
@@ -117,16 +154,6 @@ export interface WSManagerEvents {
 	disconnect: [];
 	/** Emitted when data is received from the websocket. */
 	data: {
-		[K in keyof WSEvents]: [type: K, data: WSEvents[K]];
+		[Event in keyof WSEvents]: [event: Event, data: WSEvents[Event]];
 	}[keyof WSEvents];
-}
-
-/** The websocket data. */
-export interface WSData {
-	/** The operation code. */
-	op: number;
-	/** The event type. */
-	t: any;
-	/** The event data. */
-	d: any;
 }
