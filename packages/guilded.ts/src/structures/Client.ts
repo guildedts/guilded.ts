@@ -59,7 +59,7 @@ export class Client extends EventEmitter {
 
 	/** Whether the client is ready to use. */
 	public get isReady() {
-		return this.ws.connected;
+		return this.ws.isConnected;
 	}
 
 	/** The date the client was ready. */
