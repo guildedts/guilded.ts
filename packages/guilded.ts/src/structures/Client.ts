@@ -199,8 +199,6 @@ export interface ClientEvents {
 export interface ClientOptions {
 	/** The client authorization token. */
 	token?: string;
-	/** The limit of how many times to try re-establish the websocket connection. */
-	reconnectLimit?: number;
 	/** The max retries for REST API requests. */
 	maxRestAPIRetries?: number;
 	/** The retry interval for REST API requests. */
