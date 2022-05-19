@@ -13,9 +13,9 @@ export class UserManager extends BaseManager<string, User> {
 	/** @ignore */
 	public async fetch(
 		arg1: string,
-		arg2: string | boolean = this.client.options.cacheUsers ?? true,
+		arg2?: string,
 	) {
-		if (typeof arg2 === 'string') return this.fetchSingle(arg1, arg2);
+		if (arg2) return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
