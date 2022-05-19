@@ -1,5 +1,18 @@
 # @guildedts/rest
 
+## 0.4.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Change `GuildedAPIError` `name` layout
+    -   Change `RestManager` to `RESTManager`
+    -   Change `baseUrl` to `baseURL` in `RESTManager`
+    -   Add `patch` method to `RESTManager`
+    -   Change `RestManagerOptions` to `RESTOptions`
+    -   Add `token` to `RESTOptions`
+
 ## 0.3.0
 
 ### Minor Changes

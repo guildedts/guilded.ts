@@ -1,5 +1,16 @@
 # @guildedts/ws
 
+## 0.2.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `ping`, `pingedAt` and `pingedTimestamp` to `WebsocketManager`
+    -   Change `connected` to `isConnected` in `WebsocketManager`
+    -   Add `WebsocketOptions`
+    -   Remove `WSData`
+
 ## 0.1.0
 
 ### Minor Changes

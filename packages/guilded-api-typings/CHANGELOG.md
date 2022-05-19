@@ -1,5 +1,45 @@
 # guilded-api-typings
 
+## 0.2.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Update `Routes`
+        -   Change `channelMessage` and `channelMessages` to `message` and `messages`
+        -   Change `userNickname` to `serverMemberNickname`
+        -   Change `channelForum` to `forums`
+        -   Chnage `channelListItems` and `channelListItem` to `listItems` and `listItem`
+        -   Change `channelListItemComplete` to `listItemComplete`
+        -   Chnage `channelDocs` and `channelDoc` to `docs` and `doc`
+        -   Chnage `messageReaction` to `reaction`
+        -   Chnage `memberXP` to `serverMemberXP`
+        -   Chnage `roleXP` to `serverRoleXP`
+        -   Chnage `memberSocialLink` to `socialLink`
+        -   Chnage `memberRoles` and `memberRole` to `serverMemberRoles` and `serverMemberRole`
+        -   Change `serverWebhooks` and `serverWebhook` to `webhooks` and `webhook`
+    -   Improve WS event's typings
+    -   Add `APIChannelEditPayload`
+    -   Chnage `APIGetDocsQuery` to `APIFetchDocsQuery`
+    -   Chnage `APIChatMessage` to `APIMessage`
+    -   Change `APIDeletedChatMessage` to `APIMessageSummary`
+    -   Change `APIChatMessageType` to `APIMessageType`
+    -   Change `APIChatMessagePayload` to `APIMessagePayload`
+    -   Add `APIMessageEditPayload`
+    -   Change `APIGetChatMessagesQuery` to `APIFetchMessagesQuery`
+    -   Change `APIMessageReaction` to `APIContentReaction`
+    -   Change `APIServerMemberBan` to `APIServerBan`
+    -   Add `APIServerMemberNicknamePayload`
+    -   Change `APIServerMemberBanPayload` to `APIServerBanPayload`
+    -   Change `APIServerXpPayload` to `APIServerXPPayload`
+    -   Remove `APISocialLinkType`
+    -   Change `APIGetWebhooksQuery` to `APIFetchWebhooksQuery`
+
+    # Fixes
+
+    -   Fix incorrect endpoint for `serverMemberNickname`
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,5 +1,82 @@
 # guilded.ts
 
+## 0.5.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Remove `caching` from `BaseManager`
+    -   Remove `toggleCache` method from `BaseManager`
+    -   Remove `ManagerOptions`
+    -   Remove `cache` parameter of methods named `create`, `send`, `edit` and more
+    -   Remove return of a deleted item when deleting it in its manager
+    -   Change `MessageReactionManager` to `ReactionManager`
+    -   Remove `cache` parameters in `fetch` method in `UserManager`
+    -   Remove methods from `ChannelManager`
+        -   `createAnnouncement`
+        -   `createChat`
+        -   `createCalendar`
+        -   `createForum`
+        -   `createMedia`
+        -   `createDoc`
+        -   `createVoice`
+        -   `createList`
+        -   `createSchedule`
+        -   `createStream`
+    -   Add `edit` method to `ChannelManager`
+    -   Change `ready` to `isReady` in `Client`
+    -   Change `logout` method to `disconnect` in `Client`
+    -   Change type of `message` in the `messageDelete` event from `Message` to `Message | APIMessageSummary`
+    -   Change `serverRolesEdit` to `rolesEdit` in `ClientEvents`
+    -   Add `raw` property to all data model structures
+    -   Change `cached` to `isCached` in all data model structures
+    -   Change `private` to `isPrivate` in `Message`
+    -   Change `default` to `isDefault` in `Message`
+    -   Change `system` to `isSystem` in `Message`
+    -   Change `deleted` to `isDeleted` in `Message`
+    -   Add return for a deleted item when deleting it in its structure
+    -   Change `private` and `silent` to `isPrivate` and `isSilent` in `MessagePayload` and `MessageEditPayload`
+    -   Change `bot` and `human` to `isBot` and `isHuman` in `User`
+    -   Remove `cache` method in `User`
+    -   Change properties in `Channel`
+        -   `archived` to `isArchived`
+        -   `announcement` to `isAnnouncement`
+        -   `chat` to `isChat`
+        -   `chatBased` to `isChatBased`
+        -   `calendar` to `isCalendar`
+        -   `forum` to `isForum`
+        -   `media` to `isMedia`
+        -   `doc` to `isDoc`
+        -   `voice` to `isVoice`
+        -   `list` to `isList`
+        -   `schedule` to `isSchedule`
+        -   `stream` to `isStream`
+    -   Add `edit`, `setName`, `setTopic` and `setPublic` methods to `Channel`
+    -   Remove methods from `Server`
+        -   `createAnnouncementChannel`
+        -   `createChatChannel`
+        -   `createCalanderChannel`
+        -   `createForumChannel`
+        -   `createMediaChannel`
+        -   `createDocChannel`
+        -   `createVoiceChannel`
+        -   `createListChannel`
+        -   `createScheduleChannel`
+        -   `createStreamChannel`
+    -   Create new WS event handler
+
+### Patch Changes
+
+-   Updated dependencies
+-   Updated dependencies
+-   Updated dependencies
+-   Updated dependencies
+    -   guilded-api-typings@0.2.0
+    -   @guildedts/rest@0.4.0
+    -   @guildedts/builders@0.2.0
+    -   @guildedts/ws@0.2.0
+
 ## 0.4.0
 
 ### Minor Changes

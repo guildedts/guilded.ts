@@ -1,5 +1,19 @@
 # @guildedts/builders
 
+## 0.2.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Update `Embed` builder
+        -   Change `timestamp` from type `string` to `Date`
+        -   Change parameters for `setFooter` method
+        -   Add `number` to parameter of `setTimestamp` method
+        -   Change parameters for `addField` method
+    -   Add `userMention` function
+    -   Add `RANDOM` option to the color resolver
+
 ## 0.1.1
 
 ### Patch Changes
