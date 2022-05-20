@@ -4,9 +4,9 @@
     <h3><strong>The REST API manager for <a href="https://guildedts.js.org">Guilded.TS</a>.</strong></h3>
     <br />
     <div>
-        <a href="https://www.npmjs.com/package/@guildedts/rest"><img src="https://img.shields.io/npm/v/@guildedts/rest" alt="Version" /></a>
-        <a href="https://www.npmjs.com/package/@guildedts/rest"><img src="https://img.shields.io/npm/dt/@guildedts/rest" alt="Downloads" /></a>
-        <a href="https://www.npmjs.com/package/@guildedts/rest"><img src="https://img.shields.io/npm/l/@guildedts/rest" alt="License: Apache-2.0">
+        <a href="https://www.npmjs.com/package/@guildedts/rest"><img src="https://img.shields.io/npm/v/@guildedts/rest?style=for-the-badge" alt="Version" /></a>
+        <a href="https://www.npmjs.com/package/@guildedts/rest"><img src="https://img.shields.io/npm/dt/@guildedts/rest?style=for-the-badge" alt="Downloads" /></a>
+        <a href="https://www.npmjs.com/package/@guildedts/rest"><img src="https://img.shields.io/npm/l/@guildedts/rest?style=for-the-badge" alt="License: Apache-2.0">
     </div>
 </div>
 

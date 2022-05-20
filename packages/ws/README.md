@@ -4,9 +4,9 @@
     <h3><strong>The Websocket API manager for <a href="https://guildedts.js.org">Guilded.TS</a>.</strong></h3>
     <br />
     <div>
-        <a href="https://www.npmjs.com/package/@guildedts/ws"><img src="https://img.shields.io/npm/v/@guildedts/ws" alt="Version" /></a>
-        <a href="https://www.npmjs.com/package/@guildedts/ws"><img src="https://img.shields.io/npm/dt/@guildedts/ws" alt="Downloads" /></a>
-        <a href="https://www.npmjs.com/package/@guildedts/ws"><img src="https://img.shields.io/npm/l/@guildedts/ws" alt="License: Apache-2.0">
+        <a href="https://www.npmjs.com/package/@guildedts/ws"><img src="https://img.shields.io/npm/v/@guildedts/ws?style=for-the-badge" alt="Version" /></a>
+        <a href="https://www.npmjs.com/package/@guildedts/ws"><img src="https://img.shields.io/npm/dt/@guildedts/ws?style=for-the-badge" alt="Downloads" /></a>
+        <a href="https://www.npmjs.com/package/@guildedts/ws"><img src="https://img.shields.io/npm/l/@guildedts/ws?style=for-the-badge" alt="License: Apache-2.0">
     </div>
 </div>
 

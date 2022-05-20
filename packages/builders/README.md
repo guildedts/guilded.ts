@@ -4,9 +4,9 @@
     <h3><strong>A set of builders for creating a <a href="https://www.guilded.gg">Guilded</a> bot.</strong></h3>
     <br />
     <div>
-        <a href="https://www.npmjs.com/package/@guildedts/builders"><img src="https://img.shields.io/npm/v/@guildedts/builders" alt="Version" /></a>
-        <a href="https://www.npmjs.com/package/@guildedts/builders"><img src="https://img.shields.io/npm/dt/@guildedts/builders" alt="Downloads" /></a>
-        <a href="https://www.npmjs.com/package/@guildedts/builders"><img src="https://img.shields.io/npm/l/@guildedts/builders" alt="License: Apache-2.0">
+        <a href="https://www.npmjs.com/package/@guildedts/builders"><img src="https://img.shields.io/npm/v/@guildedts/builders?style=for-the-badge" alt="Version" /></a>
+        <a href="https://www.npmjs.com/package/@guildedts/builders"><img src="https://img.shields.io/npm/dt/@guildedts/builders?style=for-the-badge" alt="Downloads" /></a>
+        <a href="https://www.npmjs.com/package/@guildedts/builders"><img src="https://img.shields.io/npm/l/@guildedts/builders?style=for-the-badge" alt="License: Apache-2.0">
     </div>
 </div>
 

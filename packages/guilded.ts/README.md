@@ -4,9 +4,9 @@
     <h3><strong>A powerful NPM module that allows you to easily interact with the <a href="https://www.guilded.gg">Guilded</a> API.</strong></h3>
     <br />
     <div>
-        <a href="https://www.npmjs.com/package/guilded.ts"><img src="https://img.shields.io/npm/v/guilded.ts" alt="Version" /></a>
-        <a href="https://www.npmjs.com/package/guilded.ts"><img src="https://img.shields.io/npm/dt/guilded.ts" alt="Downloads" /></a>
-        <a href="https://www.npmjs.com/package/guilded.ts"><img src="https://img.shields.io/npm/l/guilded.ts" alt="License: Apache-2.0">
+        <a href="https://www.npmjs.com/package/guilded.ts"><img src="https://img.shields.io/npm/v/guilded.ts?style=for-the-badge" alt="Version" /></a>
+        <a href="https://www.npmjs.com/package/guilded.ts"><img src="https://img.shields.io/npm/dt/guilded.ts?style=for-the-badge" alt="Downloads" /></a>
+        <a href="https://www.npmjs.com/package/guilded.ts"><img src="https://img.shields.io/npm/l/guilded.ts?style=for-the-badge" alt="License: Apache-2.0">
     </div>
 </div>
 
