@@ -53,12 +53,12 @@ client.once('ready', () => console.log(`[READY] Logged in as ${client.user.name}
 client.on('messageCreate', (message) => {
     if (message.content?.toLowerCase() !== 'ping') return;
 
-	const embed = new Embed()
+    const embed = new Embed()
         .setTitle('Pong!')
         .setDescription('This is the ping command!')
         .setColor('GREEN');
 
-	message.reply({ content: 'Pong!', embeds: [embed] });
+    message.reply({ content: 'Pong!', embeds: [embed] });
 });
 
 // Log into guilded
