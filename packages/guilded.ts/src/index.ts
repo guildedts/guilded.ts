@@ -1,6 +1,10 @@
 // Default export
 export { Client as default } from './structures/Client';
 
+// Collectors
+export * from './collectors/Collector';
+export * from './collectors/MessageCollector';
+
 // Managers
 export * from './managers/channel/ChannelManager';
 export * from './managers/channel/ChannelWebhookManager';
