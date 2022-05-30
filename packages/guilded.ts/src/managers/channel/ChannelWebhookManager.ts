@@ -1,4 +1,3 @@
-import { APIFetchWebhooksQuery, APIWebhook, APIWebhookPayload, Routes } from 'guilded-api-typings';
 import { BaseManager } from '../BaseManager';
 import { CacheCollection } from '../../structures/CacheCollection';
 import { Channel } from '../../structures/channel/Channel';
@@ -25,24 +24,20 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 		webhookId: string,
 		cache = this.client.options.cacheWebhooks ?? true,
 	) {
-		const response = await this.client.rest.get<{ webhook: APIWebhook }>(
-			Routes.webhook(this.channel.server.id, webhookId),
-		);
-		const webhook = new Webhook(this.channel, response.webhook);
+		const raw = await this.client.api.webhooks.fetchSingle(this.channel.serverId, webhookId);
+		const webhook = new Webhook(this.channel, raw);
 		if (cache) this.cache.set(webhookId, webhook);
 		return webhook;
 	}
 
 	/** @ignore */
 	public async fetchMany(cache: boolean = this.client.options.cacheWebhooks ?? true) {
-		const response = await this.client.rest.get<
-			{ webhooks: APIWebhook[] },
-			APIFetchWebhooksQuery
-		>(Routes.webhooks(this.channel.server.id), {
-			channelId: this.channel.id,
-		});
+		const raw = await this.client.api.webhooks.fetchMany(
+			this.channel.serverId,
+			this.channel.id,
+		);
 		const webhooks = new CacheCollection<string, Webhook>();
-		for (const data of response.webhooks) {
+		for (const data of raw) {
 			const webhook = new Webhook(this.channel, data);
 			webhooks.set(webhook.id, webhook);
 			if (cache) this.cache.set(webhook.id, webhook);
@@ -56,39 +51,37 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	 * @returns The created webhook.
 	 */
 	public async create(name: string) {
-		const response = await this.client.rest.post<{ webhook: APIWebhook }, APIWebhookPayload>(
-			Routes.webhooks(this.channel.server.id),
-			{
-				channelId: this.channel.id,
-				name,
-			},
+		const raw = await this.client.api.webhooks.create(
+			this.channel.serverId,
+			this.channel.id,
+			name,
 		);
-		return new Webhook(this.channel, response.webhook);
+		return new Webhook(this.channel, raw);
 	}
 
 	/**
 	 * Edit a webhook in the channel.
 	 * @param webhookId The ID of the webhook to edit.
 	 * @param name The name to edit the webhook with.
+	 * @param channelId The ID of the channel to move the webhook to.
 	 * @returns The edited webhook.
 	 */
-	public async edit(webhookId: string, name: string) {
-		const response = await this.client.rest.put<{ webhook: APIWebhook }, APIWebhookPayload>(
-			Routes.webhook(this.channel.server.id, webhookId),
-			{
-				channelId: this.channel.id,
-				name,
-			},
+	public async edit(webhookId: string, name: string, channelId?: string) {
+		const raw = await this.client.api.webhooks.edit(
+			this.channel.serverId,
+			webhookId,
+			name,
+			channelId,
 		);
-		return new Webhook(this.channel, response.webhook);
+		return new Webhook(this.channel, raw);
 	}
 
 	/**
 	 * Delete a webhook in the channel.
 	 * @param webhookId The ID of the webhook to delete.
 	 */
-	public async delete(webhookId: string) {
-		await this.client.rest.delete(Routes.webhook(this.channel.server.id, webhookId));
+	public delete(webhookId: string) {
+		return this.client.api.webhooks.delete(this.channel.serverId, webhookId);
 	}
 }
 

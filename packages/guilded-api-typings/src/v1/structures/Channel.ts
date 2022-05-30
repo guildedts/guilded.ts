@@ -76,3 +76,20 @@ export interface APIChannelEditPayload {
 	/** Whether this channel is public. */
 	isPublic?: boolean;
 }
+
+/**
+ * The API mentions model.
+ * @see https://www.guilded.gg/docs/api/channels/Mentions
+ */
+export interface APIMentions {
+	/** The users that were mentioned. */
+	users?: { id: string }[];
+	/** The channels that were mentioned. */
+	channels?: { id: string }[];
+	/** The roles that were mentioned. */
+	roles?: { id: number }[];
+	/** Whether `@everyone` was mentioned. */
+	everyone?: boolean;
+	/** Whether `@here` was mentioned. */
+	here?: boolean;
+}

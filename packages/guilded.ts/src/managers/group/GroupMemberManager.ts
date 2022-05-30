@@ -1,4 +1,3 @@
-import { Routes } from 'guilded-api-typings';
 import { BaseManager } from '../BaseManager';
 import { Group } from '../../structures/Group';
 
@@ -13,15 +12,15 @@ export class GroupMemberManager extends BaseManager<void, void> {
 	 * Add a member to the group.
 	 * @param memberId The ID of the member to add.
 	 */
-	public async add(memberId: string) {
-		await this.client.rest.put(Routes.groupMember(this.group.id, memberId));
+	public add(memberId: string) {
+		return this.client.api.groups.addMember(this.group.id, memberId);
 	}
 
 	/**
 	 * Remove a member from the group.
 	 * @param memberId The ID of the member to remove.
 	 */
-	public async remove(memberId: string) {
-		await this.client.rest.delete(Routes.groupMember(this.group.id, memberId));
+	public remove(memberId: string) {
+		return this.client.api.groups.removeMember(this.group.id, memberId);
 	}
 }

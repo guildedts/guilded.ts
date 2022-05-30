@@ -11,7 +11,7 @@
 		"docs": "yarn rimraf docs && yarn typedoc --options tsdoc.json && echo 'guildedts.js.org' > docs/CNAME",
 		"prepare": "yarn format && yarn lint",
 		"clear": "yarn turbo run clear",
-		"refresh": "yarn clear && yarn rimraf node_modules && yarn install && yarn build",
+		"refresh": "yarn clear && yarn rimraf node_modules && yarn && yarn build",
 		"setchanges": "yarn changeset",
 		"version": "yarn setchanges version"
 	},

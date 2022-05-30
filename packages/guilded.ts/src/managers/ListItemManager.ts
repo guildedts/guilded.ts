@@ -1,4 +1,3 @@
-import { APIListItem, APIListItemPayload, APIListItemSummary, Routes } from 'guilded-api-typings';
 import { BaseManager } from './BaseManager';
 import { CacheCollection } from '../structures/CacheCollection';
 import { ListChannel } from '../structures/channel/ListChannel';
@@ -24,22 +23,18 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	private async fetchSingle(listItemId: string, cache: boolean) {
 		let item = this.cache.get(listItemId);
 		if (item) return item;
-		const response = await this.client.rest.get<{ listItem: APIListItem }>(
-			Routes.listItem(this.channel.id, listItemId),
-		);
-		item = new ListItem(this.channel as ListChannel, response.listItem);
+		const raw = await this.client.api.listItems.fetch(this.channel.id, listItemId);
+		item = new ListItem(this.channel, raw);
 		if (cache) this.cache.set(listItemId, item);
 		return item;
 	}
 
 	/** @ignore */
 	private async fetchMany(cache: boolean) {
-		const response = await this.client.rest.get<{ listItems: APIListItemSummary[] }>(
-			Routes.listItems(this.channel.id),
-		);
+		const raw = await this.client.api.listItems.fetch(this.channel.id);
 		const items = new CacheCollection<string, ListItem>();
-		for (const data of response.listItems) {
-			const item = new ListItem(this.channel as ListChannel, data);
+		for (const data of raw) {
+			const item = new ListItem(this.channel, data);
 			items.set(item.id, item);
 			if (cache) this.cache.set(item.id, item);
 		}
@@ -48,55 +43,49 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 
 	/**
 	 * Add a item to the list channel.
-	 * @param content The content to add the item with.
+	 * @param message The message to add the item with.
 	 * @param note The note to add the item with.
 	 * @returns The added item.
 	 */
-	public async add(content: string, note?: string) {
-		const response = await this.client.rest.post<{ listItem: APIListItem }, APIListItemPayload>(
-			Routes.listItems(this.channel.id),
-			{ message: content, ...(note ? { note: { content: note } } : {}) },
-		);
-		return new ListItem(this.channel, response.listItem);
+	public async add(message: string, note?: string) {
+		const raw = await this.client.api.listItems.create(this.channel.id, message, note);
+		return new ListItem(this.channel, raw);
 	}
 
 	/**
 	 * Edit a item in the list channel.
 	 * @param listItemId The ID of the item to edit.
-	 * @param content The content to edit the item with.
+	 * @param message The message to edit the item with.
 	 * @param note The note to edit the item with.
 	 * @returns The edited item.
 	 */
-	public async edit(listItemId: string, content: string, note?: string) {
-		const response = await this.client.rest.put<{ listItem: APIListItem }, APIListItemPayload>(
-			Routes.listItem(this.channel.id, listItemId),
-			{ message: content, ...(note ? { note: { content: note } } : {}) },
-		);
-		return new ListItem(this.channel, response.listItem);
+	public async edit(listItemId: string, message: string, note?: string) {
+		const raw = await this.client.api.listItems.edit(this.channel.id, listItemId, message, note);
+		return new ListItem(this.channel, raw);
 	}
 
 	/**
 	 * Remove a item in the list channel.
 	 * @param listItemId The ID of the item to remove.
 	 */
-	public async remove(listItemId: string) {
-		await this.client.rest.delete(Routes.listItem(this.channel.id, listItemId));
+	public remove(listItemId: string) {
+		return this.client.api.listItems.delete(this.channel.id, listItemId);
 	}
 
 	/**
 	 * Complete a item in the list channel.
 	 * @param listItemId The ID of the item to complete.
 	 */
-	public async complete(listItemId: string) {
-		await this.client.rest.post(Routes.listItemComplete(this.channel.id, listItemId));
+	public complete(listItemId: string) {
+		return this.client.api.listItems.complete(this.channel.id, listItemId);
 	}
 
 	/**
 	 * Uncomplete a item in the list channel.
 	 * @param listItemId The ID of the item to uncomplete.
 	 */
-	public async uncomplete(listItemId: string) {
-		await this.client.rest.delete(Routes.listItemComplete(this.channel.id, listItemId));
+	public uncomplete(listItemId: string) {
+		return this.client.api.listItems.uncomplete(this.channel.id, listItemId);
 	}
 }
 

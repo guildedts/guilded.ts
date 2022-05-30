@@ -1,4 +1,3 @@
-import { APIServerBan, Routes } from 'guilded-api-typings';
 import { BaseManager } from '../BaseManager';
 import { CacheCollection } from '../../structures/CacheCollection';
 import { Server } from '../../structures/server/Server';
@@ -24,21 +23,17 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	private async fetchSingle(banId: string, cache: boolean) {
 		let ban = this.cache.get(banId);
 		if (ban) return ban;
-		const response = await this.client.rest.get<{ serverMemberBan: APIServerBan }>(
-			Routes.serverBan(this.server.id, banId),
-		);
-		ban = new ServerBan(this.server, response.serverMemberBan);
+		const raw = await this.client.api.serverBans.fetch(this.server.id, banId);
+		ban = new ServerBan(this.server, raw);
 		if (cache) this.cache.set(banId, ban);
 		return ban;
 	}
 
 	/** @ignore */
 	private async fetchMany(cache: boolean) {
-		const response = await this.client.rest.get<{ serverMemberBans: APIServerBan[] }>(
-			Routes.serverBans(this.server.id),
-		);
+		const raw = await this.client.api.serverBans.fetch(this.server.id);
 		const bans = new CacheCollection<string, ServerBan>();
-		for (const data of response.serverMemberBans) {
+		for (const data of raw) {
 			const ban = new ServerBan(this.server, data);
 			bans.set(ban.user.id, ban);
 			if (cache) this.cache.set(ban.user.id, ban);
@@ -53,21 +48,16 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 * @returns The created ban.
 	 */
 	public async create(memberId: string, reason?: string) {
-		const response = await this.client.rest.post<
-			{ serverMemberBan: APIServerBan },
-			{ reason?: string }
-		>(Routes.serverBan(this.server.id, memberId), {
-			reason,
-		});
-		return new ServerBan(this.server, response.serverMemberBan);
+		const raw = await this.client.api.serverBans.create(this.server.id, memberId, reason);
+		return new ServerBan(this.server, raw);
 	}
 
 	/**
 	 * Remove a ban in the server.
 	 * @param banId The ID of the ban to remove.
 	 */
-	public async remove(banId: string) {
-		await this.client.rest.delete(Routes.serverBan(this.server.id, banId));
+	public remove(banId: string) {
+		return this.client.api.serverBans.delete(this.server.id, banId);
 	}
 }
 

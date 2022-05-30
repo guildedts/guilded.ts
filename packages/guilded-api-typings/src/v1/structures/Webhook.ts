@@ -25,11 +25,20 @@ export interface APIWebhook {
  * The payload for creating a webhook.
  * @see https://www.guilded.gg/docs/api/webhook/WebhookCreate
  */
-export interface APIWebhookPayload {
+export interface APIWebhookPayload extends APIWebhookEditPayload {
+	/** The ID of the channel the webhook belongs to. */
+	channelId: string;
+}
+
+/**
+ * The payload for editing a webhook.
+ * @see https://www.guilded.gg/docs/api/webhook/WebhookUpdate
+ */
+export interface APIWebhookEditPayload {
 	/** The name of the webhook. */
 	name: string;
 	/** The ID of the channel the webhook belongs to. */
-	channelId: string;
+	channelId?: string;
 }
 
 /**

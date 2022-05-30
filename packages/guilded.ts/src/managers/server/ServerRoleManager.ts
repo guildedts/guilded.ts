@@ -1,4 +1,3 @@
-import { Routes } from 'guilded-api-typings';
 import { BaseManager } from '../BaseManager';
 import { ServerRole } from '../../structures/server/ServerRole';
 import { Server } from '../../structures/server/Server';
@@ -19,12 +18,10 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @returns The fetched roles that belong to the member.
 	 */
 	public async fetch(memberId: string, cache = this.client.options.cacheServerRoles ?? true) {
-		const response = await this.client.rest.get<{ roleIds: number[] }>(
-			Routes.serverMemberRoles(this.server.id, memberId),
-		);
+		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, memberId);
 		const roles = new CacheCollection<number, ServerRole>();
 		const member = this.server.members.cache.get(memberId);
-		for (const roleId of response.roleIds) {
+		for (const roleId of raw) {
 			const role = new ServerRole(this.server, { id: roleId });
 			if (cache) this.cache.set(roleId, role);
 			if (this.client.options.cacheServerMemberRoles)
@@ -42,7 +39,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @returns The role that was added to the member.
 	 */
 	public async assign(memberId: string, roleId: number) {
-		await this.client.rest.put(Routes.serverMemberRole(this.server.id, memberId, roleId));
+		await this.client.api.serverMembers.addRole(this.server.id, memberId, roleId);
 		return new ServerRole(this.server, { id: roleId });
 	}
 
@@ -53,7 +50,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @returns The role that was removed from the member.
 	 */
 	public async unassign(userId: string, roleId: number) {
-		await this.client.rest.delete(Routes.serverMemberRole(this.server.id, userId, roleId));
+		await this.client.api.serverMembers.removeRole(this.server.id, userId, roleId);
 		return new ServerRole(this.server, { id: roleId });
 	}
 }

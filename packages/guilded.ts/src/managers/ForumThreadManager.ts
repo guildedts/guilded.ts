@@ -1,4 +1,3 @@
-import { APIForumThread, APIForumThreadPayload, Routes } from 'guilded-api-typings';
 import { BaseManager } from './BaseManager';
 import { ForumChannel } from '../structures/channel/ForumChannel';
 import { ForumThread } from '../structures/ForumThread';
@@ -17,13 +16,7 @@ export class ForumThreadManager extends BaseManager<number, ForumThread> {
 	 * @returns The created thread.
 	 */
 	public async post(title: string, content: string) {
-		const response = await this.client.rest.post<
-			{ forumThread: APIForumThread },
-			APIForumThreadPayload
-		>(Routes.forums(this.channel.id), {
-			title,
-			content,
-		});
-		return new ForumThread(this.channel, response.forumThread);
+		const raw = await this.client.api.forumThreads.create(this.channel.id, title, content);
+		return new ForumThread(this.channel, raw);
 	}
 }

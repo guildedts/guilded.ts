@@ -1,4 +1,4 @@
-import { APIDoc } from 'guilded-api-typings';
+import { APIDoc, APIMentions } from 'guilded-api-typings';
 import { Base } from './Base';
 import { DocChannel } from './channel/DocChannel';
 
@@ -12,6 +12,8 @@ export class Doc extends Base<number> {
 	public readonly title: string;
 	/** The content of the doc. */
 	public readonly content: string;
+	/** The mentions of the doc. */
+	public readonly mentions?: APIMentions;
 	/** The date the doc was created. */
 	public readonly createdAt: Date;
 	/** The ID of the user that created the doc. */
@@ -31,6 +33,7 @@ export class Doc extends Base<number> {
 		this.channelId = raw.channelId;
 		this.title = raw.title;
 		this.content = raw.content;
+		this.mentions = raw.mentions;
 		this.createdAt = new Date(raw.createdAt);
 		this.createdBy = raw.createdBy;
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;

@@ -1,4 +1,4 @@
-import { APIDoc, APIDocPayload, APIFetchDocsQuery, Routes } from 'guilded-api-typings';
+import { APIFetchDocsQuery } from 'guilded-api-typings';
 import { BaseManager } from './BaseManager';
 import { CacheCollection } from '../structures/CacheCollection';
 import { Doc } from '../structures/Doc';
@@ -24,22 +24,17 @@ export class DocManager extends BaseManager<number, Doc> {
 	private async fetchSingle(docId: number, cache: boolean) {
 		let doc = this.cache.get(docId);
 		if (doc) return doc;
-		const response = await this.client.rest.get<{ doc: APIDoc }>(
-			Routes.doc(this.channel.id, docId),
-		);
-		doc = new Doc(this.channel, response.doc);
+		const raw = await this.client.api.docs.fetch(this.channel.id, docId);
+		doc = new Doc(this.channel, raw);
 		if (cache) this.cache.set(docId, doc);
 		return doc;
 	}
 
 	/** @ignore */
 	private async fetchMany(options: APIFetchDocsQuery = {}, cache: boolean) {
-		const response = await this.client.rest.get<{ docs: APIDoc[] }, APIFetchDocsQuery>(
-			Routes.docs(this.channel.id),
-			options,
-		);
+		const raw = await this.client.api.docs.fetch(this.channel.id, options);
 		const docs = new CacheCollection<number, Doc>();
-		for (const data of response.docs) {
+		for (const data of raw) {
 			const doc = new Doc(this.channel, data);
 			docs.set(data.id, doc);
 			if (cache) this.cache.set(data.id, doc);
@@ -54,11 +49,8 @@ export class DocManager extends BaseManager<number, Doc> {
 	 * @returns The created doc.
 	 */
 	public async create(title: string, content: string) {
-		const response = await this.client.rest.post<{ doc: APIDoc }, APIDocPayload>(
-			Routes.docs(this.channel.id),
-			{ title, content },
-		);
-		return new Doc(this.channel, response.doc);
+		const raw = await this.client.api.docs.create(this.channel.id, title, content);
+		return new Doc(this.channel, raw);
 	}
 
 	/**
@@ -69,19 +61,16 @@ export class DocManager extends BaseManager<number, Doc> {
 	 * @returns The edited doc.
 	 */
 	public async edit(docId: number, title: string, content: string) {
-		const response = await this.client.rest.put<{ doc: APIDoc }, APIDocPayload>(
-			Routes.doc(this.channel.id, docId),
-			{ title, content },
-		);
-		return new Doc(this.channel, response.doc);
+		const raw = await this.client.api.docs.edit(this.channel.id, docId, title, content);
+		return new Doc(this.channel, raw);
 	}
 
 	/**
 	 * Delete a doc in the channel.
 	 * @param docId The ID of the doc to delete.
 	 */
-	public async delete(docId: number) {
-		await this.client.rest.delete<{ doc: APIDoc }>(Routes.doc(this.channel.id, docId));
+	public delete(docId: number) {
+		return this.client.api.docs.delete(this.channel.id, docId);
 	}
 }
 

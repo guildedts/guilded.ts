@@ -1,3 +1,5 @@
+import { APIMentions } from "./Channel";
+
 /**
  * The API doc model.
  * @see https://www.guilded.gg/docs/api/docs/Doc
@@ -13,6 +15,8 @@ export interface APIDoc {
 	title: string;
 	/** The content of the doc. */
 	content: string;
+	/** The mentions of the doc. */
+	mentions?: APIMentions;
 	/** The date the doc was created. */
 	createdAt: string;
 	/** The ID of the user who created the doc. */

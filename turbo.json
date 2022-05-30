@@ -5,6 +5,7 @@
 		"build": {
 			"dependsOn": ["^build"],
 			"outputs": ["lib", "typings"]
-		}
+		},
+		"clear": {}
 	}
 }

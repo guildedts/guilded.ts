@@ -57,6 +57,11 @@ export class Client extends EventEmitter {
 		this.groups = new GroupManager(this);
 	}
 
+	/** The API router for the Guilded REST API. */
+	public get api() {
+		return this.rest.router;
+	}
+
 	/** Whether the client is ready to use. */
 	public get isReady() {
 		return this.ws.isConnected;
@@ -98,6 +103,7 @@ export class Client extends EventEmitter {
 	/** @ignore */
 	private onWSConnect(user: APIUser) {
 		this.user = new User(this, user);
+		if(this.options.cacheUsers ?? true) this.users.cache.set(this.user.id, this.user);
 		this.emit('ready', this);
 	}
 

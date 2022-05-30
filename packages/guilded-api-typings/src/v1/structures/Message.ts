@@ -1,3 +1,4 @@
+import { APIMentions } from './Channel';
 import { APIEmbed } from './Embed';
 
 /**
@@ -23,6 +24,8 @@ export interface APIMessage {
 	isPrivate?: boolean;
 	/** Whether the message is silent. */
 	isSilent?: boolean;
+	/** The mentions of the message. */
+	mentions?: APIMentions;
 	/** The date the message was created. */
 	createdAt: string;
 	/** The ID of the user who created the message. */

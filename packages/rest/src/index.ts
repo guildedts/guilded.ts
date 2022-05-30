@@ -1,4 +1,18 @@
-export { RESTManager as default } from './RestManager';
+export { RESTManager as default } from './RESTManager';
 
-export * from './RestManager';
+export * from './RESTManager';
 export * from './GuildedAPIError';
+
+export * from './routers/server/ServerBanRouter';
+export * from './routers/server/ServerMemberRouter';
+export * from './routers/server/ServerRoleRouter';
+export * from './routers/BaseRouter';
+export * from './routers/ChannelRouter';
+export * from './routers/DocRouter';
+export * from './routers/ForumThreadRouter';
+export * from './routers/GroupRouter';
+export * from './routers/ListItemRouter';
+export * from './routers/MessageRouter';
+export * from './routers/ReactionRouter';
+export * from './routers/Router';
+export * from './routers/WebhookRouter';

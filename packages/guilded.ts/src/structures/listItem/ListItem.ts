@@ -1,4 +1,4 @@
-import { APIListItem, APIListItemSummary } from 'guilded-api-typings';
+import { APIListItem, APIListItemSummary, APIMentions } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Note } from './Note';
 import { ListChannel } from '../channel/ListChannel';
@@ -9,8 +9,10 @@ export class ListItem extends Base {
 	public readonly serverId: string;
 	/** The ID of the channel the list item belongs to. */
 	public readonly channelId: string;
-	/** The content of the list item. */
-	public readonly content: string;
+	/** The message of the list item. */
+	public readonly message: string;
+	/** The mentions of the list item. */
+	public readonly mentions?: APIMentions;
 	/** The date the list item was created. */
 	public readonly createdAt: Date;
 	/** The ID of the user that created the list item. */
@@ -41,7 +43,8 @@ export class ListItem extends Base {
 		super(channel.client, raw.id);
 		this.serverId = raw.serverId;
 		this.channelId = raw.channelId;
-		this.content = raw.message;
+		this.message = raw.message;
+		this.mentions = raw.mentions;
 		this.createdAt = new Date(raw.createdAt);
 		this.createdBy = raw.createdBy;
 		this.createdByWebhookId = raw.createdByWebhookId;

@@ -1,4 +1,4 @@
-import { APIMessage, APIMessageType, APIEmbed } from 'guilded-api-typings';
+import { APIMessage, APIMessageType, APIEmbed, APIMentions } from 'guilded-api-typings';
 import { Base } from './Base';
 import { CacheCollection } from './CacheCollection';
 import { ChatBasedChannel } from '../managers/channel/ChannelManager';
@@ -21,6 +21,10 @@ export class Message extends Base {
 	public readonly replyMessageIds: string[];
 	/** Whether the message is private. */
 	public readonly isPrivate?: boolean;
+	/** Whether the message is silent. */
+	public readonly isSilent?: boolean;
+	/** The mentions of the message. */
+	public readonly mentions?: APIMentions;
 	/** The date the message was created. */
 	public readonly createdAt: Date;
 	/** The ID of the user that created the message. */
@@ -49,6 +53,8 @@ export class Message extends Base {
 		this.embeds = raw.embeds ?? [];
 		this.replyMessageIds = raw.replyMessageIds ?? [];
 		this.isPrivate = raw.isPrivate;
+		this.isSilent = raw.isSilent;
+		this.mentions = raw.mentions;
 		this.createdAt = new Date(raw.createdAt);
 		this.createdBy = raw.createdBy;
 		this.createdByWebhookId = raw.createdByWebhookId;

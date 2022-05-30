@@ -1,4 +1,4 @@
-import { APIChannel, APIChannelEditPayload, APIChannelPayload, Routes } from 'guilded-api-typings';
+import { APIChannelEditPayload, APIChannelPayload } from 'guilded-api-typings';
 import { BaseManager } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Channel } from '../../structures/channel/Channel';
@@ -23,13 +23,14 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 	 * @param cache Whether to cache the fetched channel.
 	 * @returns The fetched channel.
 	 */
-	public async fetch(channelId: string, cache = this.client.options.cacheChannels ?? true) {
+	public async fetch(
+		channelId: string,
+		cache = this.client.options.cacheChannels ?? true,
+	): Promise<ChannelResolvable> {
 		let channel = this.cache.get(channelId);
 		if (channel) return channel;
-		const response = await this.client.rest.get<{ channel: APIChannel }>(
-			Routes.channel(channelId),
-		);
-		channel = createChannel(this.client, response.channel);
+		const raw = await this.client.api.channels.fetch(channelId);
+		channel = createChannel(this.client, raw);
 		if (cache) this.cache.set(channelId, channel);
 		return channel;
 	}
@@ -40,11 +41,8 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 	 * @returns The created channel.
 	 */
 	public async create(payload: APIChannelPayload) {
-		const response = await this.client.rest.post<{ channel: APIChannel }, APIChannelPayload>(
-			Routes.channels(),
-			payload,
-		);
-		return createChannel(this.client, response.channel);
+		const raw = await this.client.api.channels.create(payload);
+		return createChannel(this.client, raw);
 	}
 
 	/**
@@ -54,19 +52,16 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 	 * @returns The edited channel.
 	 */
 	public async edit(channelId: string, payload: APIChannelEditPayload) {
-		const response = await this.client.rest.patch<{ channel: APIChannel }, APIChannelEditPayload>(
-			Routes.channel(channelId),
-			payload,
-		);
-		return createChannel(this.client, response.channel);
+		const raw = await this.client.api.channels.edit(channelId, payload);
+		return createChannel(this.client, raw);
 	}
 
 	/**
 	 * Delete a channel from Guilded.
 	 * @param channelId The ID of the channel to delete.
 	 */
-	public async delete(channelId: string) {
-		await this.client.rest.delete(Routes.channel(channelId));
+	public delete(channelId: string) {
+		return this.client.api.channels.delete(channelId);
 	}
 }
 

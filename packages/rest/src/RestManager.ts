@@ -1,5 +1,6 @@
 import { GuildedAPIError } from '.';
 import fetch from 'node-fetch';
+import { Router } from './routers/Router';
 
 /**
  * The REST manager for the Guilded API.
@@ -10,6 +11,8 @@ export class RESTManager {
 	public token?: string;
 	/** The API version for the manager. */
 	public readonly version: number;
+	/** The router for the REST API. */
+	public readonly router = new Router(this);
 
 	/** @param options The options for the REST manager. */
 	public constructor(public readonly options: RESTOptions) {

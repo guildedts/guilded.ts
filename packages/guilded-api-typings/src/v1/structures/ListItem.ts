@@ -1,3 +1,5 @@
+import { APIMentions } from "./Channel";
+
 /**
  * The API list item medel.
  * @see https://www.guilded.gg/docs/api/listItems/ListItem
@@ -20,6 +22,8 @@ export interface APIListItemSummary {
 	channelId: string;
 	/** The message of the list item. */
 	message: string;
+	/** The mentions of the list item. */
+	mentions?: APIMentions;
 	/** The date the list item was created. */
 	createdAt: string;
 	/** The ID of the user who created the list item. */

@@ -33,6 +33,7 @@
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
 	"dependencies": {
+		"guilded-api-typings": "workspace:^",
 		"node-fetch": "^2.6.7"
 	},
 	"devDependencies": {

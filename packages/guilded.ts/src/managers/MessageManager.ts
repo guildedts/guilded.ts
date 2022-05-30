@@ -1,9 +1,7 @@
 import {
-	APIMessage,
 	APIMessagePayload,
 	APIEmbed,
 	APIFetchMessagesQuery,
-	Routes,
 	APIMessageEditPayload,
 } from 'guilded-api-typings';
 import { Embed } from '@guildedts/builders';
@@ -33,22 +31,17 @@ export class MessageManager extends BaseManager<string, Message> {
 	private async fetchSingle(messageId: string, cache: boolean) {
 		let message = this.cache.get(messageId);
 		if (message) return message;
-		const response = await this.client.rest.get<{ message: APIMessage }>(
-			Routes.message(this.channel.id, messageId),
-		);
-		message = new Message(this.channel, response.message);
+		const raw = await this.client.api.messages.fetch(this.channel.id, messageId);
+		message = new Message(this.channel, raw);
 		if (cache) this.cache.set(messageId, message);
 		return message;
 	}
 
 	/** @ignore */
 	private async fetchMany(options: APIFetchMessagesQuery = {}, cache: boolean) {
-		const response = await this.client.rest.get<
-			{ messages: APIMessage[] },
-			APIFetchMessagesQuery
-		>(Routes.messages(this.channel.id), options);
+		const raw = await this.client.api.messages.fetch(this.channel.id, options);
 		const messages = new CacheCollection<string, Message>();
-		for (const data of response.messages) {
+		for (const data of raw) {
 			const message = new Message(this.channel as ChatChannel, data);
 			messages.set(message.id, message);
 			if (cache) this.cache.set(message.id, message);
@@ -62,11 +55,11 @@ export class MessageManager extends BaseManager<string, Message> {
 	 * @returns The created message.
 	 */
 	public async create(payload: string | MessagePayload) {
-		const response = await this.client.rest.post<{ message: APIMessage }, APIMessagePayload>(
-			Routes.messages(this.channel.id),
-			typeof payload === 'string' ? { content: payload } : (payload as APIMessagePayload),
+		const raw = await this.client.api.messages.create(
+			this.channel.id,
+			payload as string | APIMessagePayload,
 		);
-		return new Message(this.channel, response.message);
+		return new Message(this.channel, raw);
 	}
 
 	/**
@@ -76,19 +69,20 @@ export class MessageManager extends BaseManager<string, Message> {
 	 * @returns The edited message.
 	 */
 	public async edit(messageId: string, payload: string | MessageEditPayload) {
-		const response = await this.client.rest.put<{ message: APIMessage }, APIMessageEditPayload>(
-			Routes.message(this.channel.id, messageId),
-			typeof payload === 'string' ? { content: payload } : (payload as APIMessageEditPayload),
+		const raw = await this.client.api.messages.edit(
+			this.channel.id,
+			messageId,
+			payload as string | APIMessagePayload,
 		);
-		return new Message(this.channel, response.message);
+		return new Message(this.channel, raw);
 	}
 
 	/**
 	 * Delete a message in the chat based channel.
 	 * @param messageId The ID of the message to delete.
 	 */
-	public async delete(messageId: string) {
-		await this.client.rest.delete(Routes.message(this.channel.id, messageId));
+	public delete(messageId: string) {
+		return this.client.api.messages.delete(this.channel.id, messageId);
 	}
 }
 
