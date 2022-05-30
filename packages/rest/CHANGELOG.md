@@ -1,5 +1,32 @@
 # @guildedts/rest
 
+## 0.5.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `router` to `RESTManager`
+    -   Add routers
+        -   `BaseRouter`
+        -   `ChannelRouter`
+        -   `DocRouter`
+        -   `ForumThreadRouter`
+        -   `GroupRouter`
+        -   `ListItemRouter`
+        -   `MessageRouter`
+        -   `ReactionRouter`
+        -   `Router`
+        -   `WebhookRouter`
+        -   `ServerBanRouter`
+        -   `ServerMemberRouter`
+        -   `ServerRoleRouter`
+
+### Patch Changes
+
+-   Updated dependencies
+    -   guilded-api-typings@0.2.1
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,28 @@
 # guilded.ts
 
+## 0.6.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `Collector` and `MessageCollector`
+    -   Add `api` to `Client`
+    -   Cache the client user when client is ready
+    -   Add `mentions` to `Doc` and `ListItem`
+    -   Add `mentions` and `isSilent` to `Message`
+    -   Add `createMessageCollector` method to `ChatChannel`
+    -   Change `content` to `message` in `ListItem`
+
+### Patch Changes
+
+-   Updated dependencies
+-   Updated dependencies
+    -   guilded-api-typings@0.2.1
+    -   @guildedts/rest@0.5.0
+    -   @guildedts/builders@0.2.0
+    -   @guildedts/ws@0.2.0
+
 ## 0.5.0
 
 ### Minor Changes

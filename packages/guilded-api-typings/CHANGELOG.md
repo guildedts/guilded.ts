@@ -1,5 +1,15 @@
 # guilded-api-typings
 
+## 0.2.1
+
+### Patch Changes
+
+-   # Features
+
+    -   Add `APIMentions`
+    -   Add `mentions` to `APIDoc`, `APIListItemSummary` and `APIMessage`
+    -   Add `APIWebhookEditPayload`
+
 ## 0.2.0
 
 ### Minor Changes
