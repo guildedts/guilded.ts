@@ -1,5 +1,17 @@
 # guilded.ts
 
+## 0.6.1
+
+### Patch Changes
+
+-   # Features
+
+    -   Add exports for `Collector` and `MessageCollector`
+
+    # Fixes
+
+    -   Update outdated declaration files
+
 ## 0.6.0
 
 ### Minor Changes
