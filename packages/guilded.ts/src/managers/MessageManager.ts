@@ -10,6 +10,7 @@ import { ChatBasedChannel } from './channel/ChannelManager';
 import { CacheCollection } from '../structures/CacheCollection';
 import { ChatChannel } from '../structures/channel/ChatChannel';
 import { Message } from '../structures/Message';
+import { APIMessageEditPayloadResolvable, APIMessagePayloadResolvable } from '@guildedts/rest';
 
 /** A manager of messages that belong to a chat based channel. */
 export class MessageManager extends BaseManager<string, Message> {
@@ -54,10 +55,10 @@ export class MessageManager extends BaseManager<string, Message> {
 	 * @param payload The payload to create the message with.
 	 * @returns The created message.
 	 */
-	public async create(payload: string | MessagePayload) {
+	public async create(payload: MessagePayloadResolvable) {
 		const raw = await this.client.api.messages.create(
 			this.channel.id,
-			payload as string | APIMessagePayload,
+			payload as APIMessagePayloadResolvable,
 		);
 		return new Message(this.channel, raw);
 	}
@@ -68,11 +69,11 @@ export class MessageManager extends BaseManager<string, Message> {
 	 * @param payload The payload to edit the message with.
 	 * @returns The edited message.
 	 */
-	public async edit(messageId: string, payload: string | MessageEditPayload) {
+	public async edit(messageId: string, payload: MessageEditPayloadResolvable) {
 		const raw = await this.client.api.messages.edit(
 			this.channel.id,
 			messageId,
-			payload as string | APIMessagePayload,
+			payload as APIMessageEditPayloadResolvable,
 		);
 		return new Message(this.channel, raw);
 	}
@@ -110,11 +111,17 @@ export declare interface MessageManager {
 /** The payload for creating a message. */
 export interface MessagePayload extends Omit<APIMessagePayload, 'embeds'> {
 	/** The embeds of the message. */
-	embeds?: (APIEmbed | Embed)[];
+	embeds?: (Embed | APIEmbed)[];
 }
 
 /** The payload for editing a message. */
 export interface MessageEditPayload extends Omit<APIMessageEditPayload, 'embeds'> {
 	/** The embeds of the message. */
-	embeds?: (APIEmbed | Embed)[];
+	embeds?: (Embed | APIEmbed)[];
 }
+
+/** The resolvable payload for creating a message. */
+export type MessagePayloadResolvable = string | (Embed | APIEmbed)[] | MessagePayload;
+
+/** The resolvable payload for editing a message. */
+export type MessageEditPayloadResolvable = string | (Embed | APIEmbed)[] | MessageEditPayload;
