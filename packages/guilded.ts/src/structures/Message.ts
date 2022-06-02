@@ -2,7 +2,10 @@ import { APIMessage, APIMessageType, APIEmbed, APIMentions } from 'guilded-api-t
 import { Base } from './Base';
 import { CacheCollection } from './CacheCollection';
 import { ChatBasedChannel } from '../managers/channel/ChannelManager';
-import { MessagePayload } from '../managers/MessageManager';
+import {
+	MessageEditPayloadResolvable,
+	MessagePayloadResolvable,
+} from '../managers/MessageManager';
 import { ReactionManager } from '../managers/ReactionManager';
 
 /** Represents a message on Guilded. */
@@ -149,6 +152,15 @@ export class Message extends Base {
 	}
 
 	/**
+	 * Edit the message.
+	 * @param payload The payload to edit the message with.
+	 * @returns The edited message.
+	 */
+	public async edit(payload: MessageEditPayloadResolvable) {
+		return this.channel.messages.edit(this.id, payload);
+	}
+
+	/**
 	 * Delete the message.
 	 * @returns The deleted message.
 	 */
@@ -158,33 +170,19 @@ export class Message extends Base {
 	}
 
 	/**
-	 * Edit the message.
-	 * @param payload The payload to edit the message with.
-	 * @returns The edited message.
-	 */
-	public async edit(payload: string | MessagePayload) {
-		return this.channel.messages.edit(this.id, payload);
-	}
-
-	/**
 	 * Reply to the message.
 	 * @param payload The payload to reply with.
 	 * @returns The created message.
 	 */
-	public reply(payload: string | MessagePayload) {
-		return this.channel.messages.create(
-			{
-				content: typeof payload === 'string' ? payload : payload.content,
-				embeds: typeof payload !== 'string' ? payload.embeds : undefined,
-				replyMessageIds: [
-					...this.replyMessageIds,
-					this.id,
-					...(typeof payload !== 'string' ? payload.replyMessageIds ?? [] : []),
-				],
-				isPrivate: typeof payload !== 'string' ? payload.isPrivate : undefined,
-				isSilent: typeof payload !== 'string' ? payload.isSilent : undefined,
-			}
-		);
+	public reply(payload: MessagePayloadResolvable) {
+		payload =
+			typeof payload === 'string'
+				? { content: payload }
+				: Array.isArray(payload)
+				? { embeds: payload }
+				: payload;
+		payload.replyMessageIds?.push(...this.replyMessageIds, this.id);
+		return this.channel.messages.create(payload);
 	}
 
 	/**
