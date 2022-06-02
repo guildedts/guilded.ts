@@ -27,6 +27,15 @@
 -   [GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/guilded.ts)
 -   [NPM](https://npmjs.com/guilded.ts)
 -   [Documentation](https://guildedts.js.org/modules/guilded_ts)
+-   [Guide](https://guide.guildedts.js.org)
+
+# Packages
+
+-   `guilded.ts` ([GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/guilded.ts) | [NPM](https://npmjs.com/guilded.ts)) - The main package for interacting with the [Guilded](https://www.guilded.gg) API.
+-   `guilded-api-typings` ([GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/guilded-api-typings) | [NPM](https://npmjs.com/guilded-api-typings)) - Type definitions for the [Guilded](https://www.guilded.gg) API.
+-   `@guildedts/builders` ([GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/builders) | [NPM](https://npmjs.com/@guildedts/builders)) - A set of builders for creating a [Guilded](https://www.guilded.gg) bot.
+-   `@guildedts/rest` ([GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/rest) | [NPM](https://npmjs.com/@guildedts/rest)) - The REST API manager for Guilded.TS.
+-   `@guildedts/ws` ([GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/ws) | [NPM](https://npmjs.com/@guildedts/ws)) - The Websocket API manager for Guilded.TS.
 
 # Installation
 
