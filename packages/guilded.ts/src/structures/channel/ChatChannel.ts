@@ -1,7 +1,7 @@
 import { APIChannel } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
-import { MessageManager, MessagePayload } from '../../managers/MessageManager';
+import { MessageManager, MessagePayloadResolvable } from '../../managers/MessageManager';
 import { CollectorOptions } from '../../collectors/Collector';
 import { Message } from '../Message';
 import { MessageCollector } from '../../collectors/MessageCollector';
@@ -28,7 +28,7 @@ export class ChatChannel extends Channel {
 	 * @param payload The payload to sent the message with.
 	 * @returns The sent message.
 	 */
-	public send(payload: string | MessagePayload) {
+	public send(payload: MessagePayloadResolvable) {
 		return this.messages.create(payload);
 	}
 
