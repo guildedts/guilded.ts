@@ -1,4 +1,5 @@
 import {
+	APIEmbed,
 	APIFetchMessagesQuery,
 	APIMessage,
 	APIMessageEditPayload,
@@ -39,10 +40,14 @@ export class MessageRouter extends BaseRouter {
 	 * @param payload The payload to create the message with.
 	 * @returns The created message.
 	 */
-	public async create(channelId: string, payload: string | APIMessagePayload) {
+	public async create(channelId: string, payload: APIMessagePayloadResolvable) {
 		const { message } = await this.rest.post<{ message: APIMessage }, APIMessagePayload>(
 			Routes.messages(channelId),
-			typeof payload === 'string' ? { content: payload } : payload,
+			typeof payload === 'string'
+				? { content: payload }
+				: Array.isArray(payload)
+				? { embeds: payload }
+				: payload,
 		);
 		return message;
 	}
@@ -54,22 +59,30 @@ export class MessageRouter extends BaseRouter {
 	 * @param payload The payload to edit the message with.
 	 * @returns The edited message.
 	 */
-	public async edit(channelId: string, messageId: string, payload: string | APIMessageEditPayload) {
+	public async edit(
+		channelId: string,
+		messageId: string,
+		payload: APIMessageEditPayloadResolvable,
+	) {
 		const { message } = await this.rest.put<{ message: APIMessage }, APIMessageEditPayload>(
 			Routes.message(channelId, messageId),
-			typeof payload === 'string' ? { content: payload } : payload,
+			typeof payload === 'string'
+				? { content: payload }
+				: Array.isArray(payload)
+				? { embeds: payload }
+				: payload,
 		);
 		return message;
-    }
-    
-    /**
-     * Delete a message from Guilded.
-     * @param channelId The ID of the channel the message belongs to.
-     * @param messageId The ID of the message to delete.
-     */
-    public delete(channelId: string, messageId: string) {
-        return this.rest.delete<void>(Routes.message(channelId, messageId));
-    }
+	}
+
+	/**
+	 * Delete a message from Guilded.
+	 * @param channelId The ID of the channel the message belongs to.
+	 * @param messageId The ID of the message to delete.
+	 */
+	public delete(channelId: string, messageId: string) {
+		return this.rest.delete<void>(Routes.message(channelId, messageId));
+	}
 }
 
 export declare interface MessageRouter {
@@ -89,3 +102,9 @@ export declare interface MessageRouter {
 	 */
 	fetch(channelId: string, options?: APIFetchMessagesQuery): Promise<APIMessage[]>;
 }
+
+/** The resolvable payload for creating a message. */
+export type APIMessagePayloadResolvable = string | APIEmbed[] | APIMessagePayload;
+
+/** The resolvable payload for editing a message. */
+export type APIMessageEditPayloadResolvable = string | APIEmbed[] | APIMessageEditPayload;
