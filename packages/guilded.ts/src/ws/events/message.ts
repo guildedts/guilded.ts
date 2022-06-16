@@ -5,7 +5,7 @@ import { Message } from '../../structures/Message';
 
 /**
  * Handle the ChatMessageCreated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function created(client: Client, data: WSEvents['ChatMessageCreated']) {
@@ -17,7 +17,7 @@ export async function created(client: Client, data: WSEvents['ChatMessageCreated
 
 /**
  * Handle the ChatMessageUpdated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function updated(client: Client, data: WSEvents['ChatMessageUpdated']) {
@@ -29,7 +29,7 @@ export async function updated(client: Client, data: WSEvents['ChatMessageUpdated
 
 /**
  * Handle the ChatMessageDeleted event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function deleted(client: Client, data: WSEvents['ChatMessageDeleted']) {

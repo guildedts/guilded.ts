@@ -1,5 +1,5 @@
 /**
- * The API user model.
+ * Represents a user on Guilded.
  * @see https://www.guilded.gg/docs/api/members/User
  */
 export interface APIUser extends APIUserSummary {
@@ -10,14 +10,14 @@ export interface APIUser extends APIUserSummary {
 }
 
 /**
- * The API user summary model.
+ * Represents a summary of a user on Guilded.
  * @see https://www.guilded.gg/docs/api/members/UserSummary
  */
 export interface APIUserSummary {
 	/** The ID of the user. */
 	id: string;
-	/** The type of user. */
-	type?: APIUserType;
+	/** The type of the user. */
+	type?: APIUserTypeString;
 	/** The name of the user. */
 	name: string;
 	/** The URL of the user's avatar. */
@@ -25,8 +25,18 @@ export interface APIUserSummary {
 }
 
 /**
- * The API user types.
+ * The type of a user on Guilded.
  * @see https://www.guilded.gg/docs/api/members/User
  * @see https://www.guilded.gg/docs/api/members/UserSummary
  */
-export type APIUserType = 'bot' | 'user';
+export enum APIUserType {
+	Bot = 'bot',
+	User = 'user',
+}
+
+/**
+ * The type string of a user on Guilded.
+ * @see https://www.guilded.gg/docs/api/members/User
+ * @see https://www.guilded.gg/docs/api/members/UserSummary
+ */
+export type APIUserTypeString = `${APIUserType}`;

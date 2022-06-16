@@ -1,11 +1,9 @@
-import { APIListItemNote, APIListItemNoteSummary } from 'guilded-api-typings';
+import { APIMentions, APINote, APINoteSummary } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { ListItem } from './/ListItem';
 
 /** Represents a list item note on Guilded. */
 export class Note extends Base {
-	/** The content of the note. */
-	public readonly content?: string;
 	/** The date the note was created. */
 	public readonly createdAt: Date;
 	/** The ID of the user that created the note. */
@@ -14,6 +12,10 @@ export class Note extends Base {
 	public readonly editedAt?: Date;
 	/** The ID of the user that edited the note. */
 	public readonly editedBy?: string;
+	/** The mentions of the note. */
+	public readonly mentions?: APIMentions;
+	/** The content of the note. */
+	public readonly content?: string;
 
 	/**
 	 * @param item The list item the note belongs to.
@@ -21,7 +23,7 @@ export class Note extends Base {
 	 */
 	public constructor(
 		public readonly item: ListItem,
-		public readonly raw: APIListItemNote | APIListItemNoteSummary,
+		public readonly raw: APINote | APINoteSummary,
 	) {
 		super(item.client, item.id);
 		this.content = 'content' in raw ? raw.content : undefined;
@@ -36,9 +38,9 @@ export class Note extends Base {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of the note. */
+	/** The server member that created the note. */
 	public get author() {
-		return this.client.users.cache.get(this.createdBy);
+		return this.item.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The timestamp the note was edited. */
@@ -46,8 +48,8 @@ export class Note extends Base {
 		return this.editedAt ? this.editedAt.getTime() : undefined;
 	}
 
-	/** The editor of the note. */
+	/** The server member that edited the note. */
 	public get editor() {
-		return this.editedBy ? this.client.users.cache.get(this.editedBy) : undefined;
+		return this.editedBy ? this.item.server?.members.cache.get(this.editedBy) : undefined;
 	}
 }

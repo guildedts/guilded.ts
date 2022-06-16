@@ -23,8 +23,8 @@ export class ListItem extends Base {
 	public readonly editedAt?: Date;
 	/** The ID of the user that edited the list item. */
 	public readonly editedBy?: string;
-	/** The ID of the parent list item. */
-	public readonly parentListItemId?: string;
+	/** The ID of the list item the list item belongs to. */
+	public readonly parentId?: string;
 	/** The date the list item was completed. */
 	public readonly completedAt?: Date;
 	/** The ID of the user that completed the list item. */
@@ -50,7 +50,7 @@ export class ListItem extends Base {
 		this.createdByWebhookId = raw.createdByWebhookId;
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
 		this.editedBy = raw.updatedBy;
-		this.parentListItemId = raw.parentListItemId;
+		this.parentId = raw.parentListItemId;
 		this.completedAt = raw.completedAt ? new Date(raw.completedAt) : undefined;
 		this.completedBy = raw.completedBy;
 		this.note = raw.note ? new Note(this, raw.note) : undefined;
@@ -71,9 +71,9 @@ export class ListItem extends Base {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of the list item. */
+	/** The server member that created the list item. */
 	public get author() {
-		return this.client.users.cache.get(this.createdBy);
+		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The webhook that created the list item. */
@@ -83,9 +83,9 @@ export class ListItem extends Base {
 			: undefined;
 	}
 
-	/** The ID of the author that created the list item. */
+	/** The ID of the user that created the list item. */
 	public get authorId() {
-		return this.createdByWebhookId ?? this.createdBy;
+		return this.createdByWebhookId || this.createdBy;
 	}
 
 	/** The timestamp the list item was edited. */
@@ -93,16 +93,14 @@ export class ListItem extends Base {
 		return this.editedAt?.getTime();
 	}
 
-	/** The editor of the list item. */
+	/** The server member that edited the list item. */
 	public get editor() {
-		return this.editedBy ? this.client.users.cache.get(this.editedBy) : undefined;
+		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
 	}
 
-	/** The parent list item. */
-	public get parentListItem(): ListItem | undefined {
-		return this.parentListItemId
-			? this.channel.items.cache.get(this.parentListItemId)
-			: undefined;
+	/** The list item the list item belongs to. */
+	public get parent() {
+		return this.parentId ? this.channel.items.cache.get(this.parentId) : undefined;
 	}
 
 	/** The timestamp the list item was completed. */
@@ -110,9 +108,9 @@ export class ListItem extends Base {
 		return this.completedAt?.getTime();
 	}
 
-	/** The completer of the list item. */
+	/** The server member that completed the list item. */
 	public get completer() {
-		return this.completedBy ? this.client.users.cache.get(this.completedBy) : undefined;
+		return this.completedBy ? this.server?.members.cache.get(this.completedBy) : undefined;
 	}
 
 	/** Whether the list item is completed. */
@@ -132,17 +130,17 @@ export class ListItem extends Base {
 	 */
 	public fetch(cache?: boolean) {
 		this.channel.items.cache.delete(this.id);
-		return this.channel.items.fetch(this.id, cache);
+		return this.channel.items.fetch(this.id, cache) as Promise<this>;
 	}
 
 	/**
 	 * Edit the list item.
-	 * @param content The content to edit the list item with.
-	 * @param note The note to edit the list item with.
+	 * @param content The content of the list item.
+	 * @param note The note of the list item.
 	 * @returns The edited list item.
 	 */
 	public edit(content: string, note?: string) {
-		return this.channel.items.edit(this.id, content, note);
+		return this.channel.items.edit(this.id, content, note) as Promise<this>;
 	}
 
 	/**

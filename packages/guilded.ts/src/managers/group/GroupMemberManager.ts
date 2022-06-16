@@ -1,9 +1,9 @@
 import { BaseManager } from '../BaseManager';
 import { Group } from '../../structures/Group';
 
-/** A manager of members that belong to a group. */
+/** The manager of members that belong to a group. */
 export class GroupMemberManager extends BaseManager<void, void> {
-	/** @param group The group that owns the members. */
+	/** @param group The group the members belong to. */
 	public constructor(public readonly group: Group) {
 		super(group.client);
 	}

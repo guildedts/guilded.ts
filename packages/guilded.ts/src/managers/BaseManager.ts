@@ -1,13 +1,13 @@
 import { Client } from '../structures/Client';
 import { CacheCollection } from '../structures/CacheCollection';
 
-/** Manager for managing API methods of a data model. */
+/** The manager of a Guilded data model. */
 export class BaseManager<K = string, V = any> {
 	/** This cache of the manager. */
 	public readonly cache: CacheCollection<K, V>;
 
 	/**
-	 * @param client The client that instantiated the manager.
+	 * @param client The client the manager belongs to.
 	 * @param maxCache The maximum cache size of the manager.
 	 */
 	constructor(public readonly client: Client, maxCache = Infinity) {

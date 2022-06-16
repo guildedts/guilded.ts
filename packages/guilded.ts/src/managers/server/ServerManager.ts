@@ -2,9 +2,9 @@ import { BaseManager } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Server } from '../../structures/server/Server';
 
-/** A manager of servers that belong to the client. */
+/** The manager of servers that belong to the client. */
 export class ServerManager extends BaseManager<string, Server> {
-	/** @param client The client that owns the servers. */
+	/** @param client The client the servers belong to. */
 	public constructor(client: Client) {
 		super(client, client.options.maxServerCache);
 	}
@@ -15,10 +15,11 @@ export class ServerManager extends BaseManager<string, Server> {
 	 * @param cache Whether to cache the fetched server.
 	 * @returns The fetched server.
 	 */
-	public fetch(serverId: string, cache = this.client.options.cacheServers ?? true) {
+	public async fetch(serverId: string, cache = this.client.options.cacheServers ?? true) {
 		let server = this.cache.get(serverId);
 		if (server) return server;
-		server = new Server(this.client, { id: serverId });
+		const raw = await this.client.api.servers.fetch(serverId);
+		server = new Server(this.client, raw);
 		if (cache) this.cache.set(serverId, server);
 		return server;
 	}

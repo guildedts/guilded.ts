@@ -1,4 +1,3 @@
-import { Routes } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Server } from './Server';
 
@@ -20,15 +19,8 @@ export class ServerRole extends Base<number> {
 	/**
 	 * Award XP to the role.
 	 * @param amount The amount of XP to award to the role.
-	 * @returns The amount of XP that was awarded.
 	 */
-	public async awardXP(amount: number) {
-		await this.client.rest.post<undefined, { amount: number }>(
-			Routes.serverRoleXP(this.server.id, this.id),
-			{
-				amount,
-			},
-		);
-		return amount;
+	public awardXp(amount: number) {
+		return this.server.roles.awardXp(this.id, amount);
 	}
 }

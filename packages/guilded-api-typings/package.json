@@ -9,9 +9,9 @@
 		"typings"
 	],
 	"scripts": {
-		"build": "yarn clear && yarn tsc",
-		"clear": "yarn rimraf lib typings",
-		"prepublishOnly": "yarn build"
+		"build": "run clear && tsc",
+		"clear": "rimraf lib typings",
+		"prepublishOnly": "run build"
 	},
 	"keywords": [
 		"guilded",

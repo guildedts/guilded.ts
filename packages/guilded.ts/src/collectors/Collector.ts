@@ -13,7 +13,7 @@ export class Collector<Model extends Base> extends EventEmitter {
 	public endedAt?: Date;
 
 	/**
-	 * @param client The client that the collector belongs to.
+	 * @param client The client the collector belongs to.
 	 * @param options The options of the collector.
 	 */
 	public constructor(
@@ -48,14 +48,17 @@ export class Collector<Model extends Base> extends EventEmitter {
 			: Date.now() - this.createdAt.getTime();
 	}
 
-	/** Ends the collector. */
+	/** End the collector. */
 	public end() {
 		if (this.isEnded) return;
 		this.endedAt = new Date();
 		this.emit('end', this.collected);
 	}
 
-	/** Collect a item. */
+	/**
+	 * Collect a item.
+	 * @param item The item to collect.
+	 */
 	public async collect(item: Model) {
 		if (this.isEnded || (this.options.filter ? !(await this.options.filter(item)) : false))
 			return;
@@ -64,7 +67,10 @@ export class Collector<Model extends Base> extends EventEmitter {
 		if (this.collected.size >= (this.options.max ?? Infinity)) this.end();
 	}
 
-	/** Dispose a collected item. */
+	/**
+	 * Dispose a collected item.
+	 * @param itemId The ID of the item to dispose.
+	 */
 	public dispose(itemId: Model['id']) {
 		if (this.options.dispose === false || this.isEnded || !this.collected.has(itemId)) return;
 		this.collected.delete(itemId);

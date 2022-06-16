@@ -3,13 +3,26 @@ import { CacheCollection } from '../../structures/CacheCollection';
 import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
 
-/** A manager of webhooks that belong to a channel. */
+/** The manager of webhooks that belong to a channel. */
 export class ChannelWebhookManager extends BaseManager<string, Webhook> {
-	/** @param channel The channel that owns the webhooks. */
+	/** @param channel The channel the webhooks belong to. */
 	public constructor(public readonly channel: Channel) {
 		super(channel.client, channel.client.options.maxWebhookCache);
 	}
 
+	/**
+	 * Fetch a webhook from the channel, or cache.
+	 * @param webhookId The ID of the webhoook to fetch.
+	 * @param cache Whether to cache the fetched webhook.
+	 * @returns The fetched webhook.
+	 */
+	public fetch(webhookId: string, cache?: boolean): Promise<Webhook>;
+	/**
+	 * Fetch multiple webhooks from the channel.
+	 * @param cache Whether to cache the fetched webhooks.
+	 * @returns The fetched webhooks.
+	 */
+	public fetch(cache: boolean): Promise<CacheCollection<string, Webhook>>;
 	/** @ignore */
 	public fetch(
 		arg1: string | boolean = this.client.options.cacheWebhooks ?? true,
@@ -47,7 +60,7 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 
 	/**
 	 * Create a webhook in the channel.
-	 * @param name The name to create the webhook with.
+	 * @param name The name of the webhook.
 	 * @returns The created webhook.
 	 */
 	public async create(name: string) {
@@ -62,7 +75,7 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	/**
 	 * Edit a webhook in the channel.
 	 * @param webhookId The ID of the webhook to edit.
-	 * @param name The name to edit the webhook with.
+	 * @param name The name of the webhook.
 	 * @param channelId The ID of the channel to move the webhook to.
 	 * @returns The edited webhook.
 	 */
@@ -83,21 +96,4 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	public delete(webhookId: string) {
 		return this.client.api.webhooks.delete(this.channel.serverId, webhookId);
 	}
-}
-
-export declare interface ChannelWebhookManager {
-	/**
-	 * Fetch a single webhook from the channel, or cache.
-	 * @param webhookId The ID of the webhoook to fetch.
-	 * @param cache Whether to cache the fetched webhook.
-	 * @returns The fetched webhook.
-	 */
-	fetch(webhookId: string, cache?: boolean): Promise<Webhook>;
-
-	/**
-	 * Fetch multiple webhooks from the channel.
-	 * @param cache Whether to cache the fetched webhooks.
-	 * @returns The fetched webhooks.
-	 */
-	fetch(cache: boolean): Promise<CacheCollection<string, Webhook>>;
 }

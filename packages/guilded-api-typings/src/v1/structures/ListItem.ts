@@ -1,16 +1,16 @@
-import { APIMentions } from "./Channel";
+import { APIMentions } from './Channel';
 
 /**
- * The API list item medel.
+ * Represents a list item on Guilded.
  * @see https://www.guilded.gg/docs/api/listItems/ListItem
  */
 export interface APIListItem extends APIListItemSummary {
 	/** The note of the list item. */
-	note?: APIListItemNote;
+	note?: APINote;
 }
 
 /**
- * The API list item summary model.
+ * Represents a summary of a list item on Guilded.
  * @see https://www.guilded.gg/docs/api/listItems/ListItemSummary
  */
 export interface APIListItemSummary {
@@ -26,45 +26,47 @@ export interface APIListItemSummary {
 	mentions?: APIMentions;
 	/** The date the list item was created. */
 	createdAt: string;
-	/** The ID of the user who created the list item. */
+	/** The ID of the user that created the list item. */
 	createdBy: string;
 	/** The ID of the webhook that created the list item. */
 	createdByWebhookId?: string;
 	/** The date the list item was edited. */
 	updatedAt?: string;
-	/** The ID of the user who edited the list item. */
+	/** The ID of the user that edited the list item. */
 	updatedBy?: string;
-	/** The ID of the parent list item. */
+	/** The ID of the parent list item that the list item belongs to. */
 	parentListItemId?: string;
 	/** The date the list item was created. */
 	completedAt?: string;
-	/** The ID of the user who completed the list item. */
+	/** The ID of the user that completed the list item. */
 	completedBy?: string;
 	/** The note of the list item. */
-	note?: APIListItemNoteSummary;
+	note?: APINoteSummary;
 }
 
 /**
- * The API list item note medel.
+ * Represents a list item note on Guilded.
  * @see https://www.guilded.gg/docs/api/listItems/ListItem
  */
-export interface APIListItemNote extends APIListItemSummary {
-	/** The contern of the note. */
+export interface APINote extends APINoteSummary {
+	/** The content of the note. */
 	content: string;
 }
 
 /**
- * The API list item note summary model.
- * @see https://www.guilded.gg/docs/api/listItems/ListItem
+ * Represents a summary of a note on a list item on Guilded.
+ * @see https://www.guilded.gg/docs/api/listItems/ListItemSummary
  */
-export interface APIListItemNoteSummary {
+export interface APINoteSummary {
+	/** The mentions of the note. */
+	mentions?: APIMentions;
 	/** The date the note was created. */
 	createdAt: string;
-	/** The ID of the user who created the note. */
+	/** The ID of the user that created the note. */
 	createdBy: string;
 	/** The date the note was edited. */
 	updatedAt?: string;
-	/** The ID of the user who edited the note. */
+	/** The ID of the user that edited the note. */
 	updatedBy?: string;
 }
 
@@ -76,14 +78,14 @@ export interface APIListItemPayload {
 	/** The message of the list item. */
 	message: string;
 	/** The note of the list item. */
-	note?: APIListItemNotePayload;
+	note?: APINotePayload;
 }
 
 /**
- * The API list item note payload object.
+ * The payload for creating a note.
  * @see https://www.guilded.gg/docs/api/listItems/ListItemCreate
  */
-export interface APIListItemNotePayload {
+export interface APINotePayload {
 	/** The content of the note. */
 	content: string;
 }

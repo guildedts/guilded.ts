@@ -3,19 +3,19 @@ import { BaseRouter } from './BaseRouter';
 
 /** The channel router for the Guilded REST API. */
 export class ChannelRouter extends BaseRouter {
-    /**
-     * Fetch a channel from Guilded.
-     * @param channelId The ID of the channel to fetch.
-     * @returns The fetched channel.
-     */
-    public async fetch(channelId: string) {
-        const { channel } = await this.rest.get<{ channel: APIChannel }>(Routes.channel(channelId));
-        return channel;
-    }
+	/**
+	 * Fetch a channel from Guilded.
+	 * @param channelId The ID of the channel to fetch.
+	 * @returns The fetched channel.
+	 */
+	public async fetch(channelId: string) {
+		const { channel } = await this.rest.get<{ channel: APIChannel }>(Routes.channel(channelId));
+		return channel;
+	}
 
-    /**
-     * Create a channel on Guilded.
-	 * @param payload The payload to create the channel with.
+	/**
+	 * Create a channel on Guilded.
+	 * @param payload The payload of the channel.
 	 * @returns The created channel.
 	 */
 	public async create(payload: APIChannelPayload) {
@@ -29,7 +29,7 @@ export class ChannelRouter extends BaseRouter {
 	/**
 	 * Edit a channel on Guilded.
 	 * @param channelId The ID of the channel to edit.
-	 * @param payload The payload to edit the channel with.
+	 * @param payload The payload of the channel.
 	 * @returns The edited channel.
 	 */
 	public async edit(channelId: string, payload: APIChannelEditPayload) {

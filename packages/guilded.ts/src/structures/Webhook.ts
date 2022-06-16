@@ -51,12 +51,12 @@ export class Webhook extends Base {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of the webhook. */
+	/** The server member that created the webhook. */
 	public get author() {
-		return this.client.users.cache.get(this.createdBy);
+		return this.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The ID of the author. */
+	/** The ID of the user that created the webhook. */
 	public get authorId() {
 		return this.createdBy;
 	}
@@ -68,8 +68,8 @@ export class Webhook extends Base {
 
 	/**
 	 * Send a message with the webhook.
-	 * @param content The content to create the message with.
-	 * @param embeds The embeds to create the message with.
+	 * @param content The content of the message.
+	 * @param embeds The embeds of the message.
 	 */
 	public async send(content: string, embeds?: (APIEmbed | Embed)[]) {
 		await fetch(`https://media.guilded.gg/webhooks/${this.id}/${this.token}`, {
@@ -82,15 +82,19 @@ export class Webhook extends Base {
 	}
 
 	/**
-	 * Edite the webhook.
-	 * @param name The name to edit the webhook with.
+	 * Edit the webhook.
+	 * @param name The name of the webhook.
+	 * @param channelId The ID of the channel the webhook belongs to.
 	 * @returns The edited webhook.
 	 */
-	public edit(name: string) {
-		return this.channel.webhooks.edit(this.id, name);
+	public edit(name: string, channelId?: string) {
+		return this.channel.webhooks.edit(this.id, name, channelId);
 	}
 
-	/** Deletes the webhook. */
+	/**
+	 * Delete the webhook.
+	 * @returns The deleted webhook.
+	 */
 	public async delete() {
 		await this.channel.webhooks.delete(this.id);
 		return this;

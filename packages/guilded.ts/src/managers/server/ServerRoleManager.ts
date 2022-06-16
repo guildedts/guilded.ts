@@ -6,14 +6,14 @@ import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 
 /** A manager of roles that belong to a server. */
 export class ServerRoleManager extends BaseManager<number, ServerRole> {
-	/** @param server The server that owns the roles. */
+	/** @param server The server the roles belong to. */
 	constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerRoleCache);
 	}
 
 	/**
 	 * Fetch roles that belong to a member.
-	 * @param memberId The ID of the member to fetch roles from.
+	 * @param memberId The ID of the member the roles belong to.
 	 * @param cache Whether to cache the fetched roles.
 	 * @returns The fetched roles that belong to the member.
 	 */
@@ -34,7 +34,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 
 	/**
 	 * Assign a role to a member.
-	 * @param memberId The ID of the member to add the role to.
+	 * @param memberId The ID of the member the role belongs to.
 	 * @param roleId The ID of the role to add to the member.
 	 * @returns The role that was added to the member.
 	 */
@@ -45,12 +45,21 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 
 	/**
 	 * Unassign a role from a member.
-	 * @param userId The ID of the member to remove the role from.
+	 * @param userId The ID of the member the role belongs to.
 	 * @param roleId The ID of the role to remove from the member.
 	 * @returns The role that was removed from the member.
 	 */
 	public async unassign(userId: string, roleId: number) {
 		await this.client.api.serverMembers.removeRole(this.server.id, userId, roleId);
 		return new ServerRole(this.server, { id: roleId });
+	}
+
+	/**
+	 * Award XP to a role.
+	 * @param roleId The ID of the role to award XP to.
+	 * @param amount The amount of XP to award to the role.
+	 */
+	public awardXp(roleId: number, amount: number) {
+		return this.client.api.serverRoles.awardXp(this.server.id, roleId, amount);
 	}
 }

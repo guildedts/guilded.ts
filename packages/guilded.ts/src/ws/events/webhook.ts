@@ -4,7 +4,7 @@ import { Webhook } from '../../structures/Webhook';
 
 /**
  * Handle the TeamWebhookCreated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function created(client: Client, data: WSEvents['TeamWebhookCreated']) {
@@ -16,7 +16,7 @@ export async function created(client: Client, data: WSEvents['TeamWebhookCreated
 
 /**
  * Handle the TeamWebhookUpdated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function updated(client: Client, data: WSEvents['TeamWebhookUpdated']) {

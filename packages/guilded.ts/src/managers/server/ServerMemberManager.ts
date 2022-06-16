@@ -3,13 +3,26 @@ import { CacheCollection } from '../../structures/CacheCollection';
 import { Server } from '../../structures/server/Server';
 import { ServerMember } from '../../structures/server/ServerMember';
 
-/** A manager of members that belong to a server. */
+/** The manager of members that belong to a server. */
 export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	/** @param server The server the members belongs to. */
 	public constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerMemberCache);
 	}
 
+	/**
+	 * Fetch a member from the server, or cache.
+	 * @param memberId The ID of the member to fetch.
+	 * @param cache Whether to cache the fetched member.
+	 * @returns The fetched member.
+	 */
+	public fetch(memberId: string, cache?: boolean): Promise<ServerMember>;
+	/**
+	 * Fetch members from the server.
+	 * @param cache Whether to cache the fetched members.
+	 * @returns The fetched members.
+	 */
+	public fetch(cache?: boolean): Promise<CacheCollection<string, ServerMember>>;
 	/** @ignore */
 	public async fetch(
 		arg1: string | boolean = this.client.options.cacheServerMembers ?? true,
@@ -46,18 +59,18 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	}
 
 	/**
-	 * Set a member's nickname.
-	 * @param memberId The ID of the member to set the nickname for.
-	 * @param nickname The nickname to set.
-	 * @returns The nickname that was set.
+	 * Set the nickname of a member in the server.
+	 * @param memberId The ID of the member to edit.
+	 * @param nickname The nickname of the member.
+	 * @returns The nickname of the member.
 	 */
 	public setNickname(memberId: string, nickname: string) {
 		return this.client.api.serverMembers.setNickname(this.server.id, memberId, nickname);
 	}
 
 	/**
-	 * Remove a member's nickname.
-	 * @param memberId The ID of the member to remove the nickname from.
+	 * Remove the nickname of a member in the server.
+	 * @param memberId The ID of the member to edit.
 	 */
 	public removeNickname(memberId: string) {
 		return this.client.api.serverMembers.removeNickname(this.server.id, memberId);
@@ -74,7 +87,7 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	/**
 	 * Ban a member from the server.
 	 * @param memberId The ID of the member to ban.
-	 * @param reason The reason for the ban.
+	 * @param reason The reason of the ban.
 	 * @returns The created ban.
 	 */
 	public ban(memberId: string, reason?: string) {
@@ -83,36 +96,19 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 
 	/**
 	 * Unban a member from the server.
-	 * @param userId The ID of the user to unban
+	 * @param memberId The ID of the member to unban.
 	 */
-	public async unban(userId: string) {
-		await this.server.bans.remove(userId);
+	public async unban(memberId: string) {
+		await this.server.bans.remove(memberId);
 	}
 
 	/**
-	 * Award XP to a member.
+	 * Award XP to a member in the server.
 	 * @param memberId The ID of the member to award XP to.
-	 * @param amount The amount of XP to award the member.
+	 * @param amount The amount of XP to award to the member.
 	 * @returns The total amount of XP the member has.
 	 */
-	public awardXP(memberId: string, amount: number) {
-		return this.client.api.serverMembers.awardXP(this.server.id, memberId, amount);		
+	public awardXp(memberId: string, amount: number) {
+		return this.client.api.serverMembers.awardXp(this.server.id, memberId, amount);
 	}
-}
-
-export declare interface ServerMemberManager {
-	/**
-	 * Fetch a single member from the server, or cache.
-	 * @param memberId The ID of the member to fetch.
-	 * @param cache Whether to cache the fetched member.
-	 * @returns The fetched member.
-	 */
-	fetch(memberId: string, cache?: boolean): Promise<ServerMember>;
-
-	/**
-	 * Fetch multiple members from the server.
-	 * @param cache Whether to cache the fetched members.
-	 * @returns The fetched members.
-	 */
-	fetch(cache?: boolean): Promise<CacheCollection<string, ServerMember>>;
 }

@@ -5,9 +5,9 @@ import { User } from '../User';
 
 /** Represents a server ban on Guilded. */
 export class ServerBan extends Base {
-	/** The user that was banned. */
+	/** The user the ban belongs to. */
 	public readonly user: User;
-	/** The reason for the ban. */
+	/** The reason of the ban. */
 	public readonly reason?: string;
 	/** The ID of the user that created the ban. */
 	public readonly createdBy: string;
@@ -15,8 +15,8 @@ export class ServerBan extends Base {
 	public readonly createdAt: Date;
 
 	/**
-	 * @param server The server that the ban belongs to.
-	 * @param raw The raw data of the ban.
+	 * @param server The server the ban belongs to.
+	 * @param raw The raw data of the server ban.
 	 */
 	public constructor(public readonly server: Server, public readonly raw: APIServerBan) {
 		super(server.client, raw.user.id);
@@ -31,7 +31,12 @@ export class ServerBan extends Base {
 		return this.server.bans.cache.has(this.id);
 	}
 
-	/** The author of the ban. */
+	/** The server member the ban belongs to. */
+	public get member() {
+		return this.server.members.cache.get(this.id);
+	}
+
+	/** The user that created the server ban. */
 	public get author() {
 		return this.client.users.cache.get(this.createdBy);
 	}
@@ -48,6 +53,6 @@ export class ServerBan extends Base {
 	 */
 	public fetch(cache?: boolean) {
 		this.server.bans.cache.delete(this.id);
-		return this.server.bans.fetch(this.id, cache);
+		return this.server.bans.fetch(this.id, cache) as Promise<this>;
 	}
 }

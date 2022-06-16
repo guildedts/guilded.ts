@@ -16,30 +16,30 @@ export const wsEventMap: {
 	ChatMessageUpdated: message.updated,
 	ChatMessageDeleted: message.deleted,
 	TeamMemberJoined: member.joined,
-    TeamMemberRemoved: member.removed,
-    TeamMemberBanned: member.banned,
-    TeamMemberUnbanned: member.unbanned,
-    TeamMemberUpdated: member.updated,
-    teamRolesUpdated: server.rolesUpdated,
-    TeamChannelCreated: channel.created,
-    TeamChannelUpdated: channel.updated,
-    TeamChannelDeleted: channel.deleted,
-    TeamWebhookCreated: webhook.created,
-    TeamWebhookUpdated: webhook.updated,
-    DocCreated: doc.created,
-    DocUpdated: doc.updated,
-    DocDeleted: doc.deleted,
-    ListItemCreated: listItem.created,
-    ListItemUpdated: listItem.updated,
-    ListItemDeleted: listItem.deleted,
-    ListItemCompleted: listItem.completed,
-    ListItemUncompleted: listItem.uncompleted,
+	TeamMemberRemoved: member.removed,
+	TeamMemberBanned: member.banned,
+	TeamMemberUnbanned: member.unbanned,
+	TeamMemberUpdated: member.updated,
+	teamRolesUpdated: server.rolesUpdated,
+	TeamChannelCreated: channel.created,
+	TeamChannelUpdated: channel.updated,
+	TeamChannelDeleted: channel.deleted,
+	TeamWebhookCreated: webhook.created,
+	TeamWebhookUpdated: webhook.updated,
+	DocCreated: doc.created,
+	DocUpdated: doc.updated,
+	DocDeleted: doc.deleted,
+	ListItemCreated: listItem.created,
+	ListItemUpdated: listItem.updated,
+	ListItemDeleted: listItem.deleted,
+	ListItemCompleted: listItem.completed,
+	ListItemUncompleted: listItem.uncompleted,
 };
 
 /**
- * Handle a WebSocket event.
- * @param client The client instance.
- * @param event The event that was emitted.
+ * Handle a Websocket event.
+ * @param client The client the Websocket belongs to.
+ * @param event The name of the event.
  * @param data The data of the event.
  */
 export async function handleWSEvent(

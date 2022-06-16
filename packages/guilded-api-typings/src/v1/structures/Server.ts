@@ -1,48 +1,102 @@
 import { APIUser, APIUserSummary } from './User';
 
 /**
- * The API server member model.
+ * Represents a server on Guilded.
+ * @see https://www.guilded.gg/docs/api/servers/Server
+ */
+export interface APIServer {
+	/** The ID of the server. */
+	id: string;
+	/** The ID of the user the server belongs to. */
+	ownerId: string;
+	/** The type of the server. */
+	type?: APIServerTypeString;
+	/** The name of the server. */
+	name: string;
+	/** The vanity URL of the server. */
+	url?: string;
+	/** The description of the server. */
+	about?: string;
+	/** The URL of the server's avatar. */
+	avatar?: string;
+	/** The URL of the server's banner. */
+	banner?: string;
+	/** The timezone of the server. */
+	timezone?: string;
+	/** Whether the server is verified. */
+	isVerified?: boolean;
+	/** The ID of the server's default channel. */
+	defaultChannelId?: string;
+	/** The date the server was created. */
+	createdAt: string;
+}
+
+/**
+ * The type of a server on Guilded.
+ * @see https://www.guilded.gg/docs/api/servers/Server
+ */
+export enum APIServerType {
+	Team = 'team',
+	Organization = 'organization',
+	Community = 'community',
+	Clan = 'clan',
+	Guild = 'guild',
+	Friends = 'friends',
+	Streaming = 'streaming',
+	Other = 'other',
+}
+
+/**
+ * The type string of a server on Guilded.
+ * @see https://www.guilded.gg/docs/api/servers/Server
+ */
+export type APIServerTypeString = `${APIServerType}`;
+
+/**
+ * Represents a server member on Guilded.
  * @see https://www.guilded.gg/docs/api/members/ServerMember
  */
 export interface APIServerMember extends APIServerMemberSummary {
-	/** The user of the server member. */
 	user: APIUser;
 	/** The nickname of the server member. */
 	nickname?: string;
-	/** The date the server member joined the server. */
+	/** The date the member joined the server. */
 	joinedAt: string;
 	/** Whether the server member is the owner of the server. */
 	isOwner?: boolean;
 }
 
 /**
- * The API server member summary model.
+ * Represents a summary of a server member on Guilded.
  * @see https://www.guilded.gg/docs/api/members/ServerMemberSummary
  */
 export interface APIServerMemberSummary {
-	/** The user of the server member. */
+	/** The user the server member belongs to. */
 	user: APIUserSummary;
-	/** The IDs of roles the server member has. */
+	/** The IDs of roles that belong to the server member. */
 	roleIds: number[];
 }
 
 /**
- * The API server ban model.
+ * Represents a server ban on Guilded.
  * @see https://www.guilded.gg/docs/api/member-bans/ServerMemberBan
  */
 export interface APIServerBan {
-	/** The user that was banned. */
+	/** The user the server ban belongs to. */
 	user: APIUserSummary;
-	/** The reason for the ban. */
+	/** The reason of the server ban. */
 	reason?: string;
-	/** The ID of the user who created the ban. */
+	/** The ID of the user that created the server ban. */
 	createdBy: string;
-	/** The date the ban was created. */
+	/** The date the server ban was created. */
 	createdAt: string;
 }
 
-/** The payload for editing a server member nickname. */
-export interface APIServerMemberNicknamePayload {
+/**
+ * The payload for editing the nickname of a server member.
+ * @see https://www.guilded.gg/docs/api/members/MemberNicknameUpdate
+ */
+export interface APIServerNicknamePayload {
 	/** The nickname of the server member. */
 	nickname: string;
 }
@@ -52,28 +106,29 @@ export interface APIServerMemberNicknamePayload {
  * @see https://www.guilded.gg/docs/api/member-bans/ServerMemberBanCreate
  */
 export interface APIServerBanPayload {
-	/** The reason for the ban. */
+	/** The reason of the server ban. */
 	reason?: string;
 }
 
 /**
- * The payload for awarding xp.
+ * The payload for awarding XP.
  * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForUserCreate
+ * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForRoleCreate
  */
-export interface APIServerXPPayload {
+export interface APIServerXpPayload {
 	/** The amount of XP to award. */
 	amount: number;
 }
 
 /**
- * The API social link model.
+ * Represents a social link on Guilded.
  * @see https://www.guilded.gg/docs/api/socialLinks/MemberSocialLinkRead
  */
 export interface APISocialLink {
-	/** The name of the external social link. */
+	/** The handle of the social link. */
 	handle?: string;
-	/** The ID of the external social link. */
+	/** The ID of the service the social link belongs to. */
 	serviceId?: string;
-	/** The type of social link. */
+	/** The type of the social link. */
 	type: string;
 }

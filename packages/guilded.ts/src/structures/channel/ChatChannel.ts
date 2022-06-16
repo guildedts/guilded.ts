@@ -1,4 +1,4 @@
-import { APIChannel } from 'guilded-api-typings';
+import { APIChannel, APIChannelType } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 import { MessageManager, MessagePayloadResolvable } from '../../managers/MessageManager';
@@ -8,14 +8,16 @@ import { MessageCollector } from '../../collectors/MessageCollector';
 
 /** Represents a chat channel on Guilded. */
 export class ChatChannel extends Channel {
-	/** The type of channel. */
-	public declare readonly type: 'chat' | 'stream' | 'voice';
+	public declare readonly type:
+		| APIChannelType.Chat
+		| APIChannelType.Stream
+		| APIChannelType.Voice;
 
-	/** A manager of messages that belong to the chat channel. */
+	/** The manager of messages that belong to the chat channel. */
 	public readonly messages: MessageManager;
 
 	/**
-	 * @param client The client that owns the chat channel.
+	 * @param client The client the chat channel belongs to.
 	 * @param raw The raw data of the chat channel.
 	 */
 	constructor(client: Client, raw: APIChannel) {
@@ -24,9 +26,9 @@ export class ChatChannel extends Channel {
 	}
 
 	/**
-	 * Send a message to the chat channel.
-	 * @param payload The payload to sent the message with.
-	 * @returns The sent message.
+	 * Create a message in the chat channel.
+	 * @param payload The payload of the message.
+	 * @returns The created message.
 	 */
 	public send(payload: MessagePayloadResolvable) {
 		return this.messages.create(payload);
@@ -34,8 +36,8 @@ export class ChatChannel extends Channel {
 
 	/**
 	 * Create a message collector for the chat channel.
-	 * @param options The options for the message collector.
-	 * @returns The message collector.
+	 * @param options The options of the message collector.
+	 * @returns The created message collector.
 	 */
 	public createMessageCollector(options?: CollectorOptions<Message>) {
 		return new MessageCollector(this, options);

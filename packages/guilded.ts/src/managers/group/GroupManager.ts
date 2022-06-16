@@ -2,7 +2,7 @@ import { BaseManager } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Group } from '../../structures/Group';
 
-/** A manager of groups that belong to the client. */
+/** The manager of groups that belong to the client. */
 export class GroupManager extends BaseManager<string, Group> {
 	/** @param client The client that owns the groups. */
 	public constructor(client: Client) {

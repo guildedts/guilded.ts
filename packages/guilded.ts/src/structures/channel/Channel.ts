@@ -1,13 +1,17 @@
-import { APIChannel, APIChannelEditPayload, APIChannelType } from 'guilded-api-typings';
+import {
+	APIChannel,
+	APIChannelEditPayload,
+	APIChannelType,
+	APIChannelTypeString,
+} from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Client } from '../Client';
-import { ChannelResolvable } from '../../managers/channel/ChannelManager';
 import { ChannelWebhookManager } from '../../managers/channel/ChannelWebhookManager';
 
 /** Represents a channel on Guilded. */
 export class Channel extends Base {
-	/** The type of channel. */
-	public readonly type: APIChannelType;
+	/** The type of the channel. */
+	public readonly type: APIChannelTypeString;
 	/** The name of the channel. */
 	public readonly name: string;
 	/** The topic of the channel. */
@@ -20,7 +24,7 @@ export class Channel extends Base {
 	public readonly editedAt?: Date;
 	/** The ID of the server the channel belongs to. */
 	public readonly serverId: string;
-	/** The ID of the parent channel. */
+	/** The ID of the parent channel the channel belongs to. */
 	public readonly parantId?: string;
 	/** The ID of the category the channel belongs to. */
 	public readonly categoryId?: number;
@@ -33,11 +37,11 @@ export class Channel extends Base {
 	/** The date the channel was archived. */
 	public readonly archivedAt?: Date;
 
-	/** A manager of webhooks that belong to the channel. */
+	/** The manager of webhooks that belong to the channel. */
 	public readonly webhooks: ChannelWebhookManager;
 
 	/**
-	 * @param client The client that owns the channel.
+	 * @param client The client the channel belongs to.
 	 * @param raw The raw data of the channel.
 	 */
 	constructor(client: Client, public readonly raw: APIChannel) {
@@ -68,19 +72,34 @@ export class Channel extends Base {
 		return this.createdAt.getTime();
 	}
 
+	/** The server member that created the channel. */
+	public get creator() {
+		return this.server?.members.cache.get(this.createdBy);
+	}
+
 	/** The timestamp the channel was edited. */
 	public get editedTimestamp() {
-		return this.editedAt ? this.editedAt.getTime() : undefined;
+		return this.editedAt?.getTime();
 	}
 
 	/** The server the channel belongs to. */
 	public get server() {
-		return this.client.servers.fetch(this.serverId);
+		return this.client.servers.cache.get(this.serverId);
 	}
 
-	/** The parent channel. */
-	public get parent(): ChannelResolvable | undefined {
+	/** The parent channel the channel belongs to. */
+	public get parent() {
 		return this.parantId ? this.client.channels.cache.get(this.parantId) : undefined;
+	}
+
+	/** The group the channel belongs to. */
+	public get group() {
+		return this.client.groups.cache.get(this.groupId);
+	}
+
+	/** The server member that archived the channel. */
+	public get archiver() {
+		return this.archivedBy ? this.server?.members.cache.get(this.archivedBy) : undefined;
 	}
 
 	/** The timestamp the channel was archived. */
@@ -95,57 +114,61 @@ export class Channel extends Base {
 
 	/** Whether the channel is a announcement channel. */
 	public get isAnnouncement() {
-		return this.type === 'announcements';
+		return this.type === APIChannelType.Announcements;
 	}
 
 	/** Whther the channel is a chat channel. */
 	public get isChat() {
-		return this.type === 'chat';
+		return this.type === APIChannelType.Chat;
 	}
 
 	/** Whether the channel is chat based. */
 	public get isChatBased() {
-		return this.type === 'chat' ?? this.type === 'stream' ?? this.type === 'voice';
+		return (
+			this.type === APIChannelType.Chat ||
+			this.type === APIChannelType.Stream ||
+			this.type === APIChannelType.Voice
+		);
 	}
 
 	/** Whther the channel is a calendar channel. */
 	public get isCalendar() {
-		return this.type === 'calendar';
+		return this.type === APIChannelType.Calendar;
 	}
 
 	/** Whther the channel is a forum channel. */
 	public get isForum() {
-		return this.type === 'forums';
+		return this.type === APIChannelType.Forums;
 	}
 
 	/** Whther the channel is a media channel. */
 	public get isMedia() {
-		return this.type === 'media';
+		return this.type === APIChannelType.Media;
 	}
 
 	/** Whther the channel is a doc channel. */
 	public get isDoc() {
-		return this.type === 'docs';
+		return this.type === APIChannelType.Docs;
 	}
 
 	/** Whther the channel is a voice channel. */
 	public get isVoice() {
-		return this.type === 'voice';
+		return this.type === APIChannelType.Voice;
 	}
 
 	/** Whther the channel is a list channel. */
 	public get isList() {
-		return this.type === 'list';
+		return this.type === APIChannelType.List;
 	}
 
 	/** Whther the channel is a schedule channel. */
 	public get isSchedule() {
-		return this.type === 'scheduling';
+		return this.type === APIChannelType.Scheduling;
 	}
 
 	/** Whther the channel is a stream channel. */
 	public get isStream() {
-		return this.type === 'stream';
+		return this.type === APIChannelType.Stream;
 	}
 
 	/**
@@ -155,21 +178,21 @@ export class Channel extends Base {
 	 */
 	public fetch(cache?: boolean) {
 		this.client.channels.cache.delete(this.id);
-		return this.client.channels.fetch(this.id, cache);
+		return this.client.channels.fetch(this.id, cache) as Promise<this>;
 	}
 
 	/**
 	 * Edit the channel.
-	 * @param payload The payload to edit the channel with.
+	 * @param payload The payload of the channel.
 	 * @returns The edited channel.
 	 */
 	public edit(payload: APIChannelEditPayload) {
-		return this.client.channels.edit(this.id, payload);
+		return this.client.channels.edit(this.id, payload) as Promise<this>;
 	}
 
 	/**
 	 * Set the name of the channel.
-	 * @param name The name to set the channel to.
+	 * @param name The name of the channel.
 	 * @returns The edited channel.
 	 */
 	public setName(name: string) {
@@ -178,7 +201,7 @@ export class Channel extends Base {
 
 	/**
 	 * Set the topic of the channel.
-	 * @param topic The topic to set the channel to.
+	 * @param topic The topic of the channel.
 	 * @returns The edited channel.
 	 */
 	public setTopic(topic: string) {

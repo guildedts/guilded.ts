@@ -4,11 +4,11 @@ import { GroupMemberManager } from '../managers/group/GroupMemberManager';
 
 /** Represents a group on Guilded. */
 export class Group extends Base {
-	/** A manager of members that belong to the group. */
+	/** The manager of members that belong to the group. */
 	public readonly members: GroupMemberManager;
 
 	/**
-	 * @param client The client that owns the group.
+	 * @param client The client the group belongs to.
 	 * @param raw The raw data of the group.
 	 */
 	public constructor(client: Client, public readonly raw: { id: string }) {

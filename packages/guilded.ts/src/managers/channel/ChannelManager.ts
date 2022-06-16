@@ -10,9 +10,9 @@ import { VoiceChannel } from '../../structures/channel/VoiceChannel';
 import { ListChannel } from '../../structures/channel/ListChannel';
 import { StreamChannel } from '../../structures/channel/StreamChannel';
 
-/** A manager of channels that belong to the client. */
+/** The manager of channels that belong to the client. */
 export class ChannelManager extends BaseManager<string, ChannelResolvable> {
-	/** @param client The client that owns the channels. */
+	/** @param client The client the channels belong to. */
 	public constructor(client: Client) {
 		super(client, client.options.maxChannelCache);
 	}
@@ -37,7 +37,7 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 
 	/**
 	 * Create a channel on Guilded.
-	 * @param payload The payload to create the channel with.
+	 * @param payload The payload of the channel.
 	 * @returns The created channel.
 	 */
 	public async create(payload: APIChannelPayload) {
@@ -46,9 +46,9 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 	}
 
 	/**
-	 * Edit an existing channel on Guilded.
+	 * Edit a channel on Guilded.
 	 * @param channelId The ID of the channel to edit.
-	 * @param payload The payload to edit the channel with.
+	 * @param payload The payload of the channel.
 	 * @returns The edited channel.
 	 */
 	public async edit(channelId: string, payload: APIChannelEditPayload) {

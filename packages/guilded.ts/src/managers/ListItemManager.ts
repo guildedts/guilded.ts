@@ -3,13 +3,26 @@ import { CacheCollection } from '../structures/CacheCollection';
 import { ListChannel } from '../structures/channel/ListChannel';
 import { ListItem } from '../structures/listItem/ListItem';
 
-/** A manager of items that belong to a list channel. */
+/** The manager of items that belong to a list channel. */
 export class ListItemManager extends BaseManager<string, ListItem> {
-	/** @param channel The list channel that owns the items. */
+	/** @param channel The list channel the items belong to. */
 	public constructor(public readonly channel: ListChannel) {
 		super(channel.client, channel.client.options.maxListItemCache);
 	}
 
+	/**
+	 * Fetch a item from the list channel, or cache.
+	 * @param listItemId The ID of the item to fetch.
+	 * @param cache Whether to cache the fetched item.
+	 * @returns The fetched item.
+	 */
+	public fetch(listItemId: string, cache?: boolean): Promise<ListItem>;
+	/**
+	 * Fetch items from the channel.
+	 * @param cache Whether to cache the fetched items.
+	 * @returns The fetched items.
+	 */
+	public fetch(cache?: boolean): Promise<CacheCollection<string, ListItem>>;
 	/** @ignore */
 	public async fetch(
 		arg1: string | boolean = this.client.options.cacheListItems ?? true,
@@ -43,8 +56,8 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 
 	/**
 	 * Add a item to the list channel.
-	 * @param message The message to add the item with.
-	 * @param note The note to add the item with.
+	 * @param message The message of the item.
+	 * @param note The note of the item.
 	 * @returns The added item.
 	 */
 	public async add(message: string, note?: string) {
@@ -55,12 +68,17 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	/**
 	 * Edit a item in the list channel.
 	 * @param listItemId The ID of the item to edit.
-	 * @param message The message to edit the item with.
-	 * @param note The note to edit the item with.
+	 * @param message The message of the item.
+	 * @param note The note of the item.
 	 * @returns The edited item.
 	 */
 	public async edit(listItemId: string, message: string, note?: string) {
-		const raw = await this.client.api.listItems.edit(this.channel.id, listItemId, message, note);
+		const raw = await this.client.api.listItems.edit(
+			this.channel.id,
+			listItemId,
+			message,
+			note,
+		);
 		return new ListItem(this.channel, raw);
 	}
 
@@ -87,21 +105,4 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	public uncomplete(listItemId: string) {
 		return this.client.api.listItems.uncomplete(this.channel.id, listItemId);
 	}
-}
-
-export declare interface ListItemManager {
-	/**
-	 * Fetch a single item from the list channel, or cache.
-	 * @param listItemId The ID of the item to fetch.
-	 * @param cache Whether to cache the fetched item.
-	 * @returns The fetched item.
-	 */
-	fetch(listItemId: string, cache?: boolean): Promise<ListItem>;
-
-	/**
-	 * Fetch multiple items from the channel.
-	 * @param cache Whether to cache the fetched items.
-	 * @returns The fetched items.
-	 */
-	fetch(cache?: boolean): Promise<CacheCollection<string, ListItem>>;
 }

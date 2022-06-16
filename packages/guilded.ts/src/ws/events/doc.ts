@@ -5,7 +5,7 @@ import { DocChannel } from '../../structures/channel/DocChannel';
 
 /**
  * Handle the DocCreated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function created(client: Client, data: WSEvents['DocCreated']) {
@@ -17,7 +17,7 @@ export async function created(client: Client, data: WSEvents['DocCreated']) {
 
 /**
  * Handle the DocUpdated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function updated(client: Client, data: WSEvents['DocUpdated']) {
@@ -29,7 +29,7 @@ export async function updated(client: Client, data: WSEvents['DocUpdated']) {
 
 /**
  * Handle the DocDeleted event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function deleted(client: Client, data: WSEvents['DocDeleted']) {

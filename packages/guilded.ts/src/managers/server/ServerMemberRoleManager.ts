@@ -2,9 +2,9 @@ import { BaseManager } from '../BaseManager';
 import { ServerMember } from '../../structures/server/ServerMember';
 import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 
-/** A manager of roles that belong to a server member. */
+/** The manager of roles that belong to a server member. */
 export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRole> {
-	/** @param member The server member that owns the roles. */
+	/** @param member The server member the roles belong to. */
 	constructor(public readonly member: ServerMember) {
 		super(member.client, member.client.options.maxServerMemberRoleCache);
 	}

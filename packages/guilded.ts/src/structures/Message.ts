@@ -1,17 +1,20 @@
-import { APIMessage, APIMessageType, APIEmbed, APIMentions } from 'guilded-api-typings';
+import {
+	APIMessage,
+	APIEmbed,
+	APIMentions,
+	APIMessageTypeString,
+	APIMessageType,
+} from 'guilded-api-typings';
 import { Base } from './Base';
 import { CacheCollection } from './CacheCollection';
 import { ChatBasedChannel } from '../managers/channel/ChannelManager';
-import {
-	MessageEditPayloadResolvable,
-	MessagePayloadResolvable,
-} from '../managers/MessageManager';
+import { MessageEditPayloadResolvable, MessagePayloadResolvable } from '../managers/MessageManager';
 import { ReactionManager } from '../managers/ReactionManager';
 
 /** Represents a message on Guilded. */
 export class Message extends Base {
-	/** The type of message. */
-	public readonly type: APIMessageType;
+	/** The type of the message. */
+	public readonly type: APIMessageTypeString;
 	/** The ID of the server the message belongs to. */
 	public readonly serverId?: string;
 	/** The ID of the channel the message belongs to. */
@@ -19,7 +22,7 @@ export class Message extends Base {
 	/** The content of the message. */
 	public readonly content?: string;
 	/** The embeds in the message. */
-	public readonly embeds: APIEmbed[] = [];
+	public readonly embeds: APIEmbed[];
 	/** The IDs of messages that were replied to. */
 	public readonly replyMessageIds: string[];
 	/** Whether the message is private. */
@@ -43,7 +46,7 @@ export class Message extends Base {
 	public readonly reactions: ReactionManager;
 
 	/**
-	 * @param channel The channel that owns the message.
+	 * @param channel The chat channel the message belongs to.
 	 * @param raw The raw data of the message.
 	 */
 	public constructor(public readonly channel: ChatBasedChannel, public readonly raw: APIMessage) {
@@ -53,8 +56,8 @@ export class Message extends Base {
 		this.serverId = raw.serverId;
 		this.channelId = raw.channelId;
 		this.content = raw.content;
-		this.embeds = raw.embeds ?? [];
-		this.replyMessageIds = raw.replyMessageIds ?? [];
+		this.embeds = raw.embeds || [];
+		this.replyMessageIds = raw.replyMessageIds || [];
 		this.isPrivate = raw.isPrivate;
 		this.isSilent = raw.isSilent;
 		this.mentions = raw.mentions;
@@ -71,12 +74,12 @@ export class Message extends Base {
 
 	/** Whether the message is a default message. */
 	public get isDefault() {
-		return this.type === 'default';
+		return this.type === APIMessageType.Default;
 	}
 
 	/** Whether the message is a system message. */
 	public get isSystem() {
-		return this.type === 'system';
+		return this.type === APIMessageType.System;
 	}
 
 	/** The server the message belongs to. */
@@ -86,12 +89,12 @@ export class Message extends Base {
 
 	/** The group the message belongs to. */
 	public get group() {
-		return this.client.groups.fetch(this.channel.groupId);
+		return this.channel.group;
 	}
 
 	/** The timestamp the message was created. */
 	public get createdTimestamp() {
-		return this.createdAt?.getTime();
+		return this.createdAt.getTime();
 	}
 
 	/** The timestamp the message was edited. */
@@ -104,9 +107,9 @@ export class Message extends Base {
 		return !!this.deletedAt;
 	}
 
-	/** The author of the message. */
+	/** The server member that created the message. */
 	public get author() {
-		return this.client.users.cache.get(this.createdBy);
+		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The webhook that created the message. */
@@ -116,9 +119,9 @@ export class Message extends Base {
 			: undefined;
 	}
 
-	/** The ID of the author. */
+	/** The ID of the user that created the message. */
 	public get authorId() {
-		return this.createdByWebhookId ?? this.createdBy;
+		return this.createdByWebhookId || this.createdBy;
 	}
 
 	/** The messages that were replied to. */
@@ -148,16 +151,16 @@ export class Message extends Base {
 	 */
 	public fetch(cache?: boolean) {
 		this.channel.messages.cache.delete(this.id);
-		return this.channel.messages.fetch(this.id, cache);
+		return this.channel.messages.fetch(this.id, cache) as Promise<this>;
 	}
 
 	/**
 	 * Edit the message.
-	 * @param payload The payload to edit the message with.
+	 * @param payload The payload of the message.
 	 * @returns The edited message.
 	 */
 	public async edit(payload: MessageEditPayloadResolvable) {
-		return this.channel.messages.edit(this.id, payload);
+		return this.channel.messages.edit(this.id, payload) as Promise<this>;
 	}
 
 	/**
@@ -171,7 +174,7 @@ export class Message extends Base {
 
 	/**
 	 * Reply to the message.
-	 * @param payload The payload to reply with.
+	 * @param payload The payload of the message.
 	 * @returns The created message.
 	 */
 	public reply(payload: MessagePayloadResolvable) {
@@ -181,7 +184,11 @@ export class Message extends Base {
 				: Array.isArray(payload)
 				? { embeds: payload }
 				: payload;
-		payload.replyMessageIds?.push(...this.replyMessageIds, this.id);
+		payload.replyMessageIds = [
+			...(payload.replyMessageIds || []),
+			...this.replyMessageIds,
+			this.id,
+		];
 		return this.channel.messages.create(payload);
 	}
 
@@ -190,7 +197,8 @@ export class Message extends Base {
 	 * @param emojiId The ID of the emoji to react with.
 	 * @returns The message.
 	 */
-	public react(emojiId: number) {
-		return this.reactions.add(emojiId);
+	public async react(emojiId: number) {
+		await this.reactions.add(emojiId);
+		return this;
 	}
 }

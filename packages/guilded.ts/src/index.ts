@@ -17,10 +17,10 @@ export * from './managers/server/ServerMemberRoleManager';
 export * from './managers/server/ServerRoleManager';
 export * from './managers/BaseManager';
 export * from './managers/DocManager';
-export * from './managers/ForumThreadManager';
 export * from './managers/ListItemManager';
 export * from './managers/MessageManager';
 export * from './managers/ReactionManager';
+export * from './managers/TopicManager';
 export * from './managers/UserManager';
 
 // Structures
@@ -42,9 +42,9 @@ export * from './structures/Base';
 export * from './structures/CacheCollection';
 export * from './structures/Client';
 export * from './structures/Doc';
-export * from './structures/ForumThread';
 export * from './structures/Group';
 export * from './structures/Message';
+export * from './structures/Topic';
 export * from './structures/User';
 export * from './structures/Webhook';
 

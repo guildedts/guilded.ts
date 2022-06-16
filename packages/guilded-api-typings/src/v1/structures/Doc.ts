@@ -1,7 +1,7 @@
-import { APIMentions } from "./Channel";
+import { APIMentions } from './Channel';
 
 /**
- * The API doc model.
+ * Represents a doc on Guilded.
  * @see https://www.guilded.gg/docs/api/docs/Doc
  */
 export interface APIDoc {
@@ -19,17 +19,18 @@ export interface APIDoc {
 	mentions?: APIMentions;
 	/** The date the doc was created. */
 	createdAt: string;
-	/** The ID of the user who created the doc. */
+	/** The ID of the user that created the doc. */
 	createdBy: string;
 	/** The date the doc was edited. */
 	updatedAt?: string;
-	/** The ID of the user who edited the doc. */
+	/** The ID of the user that edited the doc. */
 	updatedBy?: string;
 }
 
 /**
  * The payload for creating a doc.
  * @see https://www.guilded.gg/docs/api/docs/DocCreate
+ * @see https://www.guilded.gg/docs/api/docs/DocUpdate
  */
 export interface APIDocPayload {
 	/** The title of the doc. */

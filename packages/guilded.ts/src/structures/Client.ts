@@ -14,30 +14,30 @@ import { GroupManager } from '../managers/group/GroupManager';
 import { ServerManager } from '../managers/server/ServerManager';
 import { UserManager } from '../managers/UserManager';
 import { handleWSEvent } from '../ws';
-import { APIMessageSummary, APIUser } from 'guilded-api-typings';
+import { APIMessageSummary, APIUser, WSEvents } from 'guilded-api-typings';
 
 /** The main hub for interacting with the Guilded API. */
 export class Client extends EventEmitter {
-	/** The REST API manager for the client. */
+	/** The REST manager for the Guilded API. */
 	public readonly rest: RestManager;
-	/** The Websocket API manager for the client. */
+	/** The Websocket manager for the Guilded API. */
 	public readonly ws: WebsocketManager;
 
-	/** A manager of channels that belong to the client. */
+	/** The manager of channels that belong to the client. */
 	public readonly channels: ChannelManager;
-	/** A manager of users that belong to the client. */
+	/** The manager of users that belong to the client. */
 	public readonly users: UserManager;
-	/** A manager of servers that belong to the client. */
+	/** The manager of servers that belong to the client. */
 	public readonly servers: ServerManager;
-	/** A manager of groups that belong to the client. */
+	/** The manager of groups that belong to the client. */
 	public readonly groups: GroupManager;
 
-	/** The client authorization token. */
+	/** The auth token for the Guilded API. */
 	public token?: string;
-	/** The client user. */
+	/** The user the client is logged in as. */
 	public user?: User;
 
-	/** @param options The client options. */
+	/** @param options The options for the client. */
 	public constructor(public readonly options: ClientOptions = {}) {
 		super();
 		this.token = options.token;
@@ -57,7 +57,7 @@ export class Client extends EventEmitter {
 		this.groups = new GroupManager(this);
 	}
 
-	/** The API router for the Guilded REST API. */
+	/** The router for the Guilded REST API. */
 	public get api() {
 		return this.rest.router;
 	}
@@ -77,33 +77,39 @@ export class Client extends EventEmitter {
 		return this.ws.connectedTimestamp;
 	}
 
-	/** How long the client has been in the ready state. */
+	/** The time the client has been in the ready state. */
 	public get uptime() {
 		return this.ws.uptime;
 	}
 
 	/**
-	 * Log in to the Guilded API.
-	 * @param token The client authorization token.
+	 * Login to the Guilded API.
+	 * @param token The auth token for the Guilded API.
+	 * @returns The client.
 	 */
 	public login(token: string) {
-		this.token = token ?? this.token;
+		this.token = token || this.token;
 		this.rest.setToken(this.token);
 		this.ws.on('connect', this.onWSConnect.bind(this));
 		this.ws.on('disconnect', this.onWSDisconnect.bind(this));
 		this.ws.on('data', this.onWSData.bind(this));
 		this.ws.connect(this.token);
+		return this;
 	}
 
-	/** Disconnect from Guilded. */
+	/**
+	 * Disconnect from Guilded.
+	 * @returns The client.
+	 */
 	public disconnect() {
 		this.ws.disconnect();
+		return this;
 	}
 
 	/** @ignore */
 	private onWSConnect(user: APIUser) {
 		this.user = new User(this, user);
-		if(this.options.cacheUsers ?? true) this.users.cache.set(this.user.id, this.user);
+		if (this.options.cacheUsers ?? true) this.users.cache.set(this.user.id, this.user);
 		this.emit('ready', this);
 	}
 
@@ -113,7 +119,10 @@ export class Client extends EventEmitter {
 	}
 
 	/** @ignore */
-	private onWSData(event: any, data: any) {
+	private onWSData<Event extends keyof WSEvents = keyof WSEvents>(
+		event: Event,
+		data: WSEvents[Event],
+	) {
 		handleWSEvent(this, event, data);
 	}
 
@@ -147,15 +156,15 @@ export interface Client {
 	emit<Event extends keyof ClientEvents>(event: Event, ...args: ClientEvents[Event]): boolean;
 }
 
-/** The client events. */
+/** The events that belong to the client. */
 export interface ClientEvents {
 	/** Emitted when the client is ready to use. */
 	ready: [client: Client];
-	/** Emitted when the client is disconnected from the API. */
+	/** Emitted when the client is disconnected from Guilded. */
 	disconnect: [client: Client];
 	/** Emitted when debug data is received. */
 	debug: [client: Client, data: any];
-	/** Emitted when a message is sent. */
+	/** Emitted when a message is created. */
 	messageCreate: [message: Message];
 	/** Emitted when a message is edited. */
 	messageEdit: [message: Message];
@@ -171,7 +180,7 @@ export interface ClientEvents {
 	memberUnban: [ban: ServerBan];
 	/** Emitted when a member is edited. */
 	memberEdit: [member: ServerMember];
-	/** Emitted when a server's roles are edited. */
+	/** Emitted when roles in server are edited. */
 	rolesEdit: [server: Server];
 	/** Emitted when a channel is created. */
 	channelCreate: [channel: ChannelResolvable];
@@ -201,9 +210,9 @@ export interface ClientEvents {
 	listItemUncomplete: [listItem: ListItem];
 }
 
-/** The client options */
+/** The options for the client. */
 export interface ClientOptions {
-	/** The client authorization token. */
+	/** The auth token for the Guilded API. */
 	token?: string;
 	/** The max retries for REST API requests. */
 	maxRestAPIRetries?: number;
@@ -211,54 +220,54 @@ export interface ClientOptions {
 	restAPIRetryInterval?: number;
 	/** Whether to cache channels. */
 	cacheChannels?: boolean;
-	/** The maximum of channels cache. */
+	/** The max cache size for channels. */
 	maxChannelCache?: number;
 	/** Whether to cache messages. */
 	cacheMessages?: boolean;
-	/** The maximum size of messages cache. */
+	/** The max cache size for messages. */
 	maxMessageCache?: number;
 	/** Whether to cache servers. */
 	cacheServers?: boolean;
-	/** The maximum size of servers cache. */
+	/** The max cache size for servers. */
 	maxServerCache?: number;
 	/** Whether to cache users. */
 	cacheUsers?: boolean;
-	/** The maximum size of users cache. */
+	/** The max cache size for users. */
 	maxUserCache?: number;
 	/** Whether to cache server bans. */
 	cacheServerBans?: boolean;
-	/** The maximum size of server bans cache. */
+	/** The max cache size for server bans. */
 	maxServerBanCache?: number;
 	/** Whether to cache server members. */
 	cacheServerMembers?: boolean;
-	/** The maximum size of server members cache. */
+	/** The max cache size for server members. */
 	maxServerMemberCache?: number;
 	/** Whether to cache forum threads. */
 	cacheForumThreads?: boolean;
-	/** The maximum size of forum threads cache. */
+	/** The max cache size for forum threads. */
 	maxForumThreadCache?: number;
 	/** Whether to cache list items. */
 	cacheListItems?: boolean;
-	/** The maximum size of list items cache. */
+	/** The max cache size for list items. */
 	maxListItemCache?: number;
 	/** Whether to cache docs. */
 	cacheDocs?: boolean;
-	/** The maximum size of docs cache. */
+	/** The max cache size for docs. */
 	maxDocCache?: number;
 	/** Whether to cache groups. */
 	cacheGroups?: boolean;
-	/** The maximum size of groups cache. */
+	/** The max cache size for groups. */
 	maxGroupCache?: number;
 	/** Whether to cache server roles. */
 	cacheServerRoles?: boolean;
-	/** The maximum size of server roles cache. */
+	/** The max cache size for server roles. */
 	maxServerRoleCache?: number;
 	/** Whether to cache server member roles. */
 	cacheServerMemberRoles?: boolean;
-	/** The maximum size of server member roles cache. */
+	/** The max cache size for server member roles. */
 	maxServerMemberRoleCache?: number;
 	/** Whether to cache webhooks. */
 	cacheWebhooks?: boolean;
-	/** The maximum size of webhooks cache. */
+	/** The max cache size for webhooks. */
 	maxWebhookCache?: number;
 }

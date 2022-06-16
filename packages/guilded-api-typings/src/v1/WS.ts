@@ -6,7 +6,7 @@ import { APIServerMember, APIServerBan } from './structures/Server';
 import { APIWebhook } from './structures/Webhook';
 
 /**
- * Guilded API websocket events.
+ * The Guilded WebSocket API events.
  * @see https://www.guilded.gg/docs/api/websockets
  */
 export interface WSEvents {
@@ -15,71 +15,71 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/ChatMessageCreated
 	 */
 	ChatMessageCreated: {
-		/** The ID of the server this message was sent in. */
+		/** The ID of the server the message belongs to. */
 		serverId: string;
 		/** The message that was created. */
 		message: APIMessage;
 	};
 	/**
-	 * Emitted when a chat message is edited.
+	 * Emitted when a message is edited.
 	 * @see https://www.guilded.gg/docs/api/websockets/ChatMessageUpdated
 	 */
 	ChatMessageUpdated: {
-		/** The ID of the server this message was edited in. */
+		/** The ID of the server the message belongs to. */
 		serverId: string;
 		/** The message that was edited. */
 		message: APIMessage;
 	};
 	/**
-	 * Emitted when a chat message is deleted.
+	 * Emitted when a message is deleted.
 	 * @see https://www.guilded.gg/docs/api/websockets/ChatMessageDeleted
 	 */
 	ChatMessageDeleted: {
-		/** The ID of the server this message was deleted in. */
+		/** The ID of the server the message belongs to. */
 		serverId: string;
 		/** The message that was deleted. */
 		message: APIMessageSummary;
 	};
 	/**
-	 * Emitted whan a user joins a server.
+	 * Emitted whan a member joins a server.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamMemberJoined
 	 */
 	TeamMemberJoined: {
-		/** The ID of the server this user joined. */
+		/** The ID of the server the member belongs to. */
 		serverId: string;
-		/** The user that joined the server. */
+		/** The member that joined the server. */
 		member: APIServerMember;
 	};
 	/**
-	 * Emitted when a user leaves a server.
+	 * Emitted when a member leaves a server.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamMemberRemoved
 	 */
 	TeamMemberRemoved: {
-		/** The ID of the server this user left. */
+		/** The ID of the server the member belongs to. */
 		serverId: string;
-		/** The user that left the server. */
+		/** The ID of the member that left the server. */
 		userId: string;
-		/** Whether the user was kicked from the server. */
+		/** Whether the member was kicked from the server. */
 		isKick?: boolean;
-		/** Whether the user was banned from the server. */
+		/** Whether the member was banned from the server. */
 		isBan?: boolean;
 	};
 	/**
-	 * Emitted when a user is banned from a server.
+	 * Emitted when a member is banned from a server.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamMemberBanned
 	 */
 	TeamMemberBanned: {
-		/** The ID of the server this user was banned from. */
+		/** The ID of the server the ban belongs to. */
 		serverId: string;
 		/** The created server ban. */
 		serverMemberBan: APIServerBan;
 	};
 	/**
-	 * Emitted when a user is unbanned from a server.
+	 * Emitted when a member is unbanned from a server.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamMemberUnbanned
 	 */
 	TeamMemberUnbanned: {
-		/** The ID of the server this user was unbanned from. */
+		/** The ID of the server the ban belongs to. */
 		serverId: string;
 		/** The deleted server ban. */
 		serverMemberBan: APIServerBan;
@@ -89,57 +89,57 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamMemberUpdated
 	 */
 	TeamMemberUpdated: {
-		/** The ID of the server this member was edited in. */
+		/** The ID of the server the member belongs to. */
 		serverId: string;
 		/** The updated information about the server member. */
 		userInfo: {
-			/** The ID of the user that was edited. */
+			/** The ID of the member that was edited. */
 			id: string;
-			/** The new nickname of the user. */
+			/** The nickname of the member. */
 			nickname?: string;
 		};
 	};
 	/**
-	 * Emitted when server roles are edited.
+	 * Emitted when roles in a server are edited.
 	 * @see https://www.guilded.gg/docs/api/websockets/teamRolesUpdated
 	 */
 	teamRolesUpdated: {
-		/** The ID of the server the roles were edited in. */
+		/** The ID of the server the roles belong to. */
 		serverId: string;
 		/** The updated roles. */
 		memberRoleIds: {
-			/** The ID of the member that was edited. */
+			/** The ID of the member that own the roles. */
 			userId: string;
 			/** The IDs of the roles the member now has. */
 			roleIds: number[];
 		}[];
 	};
 	/**
-	 * Emitted when a server channel is created.
+	 * Emitted when a channel is created.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamChannelCreated
 	 */
 	TeamChannelCreated: {
-		/** The ID of the server this channel was created in. */
+		/** The ID of the server the channel belongs to. */
 		serverId: string;
 		/** The created channel. */
 		channel: APIChannel;
 	};
 	/**
-	 * Emitted when a server channel is edited.
+	 * Emitted when a channel is edited.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamChannelUpdated
 	 */
 	TeamChannelUpdated: {
-		/** The ID of the server this channel was edited in. */
+		/** The ID of the server the channel belongs to. */
 		serverId: string;
 		/** The edited channel. */
 		channel: APIChannel;
 	};
 	/**
-	 * Emitted when a server channel is deleted.
+	 * Emitted when a channel is deleted.
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamChannelDeleted
 	 */
 	TeamChannelDeleted: {
-		/** The ID of the server this channel was deleted in. */
+		/** The ID of the server the channel belongs to. */
 		serverId: string;
 		/** The deleted channel. */
 		channel: APIChannel;
@@ -149,7 +149,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamWebhookCreated
 	 */
 	TeamWebhookCreated: {
-		/** The ID of the server this webhook was created in. */
+		/** The ID of the server the webhook belongs to. */
 		serverId: string;
 		/** The created webhook. */
 		webhook: APIWebhook;
@@ -159,7 +159,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/TeamWebhookUpdated
 	 */
 	TeamWebhookUpdated: {
-		/** The ID of the server this webhook was edited in. */
+		/** The ID of the server the webhook belongs to. */
 		serverId: string;
 		/** The edited webhook. */
 		webhook: APIWebhook;
@@ -169,7 +169,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/DocCreated
 	 */
 	DocCreated: {
-		/** The ID of the server this doc was created in. */
+		/** The ID of the server the doc belongs to. */
 		serverId: string;
 		/** The created doc. */
 		doc: APIDoc;
@@ -179,7 +179,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/DocUpdated
 	 */
 	DocUpdated: {
-		/** The ID of the server this doc was edited in. */
+		/** The ID of the server the doc belongs to. */
 		serverId: string;
 		/** The edited doc. */
 		doc: APIDoc;
@@ -189,7 +189,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/DocDeleted
 	 */
 	DocDeleted: {
-		/** The ID of the server this doc was deleted in. */
+		/** The ID of the server the doc belongs to. */
 		serverId: string;
 		/** The deleted doc. */
 		doc: APIDoc;
@@ -199,7 +199,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/ListItemCreated
 	 */
 	ListItemCreated: {
-		/** The ID of the server this list item was created in. */
+		/** The ID of the server the list item belongs to. */
 		serverId: string;
 		/** The created list item. */
 		listItem: APIListItem;
@@ -209,7 +209,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/ListItemUpdated
 	 */
 	ListItemUpdated: {
-		/** The ID of the server this list item was edited in. */
+		/** The ID of the server the list item belongs to. */
 		serverId: string;
 		/** The edited list item. */
 		listItem: APIListItem;
@@ -219,7 +219,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/ListItemDeleted
 	 */
 	ListItemDeleted: {
-		/** The ID of the server this list item was deleted in. */
+		/** The ID of the server the list item belongs to. */
 		serverId: string;
 		/** The deleted list item. */
 		listItem: APIListItem;
@@ -229,7 +229,7 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/ListItemCompleted
 	 */
 	ListItemCompleted: {
-		/** The ID of the server this list item was completed in. */
+		/** The ID of the server the list item belongs to. */
 		serverId: string;
 		/** The completed list item. */
 		listItem: APIListItem;
@@ -239,9 +239,17 @@ export interface WSEvents {
 	 * @see https://www.guilded.gg/docs/api/websockets/ListItemUncompleted
 	 */
 	ListItemUncompleted: {
-		/** The ID of the server this list item was uncompleted in. */
+		/** The ID of the server thw list item belongs to. */
 		serverId: string;
 		/** The uncompleted list item. */
 		listItem: APIListItem;
 	};
+}
+
+/** The Guilded WebSocket API operation codes. */
+export enum WSOpCodes {
+	/** The ready operation code. */
+	Ready = 0,
+	/** The event operation code. */
+	Event = 1,
 }

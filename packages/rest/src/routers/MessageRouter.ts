@@ -1,15 +1,30 @@
 import {
-	APIEmbed,
 	APIFetchMessagesQuery,
 	APIMessage,
 	APIMessageEditPayload,
 	APIMessagePayload,
 	Routes,
+	APIMessagePayloadResolvable,
+	APIMessageEditPayloadResolvable,
 } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
 /** The message router for the Guilded REST API. */
 export class MessageRouter extends BaseRouter {
+	/**
+	 * Fetch a message from Guilded.
+	 * @param channelId The ID of the channel the message belongs to.
+	 * @param messageId The ID of the message to fetch.
+	 * @returns The fetched message.
+	 */
+	public fetch(channelId: string, messageId: string): Promise<APIMessage>;
+	/**
+	 * Fetch messages from Guilded.
+	 * @param channelId The ID of the channel the messages belong to.
+	 * @param options The options to fetch messages with.
+	 * @returns The fetched messages.
+	 */
+	public fetch(channelId: string, options?: APIFetchMessagesQuery): Promise<APIMessage[]>;
 	/** @ignore */
 	public fetch(channelId: string, messageIdOrOptions?: string | APIFetchMessagesQuery) {
 		if (typeof messageIdOrOptions === 'string')
@@ -37,7 +52,7 @@ export class MessageRouter extends BaseRouter {
 	/**
 	 * Create a message on Guilded.
 	 * @param channelId The ID of the channel the message belongs to.
-	 * @param payload The payload to create the message with.
+	 * @param payload The payload of the message.
 	 * @returns The created message.
 	 */
 	public async create(channelId: string, payload: APIMessagePayloadResolvable) {
@@ -56,7 +71,7 @@ export class MessageRouter extends BaseRouter {
 	 * Edit a message on Guilded.
 	 * @param channelId The ID of the channel the message belongs to.
 	 * @param messageId The ID of the message to edit.
-	 * @param payload The payload to edit the message with.
+	 * @param payload The payload of the message.
 	 * @returns The edited message.
 	 */
 	public async edit(
@@ -84,27 +99,3 @@ export class MessageRouter extends BaseRouter {
 		return this.rest.delete<void>(Routes.message(channelId, messageId));
 	}
 }
-
-export declare interface MessageRouter {
-	/**
-	 * Fetch a message from Guilded.
-	 * @param channelId The ID of the channel the message belongs to.
-	 * @param messageId The ID of the message to fetch.
-	 * @returns The fetched message.
-	 */
-	fetch(channelId: string, messageId: string): Promise<APIMessage>;
-
-	/**
-	 * Fetch messages from Guilded.
-	 * @param channelId The ID of the channel the messages belong to.
-	 * @param options The options to fetch messages with.
-	 * @returns The fetched messages.
-	 */
-	fetch(channelId: string, options?: APIFetchMessagesQuery): Promise<APIMessage[]>;
-}
-
-/** The resolvable payload for creating a message. */
-export type APIMessagePayloadResolvable = string | APIEmbed[] | APIMessagePayload;
-
-/** The resolvable payload for editing a message. */
-export type APIMessageEditPayloadResolvable = string | APIEmbed[] | APIMessageEditPayload;

@@ -1,5 +1,5 @@
 /**
- * The API webhook model.
+ * Represents a webhook on Guilded.
  * @see https://www.guilded.gg/docs/api/webhook/Webhook
  */
 export interface APIWebhook {
@@ -13,7 +13,7 @@ export interface APIWebhook {
 	channelId: string;
 	/** The date the webhook was created. */
 	createdAt: string;
-	/** The ID of the user who created the webhook. */
+	/** The ID of the user that created the webhook. */
 	createdBy: string;
 	/** The date the webhook was deleted. */
 	deletedAt?: string;
@@ -46,6 +46,6 @@ export interface APIWebhookEditPayload {
  * @see https://www.guilded.gg/docs/api/webhook/WebhookReadMany
  */
 export interface APIFetchWebhooksQuery {
-	/** The ID of the channel to webhooks belong to. */
+	/** The ID of the channel the webhooks belong to. */
 	channelId: string;
 }

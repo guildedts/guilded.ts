@@ -3,13 +3,26 @@ import { CacheCollection } from '../../structures/CacheCollection';
 import { Server } from '../../structures/server/Server';
 import { ServerBan } from '../../structures/server/ServerBan';
 
-/** A manager of bans that belong to a server. */
+/** The manager of bans that belong to a server. */
 export class ServerBanManager extends BaseManager<string, ServerBan> {
 	/** @param server The server the bans belongs to. */
 	public constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerBanCache);
 	}
 
+	/**
+	 * Fetch a ban from the server, or cache.
+	 * @param banId The ID of the ban to fetch.
+	 * @param cache Whether to cache the fetched ban.
+	 * @returns The fetched ban.
+	 */
+	public fetch(banId: string, cache?: boolean): Promise<ServerBan>;
+	/**
+	 * Fetch bans from thw server.
+	 * @param cache Whether to cache the fetched bans.
+	 * @returns The fetched bans.
+	 */
+	public fetch(cache?: boolean): Promise<CacheCollection<string, ServerBan>>;
 	/** @ignore */
 	public fetch(
 		arg1: string | boolean = this.client.options.cacheServerBans ?? true,
@@ -43,8 +56,8 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 
 	/**
 	 * Create a ban in the server.
-	 * @param memberId The ID of the member to ban.
-	 * @param reason The reason to ban the member.
+	 * @param memberId The ID of the member the ban belongs to.
+	 * @param reason The reason of the ban.
 	 * @returns The created ban.
 	 */
 	public async create(memberId: string, reason?: string) {
@@ -59,21 +72,4 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	public remove(banId: string) {
 		return this.client.api.serverBans.delete(this.server.id, banId);
 	}
-}
-
-export declare interface ServerBanManager {
-	/**
-	 * Fetch a single ban from the server, or cache.
-	 * @param banId The ID of the ban to fetch.
-	 * @param cache Whether to cache the fetched ban.
-	 * @returns The fetched ban.
-	 */
-	fetch(banId: string, cache?: boolean): Promise<ServerBan>;
-
-	/**
-	 * Fetch multiple bans from thw server.
-	 * @param cache Whether to cache the fetched bans.
-	 * @returns The fetched bans.
-	 */
-	fetch(cache?: boolean): Promise<CacheCollection<string, ServerBan>>;
 }

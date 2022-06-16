@@ -3,6 +3,19 @@ import { BaseRouter } from '../BaseRouter';
 
 /** The server member router for the Guilded REST API. */
 export class ServerMemberRouter extends BaseRouter {
+	/**
+	 * Fetch a server member from Guilded.
+	 * @param serverId The ID of the server the member belongs to.
+	 * @param memberId The ID of the server member to fetch.
+	 * @returns The fetched server member.
+	 */
+	public fetch(serverId: string, memberId: string): Promise<APIServerMember>;
+	/**
+	 * Fetch server members from Guilded.
+	 * @param serverId The ID of the server the members belong to.
+	 * @returns The fetched server members.
+	 */
+	public fetch(serverId: string): Promise<APIServerMember[]>;
 	/** @ignore */
 	public fetch(serverId: string, memberId?: string) {
 		if (memberId) return this.fetchSingle(serverId, memberId);
@@ -26,24 +39,24 @@ export class ServerMemberRouter extends BaseRouter {
 	}
 
 	/**
-	 * Set the nickname of a server member.
+	 * Set the nickname of a server member on Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to edit.
-	 * @param nickname The nickname to set.
+	 * @param nickname The nickname of the server member.
 	 * @returns The nickname that was set.
 	 */
 	public async setNickname(serverId: string, memberId: string, nickname: string) {
-		await this.rest.put(Routes.serverMemberNickname(serverId, memberId), { nickname });
+		await this.rest.put(Routes.serverNickname(serverId, memberId), { nickname });
 		return nickname;
 	}
 
 	/**
-	 * Remove the nickname of a server member.
+	 * Remove the nickname of a server member on Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to edit.
 	 */
 	public removeNickname(serverId: string, memberId: string) {
-		return this.rest.delete<void>(Routes.serverMemberNickname(serverId, memberId));
+		return this.rest.delete<void>(Routes.serverNickname(serverId, memberId));
 	}
 
 	/**
@@ -62,9 +75,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param amount The amount of XP to award to the server member.
 	 * @returns The total amount of XP the server member has.
 	 */
-	public async awardXP(serverId: string, memberId: string, amount: number) {
+	public async awardXp(serverId: string, memberId: string, amount: number) {
 		const { total } = await this.rest.post<{ total: number }, { amount: number }>(
-			Routes.serverMemberXP(serverId, memberId),
+			Routes.serverMemberXp(serverId, memberId),
 			{ amount },
 		);
 		return total;
@@ -88,7 +101,7 @@ export class ServerMemberRouter extends BaseRouter {
 	 * Fetch a list of roles that a server member has on Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to fetch the roles for.
-	 * @returns The IDs of roles that the server member has.
+	 * @returns The IDs of roles the server member has.
 	 */
 	public async fetchRoles(serverId: string, memberId: string) {
 		const { roleIds } = await this.rest.get<{ roleIds: number[] }>(
@@ -116,21 +129,4 @@ export class ServerMemberRouter extends BaseRouter {
 	public removeRole(serverId: string, memberId: string, roleId: number) {
 		return this.rest.delete<void>(Routes.serverMemberRole(serverId, memberId, roleId));
 	}
-}
-
-export declare interface ServerMemberRouter {
-	/**
-	 * Fetch a server member from Guilded.
-	 * @param serverId The ID of the server the member belongs to.
-	 * @param memberId The ID of the server member to fetch.
-	 * @returns The fetched server member.
-	 */
-	fetch(serverId: string, memberId: string): Promise<APIServerMember>;
-
-	/**
-	 * Fetch server members from Guilded.
-	 * @param serverId The ID of the server the members belong to.
-	 * @returns The fetched server members.
-	 */
-	fetch(serverId: string): Promise<APIServerMember[]>;
 }

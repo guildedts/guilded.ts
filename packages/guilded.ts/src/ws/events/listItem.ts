@@ -5,7 +5,7 @@ import { ListChannel } from '../../structures/channel/ListChannel';
 
 /**
  * Handle the ListItemCreated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function created(client: Client, data: WSEvents['ListItemCreated']) {
@@ -17,7 +17,7 @@ export async function created(client: Client, data: WSEvents['ListItemCreated'])
 
 /**
  * Handle the ListItemUpdated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function updated(client: Client, data: WSEvents['ListItemUpdated']) {
@@ -29,7 +29,7 @@ export async function updated(client: Client, data: WSEvents['ListItemUpdated'])
 
 /**
  * Handle the ListItemDeleted event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function deleted(client: Client, data: WSEvents['ListItemDeleted']) {
@@ -41,7 +41,7 @@ export async function deleted(client: Client, data: WSEvents['ListItemDeleted'])
 
 /**
  * Handle the ListItemCompleted event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function completed(client: Client, data: WSEvents['ListItemCompleted']) {
@@ -53,7 +53,7 @@ export async function completed(client: Client, data: WSEvents['ListItemComplete
 
 /**
  * Handle the ListItemUncompleted event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function uncompleted(client: Client, data: WSEvents['ListItemUncompleted']) {

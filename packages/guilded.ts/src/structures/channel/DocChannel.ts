@@ -1,18 +1,17 @@
-import { APIChannel } from 'guilded-api-typings';
+import { APIChannel, APIChannelType } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 import { DocManager } from '../../managers/DocManager';
 
 /** Represents a doc channel on Guilded. */
 export class DocChannel extends Channel {
-	/** The type of channel. */
-	public declare readonly type: 'docs';
+	public declare readonly type: APIChannelType.Docs;
 
-	/** A manager of docs that belong to the doc channel. */
+	/** The manager of docs that belong to the doc channel. */
 	public readonly docs: DocManager;
 
 	/**
-	 * @param client The client that owns the doc channel.
+	 * @param client The client the doc channel belongs to.
 	 * @param raw The raw data of the doc channel.
 	 */
 	constructor(client: Client, raw: APIChannel) {
@@ -21,10 +20,10 @@ export class DocChannel extends Channel {
 	}
 
 	/**
-	 * Post a new doc to the doc channel.
-	 * @param title The title to post the doc with.
-	 * @param content The content to post the doc with.
-	 * @returns The posted doc.
+	 * Create a doc in the doc channel.
+	 * @param title The title of the doc.
+	 * @param content The content of the doc.
+	 * @returns The created doc.
 	 */
 	public post(title: string, content: string) {
 		return this.docs.create(title, content);

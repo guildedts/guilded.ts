@@ -2,14 +2,11 @@ import { GuildedAPIError } from '.';
 import fetch from 'node-fetch';
 import { Router } from './routers/Router';
 
-/**
- * The REST manager for the Guilded API.
- * Inspired by Guilded.JS' {@link https://github.com/guildedjs/guilded.js/blob/main/packages/rest/lib/RestManager.ts#L9 REST manager}.
- */
+/** The REST manager for the Guilded API. */
 export class RESTManager {
-	/** The authoization token for the REST API. */
+	/** The auth token for the REST API. */
 	public token?: string;
-	/** The API version for the manager. */
+	/** The version of the REST API. */
 	public readonly version: number;
 	/** The router for the REST API. */
 	public readonly router = new Router(this);
@@ -26,8 +23,8 @@ export class RESTManager {
 	}
 
 	/**
-	 * Set the authorization token for the REST API.
-	 * @param token The authorization token.
+	 * Set the auth token for the REST API.
+	 * @param token The auth token.
 	 * @returns The REST manager.
 	 */
 	public setToken(token?: string) {
@@ -40,6 +37,7 @@ export class RESTManager {
 	 * @param path The path to the resource.
 	 * @param method The HTTP method.
 	 * @param options The options for the request.
+	 * @param retries The number of retries.
 	 * @returns The response from the REST API.
 	 */
 	public async fetch<R = any, B = any, P extends Record<string, any> = Record<string, any>>(
@@ -61,25 +59,23 @@ export class RESTManager {
 			body: options.body ? JSON.stringify(options.body) : undefined,
 		});
 		const data = await response.json().catch();
-		if (!response.ok) {
-			if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
-				const retryAfter = response.headers.get('Retry-After');
-				const retryDelay = retryAfter ? parseInt(retryAfter) : undefined;
-				await new Promise((resolve) =>
-					setTimeout(resolve, retryDelay ?? this.options?.retryInterval ?? 3000),
-				);
-				return this.fetch<R, B, P>(path, method, options, retries++);
-			}
-			throw new GuildedAPIError(
-				data.code,
-				data.message,
-				response.status,
-				method,
-				path,
-				options.body,
+		if (response.ok) return data;
+		if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
+			const retryAfter = response.headers.get('Retry-After');
+			const retryDelay = retryAfter ? parseInt(retryAfter) : undefined;
+			await new Promise((resolve) =>
+				setTimeout(resolve, retryDelay ?? this.options?.retryInterval ?? 3000),
 			);
+			return this.fetch<R, B, P>(path, method, options, retries++);
 		}
-		return data;
+		throw new GuildedAPIError(
+			data.code,
+			data.message,
+			response.status,
+			method,
+			path,
+			options.body,
+		);
 	}
 
 	/**
@@ -137,9 +133,9 @@ export class RESTManager {
 
 /** The options for the REST manager. */
 export interface RESTOptions {
-	/** The authoization token for the REST API. */
+	/** The auth token for the REST API. */
 	token?: string;
-	/** The API version for the manager. */
+	/** The version of the REST API. */
 	version: number;
 	/** The interval to wait between retries. */
 	retryInterval?: number;
@@ -149,8 +145,8 @@ export interface RESTOptions {
 
 /** The options for making a request to the REST API. */
 export interface FetchOptions<B = any, P extends Record<string, any> = Record<string, any>> {
-	/** The query parameters for the request. */
+	/** The query parameters of the request. */
 	params?: P;
-	/** The body for the request. */
+	/** The body of the request. */
 	body?: B;
 }

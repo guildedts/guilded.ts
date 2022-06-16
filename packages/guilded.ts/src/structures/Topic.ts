@@ -1,31 +1,31 @@
-import { APIForumThread } from 'guilded-api-typings';
+import { APITopic } from 'guilded-api-typings';
 import { Base } from './Base';
 import { ForumChannel } from './channel/ForumChannel';
 
-/** Represents a forum thread on Guilded. */
-export class ForumThread extends Base<number> {
-	/** The ID of the server the forum thread belongs to. */
+/** Represents a topic on Guilded. */
+export class Topic extends Base<number> {
+	/** The ID of the server the topic belongs to. */
 	public readonly serverId: string;
-	/** The ID of the channel the forum thread belongs to. */
+	/** The ID of the channel the topic belongs to. */
 	public readonly channelId: string;
-	/** The title of the thread. */
+	/** The title of the topic. */
 	public readonly title?: string;
-	/** The content of the thread. */
+	/** The content of the topic. */
 	public readonly content?: string;
-	/** The date the thread was created. */
+	/** The date the topic was created. */
 	public readonly createdAt: Date;
-	/** The ID of the user that created the thread. */
+	/** The ID of the user that created the topic. */
 	public readonly createdBy: string;
-	/** The ID of the webhook that created the thread. */
+	/** The ID of the webhook that created the topic. */
 	public readonly createdByWebhookId?: string;
-	/** The date the thread was edited. */
+	/** The date the topic was edited. */
 	public readonly editedAt?: Date;
 
 	/**
-	 * @param channel The forum channel the thread belongs to.
-	 * @param raw The raw data of the thread.
+	 * @param channel The forum channel the topic belongs to.
+	 * @param raw The raw data of the topic.
 	 */
-	public constructor(public readonly channel: ForumChannel, public readonly raw: APIForumThread) {
+	public constructor(public readonly channel: ForumChannel, public readonly raw: APITopic) {
 		super(channel.client, raw.id);
 		this.serverId = raw.serverId;
 		this.channelId = raw.channelId;
@@ -37,39 +37,39 @@ export class ForumThread extends Base<number> {
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
 	}
 
-	/** Whether the thread is cached. */
+	/** Whether the topic is cached. */
 	public get isCached() {
-		return this.channel.threads.cache.has(this.id);
+		return this.channel.topics.cache.has(this.id);
 	}
 
-	/** The server the thread belongs to. */
+	/** The server the topic belongs to. */
 	public get server() {
 		return this.channel.server;
 	}
 
-	/** The timestamp the thread was created. */
+	/** The timestamp the topic was created. */
 	public get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of the thread. */
+	/** The server member that created the topic. */
 	public get author() {
-		return this.client.users.cache.get(this.createdBy);
+		return this.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The webhook that created the thread. */
+	/** The webhook that created the topic. */
 	public get webhook() {
 		return this.createdByWebhookId
 			? this.channel.webhooks.cache.get(this.createdByWebhookId)
 			: undefined;
 	}
 
-	/** The ID of the author of the thread. */
+	/** The ID of the user that created the topic. */
 	public get authorId() {
-		return this.createdByWebhookId ?? this.createdBy;
+		return this.createdByWebhookId || this.createdBy;
 	}
 
-	/** The timestamp the thread was edited. */
+	/** The timestamp the topic was edited. */
 	public get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}

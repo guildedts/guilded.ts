@@ -4,7 +4,7 @@ import { createChannel } from '../../util';
 
 /**
  * Handle the TeamChannelCreated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function created(client: Client, data: WSEvents['TeamChannelCreated']) {
@@ -15,7 +15,7 @@ export async function created(client: Client, data: WSEvents['TeamChannelCreated
 
 /**
  * Handle the TeamChannelUpdated event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function updated(client: Client, data: WSEvents['TeamChannelUpdated']) {
@@ -26,7 +26,7 @@ export async function updated(client: Client, data: WSEvents['TeamChannelUpdated
 
 /**
  * Handle the TeamChannelDeleted event.
- * @param client The client instance.
+ * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
 export async function deleted(client: Client, data: WSEvents['TeamChannelDeleted']) {

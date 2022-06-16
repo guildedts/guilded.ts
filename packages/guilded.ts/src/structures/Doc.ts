@@ -55,24 +55,24 @@ export class Doc extends Base<number> {
 		return this.createdAt.getTime();
 	}
 
-	/** The author of the doc. */
+	/** The server member that created the doc. */
 	public get author() {
-		return this.client.users.cache.get(this.createdBy);
+		return this.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The ID of the author of the doc. */
+	/** The ID of the user that created the doc. */
 	public get authorId() {
 		return this.createdBy;
 	}
 
 	/** The timestamp the doc was edited. */
 	public get editedTimestamp() {
-		return this.editedAt ? this.editedAt.getTime() : undefined;
+		return this.editedAt?.getTime();
 	}
 
-	/** The editor of the doc. */
+	/** The server member that edited the doc. */
 	public get editor() {
-		return this.editedBy ? this.client.users.cache.get(this.editedBy) : undefined;
+		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
 	}
 
 	/**
@@ -82,25 +82,25 @@ export class Doc extends Base<number> {
 	 */
 	public fetch(cache?: boolean) {
 		this.channel.docs.cache.delete(this.id);
-		return this.channel.docs.fetch(this.id, cache);
+		return this.channel.docs.fetch(this.id, cache) as Promise<this>;
 	}
 
 	/**
 	 * Edit the doc.
-	 * @param title The title to edit the doc with.
-	 * @param content The content to edit the doc with.
+	 * @param title The title of the doc.
+	 * @param content The content of the doc.
 	 * @returns The edited doc.
 	 */
 	public edit(title: string, content: string) {
-		return this.channel.docs.edit(this.id, title, content);
+		return this.channel.docs.edit(this.id, title, content) as Promise<this>;
 	}
 
 	/**
 	 * Delete the doc.
 	 * @returns The deleted doc.
 	 */
-	public delete() {
-		this.channel.docs.delete(this.id);
+	public async delete() {
+		await this.channel.docs.delete(this.id);
 		return this;
 	}
 }

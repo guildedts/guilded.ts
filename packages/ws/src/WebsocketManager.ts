@@ -4,9 +4,9 @@ import { APIUser, WSEvents } from 'guilded-api-typings';
 
 /** The Websocket manager for the Guilded API. */
 export class WebsocketManager extends EventEmitter {
-	/** The authoization token for the websocket. */
+	/** The auth token for the websocket. */
 	public token?: string;
-	/** The API version for the Websocket. */
+	/** The version of the Websocket API. */
 	public readonly version: number;
 	/** The websocket. */
 	public socket?: Websocket;
@@ -14,7 +14,7 @@ export class WebsocketManager extends EventEmitter {
 	public connectedAt?: Date;
 	/** The ping of the websocket connection. */
 	public ping?: number;
-	/** The date of the last ping. */
+	/** The date the websocket was pinged. */
 	public pingedAt?: Date;
 
 	/** @param options The options for the Websocket manager. */
@@ -34,25 +34,25 @@ export class WebsocketManager extends EventEmitter {
 		return this.connectedAt?.getTime();
 	}
 
-	/** The timestamp of the last ping. */
+	/** The timestamp the websocket was pinged. */
 	public get pingedTimestamp() {
 		return this.pingedAt?.getTime();
 	}
 
-	/** How long the websocket has been connected. (in MS) */
+	/** How long the websocket has been connected. */
 	public get uptime() {
 		return this.isConnected ? Date.now() - this.connectedTimestamp! : undefined;
 	}
 
-	/** The URL for the websocket. */
+	/** The URL of the Websocket. */
 	public get url(): `wss://api.guilded.gg/v${number}/websocket` {
 		return `wss://api.guilded.gg/v${this.version}/websocket`;
 	}
 
 	/**
-	 * Connect to the websocket.
-	 * @param token The authorization token.
-	 * @returns The websocket manager.
+	 * Connect to the Websocket API.
+	 * @param token The auth token.
+	 * @returns The Websocket manager.
 	 */
 	public connect(token: string = this.token!) {
 		this.token = token;
@@ -62,8 +62,8 @@ export class WebsocketManager extends EventEmitter {
 			},
 		});
 		this.socket.on('close', this.onSocketClose.bind(this));
-		this.socket.on('message', (rawData) => {
-			const { op, t, d } = JSON.parse(rawData.toString());
+		this.socket.on('message', (raw) => {
+			const { op, t, d } = JSON.parse(raw.toString());
 			this.onSocketData(op, t, d);
 		});
 		this.socket.on('ping', this.onSocketPing.bind(this));
@@ -72,7 +72,7 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/**
-	 * Disconnect from the websocket.
+	 * Disconnect from the Websocket API.
 	 * @returns The websocket manager.
 	 */
 	public disconnect() {
@@ -140,19 +140,19 @@ export interface WebsocketManager {
 
 /** The options for the Websocket manager. */
 export interface WebsocketOptions {
-	/** The authoization token for the websocket. */
+	/** The auth token for the Websocket API. */
 	token?: string;
-	/** The API version for the websocket. */
+	/** The version of the Websocket API. */
 	version: number;
 }
 
 /** The websocket manager events. */
 export interface WSManagerEvents {
-	/** Emitted when the websocket is connected. */
+	/** Emitted when the Websocket is connected. */
 	connect: [user: APIUser];
-	/** Emitted when the websocket is disconnected. */
+	/** Emitted when the Websocket is disconnected. */
 	disconnect: [];
-	/** Emitted when data is received from the websocket. */
+	/** Emitted when data is received from the Websocket API. */
 	data: {
 		[Event in keyof WSEvents]: [event: Event, data: WSEvents[Event]];
 	}[keyof WSEvents];

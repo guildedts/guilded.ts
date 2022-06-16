@@ -1,22 +1,22 @@
-import { APIUser, APIUserSummary, APIUserType } from 'guilded-api-typings';
+import { APIUser, APIUserSummary, APIUserType, APIUserTypeString } from 'guilded-api-typings';
 import { Base } from './Base';
 import { Client } from './Client';
 
 /** Represents a user on Guilded. */
 export class User extends Base {
-	/** The type of user. */
-	public readonly type?: APIUserType;
+	/** The type of the user. */
+	public readonly type?: APIUserTypeString;
 	/** The name of the user. */
 	public readonly name: string;
-	/** The URL of the user's avatar. */
+	/** The avatar of the user. */
 	public readonly avatar?: string;
-	/** The URL of the user's banner. */
+	/** The banner of the user. */
 	public readonly banner?: string;
 	/** The date the user was created. */
 	public readonly createdAt?: Date;
 
 	/**
-	 * @param client The client that owns the user.
+	 * @param client The client the user belongs to.
 	 * @param raw The raw data of the user.
 	 */
 	public constructor(client: Client, public readonly raw: APIUser | APIUserSummary) {
@@ -35,16 +35,16 @@ export class User extends Base {
 
 	/** The timestamp the user was created. */
 	public get createdTimestamp() {
-		return this.createdAt ? this.createdAt.getTime() : undefined;
+		return this.createdAt?.getTime();
 	}
 
 	/** Whether the user is a bot. */
 	public get isBot() {
-		return this.type === 'bot';
+		return this.type === APIUserType.Bot;
 	}
 
 	/** Whether the user is a human. */
-	public get isHuman() {
-		return this.type === 'user';
+	public get isUser() {
+		return this.type === APIUserType.User;
 	}
 }

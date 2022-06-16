@@ -4,15 +4,32 @@ import { CacheCollection } from '../structures/CacheCollection';
 import { Doc } from '../structures/Doc';
 import { DocChannel } from '../structures/channel/DocChannel';
 
-/** A manager of docs that belong to a doc channel. */
+/** The manager of docs that belong to a doc channel. */
 export class DocManager extends BaseManager<number, Doc> {
-	/** @param channel The doc channel that owns the docs. */
+	/** @param channel The doc channel the docs belong to. */
 	public constructor(public readonly channel: DocChannel) {
 		super(channel.client, channel.client.options.maxDocCache);
 	}
 
+	/**
+	 * Fetch a doc from the channel, or cache.
+	 * @param docId The ID of the doc to fetch.
+	 * @param cache Whether to cache the fetched doc.
+	 * @returns The fetched doc.
+	 */
+	public fetch(docId: number, cache?: boolean): Promise<Doc>;
+	/**
+	 * Fetch docs from the channel.
+	 * @param options The options to fetch the docs with.
+	 * @param cache Whether to cache the fetched docs.
+	 * @returns The fetched docs.
+	 */
+	public fetch(
+		options?: APIFetchDocsQuery,
+		cache?: boolean,
+	): Promise<CacheCollection<number, Doc>>;
 	/** @ignore */
-	public async fetch(
+	public fetch(
 		arg1: number | APIFetchDocsQuery = {},
 		arg2 = this.client.options.cacheDocs ?? true,
 	) {
@@ -44,8 +61,8 @@ export class DocManager extends BaseManager<number, Doc> {
 
 	/**
 	 * Create a doc in the channel.
-	 * @param title The title to create the doc with.
-	 * @param content The content to create the doc with.
+	 * @param title The title of the doc.
+	 * @param content The content of the doc.
 	 * @returns The created doc.
 	 */
 	public async create(title: string, content: string) {
@@ -56,8 +73,8 @@ export class DocManager extends BaseManager<number, Doc> {
 	/**
 	 * Edit a doc in the channel.
 	 * @param docId The ID of the doc to edit.
-	 * @param title The title to edit the doc with.
-	 * @param content The content to edit the doc with.
+	 * @param title The title of the doc.
+	 * @param content The content of the doc.
 	 * @returns The edited doc.
 	 */
 	public async edit(docId: number, title: string, content: string) {
@@ -66,28 +83,10 @@ export class DocManager extends BaseManager<number, Doc> {
 	}
 
 	/**
-	 * Delete a doc in the channel.
+	 * Delete a doc from channel.
 	 * @param docId The ID of the doc to delete.
 	 */
 	public delete(docId: number) {
 		return this.client.api.docs.delete(this.channel.id, docId);
 	}
-}
-
-export declare interface DocManager {
-	/**
-	 * Fetch a single doc from the channel, or cache.
-	 * @param docId The ID of the doc to fetch.
-	 * @param cache Whether to cache the fetched doc.
-	 * @returns The fetched doc.
-	 */
-	fetch(docId: number, cache?: boolean): Promise<Doc>;
-
-	/**
-	 * Fetch multiple docs from the channel.
-	 * @param options The options to fetch the docs with.
-	 * @param cache Whether to cache the fetched docs.
-	 * @returns The fetched docs.
-	 */
-	fetch(options?: APIFetchDocsQuery, cache?: boolean): Promise<CacheCollection<number, Doc>>;
 }

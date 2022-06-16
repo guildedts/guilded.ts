@@ -1,5 +1,5 @@
 /**
- * The API embed model.
+ * Represents a embed on Guilded.
  * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbed {
@@ -16,9 +16,9 @@ export interface APIEmbed {
 	/** The timestamp of the embed. */
 	timestamp?: string;
 	/** The thumbnail of the embed. */
-	thumbnail?: APIEmbedThumbnail;
+	thumbnail?: APIEmbedMedia;
 	/** The image of the embed. */
-	image?: APIEmbedImage;
+	image?: APIEmbedMedia;
 	/** The author of the embed. */
 	author?: APIEmbedAuthor;
 	/** The fields of the embed. */
@@ -26,7 +26,7 @@ export interface APIEmbed {
 }
 
 /**
- * The API embed footer object.
+ * Represents a embed footer on Guilded.
  * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedFooter {
@@ -37,25 +37,16 @@ export interface APIEmbedFooter {
 }
 
 /**
- * The API embed thumbnail object.
+ * Represents embed media on Guilded.
  * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
-export interface APIEmbedThumbnail {
-	/** The URL of the thumbnail. */
+export interface APIEmbedMedia {
+	/** The URL of the media. */
 	url?: string;
 }
 
 /**
- * The API embed image object.
- * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
- */
-export interface APIEmbedImage {
-	/** The URL of the image. */
-	url?: string;
-}
-
-/**
- * The API embed author object.
+ * Represents a embed author on Guilded.
  * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedAuthor {
@@ -68,7 +59,7 @@ export interface APIEmbedAuthor {
 }
 
 /**
- * The API embed field object.
+ * Represents a embed field on Guilded.
  * @see https://www.guilded.gg/docs/api/chat/ChatEmbed
  */
 export interface APIEmbedField {
