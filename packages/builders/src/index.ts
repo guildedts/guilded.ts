@@ -1,7 +1,7 @@
 export * from './Embed';
 
 /**
- * Crate bold text.
+ * Create bold text.
  * @param text The text to be formatted.
  * @returns The formatted text.
  */
@@ -44,9 +44,10 @@ export const inlineCode = (text: string): `\`${string}\`` => `\`${text}\``;
 
 /**
  * Create a divider
+ * @param newLine Whether to create a new line.
  * @returns The formatted text.
  */
-export const divider = () => '\n---\n';
+export const divider = (newLine = false): `\n---\n` | '---' => (newLine ? '\n---\n' : '---');
 
 /**
  * Create a big heading.
