@@ -1,5 +1,13 @@
 # @guildedts/ws
 
+## 0.2.1
+
+### Patch Changes
+
+-   727d276: # Fixes
+
+    -   Fix consistency in docs
+
 ## 0.2.0
 
 ### Minor Changes
