@@ -9,7 +9,6 @@ export function resolveColor(color: ColorResolvable) {
 	else if (typeof color === `string`)
 		color = COLORS[color as keyof typeof COLORS] ?? parseInt(color.replace('#', ''), 16);
 	else if (Array.isArray(color)) color = (color[0] << 16) + (color[1] << 8) + color[2];
-
 	return color;
 }
 
