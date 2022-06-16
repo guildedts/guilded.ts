@@ -1,19 +1,19 @@
 {
 	"name": "@guildedts/guilded.ts",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"private": true,
 	"scripts": {
 		"test": "ts-node test",
-		"build": "yarn turbo run build",
-		"lint": "yarn eslint 'packages/**/*.ts' --fix",
-		"format": "yarn prettier --write 'packages/**/*.{ts,js,json}'",
-		"docs": "yarn rimraf docs && yarn typedoc --options tsdoc.json && echo 'guildedts.js.org' > docs/CNAME",
-		"prepare": "yarn format && yarn lint",
-		"clear": "yarn turbo run clear",
-		"refresh": "yarn clear && yarn rimraf node_modules && yarn && yarn build",
-		"setchanges": "yarn changeset",
-		"version": "yarn setchanges version"
+		"build": "turbo run build",
+		"lint": "eslint 'packages/**/*.ts' --fix",
+		"format": "prettier --write 'packages/**/*.{ts,js,json}'",
+		"docs": "rimraf docs && typedoc --options tsdoc.json && echo 'guildedts.js.org' > docs/CNAME",
+		"prepare": "run format && run lint",
+		"clear": "turbo run clear",
+		"refresh": "run clear && rimraf node_modules && yarn && run build",
+		"setchanges": "changeset",
+		"version": "changeset version"
 	},
 	"keywords": [
 		"guilded",
