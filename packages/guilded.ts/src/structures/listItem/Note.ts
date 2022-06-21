@@ -52,4 +52,24 @@ export class Note extends Base {
 	public get editor() {
 		return this.editedBy ? this.item.server?.members.cache.get(this.editedBy) : undefined;
 	}
+
+	/**
+	 * Fetch the server member that created the note.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchAuthor(cache?: boolean) {
+		const server = await this.item.fetchServer();
+		return server.members.fetch(this.createdBy, cache);
+	}
+
+	/**
+	 * Fetch the server member that edited the note.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchEditor(cache?: boolean) {
+		const server = await this.item.fetchServer();
+		return this.editedBy ? server.members.fetch(this.editedBy, cache) : undefined;
+	}
 }
