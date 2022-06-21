@@ -43,9 +43,7 @@ export class UserManager extends BaseManager<string, User> {
 		const server = await this.client.servers.fetch(serverId);
 		const members = await server.members.fetch();
 		const users = new CacheCollection<string, User>();
-		for (const { user } of members.values()) {
-			users.set(user.id, user);
-		}
+		for (const { user } of members.values()) users.set(user.id, user);
 		return users;
 	}
 }
