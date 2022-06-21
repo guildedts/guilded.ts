@@ -43,8 +43,13 @@ export class Channel extends Base {
 	/**
 	 * @param client The client the channel belongs to.
 	 * @param raw The raw data of the channel.
+	 * @param cache Whether to cache the channel.
 	 */
-	constructor(client: Client, public readonly raw: APIChannel) {
+	constructor(
+		client: Client,
+		public readonly raw: APIChannel,
+		cache = client.options.cacheChannels ?? true,
+	) {
 		super(client, raw.id);
 		this.webhooks = new ChannelWebhookManager(this);
 		this.type = raw.type;
@@ -60,6 +65,7 @@ export class Channel extends Base {
 		this.isPublic = raw.isPublic;
 		this.archivedBy = raw.archivedBy;
 		this.archivedAt = raw.archivedAt ? new Date(raw.archivedAt) : undefined;
+		if (cache) client.channels.cache.set(this.id, this);
 	}
 
 	/** Whether the channel is cached. */
@@ -179,6 +185,53 @@ export class Channel extends Base {
 	public fetch(cache?: boolean) {
 		this.client.channels.cache.delete(this.id);
 		return this.client.channels.fetch(this.id, cache) as Promise<this>;
+	}
+
+	/**
+	 * Fetch the server member that created the channel.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchCreator(cache?: boolean) {
+		const server = await this.fetchServer();
+		return server.members.fetch(this.createdBy, cache);
+	}
+
+	/**
+	 * Fetch the server the channel belongs to.
+	 * @param cache Whether to cache the fetched server.
+	 * @returns The fetched server.
+	 */
+	public fetchServer(cache?: boolean) {
+		return this.client.servers.fetch(this.serverId, cache);
+	}
+
+	/**
+	 * Fetch the parent channel the channel belongs to.
+	 * @param cache Whether to cache the fetched channel.
+	 * @returns The fetched channel.
+	 */
+	public fetchParent(cache?: boolean) {
+		return this.parantId ? this.client.channels.fetch(this.parantId, cache) : undefined;
+	}
+
+	/**
+	 * Fetch the group the channel belongs to.
+	 * @param cache Whether to cache the fetched group.
+	 * @returns The fetched group.
+	 */
+	public fetchGroup(cache?: boolean) {
+		return this.client.groups.fetch(this.groupId, cache);
+	}
+
+	/**
+	 * Fetch the server member that archived the channel.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchArchiver(cache?: boolean) {
+		const server = await this.fetchServer();
+		return this.archivedBy ? server.members.fetch(this.archivedBy, cache) : undefined;
 	}
 
 	/**
