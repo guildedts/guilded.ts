@@ -26,8 +26,13 @@ export class Doc extends Base<number> {
 	/**
 	 * @param channel The doc channel the doc belongs to.
 	 * @param raw The raw data of the doc.
+	 * @param cache Whether to cache the doc.
 	 */
-	public constructor(public readonly channel: DocChannel, public readonly raw: APIDoc) {
+	public constructor(
+		public readonly channel: DocChannel,
+		public readonly raw: APIDoc,
+		cache = channel.client.options.cacheDocs ?? true,
+	) {
 		super(channel.client, raw.id);
 		this.serverId = raw.serverId;
 		this.channelId = raw.channelId;
@@ -38,6 +43,7 @@ export class Doc extends Base<number> {
 		this.createdBy = raw.createdBy;
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
 		this.editedBy = raw.updatedBy;
+		if (cache) channel.docs.cache.set(this.id, this);
 	}
 
 	/** Whether the doc is cached. */
@@ -83,6 +89,35 @@ export class Doc extends Base<number> {
 	public fetch(cache?: boolean) {
 		this.channel.docs.cache.delete(this.id);
 		return this.channel.docs.fetch(this.id, cache) as Promise<this>;
+	}
+
+	/**
+	 * Fetch the server the doc belongs to.
+	 * @param cache Whether to cache the fetched server.
+	 * @returns The fetched server.
+	 */
+	public async fetchServer(cache?: boolean) {
+		return this.channel.fetchServer(cache);
+	}
+
+	/**
+	 * Fetch the server member that created the doc.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchAuthor(cache?: boolean) {
+		const server = await this.fetchServer();
+		return server.members.fetch(this.createdBy, cache);
+	}
+
+	/**
+	 * Fetch the server member that edited the doc.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchEditor(cache?: boolean) {
+		const server = await this.fetchServer();
+		return this.editedBy ? server.members.fetch(this.editedBy, cache) : undefined;
 	}
 
 	/**
