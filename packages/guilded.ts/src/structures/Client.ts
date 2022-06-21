@@ -242,10 +242,10 @@ export interface ClientOptions {
 	cacheServerMembers?: boolean;
 	/** The max cache size for server members. */
 	maxServerMemberCache?: number;
-	/** Whether to cache forum threads. */
-	cacheForumThreads?: boolean;
-	/** The max cache size for forum threads. */
-	maxForumThreadCache?: number;
+	/** Whether to cache topics. */
+	cacheTopics?: boolean;
+	/** The max cache size for topics. */
+	maxTopicCache?: number;
 	/** Whether to cache list items. */
 	cacheListItems?: boolean;
 	/** The max cache size for list items. */
