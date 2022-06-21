@@ -35,10 +35,12 @@ export class ListItem extends Base {
 	/**
 	 * @param channel The list channel the item belongs to.
 	 * @param raw The raw data of the list item.
+	 * @param cache Whether to cache the list item.
 	 */
 	public constructor(
 		public readonly channel: ListChannel,
 		public readonly raw: APIListItem | APIListItemSummary,
+		cache = channel.client.options.cacheListItems ?? true
 	) {
 		super(channel.client, raw.id);
 		this.serverId = raw.serverId;
@@ -54,6 +56,7 @@ export class ListItem extends Base {
 		this.completedAt = raw.completedAt ? new Date(raw.completedAt) : undefined;
 		this.completedBy = raw.completedBy;
 		this.note = raw.note ? new Note(this, raw.note) : undefined;
+		if (cache) channel.items.cache.set(this.id, this);
 	}
 
 	/** Whether the list item is cached. */
@@ -131,6 +134,63 @@ export class ListItem extends Base {
 	public fetch(cache?: boolean) {
 		this.channel.items.cache.delete(this.id);
 		return this.channel.items.fetch(this.id, cache) as Promise<this>;
+	}
+
+	/**
+	 * Fetch the server the list item belongs to.
+	 * @param cache Whether to cache the fetched server.
+	 * @returns The fetched server.
+	 */
+	public async fetchServer(cache?: boolean) {
+		return this.channel.fetchServer(cache);
+	}
+
+	/**
+	 * Fetch the server member that created the list item.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchAuthor(cache?: boolean) {
+		const server = await this.fetchServer(cache);
+		return server.members.fetch(this.createdBy, cache);
+	}
+
+	/**
+	 * Fetch the webhook that created the list item.
+	 * @param cache Whether to cache the fetched webhook.
+	 * @returns The fetched webhook.
+	 */
+	public async fetchWebhook(cache?: boolean) {
+		return this.createdByWebhookId ? this.channel.webhooks.fetch(this.createdByWebhookId, cache) : undefined;
+	}
+
+	/**
+	 * Fetch the server member that edited the list item.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchEditor(cache?: boolean) {
+		const server = await this.fetchServer(cache);
+		return this.editedBy ? server.members.fetch(this.editedBy, cache) : undefined;
+	}
+
+	/**
+	 * Fetch the list item the list item belongs to.
+	 * @param cache Whether to cache the fetched list item.
+	 * @returns The fetched list item.
+	 */
+	public async fetchParent(cache?: boolean) {
+		return this.parentId ? this.channel.items.fetch(this.parentId, cache) : undefined;
+	}
+
+	/**
+	 * Fetch the server member that completed the list item.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchCompleter(cache?: boolean) {
+		const server = await this.fetchServer(cache);
+		return this.completedBy ? server.members.fetch(this.completedBy, cache) : undefined;
 	}
 
 	/**
