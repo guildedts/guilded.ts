@@ -25,35 +25,28 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	public fetch(cache?: boolean): Promise<CacheCollection<string, ServerMember>>;
 	/** @ignore */
 	public async fetch(
-		arg1: string | boolean = this.client.options.cacheServerMembers ?? true,
-		arg2 = this.client.options.cacheServerMembers ?? true,
+		arg1?: string | boolean,
+		arg2?: boolean,
 	) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(memberId: string, cache: boolean) {
-		let member = this.cache.get(memberId);
+	private async fetchSingle(memberId: string, cache?: boolean) {
+		const member = this.cache.get(memberId);
 		if (member) return member;
 		const raw = await this.client.api.serverMembers.fetch(this.server.id, memberId);
-		member = new ServerMember(this.server, raw);
-		if (this.client.options.cacheUsers ?? true)
-			this.client.users.cache.set(memberId, member.user);
-		if (cache) this.cache.set(memberId, member);
-		return member;
+		return new ServerMember(this.server, raw, cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(cache: boolean) {
+	private async fetchMany(cache?: boolean) {
 		const raw = await this.client.api.serverMembers.fetch(this.server.id);
 		const members = new CacheCollection<string, ServerMember>();
 		for (const data of raw) {
-			const member = new ServerMember(this.server, data);
+			const member = new ServerMember(this.server, data, cache);
 			members.set(member.id, member);
-			if (this.client.options.cacheUsers ?? true)
-				this.client.users.cache.set(member.id, member.user);
-			if (cache) this.cache.set(member.id, member);
 		}
 		return members;
 	}

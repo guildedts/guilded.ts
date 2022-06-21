@@ -10,9 +10,7 @@ import { ListChannel } from '../../structures/channel/ListChannel';
  */
 export async function created(client: Client, data: WSEvents['ListItemCreated']) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
-	const listItem = new ListItem(channel, data.listItem);
-	if (client.options.cacheListItems) channel.items.cache.set(listItem.id, listItem);
-	client.emit('listItemCreate', listItem);
+	client.emit('listItemCreate', new ListItem(channel, data.listItem));
 }
 
 /**
@@ -22,9 +20,7 @@ export async function created(client: Client, data: WSEvents['ListItemCreated'])
  */
 export async function updated(client: Client, data: WSEvents['ListItemUpdated']) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
-	const listItem = new ListItem(channel, data.listItem);
-	if (client.options.cacheListItems) channel.items.cache.set(listItem.id, listItem);
-	client.emit('listItemEdit', listItem);
+	client.emit('listItemEdit', new ListItem(channel, data.listItem));
 }
 
 /**
@@ -46,9 +42,7 @@ export async function deleted(client: Client, data: WSEvents['ListItemDeleted'])
  */
 export async function completed(client: Client, data: WSEvents['ListItemCompleted']) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
-	const listItem = new ListItem(channel, data.listItem);
-	if (client.options.cacheListItems) channel.items.cache.set(listItem.id, listItem);
-	client.emit('listItemComplete', listItem);
+	client.emit('listItemComplete', new ListItem(channel, data.listItem));
 }
 
 /**
@@ -58,7 +52,5 @@ export async function completed(client: Client, data: WSEvents['ListItemComplete
  */
 export async function uncompleted(client: Client, data: WSEvents['ListItemUncompleted']) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
-	const listItem = new ListItem(channel, data.listItem);
-	if (client.options.cacheListItems) channel.items.cache.set(listItem.id, listItem);
-	client.emit('listItemUncomplete', listItem);
+	client.emit('listItemUncomplete', new ListItem(channel, data.listItem));
 }

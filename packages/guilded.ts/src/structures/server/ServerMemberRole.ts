@@ -6,9 +6,15 @@ export class ServerMemberRole extends ServerRole {
 	/**
 	 * @param member The server member the role belongs to.
 	 * @param raw The raw data of the role.
+	 * @param cache Whether to cache the server member role.
 	 */
-	public constructor(public readonly member: ServerMember, raw: { id: number }) {
+	public constructor(
+		public readonly member: ServerMember,
+		raw: { id: number },
+		cache = member.client.options.cacheServerMemberRoles ?? true,
+	) {
 		super(member.server, raw);
+		if (cache) member.roles.cache.set(this.id, this);
 	}
 
 	/** Whether the role is cached. */

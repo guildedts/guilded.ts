@@ -20,18 +20,17 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 	/**
 	 * Fetch a channel from Guilded, or cache.
 	 * @param channelId The ID of the channel to fetch.
-	 * @param cache Whether to cache the fetched channel.
+	 * @param cache Whether to cache the fetched channel
 	 * @returns The fetched channel.
 	 */
 	public async fetch(
 		channelId: string,
-		cache = this.client.options.cacheChannels ?? true,
+		cache?: boolean,
 	): Promise<ChannelResolvable> {
 		let channel = this.cache.get(channelId);
 		if (channel) return channel;
 		const raw = await this.client.api.channels.fetch(channelId);
-		channel = createChannel(this.client, raw);
-		if (cache) this.cache.set(channelId, channel);
+		channel = createChannel(this.client, raw, cache);
 		return channel;
 	}
 

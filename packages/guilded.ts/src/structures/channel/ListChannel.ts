@@ -13,9 +13,10 @@ export class ListChannel extends Channel {
 	/**
 	 * @param client The client the list channel belongs to.
 	 * @param raw The raw data of the list channel.
+	 * @param cache Whether to cache the list channel.
 	 */
-	constructor(client: Client, raw: APIChannel) {
-		super(client, raw);
+	constructor(client: Client, raw: APIChannel, cache?: boolean) {
+		super(client, raw, cache);
 		this.items = new ListItemManager(this);
 	}
 

@@ -25,31 +25,28 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	public fetch(cache?: boolean): Promise<CacheCollection<string, ServerBan>>;
 	/** @ignore */
 	public fetch(
-		arg1: string | boolean = this.client.options.cacheServerBans ?? true,
-		arg2 = this.client.options.cacheServerBans ?? true,
+		arg1?: string | boolean,
+		arg2?: boolean,
 	) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(banId: string, cache: boolean) {
-		let ban = this.cache.get(banId);
+	private async fetchSingle(banId: string, cache?: boolean) {
+		const ban = this.cache.get(banId);
 		if (ban) return ban;
 		const raw = await this.client.api.serverBans.fetch(this.server.id, banId);
-		ban = new ServerBan(this.server, raw);
-		if (cache) this.cache.set(banId, ban);
-		return ban;
+		return new ServerBan(this.server, raw, cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(cache: boolean) {
+	private async fetchMany(cache?: boolean) {
 		const raw = await this.client.api.serverBans.fetch(this.server.id);
 		const bans = new CacheCollection<string, ServerBan>();
 		for (const data of raw) {
-			const ban = new ServerBan(this.server, data);
+			const ban = new ServerBan(this.server, data, cache);
 			bans.set(ban.user.id, ban);
-			if (cache) this.cache.set(ban.user.id, ban);
 		}
 		return bans;
 	}

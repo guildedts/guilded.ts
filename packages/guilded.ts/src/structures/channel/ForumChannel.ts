@@ -13,9 +13,10 @@ export class ForumChannel extends Channel {
 	/**
 	 * @param client The client the forum channel belongs to.
 	 * @param raw The raw data of the forum channel.
+	 * @param cache Whether to cache the forum channel.
 	 */
-	constructor(client: Client, raw: APIChannel) {
-		super(client, raw);
+	constructor(client: Client, raw: APIChannel, cache?: boolean) {
+		super(client, raw, cache);
 		this.topics = new TopicManager(this);
 	}
 

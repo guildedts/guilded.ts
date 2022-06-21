@@ -15,12 +15,10 @@ export class ServerManager extends BaseManager<string, Server> {
 	 * @param cache Whether to cache the fetched server.
 	 * @returns The fetched server.
 	 */
-	public async fetch(serverId: string, cache = this.client.options.cacheServers ?? true) {
-		let server = this.cache.get(serverId);
+	public async fetch(serverId: string, cache?: boolean) {
+		const server = this.cache.get(serverId);
 		if (server) return server;
 		const raw = await this.client.api.servers.fetch(serverId);
-		server = new Server(this.client, raw);
-		if (cache) this.cache.set(serverId, server);
-		return server;
+		return new Server(this.client, raw, cache);
 	}
 }

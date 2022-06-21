@@ -15,11 +15,9 @@ export class GroupManager extends BaseManager<string, Group> {
 	 * @param cache Whether to cache the fetched group.
 	 * @returns The fetched group.
 	 */
-	public fetch(groupId: string, cache: boolean = this.client.options.cacheGroups ?? true) {
-		let group = this.cache.get(groupId);
+	public fetch(groupId: string, cache?: boolean) {
+		const group = this.cache.get(groupId);
 		if (group) return group;
-		group = new Group(this.client, { id: groupId });
-		if (cache) this.cache.set(groupId, group);
-		return group;
+		return new Group(this.client, { id: groupId }, cache);
 	}
 }

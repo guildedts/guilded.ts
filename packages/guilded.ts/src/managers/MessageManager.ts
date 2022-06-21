@@ -10,7 +10,6 @@ import { Embed } from '@guildedts/builders';
 import { BaseManager } from './BaseManager';
 import { ChatBasedChannel } from './channel/ChannelManager';
 import { CacheCollection } from '../structures/CacheCollection';
-import { ChatChannel } from '../structures/channel/ChatChannel';
 import { Message } from '../structures/Message';
 
 /** The manager of messages that belong to a chat based channel. */
@@ -39,31 +38,28 @@ export class MessageManager extends BaseManager<string, Message> {
 	): Promise<CacheCollection<string, Message>>;
 	/** @ignore */
 	public async fetch(
-		arg1: string | APIFetchMessagesQuery = {},
-		arg2 = this.client.options.cacheMessages ?? true,
+		arg1?: string | APIFetchMessagesQuery,
+		arg2?: boolean,
 	) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1, arg2);
 	}
 
 	/** @ignore */
-	private async fetchSingle(messageId: string, cache: boolean) {
-		let message = this.cache.get(messageId);
+	private async fetchSingle(messageId: string, cache?: boolean) {
+		const message = this.cache.get(messageId);
 		if (message) return message;
 		const raw = await this.client.api.messages.fetch(this.channel.id, messageId);
-		message = new Message(this.channel, raw);
-		if (cache) this.cache.set(messageId, message);
-		return message;
+		return new Message(this.channel, raw, cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(options: APIFetchMessagesQuery = {}, cache: boolean) {
+	private async fetchMany(options?: APIFetchMessagesQuery, cache?: boolean) {
 		const raw = await this.client.api.messages.fetch(this.channel.id, options);
 		const messages = new CacheCollection<string, Message>();
 		for (const data of raw) {
-			const message = new Message(this.channel as ChatChannel, data);
+			const message = new Message(this.channel, data, cache);
 			messages.set(message.id, message);
-			if (cache) this.cache.set(message.id, message);
 		}
 		return messages;
 	}

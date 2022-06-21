@@ -17,16 +17,13 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @param cache Whether to cache the fetched roles.
 	 * @returns The fetched roles that belong to the member.
 	 */
-	public async fetch(memberId: string, cache = this.client.options.cacheServerRoles ?? true) {
+	public async fetch(memberId: string, cache?: boolean) {
 		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, memberId);
 		const roles = new CacheCollection<number, ServerRole>();
 		const member = this.server.members.cache.get(memberId);
 		for (const roleId of raw) {
-			const role = new ServerRole(this.server, { id: roleId });
-			if (cache) this.cache.set(roleId, role);
-			if (this.client.options.cacheServerMemberRoles)
-				member?.roles.cache.set(roleId, new ServerMemberRole(member, { id: roleId }));
-			member?.roleIds.push(roleId);
+			const role = new ServerRole(this.server, { id: roleId }, cache);
+			if(member) new ServerMemberRole(member, { id: roleId });
 			roles.set(roleId, role);
 		}
 		return roles;

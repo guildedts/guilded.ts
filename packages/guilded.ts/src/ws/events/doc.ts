@@ -10,9 +10,7 @@ import { DocChannel } from '../../structures/channel/DocChannel';
  */
 export async function created(client: Client, data: WSEvents['DocCreated']) {
 	const channel = (await client.channels.fetch(data.doc.channelId)) as DocChannel;
-	const doc = new Doc(channel, data.doc);
-	if (client.options.cacheDocs) channel.docs.cache.set(doc.id, doc);
-	client.emit('docCreate', doc);
+	client.emit('docCreate', new Doc(channel, data.doc));
 }
 
 /**
@@ -22,9 +20,7 @@ export async function created(client: Client, data: WSEvents['DocCreated']) {
  */
 export async function updated(client: Client, data: WSEvents['DocUpdated']) {
 	const channel = (await client.channels.fetch(data.doc.channelId)) as DocChannel;
-	const doc = new Doc(channel, data.doc);
-	if (client.options.cacheDocs) channel.docs.cache.set(doc.id, doc);
-	client.emit('docEdit', doc);
+	client.emit('docEdit', new Doc(channel, data.doc));
 }
 
 /**

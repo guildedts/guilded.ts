@@ -10,9 +10,7 @@ import { Message } from '../../structures/Message';
  */
 export async function created(client: Client, data: WSEvents['ChatMessageCreated']) {
 	const channel = (await client.channels.fetch(data.message.channelId)) as ChatBasedChannel;
-	const message = new Message(channel, data.message);
-	if (client.options.cacheMessages) channel.messages.cache.set(message.id, message);
-	client.emit('messageCreate', message);
+	client.emit('messageCreate', new Message(channel, data.message));
 }
 
 /**
@@ -22,9 +20,7 @@ export async function created(client: Client, data: WSEvents['ChatMessageCreated
  */
 export async function updated(client: Client, data: WSEvents['ChatMessageUpdated']) {
 	const channel = (await client.channels.fetch(data.message.channelId)) as ChatBasedChannel;
-	const message = new Message(channel, data.message);
-	if (client.options.cacheMessages) channel.messages.cache.set(message.id, message);
-	client.emit('messageEdit', message);
+	client.emit('messageEdit', new Message(channel, data.message));
 }
 
 /**

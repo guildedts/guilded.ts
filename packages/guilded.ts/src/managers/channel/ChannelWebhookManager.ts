@@ -25,8 +25,8 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	public fetch(cache: boolean): Promise<CacheCollection<string, Webhook>>;
 	/** @ignore */
 	public fetch(
-		arg1: string | boolean = this.client.options.cacheWebhooks ?? true,
-		arg2 = this.client.options.cacheWebhooks ?? true,
+		arg1?: string | boolean,
+		arg2?: boolean,
 	) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -35,25 +35,22 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	/** @ignore */
 	private async fetchSingle(
 		webhookId: string,
-		cache = this.client.options.cacheWebhooks ?? true,
+		cache?: boolean,
 	) {
 		const raw = await this.client.api.webhooks.fetchSingle(this.channel.serverId, webhookId);
-		const webhook = new Webhook(this.channel, raw);
-		if (cache) this.cache.set(webhookId, webhook);
-		return webhook;
+		return new Webhook(this.channel, raw, cache);
 	}
 
 	/** @ignore */
-	public async fetchMany(cache: boolean = this.client.options.cacheWebhooks ?? true) {
+	public async fetchMany(cache?: boolean) {
 		const raw = await this.client.api.webhooks.fetchMany(
 			this.channel.serverId,
 			this.channel.id,
 		);
 		const webhooks = new CacheCollection<string, Webhook>();
 		for (const data of raw) {
-			const webhook = new Webhook(this.channel, data);
+			const webhook = new Webhook(this.channel, data, cache);
 			webhooks.set(webhook.id, webhook);
-			if (cache) this.cache.set(webhook.id, webhook);
 		}
 		return webhooks;
 	}

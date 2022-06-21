@@ -13,9 +13,10 @@ export class DocChannel extends Channel {
 	/**
 	 * @param client The client the doc channel belongs to.
 	 * @param raw The raw data of the doc channel.
+	 * @param cache Whether to cache the doc channel.
 	 */
-	constructor(client: Client, raw: APIChannel) {
-		super(client, raw);
+	constructor(client: Client, raw: APIChannel, cache?: boolean) {
+		super(client, raw, cache);
 		this.docs = new DocManager(this);
 	}
 

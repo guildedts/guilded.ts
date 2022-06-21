@@ -25,31 +25,28 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	public fetch(cache?: boolean): Promise<CacheCollection<string, ListItem>>;
 	/** @ignore */
 	public async fetch(
-		arg1: string | boolean = this.client.options.cacheListItems ?? true,
-		arg2 = this.client.options.cacheListItems ?? true,
+		arg1?: string | boolean,
+		arg2?: boolean,
 	) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(listItemId: string, cache: boolean) {
-		let item = this.cache.get(listItemId);
+	private async fetchSingle(listItemId: string, cache?: boolean) {
+		const item = this.cache.get(listItemId);
 		if (item) return item;
 		const raw = await this.client.api.listItems.fetch(this.channel.id, listItemId);
-		item = new ListItem(this.channel, raw);
-		if (cache) this.cache.set(listItemId, item);
-		return item;
+		return new ListItem(this.channel, raw, cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(cache: boolean) {
+	private async fetchMany(cache?: boolean) {
 		const raw = await this.client.api.listItems.fetch(this.channel.id);
 		const items = new CacheCollection<string, ListItem>();
 		for (const data of raw) {
-			const item = new ListItem(this.channel, data);
+			const item = new ListItem(this.channel, data, cache);
 			items.set(item.id, item);
-			if (cache) this.cache.set(item.id, item);
 		}
 		return items;
 	}

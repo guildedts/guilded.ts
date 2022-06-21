@@ -19,9 +19,10 @@ export class ChatChannel extends Channel {
 	/**
 	 * @param client The client the chat channel belongs to.
 	 * @param raw The raw data of the chat channel.
+	 * @param cache Whether to cache the chat channel.
 	 */
-	constructor(client: Client, raw: APIChannel) {
-		super(client, raw);
+	constructor(client: Client, raw: APIChannel, cache?: boolean) {
+		super(client, raw, cache);
 		this.messages = new MessageManager(this);
 	}
 

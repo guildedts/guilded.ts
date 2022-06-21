@@ -30,31 +30,28 @@ export class DocManager extends BaseManager<number, Doc> {
 	): Promise<CacheCollection<number, Doc>>;
 	/** @ignore */
 	public fetch(
-		arg1: number | APIFetchDocsQuery = {},
-		arg2 = this.client.options.cacheDocs ?? true,
+		arg1?: number | APIFetchDocsQuery,
+		arg2?: boolean,
 	) {
 		if (typeof arg1 === 'number') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1, arg2);
 	}
 
 	/** @ignore */
-	private async fetchSingle(docId: number, cache: boolean) {
-		let doc = this.cache.get(docId);
+	private async fetchSingle(docId: number, cache?: boolean) {
+		const doc = this.cache.get(docId);
 		if (doc) return doc;
 		const raw = await this.client.api.docs.fetch(this.channel.id, docId);
-		doc = new Doc(this.channel, raw);
-		if (cache) this.cache.set(docId, doc);
-		return doc;
+		return new Doc(this.channel, raw, cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(options: APIFetchDocsQuery = {}, cache: boolean) {
+	private async fetchMany(options?: APIFetchDocsQuery, cache?: boolean) {
 		const raw = await this.client.api.docs.fetch(this.channel.id, options);
 		const docs = new CacheCollection<number, Doc>();
 		for (const data of raw) {
-			const doc = new Doc(this.channel, data);
+			const doc = new Doc(this.channel, data, cache);
 			docs.set(data.id, doc);
-			if (cache) this.cache.set(data.id, doc);
 		}
 		return docs;
 	}

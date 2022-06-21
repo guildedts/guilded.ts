@@ -26,10 +26,12 @@ export class ServerMember extends Base {
 	/**
 	 * @param server The server the member belongs to.
 	 * @param raw The raw data of the server member.
+	 * @param cache Whether to cache the server member.
 	 */
 	public constructor(
 		public readonly server: Server,
 		public readonly raw: APIServerMember | APIServerMemberSummary,
+		cache = server.client.options.cacheServerMembers ?? true,
 	) {
 		super(server.client, raw.user.id);
 		this.roles = new ServerMemberRoleManager(this);
@@ -38,6 +40,7 @@ export class ServerMember extends Base {
 		this.nickname = 'nickname' in raw ? raw.nickname : undefined;
 		this.joinedAt = 'joinedAt' in raw ? new Date(raw.joinedAt) : undefined;
 		this.isOwner = 'isOwner' in raw ? raw.isOwner : undefined;
+		if (cache) server.members.cache.set(this.id, this);
 	}
 
 	/** Whether the server member is cached. */
