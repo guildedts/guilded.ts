@@ -13,23 +13,24 @@ import { VoiceChannel } from './structures/channel/VoiceChannel';
  * Create a channel structure.
  * @param client The client the channel belongs to.
  * @param raw The raw data of the channel.
+ * @param cache Whether to cache the channel.
  * @returns The created channel structure.
  */
-export function createChannel(client: Client, raw: APIChannel): ChannelResolvable {
+export function createChannel(client: Client, raw: APIChannel, cache?: boolean): ChannelResolvable {
 	switch (raw.type) {
 		case 'chat':
-			return new ChatChannel(client, raw);
+			return new ChatChannel(client, raw, cache);
 		case 'docs':
-			return new DocChannel(client, raw);
+			return new DocChannel(client, raw, cache);
 		case 'forums':
-			return new ForumChannel(client, raw);
+			return new ForumChannel(client, raw, cache);
 		case 'list':
-			return new ListChannel(client, raw);
+			return new ListChannel(client, raw, cache);
 		case 'stream':
-			return new StreamChannel(client, raw);
+			return new StreamChannel(client, raw, cache);
 		case 'voice':
-			return new VoiceChannel(client, raw);
+			return new VoiceChannel(client, raw, cache);
 		default:
-			return new Channel(client, raw);
+			return new Channel(client, raw, cache);
 	}
 }
