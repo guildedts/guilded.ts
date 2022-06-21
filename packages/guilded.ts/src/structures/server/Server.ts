@@ -45,8 +45,13 @@ export class Server extends Base {
 	/**
 	 * @param client The client the server belongs to.
 	 * @param raw The raw data of the server.
+	 * @param cache Whether to cache the server.
 	 */
-	constructor(client: Client, public readonly raw: APIServer) {
+	constructor(
+		client: Client,
+		public readonly raw: APIServer,
+		cache = client.options.cacheServers ?? true,
+	) {
 		super(client, raw.id);
 		this.ownerId = raw.ownerId;
 		this.type = raw.type;
@@ -62,6 +67,7 @@ export class Server extends Base {
 		this.members = new ServerMemberManager(this);
 		this.bans = new ServerBanManager(this);
 		this.roles = new ServerRoleManager(this);
+		if (cache) client.servers.cache.set(this.id, this);
 	}
 
 	/** Whether the server is cached. */
@@ -129,6 +135,24 @@ export class Server extends Base {
 	public fetch(cache?: boolean) {
 		this.client.servers.cache.delete(this.id);
 		return this.client.servers.fetch(this.id, cache) as Promise<this>;
+	}
+
+	/**
+	 * Fetch the server member the server belongs to.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public fetchOwner(cache?: boolean) {
+		return this.members.fetch(this.ownerId, cache);
+	}
+
+	/**
+	 * Fetch the server's default channel.
+	 * @param cache Whether to cache the fetched channel.
+	 * @returns The fetched channel.
+	 */
+	public fetchDefaultChannel(cache?: boolean) {
+		return this.defaultChannelId ? this.client.channels.fetch(this.defaultChannelId, cache) : undefined;
 	}
 
 	/**
