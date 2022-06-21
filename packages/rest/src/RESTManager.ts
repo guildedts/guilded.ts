@@ -1,6 +1,7 @@
 import { GuildedAPIError } from '.';
 import fetch from 'node-fetch';
 import { Router } from './routers/Router';
+import { APIError } from 'guilded-api-typings';
 
 /** The REST manager for the Guilded API. */
 export class RESTManager {
@@ -58,8 +59,8 @@ export class RESTManager {
 			},
 			body: options.body ? JSON.stringify(options.body) : undefined,
 		});
-		const data = await response.json().catch();
-		if (response.ok) return data;
+		const data = await response.json().catch() as APIError | R;
+		if (response.ok) return data as R;
 		if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
 			const retryAfter = response.headers.get('Retry-After');
 			const retryDelay = retryAfter ? parseInt(retryAfter) : undefined;
@@ -68,13 +69,15 @@ export class RESTManager {
 			);
 			return this.fetch<R, B, P>(path, method, options, retries++);
 		}
+		const error = data as APIError;
 		throw new GuildedAPIError(
-			data.code,
-			data.message,
+			error.code,
+			error.message,
 			response.status,
 			method,
 			path,
 			options.body,
+			error.meta,
 		);
 	}
 
