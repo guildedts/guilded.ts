@@ -1,5 +1,16 @@
 # @guildedts/rest
 
+## 0.6.1
+
+### Patch Changes
+
+-   # Features
+
+    -   Add `meta` to `GuildedAPIError`
+
+-   Updated dependencies
+    -   guilded-api-typings@0.3.1
+
 ## 0.6.0
 
 ### Minor Changes

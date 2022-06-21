@@ -1,5 +1,57 @@
 # guilded.ts
 
+## 0.8.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `cache` param to all structures that represent a data model
+    -   Add `fetchCreator` method to `Channel`
+    -   Add `fetchServer` method to `Channel`
+    -   Add `fetchParent` method to `Channel`
+    -   Add `fetchGroup` method to `Channel`
+    -   Add `fetchArchiver` method to `Channel`
+    -   Add `fetchServer` method to `ListItem`
+    -   Add `fetchAuthor` method to `ListItem`
+    -   Add `fetchWebhook` method to `ListItem`
+    -   Add `fetchEditor` method to `ListItem`
+    -   Add `fetchParent` method to `ListItem`
+    -   Add `fetchCompleter` method to `ListItem`
+    -   Add `fetchAuthor` method to `Note`
+    -   Add `fetchEditor` method to `Note`
+    -   Add `fetchOwner` method to `Server`
+    -   Add `fetchDefaultChannel` to `Server`
+    -   Remove `member` from `ServerBan`
+    -   Add `fetchAuthor` method to `ServerBan`
+    -   Change `cacheForumThreads` to `cacheTopics` in `ClientOptions`
+    -   Change `maxForumThreadCache` to `maxTopicCache` in `ClientOptions`
+    -   Add `fetchServer` method to `Doc`
+    -   Add `fetchAuthor` method to `Doc`
+    -   Add `fetchEditor` method to `Doc`
+    -   Add `fetch` method to `Group`
+    -   Add `fetchServer` method to `Message`
+    -   Add `fetchGroup` method to `Message`
+    -   Add `fetchAuthor` method to `Message`
+    -   Add `fetchWebhook` method to `Message`
+    -   Add `fetchReplies` method to `Message`
+    -   Add `fetchServer` method to `Topic`
+    -   Add `fetchAuthor` method to `Topic`
+    -   Add `fetchWebhook` method to `Topic`
+    -   Add `fetch` method to `Webhook`
+    -   Add `fetchServer` method to `Webhook`
+    -   Add `fetchAuthor` method to `Webhook`
+    -   Add `cache` param to `createChannel`
+
+### Patch Changes
+
+-   Updated dependencies
+-   Updated dependencies
+    -   guilded-api-typings@0.3.1
+    -   @guildedts/rest@0.6.1
+    -   @guildedts/builders@0.2.1
+    -   @guildedts/ws@0.2.1
+
 ## 0.7.0
 
 ### Minor Changes
