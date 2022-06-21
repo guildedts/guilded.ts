@@ -48,8 +48,13 @@ export class Message extends Base {
 	/**
 	 * @param channel The chat channel the message belongs to.
 	 * @param raw The raw data of the message.
+	 * @param cache Whether to cache the message.
 	 */
-	public constructor(public readonly channel: ChatBasedChannel, public readonly raw: APIMessage) {
+	public constructor(
+		public readonly channel: ChatBasedChannel,
+		public readonly raw: APIMessage,
+		cache = channel.client.options.cacheMessages ?? true,
+	) {
 		super(channel.client, raw.id);
 		this.reactions = new ReactionManager(this);
 		this.type = raw.type;
@@ -65,6 +70,7 @@ export class Message extends Base {
 		this.createdBy = raw.createdBy;
 		this.createdByWebhookId = raw.createdByWebhookId;
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
+		if(cache) channel.messages.cache.set(this.id, this);
 	}
 
 	/** Whether the message is cached. */
@@ -152,6 +158,57 @@ export class Message extends Base {
 	public fetch(cache?: boolean) {
 		this.channel.messages.cache.delete(this.id);
 		return this.channel.messages.fetch(this.id, cache) as Promise<this>;
+	}
+
+	/**
+	 * Fetch the server the message belongs to.
+	 * @param cache Whether to cache the fetched server.
+	 * @returns The fetched server.
+	 */
+	public fetchServer(cache?: boolean) {
+		return this.channel.fetchServer(cache);
+	}
+
+	/**
+	 * Fetch the group the message belongs to.
+	 * @param cache Whether to cache the fetched group.
+	 * @returns The fetched group.
+	 */
+	public fetchGroup(cache?: boolean) {
+		return this.channel.fetchGroup(cache);
+	}
+
+	/**
+	 * Fetch the server member that created the message.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchAuthor(cache?: boolean) {
+		const server = await this.fetchServer(cache);
+		return server.members.fetch(this.createdBy, cache);
+	}
+
+	/**
+	 * Fetch the webhook that created the message.
+	 * @param cache Whether to cache the fetched webhook.
+	 * @returns The fetched webhook.
+	 */
+	public fetchWebhook(cache?: boolean) {
+		return this.createdByWebhookId ? this.channel.webhooks.fetch(this.createdByWebhookId, cache) : undefined;
+	}
+
+	/**
+	 * Fetch the messages that were replied to.
+	 * @param cache Whether to cache the fetched messages.
+	 * @returns The fetched messages.
+	 */
+	public async fetchReplies(cache?: boolean) {
+		const messages = new CacheCollection<string, Message>();
+		for (const id of this.replyMessageIds) {
+			const message = await this.channel.messages.fetch(id, cache);
+			if (message) messages.set(id, message);
+		}
+		return messages;
 	}
 
 	/**
