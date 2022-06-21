@@ -6,7 +6,7 @@ import { Topic } from '../structures/Topic';
 export class TopicManager extends BaseManager<number, Topic> {
 	/** @param channel The forum channel the topics belong to. */
 	public constructor(public readonly channel: ForumChannel) {
-		super(channel.client, channel.client.options.maxForumThreadCache);
+		super(channel.client, channel.client.options.maxTopicCache);
 	}
 
 	/**
