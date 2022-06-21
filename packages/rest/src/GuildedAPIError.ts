@@ -1,12 +1,13 @@
 /** Represents an error that occurred while interacting with the Guilded API. */
 export class GuildedAPIError extends Error {
 	/**
-	 * @param code The error code.
-	 * @param message The error message.
-	 * @param status The status code.
-	 * @param method The method used.
-	 * @param path The path used.
-	 * @param body The body used.
+	 * @param code The code of the error.
+	 * @param message The message of the error.
+	 * @param status The status code of the error.
+	 * @param method The method used to make the request.
+	 * @param path The path used to make the request.
+	 * @param body The body used to make the request.
+	 * @param meta The meta data of the error.
 	 */
 	constructor(
 		public readonly code: string,
@@ -15,6 +16,7 @@ export class GuildedAPIError extends Error {
 		public readonly method: string,
 		public readonly path: string,
 		public readonly body?: any,
+		public readonly meta?: any,
 	) {
 		super(message);
 		this.name = `GuildedAPIError [${code}:${status}]`;
