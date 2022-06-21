@@ -24,8 +24,13 @@ export class Webhook extends Base {
 	/**
 	 * @param channel The channel the webhook belongs to.
 	 * @param raw The raw data of the webhook.
+	 * @param cache Whether to cache the webhook.
 	 */
-	constructor(public readonly channel: ChannelResolvable, public readonly raw: APIWebhook) {
+	constructor(
+		public readonly channel: ChannelResolvable,
+		public readonly raw: APIWebhook,
+		cache = channel.client.options.cacheWebhooks ?? true,
+	) {
 		super(channel.client, raw.id);
 		this.name = raw.name;
 		this.serverId = raw.serverId;
@@ -34,6 +39,7 @@ export class Webhook extends Base {
 		this.createdBy = raw.createdBy;
 		this.deletedAt = raw.deletedAt ? new Date(raw.deletedAt) : undefined;
 		this.token = raw.token;
+		if (cache) channel.webhooks.cache.set(this.id, this);
 	}
 
 	/** Whether the webhook is cached. */
@@ -64,6 +70,35 @@ export class Webhook extends Base {
 	/** The timestamp the webhook was deleted. */
 	public get deletedTimestamp() {
 		return this.deletedAt?.getTime();
+	}
+
+	/**
+	 * Fetch the webhook.
+	 * @param cache Whether to cache the fetched webhook.
+	 * @returns The fetched webhook.
+	 */
+	public fetch(cache?: boolean) {
+		this.channel.webhooks.cache.delete(this.id);
+		return this.channel.webhooks.fetch(this.id, cache) as Promise<this>;
+	}
+
+	/**
+	 * Fetch the server the webhook belongs to.
+	 * @param cache Whether to cache the fetched server.
+	 * @returns The fetched server.
+	 */
+	public async fetchServer(cache?: boolean) {
+		return this.channel.fetchServer(cache);
+	}
+
+	/**
+	 * Fetch the server member that created the webhook.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchAuthor(cache?: boolean) {
+		const server = await this.fetchServer();
+		return server.members.fetch(this.createdBy, cache);
 	}
 
 	/**
