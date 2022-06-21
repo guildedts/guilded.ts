@@ -24,8 +24,13 @@ export class Topic extends Base<number> {
 	/**
 	 * @param channel The forum channel the topic belongs to.
 	 * @param raw The raw data of the topic.
+	 * @param cache Whether to cache the topic.
 	 */
-	public constructor(public readonly channel: ForumChannel, public readonly raw: APITopic) {
+	public constructor(
+		public readonly channel: ForumChannel,
+		public readonly raw: APITopic,
+		cache = channel.client.options.cacheTopics ?? true,
+	) {
 		super(channel.client, raw.id);
 		this.serverId = raw.serverId;
 		this.channelId = raw.channelId;
@@ -35,6 +40,7 @@ export class Topic extends Base<number> {
 		this.createdBy = raw.createdBy;
 		this.createdByWebhookId = raw.createdByWebhookId;
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
+		if (cache) channel.topics.cache.set(this.id, this);
 	}
 
 	/** Whether the topic is cached. */
@@ -72,5 +78,35 @@ export class Topic extends Base<number> {
 	/** The timestamp the topic was edited. */
 	public get editedTimestamp() {
 		return this.editedAt?.getTime();
+	}
+
+	/**
+	 * Fetch the server the topic belongs to.
+	 * @param cache Whether to cache the fetched server.
+	 * @returns The fetched server.
+	 */
+	public fetchServer(cache?: boolean) {
+		return this.channel.fetchServer(cache);
+	}
+
+	/**
+	 * Fetch the server member that created the topic.
+	 * @param cache Whether to cache the fetched server member.
+	 * @returns The fetched server member.
+	 */
+	public async fetchAuthor(cache?: boolean) {
+		const server = await this.fetchServer(cache);
+		return server.members.fetch(this.createdBy, cache);
+	}
+
+	/**
+	 * Fetch the webhook that created the topic.
+	 * @param cache Whether to cache the fetched webhook.
+	 * @returns The fetched webhook.
+	 */
+	public fetchWebhook(cache?: boolean) {
+		return this.createdByWebhookId
+			? this.channel.webhooks.fetch(this.createdByWebhookId, cache)
+			: undefined;
 	}
 }
