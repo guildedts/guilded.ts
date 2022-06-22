@@ -1,4 +1,5 @@
 // Structures
+export * from './structures/CalendarEvent';
 export * from './structures/Channel';
 export * from './structures/Doc';
 export * from './structures/Embed';
