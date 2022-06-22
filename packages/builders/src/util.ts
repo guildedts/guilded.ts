@@ -25,7 +25,7 @@ export enum Colors {
 	DEFAULT = 0x000000,
 	WHITE = 0xffffff,
 	BLACK = 0x111820,
-	GILDED = 0xF5C400,
+	GILDED = 0xf5c400,
 	GREY = 0x36363d,
 	RED = 0xe03131,
 	PINK = 0xc2255c,

@@ -1,4 +1,4 @@
-import { APIMentions } from "./Channel";
+import { APIMentions } from './Channel';
 
 /**
  * Represents a calendar event on Guilded.
@@ -42,10 +42,10 @@ export interface APICalendarEvent {
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEvent
  */
 export interface APICalendarEventCancellation {
-    /** The description of the cancellation. */
-    description?: string;
-    /** The ID of the user that created the cancellation. */
-    createdBy?: string;
+	/** The description of the cancellation. */
+	description?: string;
+	/** The ID of the user that created the cancellation. */
+	createdBy?: string;
 }
 
 /**
@@ -53,7 +53,7 @@ export interface APICalendarEventCancellation {
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventCreate
  */
 export interface APICalendarEventPayload extends APICalendarEventEditPayload {
-    name: string;
+	name: string;
 }
 
 /**
@@ -61,22 +61,22 @@ export interface APICalendarEventPayload extends APICalendarEventEditPayload {
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventUpdate
  */
 export interface APICalendarEventEditPayload {
-    /** The name of the calendar event. */
-    name?: string;
-    /** The description of the calendar event. */
-    description?: string;
-    /** The location of the calendar event. */
-    location?: string;
-    /** The date the calendar event starts. */
-    startsAt?: string;
-    /** The url of the calendar event. */
-    url?: string;
-    /** The color of the calendar event. */
-    color?: number;
-    /** The duration of the calendar event. */
-    duration?: number;
-    /** Whether the calendar event is private. */
-    isPrivate?: boolean;
+	/** The name of the calendar event. */
+	name?: string;
+	/** The description of the calendar event. */
+	description?: string;
+	/** The location of the calendar event. */
+	location?: string;
+	/** The date the calendar event starts. */
+	startsAt?: string;
+	/** The url of the calendar event. */
+	url?: string;
+	/** The color of the calendar event. */
+	color?: number;
+	/** The duration of the calendar event. */
+	duration?: number;
+	/** Whether the calendar event is private. */
+	isPrivate?: boolean;
 }
 
 /**
