@@ -1,6 +1,6 @@
 name: Deploy documentation
 on:
-	push:
+    push:
 		branches:
 			-	master
 			-	new-docs
