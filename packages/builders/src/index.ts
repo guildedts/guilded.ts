@@ -1,4 +1,5 @@
 export * from './Embed';
+export * from './util';
 
 /**
  * Create bold text.
