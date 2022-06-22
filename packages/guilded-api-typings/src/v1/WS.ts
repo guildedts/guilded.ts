@@ -4,6 +4,7 @@ import { APIDoc } from './structures/Doc';
 import { APIListItem } from './structures/ListItem';
 import { APIServerMember, APIServerBan } from './structures/Server';
 import { APIWebhook } from './structures/Webhook';
+import { APICalendarEvent } from './structures/CalendarEvent';
 
 /**
  * The Guilded WebSocket API events.
@@ -193,6 +194,36 @@ export interface WSEvents {
 		serverId: string;
 		/** The deleted doc. */
 		doc: APIDoc;
+	};
+	/**
+	 * Emitted when a calendar event is created.
+	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventCreated
+	 */
+	CalendarEventCreated: {
+		/** The ID of the server the calendar event belongs to. */
+		serverId: string;
+		/** The created calendar event. */
+		calendarEvent: APICalendarEvent;
+	};
+	/**
+	 * Emitted when a calendar event is edited.
+	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventUpdated
+	 */
+	CalendarEventUpdated: {
+		/** The ID of the server the calendar event belongs to. */
+		serverId: string;
+		/** The edited calendar event. */
+		calendarEvent: APICalendarEvent;
+	};
+	/**
+	 * Emitted when a calendar event is deleted.
+	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventDeleted
+	 */
+	CalendarEventDeleted: {
+		/** The ID of the server the calendar event belongs to. */
+		serverId: string;
+		/** The deleted calendar event. */
+		calendarEvent: APICalendarEvent;
 	};
 	/**
 	 * Emitted when a list item is created.
