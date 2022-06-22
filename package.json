@@ -6,8 +6,8 @@
 	"scripts": {
 		"test": "ts-node test",
 		"build": "turbo run build",
-		"lint": "eslint 'packages/**/*.ts' --fix",
-		"format": "prettier --write 'packages/**/*.{ts,js,json}'",
+		"lint": "eslint 'packages/*/src/**/*.ts' --fix",
+		"format": "prettier --write 'packages/*/src/**/*.ts'",
 		"docs": "rimraf docs && typedoc --options tsdoc.json && echo 'guildedts.js.org' > docs/CNAME",
 		"prepare": "run format && run lint",
 		"clear": "turbo run clear",
