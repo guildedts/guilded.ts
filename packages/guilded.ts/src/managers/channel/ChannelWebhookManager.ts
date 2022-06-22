@@ -24,19 +24,13 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	 */
 	public fetch(cache: boolean): Promise<CacheCollection<string, Webhook>>;
 	/** @ignore */
-	public fetch(
-		arg1?: string | boolean,
-		arg2?: boolean,
-	) {
+	public fetch(arg1?: string | boolean, arg2?: boolean) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(
-		webhookId: string,
-		cache?: boolean,
-	) {
+	private async fetchSingle(webhookId: string, cache?: boolean) {
 		const raw = await this.client.api.webhooks.fetchSingle(this.channel.serverId, webhookId);
 		return new Webhook(this.channel, raw, cache);
 	}

@@ -24,10 +24,7 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	 */
 	public fetch(cache?: boolean): Promise<CacheCollection<string, ListItem>>;
 	/** @ignore */
-	public async fetch(
-		arg1?: string | boolean,
-		arg2?: boolean,
-	) {
+	public async fetch(arg1?: string | boolean, arg2?: boolean) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}

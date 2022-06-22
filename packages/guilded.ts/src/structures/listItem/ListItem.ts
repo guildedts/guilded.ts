@@ -40,7 +40,7 @@ export class ListItem extends Base {
 	public constructor(
 		public readonly channel: ListChannel,
 		public readonly raw: APIListItem | APIListItemSummary,
-		cache = channel.client.options.cacheListItems ?? true
+		cache = channel.client.options.cacheListItems ?? true,
 	) {
 		super(channel.client, raw.id);
 		this.serverId = raw.serverId;
@@ -161,7 +161,9 @@ export class ListItem extends Base {
 	 * @returns The fetched webhook.
 	 */
 	public async fetchWebhook(cache?: boolean) {
-		return this.createdByWebhookId ? this.channel.webhooks.fetch(this.createdByWebhookId, cache) : undefined;
+		return this.createdByWebhookId
+			? this.channel.webhooks.fetch(this.createdByWebhookId, cache)
+			: undefined;
 	}
 
 	/**

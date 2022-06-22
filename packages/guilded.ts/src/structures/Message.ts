@@ -70,7 +70,7 @@ export class Message extends Base {
 		this.createdBy = raw.createdBy;
 		this.createdByWebhookId = raw.createdByWebhookId;
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		if(cache) channel.messages.cache.set(this.id, this);
+		if (cache) channel.messages.cache.set(this.id, this);
 	}
 
 	/** Whether the message is cached. */
@@ -194,7 +194,9 @@ export class Message extends Base {
 	 * @returns The fetched webhook.
 	 */
 	public fetchWebhook(cache?: boolean) {
-		return this.createdByWebhookId ? this.channel.webhooks.fetch(this.createdByWebhookId, cache) : undefined;
+		return this.createdByWebhookId
+			? this.channel.webhooks.fetch(this.createdByWebhookId, cache)
+			: undefined;
 	}
 
 	/**

@@ -37,10 +37,7 @@ export class MessageManager extends BaseManager<string, Message> {
 		cache?: boolean,
 	): Promise<CacheCollection<string, Message>>;
 	/** @ignore */
-	public async fetch(
-		arg1?: string | APIFetchMessagesQuery,
-		arg2?: boolean,
-	) {
+	public async fetch(arg1?: string | APIFetchMessagesQuery, arg2?: boolean) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1, arg2);
 	}

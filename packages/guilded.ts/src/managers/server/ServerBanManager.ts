@@ -24,10 +24,7 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 */
 	public fetch(cache?: boolean): Promise<CacheCollection<string, ServerBan>>;
 	/** @ignore */
-	public fetch(
-		arg1?: string | boolean,
-		arg2?: boolean,
-	) {
+	public fetch(arg1?: string | boolean, arg2?: boolean) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}

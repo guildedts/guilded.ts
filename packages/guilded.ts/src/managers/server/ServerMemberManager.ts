@@ -24,10 +24,7 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 */
 	public fetch(cache?: boolean): Promise<CacheCollection<string, ServerMember>>;
 	/** @ignore */
-	public async fetch(
-		arg1?: string | boolean,
-		arg2?: boolean,
-	) {
+	public async fetch(arg1?: string | boolean, arg2?: boolean) {
 		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}

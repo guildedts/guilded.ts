@@ -23,10 +23,7 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 	 * @param cache Whether to cache the fetched channel
 	 * @returns The fetched channel.
 	 */
-	public async fetch(
-		channelId: string,
-		cache?: boolean,
-	): Promise<ChannelResolvable> {
+	public async fetch(channelId: string, cache?: boolean): Promise<ChannelResolvable> {
 		let channel = this.cache.get(channelId);
 		if (channel) return channel;
 		const raw = await this.client.api.channels.fetch(channelId);

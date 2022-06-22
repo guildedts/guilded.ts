@@ -23,7 +23,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 		const member = this.server.members.cache.get(memberId);
 		for (const roleId of raw) {
 			const role = new ServerRole(this.server, { id: roleId }, cache);
-			if(member) new ServerMemberRole(member, { id: roleId });
+			if (member) new ServerMemberRole(member, { id: roleId });
 			roles.set(roleId, role);
 		}
 		return roles;

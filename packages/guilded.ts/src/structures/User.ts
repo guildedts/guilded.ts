@@ -20,14 +20,18 @@ export class User extends Base {
 	 * @param raw The raw data of the user.
 	 * @param cache Whether to cache the user.
 	 */
-	public constructor(client: Client, public readonly raw: APIUser | APIUserSummary, cache = client.options.cacheUsers ?? true) {
+	public constructor(
+		client: Client,
+		public readonly raw: APIUser | APIUserSummary,
+		cache = client.options.cacheUsers ?? true,
+	) {
 		super(client, raw.id);
 		this.type = raw.type;
 		this.name = raw.name;
 		this.avatar = raw.avatar;
 		this.banner = 'banner' in raw ? raw.banner : undefined;
 		this.createdAt = 'createdAt' in raw ? new Date(raw.createdAt) : undefined;
-		if(cache) client.users.cache.set(this.id, this);
+		if (cache) client.users.cache.set(this.id, this);
 	}
 
 	/** Whether the user is cached. */

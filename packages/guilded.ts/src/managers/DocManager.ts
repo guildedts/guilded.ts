@@ -29,10 +29,7 @@ export class DocManager extends BaseManager<number, Doc> {
 		cache?: boolean,
 	): Promise<CacheCollection<number, Doc>>;
 	/** @ignore */
-	public fetch(
-		arg1?: number | APIFetchDocsQuery,
-		arg2?: boolean,
-	) {
+	public fetch(arg1?: number | APIFetchDocsQuery, arg2?: boolean) {
 		if (typeof arg1 === 'number') return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1, arg2);
 	}

@@ -152,7 +152,9 @@ export class Server extends Base {
 	 * @returns The fetched channel.
 	 */
 	public fetchDefaultChannel(cache?: boolean) {
-		return this.defaultChannelId ? this.client.channels.fetch(this.defaultChannelId, cache) : undefined;
+		return this.defaultChannelId
+			? this.client.channels.fetch(this.defaultChannelId, cache)
+			: undefined;
 	}
 
 	/**
