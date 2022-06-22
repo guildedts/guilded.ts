@@ -12,6 +12,7 @@ import { ServerMemberRouter } from './server/ServerMemberRouter';
 import { ServerRoleRouter } from './server/ServerRoleRouter';
 import { ServerRouter } from './server/ServerRouter';
 import { WebhookRouter } from './WebhookRouter';
+import { CalendarEventRouter } from './CalendarEventRouter';
 
 /** The router for the Guilded REST API. */
 export class Router extends BaseRouter {
@@ -39,6 +40,8 @@ export class Router extends BaseRouter {
 	public readonly webhooks: WebhookRouter;
 	/** The server router for the Guilded REST API. */
 	public readonly servers: ServerRouter;
+	/** The calendar event router for the Guilded REST API. */
+	public readonly calendarEvents: CalendarEventRouter;
 
 	/** @param rest The REST API manager that owns this router. */
 	public constructor(rest: RESTManager) {
@@ -55,5 +58,6 @@ export class Router extends BaseRouter {
 		this.groups = new GroupRouter(rest);
 		this.webhooks = new WebhookRouter(rest);
 		this.servers = new ServerRouter(rest);
+		this.calendarEvents = new CalendarEventRouter(rest);
 	}
 }
