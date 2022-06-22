@@ -59,14 +59,11 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @param payload The payload of the calendar event.
 	 * @returns The created calendar event.
 	 */
-	public async create(channelId: string, payload: string | APICalendarEventPayload) {
+	public async create(channelId: string, payload: APICalendarEventPayload) {
 		const { calendarEvent } = await this.rest.post<
 			{ calendarEvent: APICalendarEvent },
 			APICalendarEventPayload
-		>(
-			Routes.calendarEvents(channelId),
-			typeof payload === 'string' ? { name: payload } : payload,
-		);
+		>(Routes.calendarEvents(channelId), payload);
 		return calendarEvent;
 	}
 
@@ -80,12 +77,12 @@ export class CalendarEventRouter extends BaseRouter {
 	public async edit(
 		channelId: string,
 		calendarEventId: number,
-		payload: string | APICalendarEventEditPayload,
+		payload: APICalendarEventEditPayload,
 	) {
 		const { calendarEvent } = await this.rest.patch<
 			{ calendarEvent: APICalendarEvent },
 			APICalendarEventEditPayload
-		>(Routes.calendarEvent(channelId, calendarEventId), typeof payload === 'string' ? { name: payload } : payload);
+		>(Routes.calendarEvent(channelId, calendarEventId), payload);
 		return calendarEvent;
 	}
 
