@@ -96,9 +96,9 @@ export type APIMessageEditPayloadResolvable = string | APIEmbed[] | APIMessageEd
  */
 export interface APIFetchMessagesQuery {
 	/** The date to fetch messages before. */
-	before?: string;
+	before?: Date;
 	/** The date to fetch messages after. */
-	after?: string;
+	after?: Date;
 	/** The limit of messages to fetch. */
 	limit?: number;
 	/** Whether to include private messages. */

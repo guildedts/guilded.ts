@@ -14,7 +14,7 @@ export interface APIEmbed {
 	/** The footer of the embed. */
 	footer?: APIEmbedFooter;
 	/** The timestamp of the embed. */
-	timestamp?: string;
+	timestamp?: Date;
 	/** The thumbnail of the embed. */
 	thumbnail?: APIEmbedMedia;
 	/** The image of the embed. */

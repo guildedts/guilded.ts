@@ -45,7 +45,7 @@ export interface APIDocPayload {
  */
 export interface APIFetchDocsQuery {
 	/** The date to fetch docs before. */
-	before?: string;
+	before?: Date;
 	/** The maximum number of docs to fetch. */
 	limit?: number;
 }

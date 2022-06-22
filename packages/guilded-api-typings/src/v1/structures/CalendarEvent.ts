@@ -68,7 +68,7 @@ export interface APICalendarEventEditPayload {
 	/** The location of the calendar event. */
 	location?: string;
 	/** The date the calendar event starts. */
-	startsAt?: string;
+	startsAt?: Date;
 	/** The url of the calendar event. */
 	url?: string;
 	/** The color of the calendar event. */
@@ -85,9 +85,9 @@ export interface APICalendarEventEditPayload {
  */
 export interface APIFetchCalendarEventsQuery {
 	/** The date to fetch calendar events before. */
-	before?: string;
+	before?: Date;
 	/** The date to fetch calendar events after. */
-	after?: string;
+	after?: Date;
 	/** The maximum number of calendar events to fetch. */
 	limit?: number;
 }
