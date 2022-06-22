@@ -150,6 +150,28 @@ export const Routes = {
 	doc: (channelId: string, docId: number): `/channels/${string}/docs/${number}` =>
 		`/channels/${channelId}/docs/${docId}`,
 	/**
+	 * The endpoint for calendar events on Guilded.
+	 * @param channelId The ID of the channel the calendar events belongs to.
+	 *
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventCreate
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventReadMany
+	 */
+	calendarEvents: (channelId: string): `/channels/${string}/events` =>
+		`/channels/${channelId}/events`,
+	/**
+	 * The endpoint for a calendar event on Guilded.
+	 * @param channelId The ID of the channel the calendar event belongs to.
+	 * @param calendarEventId The ID of the calendar event.
+	 *
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRead
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventUpdate
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventDelete
+	 */
+	calendarEvent: (
+		channelId: string,
+		calendarEventId: string,
+	): `/channels/${string}/events/${string}` => `/channels/${channelId}/events/${calendarEventId}`,
+	/**
 	 * The endpoint for a content reaction on Guilded.
 	 * @param channelId The ID of the channel the content belongs to.
 	 * @param contentId The ID of the content.
