@@ -2,7 +2,9 @@ name: Deploy documentation
 on:
   push:
     branches: [ master ]
-    paths-ignore: [ docs ]
+    paths:
+      - 'packages/*/src/**/*.ts'
+      - '!docs'
 jobs:
   gendocs:
     name: Deploy documentation
