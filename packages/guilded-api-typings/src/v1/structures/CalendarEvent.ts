@@ -6,7 +6,7 @@ import { APIMentions } from "./Channel";
  */
 export interface APICalendarEvent {
 	/** The ID of the calendar event. */
-	id: string;
+	id: number;
 	/** The ID of the server the calendar event belongs to. */
 	serverId: string;
 	/** The ID of the channel the calendar event belongs to. */

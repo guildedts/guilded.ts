@@ -169,8 +169,8 @@ export const Routes = {
 	 */
 	calendarEvent: (
 		channelId: string,
-		calendarEventId: string,
-	): `/channels/${string}/events/${string}` => `/channels/${channelId}/events/${calendarEventId}`,
+		calendarEventId: number,
+	): `/channels/${string}/events/${number}` => `/channels/${channelId}/events/${calendarEventId}`,
 	/**
 	 * The endpoint for a content reaction on Guilded.
 	 * @param channelId The ID of the channel the content belongs to.
