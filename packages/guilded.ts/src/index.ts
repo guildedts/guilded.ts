@@ -24,6 +24,7 @@ export * from './managers/TopicManager';
 export * from './managers/UserManager';
 
 // Structures
+export * from './structures/channel/CalendarChannel';
 export * from './structures/channel/Channel';
 export * from './structures/channel/ChatChannel';
 export * from './structures/channel/DocChannel';
@@ -47,6 +48,10 @@ export * from './structures/Message';
 export * from './structures/Topic';
 export * from './structures/User';
 export * from './structures/Webhook';
+
+// Utils
+export * from './ws';
+export * from './util';
 
 // Builders
 export * from '@guildedts/builders';
