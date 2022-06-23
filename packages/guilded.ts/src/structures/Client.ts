@@ -15,6 +15,7 @@ import { ServerManager } from '../managers/server/ServerManager';
 import { UserManager } from '../managers/UserManager';
 import { handleWSEvent } from '../ws';
 import { APIMessageSummary, APIUser, WSEvents } from 'guilded-api-typings';
+import { CalendarEvent } from './CalendarEvent';
 
 /** The main hub for interacting with the Guilded API. */
 export class Client extends EventEmitter {
@@ -198,6 +199,12 @@ export interface ClientEvents {
 	docEdit: [doc: Doc];
 	/** Emitted when a doc is deleted. */
 	docDelete: [doc: Doc];
+	/** Emitted when a calendar event is created. */
+	calendarEventCreate: [event: CalendarEvent];
+	/** Emitted when a calendar event is edited. */
+	calendarEventEdit: [event: CalendarEvent];
+	/** Emitted when a calendar event is deleted. */
+	calendarEventDelete: [event: CalendarEvent];
 	/** Emitted when a list item is created. */
 	listItemCreate: [listItem: ListItem];
 	/** Emitted when a list item is edited. */
@@ -270,4 +277,8 @@ export interface ClientOptions {
 	cacheWebhooks?: boolean;
 	/** The max cache size for webhooks. */
 	maxWebhookCache?: number;
+	/** Whether to cache calendar events. */
+	cacheCalendarEvents?: boolean;
+	/** The max cache size for calendar events. */
+	maxCalendarEventCache?: number;
 }
