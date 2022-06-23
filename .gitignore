@@ -1,7 +1,8 @@
 node_modules
 .turbo
+.yarn/*
+.yarn/releases
 lib
 typings
-cache
-install-state.gz
 config.json
+docs
