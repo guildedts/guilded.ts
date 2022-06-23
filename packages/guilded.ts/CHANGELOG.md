@@ -1,5 +1,32 @@
 # guilded.ts
 
+## 0.9.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `CalendarEventManager`
+    -   Add `CalendarChannel`
+    -   Add `CalendarEvent`
+    -   Add `calendarEventCreate` to `ClientEvents`
+    -   Add `calendarEventEdit` to `ClientEvents`
+    -   Add `calendarEventDelete` to `ClientEvents`
+    -   Add `cacheCalendarEvents` to `ClientOptions`
+    -   Add `maxCalendarEventCache` to `ClientOptions`
+    -   Add export for `createChannel`
+    -   Add export for `handleWSEvent`
+
+### Patch Changes
+
+-   Updated dependencies
+-   Updated dependencies
+-   Updated dependencies
+    -   guilded-api-typings@0.4.0
+    -   @guildedts/builders@0.2.2
+    -   @guildedts/rest@0.7.0
+    -   @guildedts/ws@0.2.1
+
 ## 0.8.0
 
 ### Minor Changes

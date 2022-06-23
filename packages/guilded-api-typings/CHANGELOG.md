@@ -1,5 +1,22 @@
 # guilded-api-typings
 
+## 0.4.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `APICalendarEvent`
+    -   Add `APICalendarEventCancellation`
+    -   Add `APICalendarEventPayload`
+    -   Add `APICalendarEventEditPayload`
+    -   Add `APIFetchCalendarEventsQuery`
+    -   Add `calendarEvents` to `Routes`
+    -   Add `calendarEvent` to `Routes`
+    -   Add `CalendarEventCreated` to `WSEvents`
+    -   Add `CalendarEventUpdated` to `WSEvents`
+    -   Add `CalendarEventDeleted` to `WSEvents`
+
 ## 0.3.1
 
 ### Patch Changes

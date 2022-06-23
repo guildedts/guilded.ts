@@ -1,5 +1,15 @@
 # @guildedts/builders
 
+## 0.2.2
+
+### Patch Changes
+
+-   # Features
+
+    -   Change `COLORS` to `Colors`
+    -   Add `DEFAULT` to `Colors`
+    -   Add `GILDED` to `Colors`
+
 ## 0.2.1
 
 ### Patch Changes

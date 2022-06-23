@@ -1,5 +1,19 @@
 # @guildedts/rest
 
+## 0.7.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `CalendarEventRouter`
+    -   Add `calendarEvents` to `Router`
+
+### Patch Changes
+
+-   Updated dependencies
+    -   guilded-api-typings@0.4.0
+
 ## 0.6.1
 
 ### Patch Changes
