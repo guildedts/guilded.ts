@@ -1,5 +1,6 @@
 import { WSEvents } from 'guilded-api-typings';
 import { Client } from '../structures/Client';
+import * as calendarEvent from './events/calendarEvent';
 import * as channel from './events/channel';
 import * as doc from './events/doc';
 import * as listItem from './events/listItem';
@@ -9,7 +10,7 @@ import * as server from './events/server';
 import * as webhook from './events/webhook';
 
 /** A map of all WebSocket events with their respective handlers. */
-export const wsEventMap: {
+const WSEventHandler: {
 	[event in keyof WSEvents]: (client: Client, data: WSEvents[event]) => Promise<void>;
 } = {
 	ChatMessageCreated: message.created,
@@ -29,6 +30,9 @@ export const wsEventMap: {
 	DocCreated: doc.created,
 	DocUpdated: doc.updated,
 	DocDeleted: doc.deleted,
+	CalendarEventCreated: calendarEvent.created,
+	CalendarEventUpdated: calendarEvent.updated,
+	CalendarEventDeleted: calendarEvent.deleted,
 	ListItemCreated: listItem.created,
 	ListItemUpdated: listItem.updated,
 	ListItemDeleted: listItem.deleted,
@@ -47,5 +51,5 @@ export async function handleWSEvent(
 	event: keyof WSEvents,
 	data: WSEvents[keyof WSEvents],
 ) {
-	await wsEventMap[event](client, data as any);
+	await WSEventHandler[event](client, data as any);
 }
