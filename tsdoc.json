@@ -1,7 +1,8 @@
 {
+	"$schema": "https://typedoc.org/schema.json",
 	"name": "Guilded.TS",
 	"includeVersion": true,
-	"entryPointStrategy": "packages",
+	"entryPointStrategy": "Packages",
 	"entryPoints": [
 		"packages/guilded.ts",
 		"packages/builders",
@@ -18,5 +19,6 @@
 	"out": "docs",
 	"readme": "README.md",
 	"tsconfig": "tsconfig.json",
-	"hideGenerator": true
+	"hideGenerator": true,
+	"cname": "guildedts.js.org"
 }
