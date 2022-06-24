@@ -8,7 +8,7 @@
 		"build": "turbo run build",
 		"lint": "eslint 'packages/*/src/**/*.ts' --fix",
 		"format": "prettier --write 'packages/*/src/**/*.ts'",
-		"docs": "rimraf docs && typedoc --options tsdoc.json && echo 'guildedts.js.org' > docs/CNAME",
+		"docs": "rimraf docs && typedoc --options tsdoc.json",
 		"prepare": "run format && run lint",
 		"clear": "turbo run clear",
 		"refresh": "run clear && rimraf node_modules && yarn && run build",
