@@ -2,7 +2,7 @@ import { Client } from '../structures/Client';
 import { CacheCollection } from '../structures/CacheCollection';
 
 /** The manager of a Guilded data model. */
-export class BaseManager<K = string, V = any> {
+export class BaseManager<K = void, V = void> {
 	/** This cache of the manager. */
 	public readonly cache: CacheCollection<K, V>;
 
@@ -23,4 +23,16 @@ export class BaseManager<K = string, V = any> {
 		this.cache.setMaxSize(maxSize);
 		return this;
 	}
+}
+
+/** The options for fetching data from Guilded. */
+export interface FetchOptions extends FetchManyOptions {
+	/** The whether to force fetch the data. */
+	force?: boolean;
+}
+
+/** The options for fetching multiple data from Guilded. */
+export interface FetchManyOptions {
+	/** The whether to cache the fetched data. */
+	cache?: boolean;
 }
