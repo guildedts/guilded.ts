@@ -1,6 +1,6 @@
 import { APIMessageSummary } from 'guilded-api-typings';
-import { ChatBasedChannel } from '../managers/channel/ChannelManager';
-import { Message } from '../structures/Message';
+import { ChatChannel } from '../structures/channel/ChatChannel';
+import { Message } from '../structures/message/Message';
 import { Collector, CollectorOptions } from './Collector';
 
 /** The message collector for a channel. */
@@ -9,8 +9,9 @@ export class MessageCollector extends Collector<Message> {
 	 * @param channel The channel the message collector belongs to.
 	 * @param options The options of the message collector.
 	 */
-	constructor(public readonly channel: ChatBasedChannel, options?: CollectorOptions<Message>) {
+	constructor(public readonly channel: ChatChannel, options?: CollectorOptions<Message>) {
 		super(channel.client, options);
+		this.options.dispose = options?.dispose ?? this.client.options.disposeCollectedMessages;
 		this.client.on('messageCreate', this.collectMessage.bind(this));
 		this.client.on('messageEdit', this.collectMessage.bind(this));
 		this.client.on('messageDelete', this.disposeMessage.bind(this));
@@ -24,7 +25,6 @@ export class MessageCollector extends Collector<Message> {
 
 	/** @ignore */
 	private disposeMessage(message: Message | APIMessageSummary) {
-		if (message.channelId !== this.channel.id) return;
 		this.dispose(message.id);
 	}
 }
