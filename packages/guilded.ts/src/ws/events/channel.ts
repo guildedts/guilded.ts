@@ -8,7 +8,8 @@ import { createChannel } from '../../util';
  * @param data The data of the event.
  */
 export async function created(client: Client, data: WSEvents['TeamChannelCreated']) {
-	client.emit('channelCreate', createChannel(client, data.channel));
+	const channel = createChannel(client, data.channel);
+	client.emit('channelCreate', channel);
 }
 
 /**
@@ -17,7 +18,8 @@ export async function created(client: Client, data: WSEvents['TeamChannelCreated
  * @param data The data of the event.
  */
 export async function updated(client: Client, data: WSEvents['TeamChannelUpdated']) {
-	client.emit('channelEdit', createChannel(client, data.channel));
+	const channel = createChannel(client, data.channel);
+	client.emit('channelEdit', channel);
 }
 
 /**
@@ -27,6 +29,6 @@ export async function updated(client: Client, data: WSEvents['TeamChannelUpdated
  */
 export async function deleted(client: Client, data: WSEvents['TeamChannelDeleted']) {
 	const channel = createChannel(client, data.channel);
-	client.channels.cache.delete(channel.id);
+	if (client.options.disposeCachedChannels ?? true) client.channels.cache.delete(channel.id);
 	client.emit('channelDelete', channel);
 }

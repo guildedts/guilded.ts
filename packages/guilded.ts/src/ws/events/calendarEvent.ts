@@ -10,7 +10,8 @@ import { Client } from '../../structures/Client';
  */
 export async function created(client: Client, data: WSEvents['CalendarEventCreated']) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
-	client.emit('calendarEventCreate', new CalendarEvent(channel, data.calendarEvent));
+	const calendarEvent = new CalendarEvent(channel, data.calendarEvent);
+	client.emit('calendarEventCreate', calendarEvent);
 }
 
 /**
@@ -20,7 +21,8 @@ export async function created(client: Client, data: WSEvents['CalendarEventCreat
  */
 export async function updated(client: Client, data: WSEvents['CalendarEventUpdated']) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
-	client.emit('calendarEventEdit', new CalendarEvent(channel, data.calendarEvent));
+	const calendarEvent = new CalendarEvent(channel, data.calendarEvent);
+	client.emit('calendarEventEdit', calendarEvent);
 }
 
 /**
@@ -31,6 +33,7 @@ export async function updated(client: Client, data: WSEvents['CalendarEventUpdat
 export async function deleted(client: Client, data: WSEvents['CalendarEventDeleted']) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
 	const calendarEvent = new CalendarEvent(channel, data.calendarEvent);
-	channel.events.cache.delete(calendarEvent.id);
+	if (client.options.disposeCachedCalendarEvents ?? true)
+		channel.events.cache.delete(calendarEvent.id);
 	client.emit('calendarEventDelete', calendarEvent);
 }
