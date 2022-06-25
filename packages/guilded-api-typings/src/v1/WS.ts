@@ -1,10 +1,21 @@
 import { APIChannel } from './structures/Channel';
-import { APIMessage, APIMessageSummary } from './structures/Message';
+import { APIMessage, APIMessageReaction, APIMessageSummary } from './structures/Message';
 import { APIDoc } from './structures/Doc';
 import { APIListItem } from './structures/ListItem';
 import { APIServerMember, APIServerBan } from './structures/Server';
 import { APIWebhook } from './structures/Webhook';
 import { APICalendarEvent } from './structures/CalendarEvent';
+import { APIClientUser } from './structures/User';
+
+/** The ready payload of the websocket. */
+export interface WSReadyPayload {
+	/** The last message ID. */
+	lastMessageId: string;
+	/** The client user. */
+	user: APIClientUser;
+	/** The ping interval. */
+	heartbeatIntervalMs: number;
+}
 
 /**
  * The Guilded WebSocket API events.
@@ -275,12 +286,32 @@ export interface WSEvents {
 		/** The uncompleted list item. */
 		listItem: APIListItem;
 	};
+	/**
+	 * Emitted when a message reaction is created.
+	 * @see https://www.guilded.gg/docs/api/websockets/ChannelMessageReactionCreated
+	 */
+	ChannelMessageReactionCreated: {
+		/** The ID of the server the message belongs to. */
+		serverId?: string;
+		/** The created reaction. */
+		reaction: APIMessageReaction;
+	};
+	/**
+	 * Emitted when a message reaction is deleted.
+	 * @see https://www.guilded.gg/docs/api/websockets/ChannelMessageReactionDeleted
+	 */
+	ChannelMessageReactionDeleted: {
+		/** The ID of the server the message belongs to. */
+		serverId?: string;
+		/** The deleted reaction. */
+		reaction: APIMessageReaction;
+	};
 }
 
 /** The Guilded WebSocket API operation codes. */
 export enum WSOpCodes {
-	/** The ready operation code. */
-	Ready = 0,
 	/** The event operation code. */
-	Event = 1,
+	Event = 0,
+	/** The ready operation code. */
+	Ready = 1,
 }
