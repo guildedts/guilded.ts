@@ -59,7 +59,7 @@ export class RESTManager {
 			},
 			body: options.body ? JSON.stringify(options.body) : undefined,
 		});
-		const data = (await response.json().catch()) as APIError | R;
+		const data = (await response.json().catch(() => void 0)) as APIError | R;
 		if (response.ok) return data as R;
 		if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
 			const retryAfter = response.headers.get('Retry-After');
