@@ -2,6 +2,7 @@ import { APIServerBan } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Server } from './Server';
 import { User } from '../User';
+import { FetchOptions } from '../../managers/BaseManager';
 
 /** Represents a server ban on Guilded. */
 export class ServerBan extends Base {
@@ -49,20 +50,24 @@ export class ServerBan extends Base {
 
 	/**
 	 * Fetch the server ban.
-	 * @param cache Whether to cache the fetched server ban.
+	 * @param options The options to fetch the server ban with.
 	 * @returns The fetched server ban.
 	 */
-	public fetch(cache?: boolean) {
-		this.server.bans.cache.delete(this.id);
-		return this.server.bans.fetch(this.id, cache) as Promise<this>;
+	public fetch(options?: FetchOptions) {
+		return this.server.bans.fetch(this, options) as Promise<this>;
 	}
 
 	/**
 	 * Fetch the server member that created the ban.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
-		return this.server.members.fetch(this.createdBy, cache);
+	public async fetchAuthor(options?: FetchOptions) {
+		return this.server.members.fetch(this.createdBy, options);
+	}
+
+	/** Remove the server ban from the server. */
+	public remove() {
+		return this.server.bans.remove(this);
 	}
 }
