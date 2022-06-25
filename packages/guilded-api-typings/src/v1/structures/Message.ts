@@ -1,5 +1,6 @@
 import { APIMentions } from './Channel';
 import { APIEmbed } from './Embed';
+import { APIEmote } from './Server';
 
 /**
  * Represents a message on Guilded.
@@ -103,4 +104,20 @@ export interface APIFetchMessagesQuery {
 	limit?: number;
 	/** Whether to include private messages. */
 	includePrivate?: boolean;
+}
+
+/**
+ * Represents a message reaction on Guilded.
+ * @see https://www.guilded.gg/docs/api/websockets/ChannelMessageReactionCreated
+ * @see https://www.guilded.gg/docs/api/websockets/ChannelMessageReactionDeleted
+ */
+export interface APIMessageReaction {
+	/** The ID of the channel the message belongs to. */
+	channelId: string;
+	/** The ID of the message. */
+	messageId: string;
+	/** The ID of the user that created the reaction. */
+	createdBy: string;
+	/** The emote of the reaction. */
+	emote: APIEmote;
 }
