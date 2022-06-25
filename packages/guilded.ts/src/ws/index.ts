@@ -38,6 +38,8 @@ const WSEventHandler: {
 	ListItemDeleted: listItem.deleted,
 	ListItemCompleted: listItem.completed,
 	ListItemUncompleted: listItem.uncompleted,
+	ChannelMessageReactionCreated: message.reactionCreated,
+	ChannelMessageReactionDeleted: message.reactionDeleted,
 };
 
 /**
