@@ -1,9 +1,10 @@
 import { APIServerMember, APIServerMemberSummary, APISocialLink } from 'guilded-api-typings';
 import { Base } from '../Base';
-import { CacheCollection } from '../CacheCollection';
 import { Server } from './Server';
 import { User } from '../User';
 import { ServerMemberRoleManager } from '../../managers/server/ServerMemberRoleManager';
+import { FetchOptions } from '../../managers/BaseManager';
+import Collection from '@discordjs/collection';
 
 /** Represents a server member on Guilded. */
 export class ServerMember extends Base {
@@ -18,7 +19,7 @@ export class ServerMember extends Base {
 	/** Whether the server member is the server owner. */
 	public readonly isOwner?: boolean;
 	/** The social links of the server member. */
-	public readonly socialLinks = new CacheCollection<string, APISocialLink>();
+	public readonly socialLinks = new Collection<string, APISocialLink>();
 
 	/** The manager of roles that belong to the server member. */
 	public readonly roles: ServerMemberRoleManager;
@@ -55,12 +56,11 @@ export class ServerMember extends Base {
 
 	/**
 	 * Fetch the server member.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetch(cache?: boolean) {
-		this.server.members.cache.delete(this.id);
-		return this.server.members.fetch(this.id, cache) as Promise<this>;
+	public async fetch(options?: FetchOptions) {
+		return this.server.members.fetch(this, options) as Promise<this>;
 	}
 
 	/**
@@ -69,7 +69,7 @@ export class ServerMember extends Base {
 	 * @returns The edited server member.
 	 */
 	public async setNickname(nickname: string) {
-		await this.server.members.setNickname(this.id, nickname);
+		await this.server.members.setNickname(this, nickname);
 		return this;
 	}
 
@@ -78,7 +78,7 @@ export class ServerMember extends Base {
 	 * @returns The edited server member.
 	 */
 	public async removeNickname() {
-		await this.server.members.removeNickname(this.id);
+		await this.server.members.removeNickname(this);
 		return this;
 	}
 
@@ -87,7 +87,7 @@ export class ServerMember extends Base {
 	 * @returns The kicked member.
 	 */
 	public async kick() {
-		await this.server.members.kick(this.id);
+		await this.server.members.kick(this);
 		return this;
 	}
 
@@ -97,7 +97,7 @@ export class ServerMember extends Base {
 	 * @returns The created server ban.
 	 */
 	public ban(reason?: string) {
-		return this.server.members.ban(this.id, reason);
+		return this.server.members.ban(this, reason);
 	}
 
 	/**
@@ -105,7 +105,7 @@ export class ServerMember extends Base {
 	 * @returns The unbanned member.
 	 */
 	public async unban() {
-		await this.server.members.unban(this.id);
+		await this.server.members.unban(this);
 		return this;
 	}
 
@@ -115,7 +115,7 @@ export class ServerMember extends Base {
 	 * @returns The total amount of XP the server member has.
 	 */
 	public async awardXp(amount: number) {
-		return this.server.members.awardXp(this.id, amount);
+		return this.server.members.awardXp(this, amount);
 	}
 
 	/**
@@ -126,11 +126,7 @@ export class ServerMember extends Base {
 	public async fetchSocialLink(type: string) {
 		let socialLink = this.socialLinks.get(type);
 		if (socialLink) return socialLink;
-		socialLink = await this.client.api.serverMembers.fetchSocialLink(
-			this.server.id,
-			this.id,
-			type,
-		);
+		socialLink = await this.server.members.fetchSocialLink(this, type);
 		this.socialLinks.set(socialLink.type, socialLink);
 		return socialLink;
 	}

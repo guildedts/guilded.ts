@@ -1,8 +1,8 @@
 import { APIFetchDocsQuery } from 'guilded-api-typings';
-import { BaseManager } from './BaseManager';
-import { CacheCollection } from '../structures/CacheCollection';
+import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { Doc } from '../structures/Doc';
 import { DocChannel } from '../structures/channel/DocChannel';
+import Collection from '@discordjs/collection';
 
 /** The manager of docs that belong to a doc channel. */
 export class DocManager extends BaseManager<number, Doc> {
@@ -13,41 +13,38 @@ export class DocManager extends BaseManager<number, Doc> {
 
 	/**
 	 * Fetch a doc from the channel, or cache.
-	 * @param docId The ID of the doc to fetch.
-	 * @param cache Whether to cache the fetched doc.
+	 * @param doc The doc to fetch.
+	 * @param options The options to fetch the doc with.
 	 * @returns The fetched doc.
 	 */
-	public fetch(docId: number, cache?: boolean): Promise<Doc>;
+	public fetch(doc: number | Doc, options?: FetchOptions): Promise<Doc>;
 	/**
 	 * Fetch docs from the channel.
 	 * @param options The options to fetch the docs with.
-	 * @param cache Whether to cache the fetched docs.
 	 * @returns The fetched docs.
 	 */
-	public fetch(
-		options?: APIFetchDocsQuery,
-		cache?: boolean,
-	): Promise<CacheCollection<number, Doc>>;
+	public fetch(options?: FetchDocsOptions): Promise<Collection<number, Doc>>;
 	/** @ignore */
-	public fetch(arg1?: number | APIFetchDocsQuery, arg2?: boolean) {
-		if (typeof arg1 === 'number') return this.fetchSingle(arg1, arg2);
-		return this.fetchMany(arg1, arg2);
+	public fetch(arg1?: number | Doc | FetchDocsOptions, arg2?: FetchOptions) {
+		if (typeof arg1 === 'number' || arg1 instanceof Doc) return this.fetchSingle(arg1, arg2);
+		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(docId: number, cache?: boolean) {
-		const doc = this.cache.get(docId);
-		if (doc) return doc;
-		const raw = await this.client.api.docs.fetch(this.channel.id, docId);
-		return new Doc(this.channel, raw, cache);
+	private async fetchSingle(doc: number | Doc, options?: FetchOptions) {
+		doc = doc instanceof Doc ? doc.id : doc;
+		const cached = this.cache.get(doc);
+		if (cached && !options?.force) return cached;
+		const raw = await this.client.api.docs.fetch(this.channel.id, doc);
+		return new Doc(this.channel, raw, options?.cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(options?: APIFetchDocsQuery, cache?: boolean) {
+	private async fetchMany(options?: FetchDocsOptions) {
 		const raw = await this.client.api.docs.fetch(this.channel.id, options);
-		const docs = new CacheCollection<number, Doc>();
+		const docs = new Collection<number, Doc>();
 		for (const data of raw) {
-			const doc = new Doc(this.channel, data, cache);
+			const doc = new Doc(this.channel, data, options?.cache);
 			docs.set(data.id, doc);
 		}
 		return docs;
@@ -66,21 +63,26 @@ export class DocManager extends BaseManager<number, Doc> {
 
 	/**
 	 * Edit a doc in the channel.
-	 * @param docId The ID of the doc to edit.
+	 * @param doc The doc to edit.
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The edited doc.
 	 */
-	public async edit(docId: number, title: string, content: string) {
-		const raw = await this.client.api.docs.edit(this.channel.id, docId, title, content);
+	public async edit(doc: number | Doc, title: string, content: string) {
+		doc = doc instanceof Doc ? doc.id : doc;
+		const raw = await this.client.api.docs.edit(this.channel.id, doc, title, content);
 		return new Doc(this.channel, raw);
 	}
 
 	/**
 	 * Delete a doc from channel.
-	 * @param docId The ID of the doc to delete.
+	 * @param doc The doc to delete.
 	 */
-	public delete(docId: number) {
-		return this.client.api.docs.delete(this.channel.id, docId);
+	public delete(doc: number | Doc) {
+		doc = doc instanceof Doc ? doc.id : doc;
+		return this.client.api.docs.delete(this.channel.id, doc);
 	}
 }
+
+/** The options for fetching docs. */
+export interface FetchDocsOptions extends FetchManyOptions, APIFetchDocsQuery {}

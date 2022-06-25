@@ -1,7 +1,7 @@
-import { BaseManager } from '../BaseManager';
-import { CacheCollection } from '../../structures/CacheCollection';
+import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
+import Collection from '@discordjs/collection';
 
 /** The manager of webhooks that belong to a channel. */
 export class ChannelWebhookManager extends BaseManager<string, Webhook> {
@@ -12,38 +12,42 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 
 	/**
 	 * Fetch a webhook from the channel, or cache.
-	 * @param webhookId The ID of the webhoook to fetch.
-	 * @param cache Whether to cache the fetched webhook.
+	 * @param webhook The webhoook to fetch.
+	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
 	 */
-	public fetch(webhookId: string, cache?: boolean): Promise<Webhook>;
+	public fetch(webhook: string | Webhook, options?: FetchOptions): Promise<Webhook>;
 	/**
 	 * Fetch multiple webhooks from the channel.
-	 * @param cache Whether to cache the fetched webhooks.
+	 * @param options The options to fetch webhooks with.
 	 * @returns The fetched webhooks.
 	 */
-	public fetch(cache: boolean): Promise<CacheCollection<string, Webhook>>;
+	public fetch(options?: FetchManyOptions): Promise<Collection<string, Webhook>>;
 	/** @ignore */
-	public fetch(arg1?: string | boolean, arg2?: boolean) {
-		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
+	public fetch(arg1?: string | Webhook | FetchManyOptions, arg2?: FetchOptions) {
+		if (typeof arg1 === 'string' || arg1 instanceof Webhook)
+			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(webhookId: string, cache?: boolean) {
-		const raw = await this.client.api.webhooks.fetchSingle(this.channel.serverId, webhookId);
-		return new Webhook(this.channel, raw, cache);
+	private async fetchSingle(webhook: string | Webhook, options?: FetchOptions) {
+		webhook = webhook instanceof Webhook ? webhook.id : webhook;
+		const cached = this.cache.get(webhook);
+		if (cached && !options?.force) return cached;
+		const raw = await this.client.api.webhooks.fetchSingle(this.channel.serverId, webhook);
+		return new Webhook(this.channel, raw, options?.cache);
 	}
 
 	/** @ignore */
-	public async fetchMany(cache?: boolean) {
+	public async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.webhooks.fetchMany(
 			this.channel.serverId,
 			this.channel.id,
 		);
-		const webhooks = new CacheCollection<string, Webhook>();
+		const webhooks = new Collection<string, Webhook>();
 		for (const data of raw) {
-			const webhook = new Webhook(this.channel, data, cache);
+			const webhook = new Webhook(this.channel, data, options?.cache);
 			webhooks.set(webhook.id, webhook);
 		}
 		return webhooks;
@@ -65,15 +69,16 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 
 	/**
 	 * Edit a webhook in the channel.
-	 * @param webhookId The ID of the webhook to edit.
+	 * @param webhook The webhook to edit.
 	 * @param name The name of the webhook.
 	 * @param channelId The ID of the channel to move the webhook to.
 	 * @returns The edited webhook.
 	 */
-	public async edit(webhookId: string, name: string, channelId?: string) {
+	public async edit(webhook: string | Webhook, name: string, channelId?: string) {
+		webhook = webhook instanceof Webhook ? webhook.id : webhook;
 		const raw = await this.client.api.webhooks.edit(
 			this.channel.serverId,
-			webhookId,
+			webhook,
 			name,
 			channelId,
 		);
@@ -82,9 +87,10 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 
 	/**
 	 * Delete a webhook in the channel.
-	 * @param webhookId The ID of the webhook to delete.
+	 * @param webhook The webhook to delete.
 	 */
-	public delete(webhookId: string) {
-		return this.client.api.webhooks.delete(this.channel.serverId, webhookId);
+	public delete(webhook: string | Webhook) {
+		webhook = webhook instanceof Webhook ? webhook.id : webhook;
+		return this.client.api.webhooks.delete(this.channel.serverId, webhook);
 	}
 }

@@ -2,7 +2,8 @@ import { APIEmbed, APIWebhook } from 'guilded-api-typings';
 import { Embed } from '@guildedts/builders';
 import fetch from 'node-fetch';
 import { Base } from './Base';
-import { ChannelResolvable } from '../managers/channel/ChannelManager';
+import { FetchOptions } from '../managers/BaseManager';
+import { Channel } from './channel/Channel';
 
 /** Represents a webhook on Guilded. */
 export class Webhook extends Base {
@@ -27,7 +28,7 @@ export class Webhook extends Base {
 	 * @param cache Whether to cache the webhook.
 	 */
 	constructor(
-		public readonly channel: ChannelResolvable,
+		public readonly channel: Channel,
 		public readonly raw: APIWebhook,
 		cache = channel.client.options.cacheWebhooks ?? true,
 	) {
@@ -74,31 +75,30 @@ export class Webhook extends Base {
 
 	/**
 	 * Fetch the webhook.
-	 * @param cache Whether to cache the fetched webhook.
+	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
 	 */
-	public fetch(cache?: boolean) {
-		this.channel.webhooks.cache.delete(this.id);
-		return this.channel.webhooks.fetch(this.id, cache) as Promise<this>;
+	public fetch(options?: FetchOptions) {
+		return this.channel.webhooks.fetch(this, options) as Promise<this>;
 	}
 
 	/**
 	 * Fetch the server the webhook belongs to.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public async fetchServer(cache?: boolean) {
-		return this.channel.fetchServer(cache);
+	public async fetchServer(options?: FetchOptions) {
+		return this.channel.fetchServer(options);
 	}
 
 	/**
 	 * Fetch the server member that created the webhook.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
+	public async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, cache);
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
@@ -123,7 +123,7 @@ export class Webhook extends Base {
 	 * @returns The edited webhook.
 	 */
 	public edit(name: string, channelId?: string) {
-		return this.channel.webhooks.edit(this.id, name, channelId);
+		return this.channel.webhooks.edit(this, name, channelId);
 	}
 
 	/**
@@ -131,7 +131,7 @@ export class Webhook extends Base {
 	 * @returns The deleted webhook.
 	 */
 	public async delete() {
-		await this.channel.webhooks.delete(this.id);
+		await this.channel.webhooks.delete(this);
 		return this;
 	}
 }

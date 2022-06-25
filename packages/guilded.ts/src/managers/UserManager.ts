@@ -1,7 +1,8 @@
 import { BaseManager } from './BaseManager';
 import { Client } from '../structures/Client';
-import { CacheCollection } from '../structures/CacheCollection';
 import { User } from '../structures/User';
+import Collection from '@discordjs/collection';
+import { Server } from '../structures/server/Server';
 
 /** The manager of users that belong to the client. */
 export class UserManager extends BaseManager<string, User> {
@@ -12,37 +13,38 @@ export class UserManager extends BaseManager<string, User> {
 
 	/**
 	 * Fetch a user from a server, or cache.
-	 * @param serverId The ID of the server the user belongs to.
-	 * @param userId The ID of the user to fetch.
+	 * @param server The server the user belongs to.
+	 * @param user The user to fetch.
 	 * @returns The fetched user.
 	 */
-	public fetch(serverId: string, userId: string): Promise<User>;
+	public fetch(server: string | Server, user: string | User): Promise<User>;
 	/**
 	 * Fetch users from a server.
-	 * @param serverId The ID of the server the users belong to.
+	 * @param server The server the users belong to.
 	 * @returns The fetched users.
 	 */
-	public fetch(serverId: string): Promise<CacheCollection<string, User>>;
+	public fetch(server: string | Server): Promise<Collection<string, User>>;
 	/** @ignore */
-	public async fetch(arg1: string, arg2?: string) {
+	public async fetch(arg1: string | Server, arg2?: string | User) {
 		if (arg2) return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(serverId: string, userId: string) {
-		const user = this.cache.get(userId);
-		if (user) return user;
-		const server = await this.client.servers.fetch(serverId);
-		const member = await server.members.fetch(userId);
+	private async fetchSingle(server: string | Server, user: string | User) {
+		user = user instanceof User ? user.id : user;
+		const cached = this.cache.get(user);
+		if (cached) return cached;
+		server = server instanceof Server ? server : await this.client.servers.fetch(server);
+		const member = await server.members.fetch(user);
 		return member.user;
 	}
 
 	/** @ignore */
-	private async fetchMany(serverId: string) {
-		const server = await this.client.servers.fetch(serverId);
+	private async fetchMany(server: string | Server) {
+		server = server instanceof Server ? server : await this.client.servers.fetch(server);
 		const members = await server.members.fetch();
-		const users = new CacheCollection<string, User>();
+		const users = new Collection<string, User>();
 		for (const { user } of members.values()) users.set(user.id, user);
 		return users;
 	}

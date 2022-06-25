@@ -27,6 +27,6 @@ export class ServerMemberRole extends ServerRole {
 	 * @returns The removed role.
 	 */
 	public async remove() {
-		return this.member.roles.unassign(this.id);
+		return this.member.roles.unassign(this);
 	}
 }

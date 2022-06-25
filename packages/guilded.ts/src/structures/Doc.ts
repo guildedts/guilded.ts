@@ -1,4 +1,5 @@
 import { APIDoc, APIMentions } from 'guilded-api-typings';
+import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { DocChannel } from './channel/DocChannel';
 
@@ -83,41 +84,40 @@ export class Doc extends Base<number> {
 
 	/**
 	 * Fetch the doc.
-	 * @param cache Whether to cache the fetched doc.
+	 * @param options The options to fetch the doc with.
 	 * @returns The fetched doc.
 	 */
-	public fetch(cache?: boolean) {
-		this.channel.docs.cache.delete(this.id);
-		return this.channel.docs.fetch(this.id, cache) as Promise<this>;
+	public fetch(options?: FetchOptions) {
+		return this.channel.docs.fetch(this, options) as Promise<this>;
 	}
 
 	/**
 	 * Fetch the server the doc belongs to.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public async fetchServer(cache?: boolean) {
-		return this.channel.fetchServer(cache);
+	public async fetchServer(options?: FetchOptions) {
+		return this.channel.fetchServer(options);
 	}
 
 	/**
 	 * Fetch the server member that created the doc.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
+	public async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, cache);
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
 	 * Fetch the server member that edited the doc.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchEditor(cache?: boolean) {
+	public async fetchEditor(options?: FetchOptions) {
 		const server = await this.fetchServer();
-		return this.editedBy ? server.members.fetch(this.editedBy, cache) : undefined;
+		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
 	}
 
 	/**
@@ -127,7 +127,7 @@ export class Doc extends Base<number> {
 	 * @returns The edited doc.
 	 */
 	public edit(title: string, content: string) {
-		return this.channel.docs.edit(this.id, title, content) as Promise<this>;
+		return this.channel.docs.edit(this, title, content) as Promise<this>;
 	}
 
 	/**
@@ -135,7 +135,7 @@ export class Doc extends Base<number> {
 	 * @returns The deleted doc.
 	 */
 	public async delete() {
-		await this.channel.docs.delete(this.id);
+		await this.channel.docs.delete(this);
 		return this;
 	}
 }

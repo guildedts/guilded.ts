@@ -27,6 +27,6 @@ export class ServerRole extends Base<number> {
 	 * @param amount The amount of XP to award to the role.
 	 */
 	public awardXp(amount: number) {
-		return this.server.roles.awardXp(this.id, amount);
+		return this.server.roles.awardXp(this, amount);
 	}
 }

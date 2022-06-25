@@ -2,6 +2,7 @@ import { APIListItem, APIListItemSummary, APIMentions } from 'guilded-api-typing
 import { Base } from '../Base';
 import { Note } from './Note';
 import { ListChannel } from '../channel/ListChannel';
+import { FetchOptions } from '../../managers/BaseManager';
 
 /** Represents a list item on Guilded. */
 export class ListItem extends Base {
@@ -128,81 +129,80 @@ export class ListItem extends Base {
 
 	/**
 	 * Fetch the list item.
-	 * @param cache Whether to cache the fetched list item.
+	 * @param options The options to fetch the list item with.
 	 * @returns The fetched list item.
 	 */
-	public fetch(cache?: boolean) {
-		this.channel.items.cache.delete(this.id);
-		return this.channel.items.fetch(this.id, cache) as Promise<this>;
+	public fetch(options?: FetchOptions) {
+		return this.channel.items.fetch(this, options) as Promise<this>;
 	}
 
 	/**
 	 * Fetch the server the list item belongs to.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public async fetchServer(cache?: boolean) {
-		return this.channel.fetchServer(cache);
+	public async fetchServer(options?: FetchOptions) {
+		return this.channel.fetchServer(options);
 	}
 
 	/**
 	 * Fetch the server member that created the list item.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
-		const server = await this.fetchServer(cache);
-		return server.members.fetch(this.createdBy, cache);
+	public async fetchAuthor(options?: FetchOptions) {
+		const server = await this.fetchServer();
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
 	 * Fetch the webhook that created the list item.
-	 * @param cache Whether to cache the fetched webhook.
+	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
 	 */
-	public async fetchWebhook(cache?: boolean) {
+	public async fetchWebhook(options?: FetchOptions) {
 		return this.createdByWebhookId
-			? this.channel.webhooks.fetch(this.createdByWebhookId, cache)
+			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
 			: undefined;
 	}
 
 	/**
 	 * Fetch the server member that edited the list item.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchEditor(cache?: boolean) {
-		const server = await this.fetchServer(cache);
-		return this.editedBy ? server.members.fetch(this.editedBy, cache) : undefined;
+	public async fetchEditor(options?: FetchOptions) {
+		const server = await this.fetchServer();
+		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
 	}
 
 	/**
 	 * Fetch the list item the list item belongs to.
-	 * @param cache Whether to cache the fetched list item.
+	 * @param options The options to fetch the list item with.
 	 * @returns The fetched list item.
 	 */
-	public async fetchParent(cache?: boolean) {
-		return this.parentId ? this.channel.items.fetch(this.parentId, cache) : undefined;
+	public async fetchParent(options?: FetchOptions) {
+		return this.parentId ? this.channel.items.fetch(this.parentId, options) : undefined;
 	}
 
 	/**
 	 * Fetch the server member that completed the list item.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchCompleter(cache?: boolean) {
-		const server = await this.fetchServer(cache);
-		return this.completedBy ? server.members.fetch(this.completedBy, cache) : undefined;
+	public async fetchCompleter(options?: FetchOptions) {
+		const server = await this.fetchServer();
+		return this.completedBy ? server.members.fetch(this.completedBy, options) : undefined;
 	}
 
 	/**
 	 * Edit the list item.
-	 * @param content The content of the list item.
+	 * @param message The message of the list item.
 	 * @param note The note of the list item.
 	 * @returns The edited list item.
 	 */
-	public edit(content: string, note?: string) {
-		return this.channel.items.edit(this.id, content, note) as Promise<this>;
+	public edit(message: string, note?: string) {
+		return this.channel.items.edit(this, message, note) as Promise<this>;
 	}
 
 	/**
@@ -210,7 +210,7 @@ export class ListItem extends Base {
 	 * @returns The removed list item.
 	 */
 	public async remove() {
-		await this.channel.items.remove(this.id);
+		await this.channel.items.remove(this);
 		return this;
 	}
 
@@ -219,7 +219,7 @@ export class ListItem extends Base {
 	 * @returns The completed list item.
 	 */
 	public async complete() {
-		await this.channel.items.complete(this.id);
+		await this.channel.items.complete(this);
 		return this;
 	}
 
@@ -228,7 +228,7 @@ export class ListItem extends Base {
 	 * @returns The uncompleted list item.
 	 */
 	public async uncomplete() {
-		await this.channel.items.uncomplete(this.id);
+		await this.channel.items.uncomplete(this);
 		return this;
 	}
 }

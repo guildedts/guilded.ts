@@ -1,4 +1,5 @@
 import { APITopic } from 'guilded-api-typings';
+import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { ForumChannel } from './channel/ForumChannel';
 
@@ -82,31 +83,31 @@ export class Topic extends Base<number> {
 
 	/**
 	 * Fetch the server the topic belongs to.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public fetchServer(cache?: boolean) {
-		return this.channel.fetchServer(cache);
+	public fetchServer(options?: FetchOptions) {
+		return this.channel.fetchServer(options);
 	}
 
 	/**
 	 * Fetch the server member that created the topic.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
-		const server = await this.fetchServer(cache);
-		return server.members.fetch(this.createdBy, cache);
+	public async fetchAuthor(options?: FetchOptions) {
+		const server = await this.fetchServer();
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
 	 * Fetch the webhook that created the topic.
-	 * @param cache Whether to cache the fetched webhook.
+	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
 	 */
-	public fetchWebhook(cache?: boolean) {
+	public fetchWebhook(options?: FetchOptions) {
 		return this.createdByWebhookId
-			? this.channel.webhooks.fetch(this.createdByWebhookId, cache)
+			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
 			: undefined;
 	}
 }

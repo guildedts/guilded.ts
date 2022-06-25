@@ -7,6 +7,7 @@ import {
 import { Base } from '../Base';
 import { Client } from '../Client';
 import { ChannelWebhookManager } from '../../managers/channel/ChannelWebhookManager';
+import { FetchOptions } from '../../managers/BaseManager';
 
 /** Represents a channel on Guilded. */
 export class Channel extends Base {
@@ -39,6 +40,7 @@ export class Channel extends Base {
 
 	/** The manager of webhooks that belong to the channel. */
 	public readonly webhooks: ChannelWebhookManager;
+	static chat: typeof Channel;
 
 	/**
 	 * @param client The client the channel belongs to.
@@ -179,59 +181,58 @@ export class Channel extends Base {
 
 	/**
 	 * Fetch the channel.
-	 * @param cache Whether to cache the fetched channel.
+	 * @param options The options to fetch the channel with.
 	 * @returns The fetched channel.
 	 */
-	public fetch(cache?: boolean) {
-		this.client.channels.cache.delete(this.id);
-		return this.client.channels.fetch(this.id, cache) as Promise<this>;
+	public fetch(options?: FetchOptions) {
+		return this.client.channels.fetch(this, options) as Promise<this>;
 	}
 
 	/**
 	 * Fetch the server member that created the channel.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchCreator(cache?: boolean) {
+	public async fetchCreator(options?: FetchOptions) {
 		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, cache);
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
 	 * Fetch the server the channel belongs to.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public fetchServer(cache?: boolean) {
-		return this.client.servers.fetch(this.serverId, cache);
+	public fetchServer(options?: FetchOptions) {
+		return this.client.servers.fetch(this.serverId, options);
 	}
 
 	/**
 	 * Fetch the parent channel the channel belongs to.
-	 * @param cache Whether to cache the fetched channel.
+	 * @param options The options to fetch the channel with.
 	 * @returns The fetched channel.
 	 */
-	public fetchParent(cache?: boolean) {
-		return this.parantId ? this.client.channels.fetch(this.parantId, cache) : undefined;
+	public fetchParent(options?: FetchOptions) {
+		return this.parantId ? this.client.channels.fetch(this.parantId, options) : undefined;
 	}
 
 	/**
 	 * Fetch the group the channel belongs to.
-	 * @param cache Whether to cache the fetched group.
+	 * @param options The options to fetch the group with.
 	 * @returns The fetched group.
 	 */
-	public fetchGroup(cache?: boolean) {
-		return this.client.groups.fetch(this.groupId, cache);
+	public fetchGroup(options?: FetchOptions) {
+		return this.client.groups.fetch(this.groupId, options);
 	}
 
 	/**
 	 * Fetch the server member that archived the channel.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchArchiver(cache?: boolean) {
+	public async fetchArchiver(options?: FetchOptions) {
 		const server = await this.fetchServer();
-		return this.archivedBy ? server.members.fetch(this.archivedBy, cache) : undefined;
+		return this.archivedBy ? server.members.fetch(this.archivedBy, options) : undefined;
 	}
 
 	/**
@@ -240,7 +241,7 @@ export class Channel extends Base {
 	 * @returns The edited channel.
 	 */
 	public edit(payload: APIChannelEditPayload) {
-		return this.client.channels.edit(this.id, payload) as Promise<this>;
+		return this.client.channels.edit(this, payload) as Promise<this>;
 	}
 
 	/**
@@ -275,7 +276,7 @@ export class Channel extends Base {
 	 * @returns The deleted channel.
 	 */
 	public async delete() {
-		await this.client.channels.delete(this.id);
+		await this.client.channels.delete(this);
 		return this;
 	}
 }

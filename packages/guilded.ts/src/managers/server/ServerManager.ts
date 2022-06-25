@@ -1,4 +1,4 @@
-import { BaseManager } from '../BaseManager';
+import { BaseManager, FetchOptions } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Server } from '../../structures/server/Server';
 
@@ -11,14 +11,15 @@ export class ServerManager extends BaseManager<string, Server> {
 
 	/**
 	 * Fetch a server from Guilded, or cache.
-	 * @param serverId The ID of the server to fetch.
-	 * @param cache Whether to cache the fetched server.
+	 * @param server The server to fetch.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public async fetch(serverId: string, cache?: boolean) {
-		const server = this.cache.get(serverId);
-		if (server) return server;
-		const raw = await this.client.api.servers.fetch(serverId);
-		return new Server(this.client, raw, cache);
+	public async fetch(server: string | Server, options?: FetchOptions) {
+		server = server instanceof Server ? server.id : server;
+		const cached = this.cache.get(server);
+		if (cached && !options?.force) return cached;
+		const raw = await this.client.api.servers.fetch(server);
+		return new Server(this.client, raw, options?.cache);
 	}
 }

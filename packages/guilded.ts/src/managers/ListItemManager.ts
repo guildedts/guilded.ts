@@ -1,7 +1,7 @@
-import { BaseManager } from './BaseManager';
-import { CacheCollection } from '../structures/CacheCollection';
+import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { ListChannel } from '../structures/channel/ListChannel';
 import { ListItem } from '../structures/listItem/ListItem';
+import Collection from '@discordjs/collection';
 
 /** The manager of items that belong to a list channel. */
 export class ListItemManager extends BaseManager<string, ListItem> {
@@ -12,37 +12,39 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 
 	/**
 	 * Fetch a item from the list channel, or cache.
-	 * @param listItemId The ID of the item to fetch.
-	 * @param cache Whether to cache the fetched item.
+	 * @param listItem The item to fetch.
+	 * @param options The options to fetch the item with.
 	 * @returns The fetched item.
 	 */
-	public fetch(listItemId: string, cache?: boolean): Promise<ListItem>;
+	public fetch(listItem: string | ListItem, options?: FetchOptions): Promise<ListItem>;
 	/**
 	 * Fetch items from the channel.
-	 * @param cache Whether to cache the fetched items.
+	 * @param options The options to fetch items with.
 	 * @returns The fetched items.
 	 */
-	public fetch(cache?: boolean): Promise<CacheCollection<string, ListItem>>;
+	public fetch(options?: FetchManyOptions): Promise<Collection<string, ListItem>>;
 	/** @ignore */
-	public async fetch(arg1?: string | boolean, arg2?: boolean) {
-		if (typeof arg1 === 'string') return this.fetchSingle(arg1, arg2);
+	public async fetch(arg1?: string | ListItem | FetchManyOptions, arg2?: FetchOptions) {
+		if (typeof arg1 === 'string' || arg1 instanceof ListItem)
+			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
 	/** @ignore */
-	private async fetchSingle(listItemId: string, cache?: boolean) {
-		const item = this.cache.get(listItemId);
-		if (item) return item;
-		const raw = await this.client.api.listItems.fetch(this.channel.id, listItemId);
-		return new ListItem(this.channel, raw, cache);
+	private async fetchSingle(listItem: string | ListItem, options?: FetchOptions) {
+		listItem = listItem instanceof ListItem ? listItem.id : listItem;
+		const cached = this.cache.get(listItem);
+		if (cached && !options?.force) return cached;
+		const raw = await this.client.api.listItems.fetch(this.channel.id, listItem);
+		return new ListItem(this.channel, raw, options?.cache);
 	}
 
 	/** @ignore */
-	private async fetchMany(cache?: boolean) {
+	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.listItems.fetch(this.channel.id);
-		const items = new CacheCollection<string, ListItem>();
+		const items = new Collection<string, ListItem>();
 		for (const data of raw) {
-			const item = new ListItem(this.channel, data, cache);
+			const item = new ListItem(this.channel, data, options?.cache);
 			items.set(item.id, item);
 		}
 		return items;
@@ -61,42 +63,41 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 
 	/**
 	 * Edit a item in the list channel.
-	 * @param listItemId The ID of the item to edit.
+	 * @param listItem The item to edit.
 	 * @param message The message of the item.
 	 * @param note The note of the item.
 	 * @returns The edited item.
 	 */
-	public async edit(listItemId: string, message: string, note?: string) {
-		const raw = await this.client.api.listItems.edit(
-			this.channel.id,
-			listItemId,
-			message,
-			note,
-		);
+	public async edit(listItem: string | ListItem, message: string, note?: string) {
+		listItem = listItem instanceof ListItem ? listItem.id : listItem;
+		const raw = await this.client.api.listItems.edit(this.channel.id, listItem, message, note);
 		return new ListItem(this.channel, raw);
 	}
 
 	/**
 	 * Remove a item in the list channel.
-	 * @param listItemId The ID of the item to remove.
+	 * @param listItem The item to remove.
 	 */
-	public remove(listItemId: string) {
-		return this.client.api.listItems.delete(this.channel.id, listItemId);
+	public remove(listItem: string | ListItem) {
+		listItem = listItem instanceof ListItem ? listItem.id : listItem;
+		return this.client.api.listItems.delete(this.channel.id, listItem);
 	}
 
 	/**
 	 * Complete a item in the list channel.
-	 * @param listItemId The ID of the item to complete.
+	 * @param listItem The item to complete.
 	 */
-	public complete(listItemId: string) {
-		return this.client.api.listItems.complete(this.channel.id, listItemId);
+	public complete(listItem: string | ListItem) {
+		listItem = listItem instanceof ListItem ? listItem.id : listItem;
+		return this.client.api.listItems.complete(this.channel.id, listItem);
 	}
 
 	/**
 	 * Uncomplete a item in the list channel.
-	 * @param listItemId The ID of the item to uncomplete.
+	 * @param listItem The item to uncomplete.
 	 */
-	public uncomplete(listItemId: string) {
-		return this.client.api.listItems.uncomplete(this.channel.id, listItemId);
+	public uncomplete(listItem: string | ListItem) {
+		listItem = listItem instanceof ListItem ? listItem.id : listItem;
+		return this.client.api.listItems.uncomplete(this.channel.id, listItem);
 	}
 }

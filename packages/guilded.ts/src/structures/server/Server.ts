@@ -9,6 +9,7 @@ import { Base } from '../Base';
 import { ServerMemberManager } from '../../managers/server/ServerMemberManager';
 import { ServerBanManager } from '../../managers/server/ServerBanManager';
 import { ServerRoleManager } from '../../managers/server/ServerRoleManager';
+import { FetchOptions } from '../../managers/BaseManager';
 
 /** Represents a server on Guilded. */
 export class Server extends Base {
@@ -129,31 +130,30 @@ export class Server extends Base {
 
 	/**
 	 * Fetch the server.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public fetch(cache?: boolean) {
-		this.client.servers.cache.delete(this.id);
-		return this.client.servers.fetch(this.id, cache) as Promise<this>;
+	public fetch(options?: FetchOptions) {
+		return this.client.servers.fetch(this, options) as Promise<this>;
 	}
 
 	/**
 	 * Fetch the server member the server belongs to.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public fetchOwner(cache?: boolean) {
-		return this.members.fetch(this.ownerId, cache);
+	public fetchOwner(options?: FetchOptions) {
+		return this.members.fetch(this.ownerId, options);
 	}
 
 	/**
 	 * Fetch the server's default channel.
-	 * @param cache Whether to cache the fetched channel.
+	 * @param options The options to fetch the channel with.
 	 * @returns The fetched channel.
 	 */
-	public fetchDefaultChannel(cache?: boolean) {
+	public fetchDefaultChannel(options?: FetchOptions) {
 		return this.defaultChannelId
-			? this.client.channels.fetch(this.defaultChannelId, cache)
+			? this.client.channels.fetch(this.defaultChannelId, options)
 			: undefined;
 	}
 

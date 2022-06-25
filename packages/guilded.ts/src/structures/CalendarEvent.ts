@@ -4,6 +4,7 @@ import {
 	APICalendarEventEditPayload,
 	APIMentions,
 } from 'guilded-api-typings';
+import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { CalendarChannel } from './channel/CalendarChannel';
 
@@ -104,31 +105,30 @@ export class CalendarEvent extends Base<number> {
 
 	/**
 	 * Fetch the calendar event.
-	 * @param cache Whether to cache the fetched calendar event.
+	 * @param options The options to fetch the calendar event with.
 	 * @returns The fetched calendar event.
 	 */
-	public fetch(cache?: boolean) {
-		this.channel.events.cache.delete(this.id);
-		return this.channel.events.fetch(this.id, cache);
+	public fetch(options?: FetchOptions) {
+		return this.channel.events.fetch(this, options);
 	}
 
 	/**
 	 * Fetch the server the calendar event belongs to.
-	 * @param cache Whether to cache the fetched server.
+	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
 	 */
-	public fetchServer(cache?: boolean) {
-		return this.channel.fetchServer(cache);
+	public fetchServer(options?: FetchOptions) {
+		return this.channel.fetchServer(options);
 	}
 
 	/**
 	 * Fetch the server member that created the calendar event.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
-		const server = await this.fetchServer(cache);
-		return server.members.fetch(this.createdBy, cache);
+	public async fetchAuthor(options?: FetchOptions) {
+		const server = await this.fetchServer();
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
@@ -137,7 +137,7 @@ export class CalendarEvent extends Base<number> {
 	 * @returns The edited calendar event.
 	 */
 	public edit(payload: APICalendarEventEditPayload) {
-		return this.channel.events.edit(this.id, payload);
+		return this.channel.events.edit(this, payload);
 	}
 
 	/**
@@ -145,7 +145,7 @@ export class CalendarEvent extends Base<number> {
 	 * @returns The deleted calendar event.
 	 */
 	public async delete() {
-		await this.channel.events.delete(this.id);
+		await this.channel.events.delete(this);
 		return this;
 	}
 }

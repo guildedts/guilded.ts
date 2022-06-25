@@ -1,4 +1,5 @@
 import { APIMentions, APINote, APINoteSummary } from 'guilded-api-typings';
+import { FetchOptions } from '../../managers/BaseManager';
 import { Base } from '../Base';
 import { ListItem } from './/ListItem';
 
@@ -55,21 +56,21 @@ export class Note extends Base {
 
 	/**
 	 * Fetch the server member that created the note.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchAuthor(cache?: boolean) {
+	public async fetchAuthor(options?: FetchOptions) {
 		const server = await this.item.fetchServer();
-		return server.members.fetch(this.createdBy, cache);
+		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
 	 * Fetch the server member that edited the note.
-	 * @param cache Whether to cache the fetched server member.
+	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
 	 */
-	public async fetchEditor(cache?: boolean) {
+	public async fetchEditor(options?: FetchOptions) {
 		const server = await this.item.fetchServer();
-		return this.editedBy ? server.members.fetch(this.editedBy, cache) : undefined;
+		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
 	}
 }

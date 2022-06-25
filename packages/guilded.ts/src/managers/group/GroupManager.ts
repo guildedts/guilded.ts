@@ -1,4 +1,4 @@
-import { BaseManager } from '../BaseManager';
+import { BaseManager, FetchOptions } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Group } from '../../structures/Group';
 
@@ -11,13 +11,14 @@ export class GroupManager extends BaseManager<string, Group> {
 
 	/**
 	 * Fetch a group from Guilded, or cache.
-	 * @param groupId The ID of the group to fetch.
-	 * @param cache Whether to cache the fetched group.
+	 * @param group The group to fetch.
+	 * @param options The options to fetch the group with.
 	 * @returns The fetched group.
 	 */
-	public fetch(groupId: string, cache?: boolean) {
-		const group = this.cache.get(groupId);
-		if (group) return group;
-		return new Group(this.client, { id: groupId }, cache);
+	public fetch(group: string | Group, options?: FetchOptions) {
+		group = group instanceof Group ? group.id : group;
+		const cached = this.cache.get(group);
+		if (cached) return cached;
+		return new Group(this.client, { id: group }, options?.cache);
 	}
 }
