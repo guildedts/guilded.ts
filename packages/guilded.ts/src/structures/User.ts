@@ -1,4 +1,10 @@
-import { APIUser, APIUserSummary, APIUserType, APIUserTypeString } from 'guilded-api-typings';
+import {
+	APIClientUser,
+	APIUser,
+	APIUserSummary,
+	APIUserType,
+	APIUserTypeString,
+} from 'guilded-api-typings';
 import { Base } from './Base';
 import { Client } from './Client';
 
@@ -52,5 +58,24 @@ export class User extends Base {
 	/** Whether the user is a human. */
 	public get isUser() {
 		return this.type === APIUserType.User;
+	}
+}
+
+/** Represents a client user. */
+export class ClientUser extends User {
+	/** The bot ID of the client user. */
+	public readonly botId: string;
+	/** The ID of the user that created the client user. */
+	public readonly createdBy: string;
+
+	/**
+	 * @param client The client the user belongs to.
+	 * @param raw The raw data of the client user.
+	 * @param cache Whether to cache the client user.
+	 */
+	public constructor(client: Client, public readonly raw: APIClientUser, cache?: boolean) {
+		super(client, { type: APIUserType.Bot, ...raw }, cache);
+		this.botId = raw.botId;
+		this.createdBy = raw.createdBy;
 	}
 }
