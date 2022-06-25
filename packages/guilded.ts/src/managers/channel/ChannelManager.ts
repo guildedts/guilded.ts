@@ -1,17 +1,11 @@
 import { APIChannelEditPayload, APIChannelPayload } from 'guilded-api-typings';
-import { BaseManager } from '../BaseManager';
+import { BaseManager, FetchOptions } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Channel } from '../../structures/channel/Channel';
 import { createChannel } from '../../util';
-import { ChatChannel } from '../../structures/channel/ChatChannel';
-import { ForumChannel } from '../../structures/channel/ForumChannel';
-import { DocChannel } from '../../structures/channel/DocChannel';
-import { VoiceChannel } from '../../structures/channel/VoiceChannel';
-import { ListChannel } from '../../structures/channel/ListChannel';
-import { StreamChannel } from '../../structures/channel/StreamChannel';
 
 /** The manager of channels that belong to the client. */
-export class ChannelManager extends BaseManager<string, ChannelResolvable> {
+export class ChannelManager extends BaseManager<string, Channel> {
 	/** @param client The client the channels belong to. */
 	public constructor(client: Client) {
 		super(client, client.options.maxChannelCache);
@@ -19,16 +13,16 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 
 	/**
 	 * Fetch a channel from Guilded, or cache.
-	 * @param channelId The ID of the channel to fetch.
-	 * @param cache Whether to cache the fetched channel
+	 * @param channel The channel to fetch.
+	 * @param options The options to fetch the channel with.
 	 * @returns The fetched channel.
 	 */
-	public async fetch(channelId: string, cache?: boolean): Promise<ChannelResolvable> {
-		let channel = this.cache.get(channelId);
-		if (channel) return channel;
-		const raw = await this.client.api.channels.fetch(channelId);
-		channel = createChannel(this.client, raw, cache);
-		return channel;
+	public async fetch(channel: string | Channel, options?: FetchOptions) {
+		channel = channel instanceof Channel ? channel.id : channel;
+		const cached = this.cache.get(channel);
+		if (cached && !options?.force) return cached;
+		const raw = await this.client.api.channels.fetch(channel);
+		return createChannel(this.client, raw, options?.cache);
 	}
 
 	/**
@@ -43,33 +37,22 @@ export class ChannelManager extends BaseManager<string, ChannelResolvable> {
 
 	/**
 	 * Edit a channel on Guilded.
-	 * @param channelId The ID of the channel to edit.
+	 * @param channel The channel to edit.
 	 * @param payload The payload of the channel.
 	 * @returns The edited channel.
 	 */
-	public async edit(channelId: string, payload: APIChannelEditPayload) {
-		const raw = await this.client.api.channels.edit(channelId, payload);
+	public async edit(channel: string | Channel, payload: APIChannelEditPayload) {
+		channel = channel instanceof Channel ? channel.id : channel;
+		const raw = await this.client.api.channels.edit(channel, payload);
 		return createChannel(this.client, raw);
 	}
 
 	/**
 	 * Delete a channel from Guilded.
-	 * @param channelId The ID of the channel to delete.
+	 * @param channel The channel to delete.
 	 */
-	public delete(channelId: string) {
-		return this.client.api.channels.delete(channelId);
+	public delete(channel: string | Channel) {
+		channel = channel instanceof Channel ? channel.id : channel;
+		return this.client.api.channels.delete(channel);
 	}
 }
-
-/** The channel resolvable type. */
-export type ChannelResolvable =
-	| Channel
-	| ChatChannel
-	| DocChannel
-	| ForumChannel
-	| ListChannel
-	| StreamChannel
-	| VoiceChannel;
-
-/** Chat based channels. */
-export type ChatBasedChannel = ChatChannel | StreamChannel | VoiceChannel;
