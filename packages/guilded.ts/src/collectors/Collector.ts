@@ -1,12 +1,12 @@
+import Collection from '@discordjs/collection';
 import EventEmitter from 'events';
 import { Base } from '../structures/Base';
-import { CacheCollection } from '../structures/CacheCollection';
 import { Client } from '../structures/Client';
 
 /** The collector of a data model. */
-export class Collector<Model extends Base> extends EventEmitter {
+export class Collector<Model extends Base<any>> extends EventEmitter {
 	/** The collected data. */
-	public readonly collected: CacheCollection<Model['id'], Model>;
+	public readonly collected: Collection<Model['id'], Model>;
 	/** The date the collector was created. */
 	public readonly createdAt: Date;
 	/** The date the collector was ended. */
@@ -22,7 +22,7 @@ export class Collector<Model extends Base> extends EventEmitter {
 	) {
 		super();
 		this.createdAt = new Date();
-		this.collected = new CacheCollection();
+		this.collected = new Collection();
 		if (options.time) setTimeout(this.end.bind(this), options.time);
 	}
 
@@ -58,27 +58,32 @@ export class Collector<Model extends Base> extends EventEmitter {
 	/**
 	 * Collect a item.
 	 * @param item The item to collect.
+	 * @returns The collected item.
 	 */
 	public async collect(item: Model) {
-		if (this.isEnded || (this.options.filter ? !(await this.options.filter(item)) : false))
-			return;
+		const filter = this.options.filter ? await this.options.filter(item) : true;
+		if (this.isEnded || !filter) return;
 		this.collected.set(item.id, item);
 		this.emit('collect', item);
 		if (this.collected.size >= (this.options.max ?? Infinity)) this.end();
+		return item;
 	}
 
 	/**
 	 * Dispose a collected item.
 	 * @param itemId The ID of the item to dispose.
+	 * @returns The disposed item.
 	 */
 	public dispose(itemId: Model['id']) {
-		if (this.options.dispose === false || this.isEnded || !this.collected.has(itemId)) return;
+		const item = this.collected.get(itemId);
+		if (this.options.dispose === false || this.isEnded || !item) return;
 		this.collected.delete(itemId);
-		this.emit('dispose', itemId);
+		this.emit('dispose', item);
+		return item;
 	}
 }
 
-export interface Collector<Model extends Base> {
+export interface Collector<Model extends Base<any>> {
 	/** @ignore */
 	on<Event extends keyof CollectorEvents<Model>>(
 		event: Event,
@@ -101,17 +106,17 @@ export interface Collector<Model extends Base> {
 }
 
 /** The collector events. */
-export interface CollectorEvents<Model extends Base> {
+export interface CollectorEvents<Model extends Base<any>> {
 	/** Emitted when data is collected. */
 	collect: [item: Model];
 	/** Emitted when a collected item is disposed. */
-	dispose: [item: Model['id']];
+	dispose: [item: Model];
 	/** Emitted when the collector is finished collecting data. */
-	end: [CacheCollection<Model['id'], Model>];
+	end: [collected: Collection<Model['id'], Model>];
 }
 
 /** The options for the collector. */
-export interface CollectorOptions<Model extends Base> {
+export interface CollectorOptions<Model extends Base<any>> {
 	/** The filter to apply to the collector. */
 	filter?: CollectorFilter<Model>;
 	/** The time in milliseconds to wait before ending the collector. */
