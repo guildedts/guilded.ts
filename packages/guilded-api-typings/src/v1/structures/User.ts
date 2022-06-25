@@ -40,3 +40,11 @@ export enum APIUserType {
  * @see https://www.guilded.gg/docs/api/members/UserSummary
  */
 export type APIUserTypeString = `${APIUserType}`;
+
+/** Represents a client user. */
+export interface APIClientUser extends APIUser {
+	/** The bot ID of the client user. */
+	botId: string;
+	/** The ID of the user that created the client user. */
+	createdBy: string;
+}
