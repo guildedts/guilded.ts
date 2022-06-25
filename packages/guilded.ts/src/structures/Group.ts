@@ -1,6 +1,9 @@
 import { Base } from './Base';
 import { Client } from './Client';
 import { GroupMemberManager } from '../managers/group/GroupMemberManager';
+import { FetchOptions } from '../managers/BaseManager';
+import { ServerMember } from './server/ServerMember';
+import { APIChannelPayload } from 'guilded-api-typings';
 
 /** Represents a group on Guilded. */
 export class Group extends Base {
@@ -29,27 +32,35 @@ export class Group extends Base {
 
 	/**
 	 * Fetch the group.
-	 * @param cache Whether to cache the fetched group.
+	 * @param options The options to fetch the group with.
 	 * @returns The fetched group.
 	 */
-	public fetch(cache?: boolean) {
-		this.client.groups.cache.delete(this.id);
-		return this.client.groups.fetch(this.id, cache) as this;
+	public fetch(options?: FetchOptions) {
+		return this.client.groups.fetch(this, options) as this;
 	}
 
 	/**
 	 * Add a member to the group.
-	 * @param memberID The ID of the member to add.
+	 * @param member The member to add.
 	 */
-	public addMember(memberID: string) {
-		return this.members.add(memberID);
+	public addMember(member: string | ServerMember) {
+		return this.members.add(member);
 	}
 
 	/**
 	 * Remove a member from the group.
-	 * @param memberId The ID of the member to remove.
+	 * @param member The member to remove.
 	 */
-	public removeMember(memberId: string) {
-		return this.members.remove(memberId);
+	public removeMember(member: string | ServerMember) {
+		return this.members.remove(member);
+	}
+
+	/**
+	 * Create a channel in the group.
+	 * @param payload The payload of the channel.
+	 * @returns The created channel.
+	 */
+	public createChannel(payload: Omit<APIChannelPayload, 'groupId'>) {
+		return this.client.channels.create({ groupId: this.id, ...payload });
 	}
 }
