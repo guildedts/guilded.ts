@@ -1,6 +1,6 @@
 import Websocket from 'ws';
 import EventEmitter from 'events';
-import { APIUser, WSEvents } from 'guilded-api-typings';
+import { APIClientUser, WSEvents, WSOpCodes, WSReadyPayload } from 'guilded-api-typings';
 
 /** The Websocket manager for the Guilded API. */
 export class WebsocketManager extends EventEmitter {
@@ -10,12 +10,16 @@ export class WebsocketManager extends EventEmitter {
 	public readonly version: number;
 	/** The websocket. */
 	public socket?: Websocket;
-	/** The date the websocket connected. */
-	public connectedAt?: Date;
+	/** The date the websocket is ready. */
+	public readyAt?: Date;
 	/** The ping of the websocket connection. */
 	public ping?: number;
 	/** The date the websocket was pinged. */
 	public pingedAt?: Date;
+	/** The anount of times the websocket has been reconnected. */
+	public reconnects = 0;
+	/** The last message ID. */
+	public lastMessageId?: string;
 
 	/** @param options The options for the Websocket manager. */
 	public constructor(public readonly options: WebsocketOptions) {
@@ -24,14 +28,14 @@ export class WebsocketManager extends EventEmitter {
 		this.version = options.version;
 	}
 
-	/** Whether the websocket is connected. */
-	public get isConnected() {
-		return !!this.connectedAt ?? false;
+	/** Whether the websocket is ready. */
+	public get isReady() {
+		return !!this.readyAt ?? false;
 	}
 
-	/** The timestamp of when the websocket connected. */
-	public get connectedTimestamp() {
-		return this.connectedAt?.getTime();
+	/** The timestamp of when the websocket is ready. */
+	public get readyTimestamp() {
+		return this.readyAt?.getTime();
 	}
 
 	/** The timestamp the websocket was pinged. */
@@ -41,7 +45,7 @@ export class WebsocketManager extends EventEmitter {
 
 	/** How long the websocket has been connected. */
 	public get uptime() {
-		return this.isConnected ? Date.now() - this.connectedTimestamp! : undefined;
+		return this.isReady ? Date.now() - this.readyTimestamp! : undefined;
 	}
 
 	/** The URL of the Websocket. */
@@ -59,12 +63,13 @@ export class WebsocketManager extends EventEmitter {
 		this.socket = new Websocket(this.url, {
 			headers: {
 				Authorization: `Bearer ${this.token}`,
+				...(this.lastMessageId ? { 'guilded-last-message-id': this.lastMessageId } : {}),
 			},
 		});
-		this.socket.on('close', this.onSocketClose.bind(this));
+		this.socket.on('close', this.onSocketDisconnect.bind(this));
 		this.socket.on('message', (raw) => {
 			const { op, t, d } = JSON.parse(raw.toString());
-			this.onSocketData(op, t, d);
+			this.onSocketMessage(op, t, d);
 		});
 		this.socket.on('ping', this.onSocketPing.bind(this));
 		this.socket.on('pong', this.onSocketPong.bind(this));
@@ -82,23 +87,27 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/** @ignore */
-	private onSocketClose() {
-		this.token = undefined;
+	private onSocketDisconnect() {
 		this.socket = undefined;
-		this.connectedAt = undefined;
-		this.emit('disconnect');
+		this.readyAt = undefined;
+		if (!this.options.reconnect || this.reconnects >= (this.options.maxReconnects ?? Infinity))
+			return this.emit('disconnect', this);
+		this.reconnects++;
+		this.connect();
+		this.emit('reconnect', this);
 	}
 
 	/** @ignore */
-	private onSocketData(op: number, event: any, data: any) {
+	private onSocketMessage(op: number, event: any, data: WSReadyPayload) {
 		switch (op) {
-			case 0:
-				this.emit('data', event, data);
+			case WSOpCodes.Event:
+				this.emit('event', event, data as any);
 				break;
-			case 1:
-				this.socket!.emit('ping');
-				this.connectedAt = new Date();
-				this.emit('connect', data.user as APIUser);
+			case WSOpCodes.Ready:
+				this.socket?.emit('ping');
+				this.readyAt = new Date();
+				this.lastMessageId = data.lastMessageId;
+				this.emit('ready', data.user);
 				break;
 		}
 	}
@@ -144,16 +153,22 @@ export interface WebsocketOptions {
 	token?: string;
 	/** The version of the Websocket API. */
 	version: number;
+	/** The maximum number of reconnect attempts. */
+	maxReconnects?: number;
+	/** Whether to allow reconnects. */
+	reconnect?: boolean;
 }
 
 /** The websocket manager events. */
 export interface WSManagerEvents {
 	/** Emitted when the Websocket is connected. */
-	connect: [user: APIUser];
+	ready: [user: APIClientUser];
+	/** Emitted when the Websocket is reconnected. */
+	reconnect: [ws: WebsocketManager];
 	/** Emitted when the Websocket is disconnected. */
-	disconnect: [];
+	disconnect: [ws: WebsocketManager];
 	/** Emitted when data is received from the Websocket API. */
-	data: {
+	event: {
 		[Event in keyof WSEvents]: [event: Event, data: WSEvents[Event]];
 	}[keyof WSEvents];
 }
