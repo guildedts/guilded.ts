@@ -1,12 +1,10 @@
-import { APIChannel, APIChannelType } from 'guilded-api-typings';
+import { APIChannel } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 import { ListItemManager } from '../../managers/ListItemManager';
 
 /** Represents a list channel on Guilded. */
 export class ListChannel extends Channel {
-	public declare readonly type: APIChannelType.List;
-
 	/** The manager of items that belong to the list channel. */
 	public readonly items: ListItemManager;
 

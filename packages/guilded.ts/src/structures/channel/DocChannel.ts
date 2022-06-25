@@ -1,12 +1,10 @@
-import { APIChannel, APIChannelType } from 'guilded-api-typings';
+import { APIChannel } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 import { DocManager } from '../../managers/DocManager';
 
 /** Represents a doc channel on Guilded. */
 export class DocChannel extends Channel {
-	public declare readonly type: APIChannelType.Docs;
-
 	/** The manager of docs that belong to the doc channel. */
 	public readonly docs: DocManager;
 

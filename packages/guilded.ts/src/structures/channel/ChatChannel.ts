@@ -1,18 +1,13 @@
-import { APIChannel, APIChannelType } from 'guilded-api-typings';
+import { APIChannel } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
-import { MessageManager, MessagePayloadResolvable } from '../../managers/MessageManager';
+import { MessageManager, MessagePayloadResolvable } from '../../managers/message/MessageManager';
 import { CollectorOptions } from '../../collectors/Collector';
-import { Message } from '../Message';
+import { Message } from '../message/Message';
 import { MessageCollector } from '../../collectors/MessageCollector';
 
 /** Represents a chat channel on Guilded. */
 export class ChatChannel extends Channel {
-	public declare readonly type:
-		| APIChannelType.Chat
-		| APIChannelType.Stream
-		| APIChannelType.Voice;
-
 	/** The manager of messages that belong to the chat channel. */
 	public readonly messages: MessageManager;
 

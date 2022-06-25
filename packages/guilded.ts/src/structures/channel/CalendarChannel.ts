@@ -1,12 +1,10 @@
-import { APICalendarEventPayload, APIChannel, APIChannelType } from 'guilded-api-typings';
+import { APICalendarEventPayload, APIChannel } from 'guilded-api-typings';
 import { CalendarEventManager } from '../../managers/CalendarEventManager';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 
 /** Represents a calendar channel on Guilded. */
 export class CalendarChannel extends Channel {
-	public declare readonly type: APIChannelType.Calendar;
-
 	/** The manager of events that belong to the calendar channel. */
 	public readonly events: CalendarEventManager;
 

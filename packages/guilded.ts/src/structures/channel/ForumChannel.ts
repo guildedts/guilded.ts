@@ -1,12 +1,10 @@
-import { APIChannel, APIChannelType } from 'guilded-api-typings';
+import { APIChannel } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 import { TopicManager } from '../../managers/TopicManager';
 
 /** Represents a forum channel on Guilded. */
 export class ForumChannel extends Channel {
-	public declare readonly type: APIChannelType.Forums;
-
 	/** The manager of topics that belong to the forum channel. */
 	public readonly topics: TopicManager;
 
