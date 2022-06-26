@@ -1,5 +1,16 @@
 # @guildedts/rest
 
+## 0.7.1
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Fix error when receiving no data in `RESTManager.fetch`
+
+-   Updated dependencies
+    -   guilded-api-typings@0.5.0
+
 ## 0.7.0
 
 ### Minor Changes

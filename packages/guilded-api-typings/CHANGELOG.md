@@ -1,5 +1,22 @@
 # guilded-api-typings
 
+## 0.5.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `APIMessageReaction`
+    -   Add `APIEmote`
+    -   Add `APIClientUser`
+    -   Add `WSReadyPayload`
+    -   Add `ChannelMessageReactionCreated` to `WSEvents`
+    -   Add `ChannelMessageReactionDeleted` to `WSEvents`
+
+    # Fixes
+
+    -   Fix incorrect typings in `WSOpCodes`
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,24 @@
 # @guildedts/ws
 
+## 0.3.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `reconnects` to `WebsocketManager`
+    -   Add `lastMessageId` to `WebsocketManager`
+    -   Add reconnects on disconnect to `WebsocketManager`
+    -   Add `maxReconnects` to `WebsocketOptions`
+    -   Add `reconnect` to `WebsocketOptions`
+    -   Add `reconnect` to `WSManagerEvents`
+    -   Change `connect` to `ready` in `WSManagerEvents`
+    -   Add `ws` parameter to `disconnect` in `WSManagerEvents`
+    -   Change `data` to `event` in `WSManagerEvents`
+    -   Change `connectedAt` to `readyAt` in `WebsocketManager`
+    -   Change `isConnected` to `isReady` in `WebsocketManager`
+    -   Change `connectedTimestamp` to `readyTimestamp` in `WebsocketManager`
+
 ## 0.2.1
 
 ### Patch Changes

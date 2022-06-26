@@ -1,5 +1,72 @@
 # guilded.ts
 
+## 0.10.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Change type of `collected` to `Collection` in `Collector`
+    -   Change return type to `Collection` in all fetch methods
+    -   Add return on `collect` method in `Collector`
+    -   Add return on `dispose` method in `Collector`
+    -   Change type of `collected` parameter to `Collection` on `end` in `CollectorEvents`
+    -   Change type of `item` parameter to `Model` on `dispose` in `CollectorEvents`
+    -   Add `MessageReactionCollector`
+    -   Refactor options when fetching
+    -   Add resolving support in manager methods
+    -   Remove `ChannelResolvable`
+    -   Remove `ChatBasedChannel`
+    -   Add `FetchMessagesOptions`
+    -   Change `ReactionManager` to `MessageReactionManager`
+    -   Add `fetchSocialLink` to `ServerMemberManager`
+    -   Add `FetchServerMemberRolesOptions`
+    -   Add `FetchServerRolesOptions`
+    -   Add `FetchOptions`
+    -   Add `FetchManyOptions`
+    -   Add `FetchCalendarEventsOptions`
+    -   Add `FetchDocsOptions`
+    -   Remove `StreamChannel`
+    -   Remove `VoiceChannel`
+    -   Add `createReactionCollector` to `Message`
+    -   Add `MessageReaction`
+    -   Add `remove` method to `ServerBan`
+    -   Change type of `socialLinks` to `Collection` in `ServerMember`
+    -   Change type of `user` to `ClientUser` in `Client`
+    -   Add `reconnect` to `ClientEvents`
+    -   Add `messageReactionAdd` to `ClientEvents`
+    -   Add `messageReactionRemove` to `ClientEvents`
+    -   Add `reconnect` to `ClientOptions`
+    -   Add `maxReconnects` to `ClientOptions`
+    -   Add `disposeCachedMessages` to `ClientOptions`
+    -   Add `disposeCollectedMessages` to `ClientOptions`
+    -   Add `disposeCachedServerMembers` to `ClientOptions`
+    -   Add `disposeCachedServerBans` to `ClientOptions`
+    -   Add `disposeCachedChannels` to `ClientOptions`
+    -   Add `disposeCachedListItems` to `ClientOptions`
+    -   Add `disposeCachedDocs` to `ClientOptions`
+    -   Add `disposeCachedCalendarEvents` to `ClientOptions`
+    -   Add `cacheMessageReactions` to `ClientOptions`
+    -   Add `maxMessageReactionCache` to `ClientOptions`
+    -   Add `disposeCachedMessageReactions` to `ClientOptions`
+    -   Add `disposeCollectedMessageReactions` to `ClientOptions`
+    -   Add `createChannel` method to `Group`
+    -   Add `ClientUser`
+
+    # Fixes
+
+    -   Fix fetching a single webhook never checking the cache for a previously cached webhook.
+
+### Patch Changes
+
+-   Updated dependencies
+-   Updated dependencies
+-   Updated dependencies
+    -   @guildedts/rest@0.7.1
+    -   guilded-api-typings@0.5.0
+    -   @guildedts/ws@0.3.0
+    -   @guildedts/builders@0.2.2
+
 ## 0.9.0
 
 ### Minor Changes
