@@ -1,6 +1,6 @@
 {
 	"name": "guilded.ts",
-	"version": "0.9.0",
+	"version": "0.10.0",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
