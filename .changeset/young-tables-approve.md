@@ -4,4 +4,4 @@
 
 # Fixes
 
--   Fix `TypeError` when `payload` is undefined in `Message.reply`
+-   Fix `TypeError` when `payload` isnt the correct type in `Message.reply`

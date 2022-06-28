@@ -248,12 +248,13 @@ export class Message extends Base {
 				? { content: payload }
 				: Array.isArray(payload)
 				? { embeds: payload }
-				: payload ?? {};
-		payload.replyMessageIds = [
-			...(payload.replyMessageIds ?? []),
-			...this.replyMessageIds,
-			this.id,
-		];
+				: payload;
+		if (typeof payload === 'object')
+			payload.replyMessageIds = [
+				...(payload.replyMessageIds ?? []),
+				...this.replyMessageIds,
+				this.id,
+			];
 		return this.channel.messages.create(payload);
 	}
 
