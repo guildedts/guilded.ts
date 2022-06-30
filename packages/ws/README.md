@@ -1,10 +1,7 @@
 <div align="center">
-    <br />
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/media/banner.jpg" width="500" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/media/banner.png" alt="Guilded.TS"/>
     </a>
-    <h3>The Websocket API manager for <a href="https://guildedts.js.org">Guilded.TS</a>.</h3>
-    <br />
     <div>
         <A href="https://guilded.gg/guildedts">
             <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server">
@@ -19,8 +16,11 @@
             <img src="https://img.shields.io/github/license/guildedts/guilded.ts?style=for-the-badge" alt="License" />
         </a>
     </div>
-    <br />
 </div>
+
+# About
+
+@guildedts/ws is NPM package for interacting with the Guilded Websocket API.
 
 # Links
 
