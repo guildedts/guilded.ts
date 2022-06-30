@@ -1,5 +1,13 @@
 # @guildedts/ws
 
+## 0.3.3
+
+### Patch Changes
+
+-   # Features
+
+    -   Change README banner to have a png instead of a jpg
+
 ## 0.3.2
 
 ### Patch Changes

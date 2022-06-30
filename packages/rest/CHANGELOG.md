@@ -1,5 +1,16 @@
 # @guildedts/rest
 
+## 0.7.4
+
+### Patch Changes
+
+-   # Features
+
+    -   Change README banner to have a png instead of a jpg
+
+-   Updated dependencies
+    -   guilded-api-typings@0.5.3
+
 ## 0.7.3
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # guilded.ts
 
+## 0.10.3
+
+### Patch Changes
+
+-   # Features
+
+    -   Change README banner to have a png instead of a jpg
+
+-   Updated dependencies
+    -   @guildedts/builders@0.2.5
+    -   guilded-api-typings@0.5.3
+    -   @guildedts/rest@0.7.4
+    -   @guildedts/ws@0.3.3
+
 ## 0.10.2
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @guildedts/builders
 
+## 0.2.5
+
+### Patch Changes
+
+-   # Features
+
+    -   Change README banner to have a png instead of a jpg
+
 ## 0.2.4
 
 ### Patch Changes

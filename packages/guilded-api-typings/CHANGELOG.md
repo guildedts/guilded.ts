@@ -1,5 +1,13 @@
 # guilded-api-typings
 
+## 0.5.3
+
+### Patch Changes
+
+-   # Features
+
+    -   Change README banner to have a png instead of a jpg
+
 ## 0.5.2
 
 ### Patch Changes
