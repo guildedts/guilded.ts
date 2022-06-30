@@ -1,5 +1,13 @@
 # @guildedts/ws
 
+## 0.3.1
+
+### Patch Changes
+
+-   # Branding
+
+    -   Rebrand logo and banner
+
 ## 0.3.0
 
 ### Minor Changes

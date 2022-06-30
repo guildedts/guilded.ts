@@ -1,5 +1,23 @@
 # guilded.ts
 
+## 0.10.1
+
+### Patch Changes
+
+-   # Branding
+
+    -   Rebrand logo and banner
+
+    # Fixes
+
+    -   Fix `TypeError` when `payload` isnt the correct type in `Message.reply`
+
+-   Updated dependencies
+    -   @guildedts/builders@0.2.3
+    -   guilded-api-typings@0.5.1
+    -   @guildedts/rest@0.7.2
+    -   @guildedts/ws@0.3.1
+
 ## 0.10.0
 
 ### Minor Changes

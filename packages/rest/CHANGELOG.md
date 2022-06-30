@@ -1,5 +1,16 @@
 # @guildedts/rest
 
+## 0.7.2
+
+### Patch Changes
+
+-   # Branding
+
+    -   Rebrand logo and banner
+
+-   Updated dependencies
+    -   guilded-api-typings@0.5.1
+
 ## 0.7.1
 
 ### Patch Changes

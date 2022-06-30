@@ -1,5 +1,13 @@
 # guilded-api-typings
 
+## 0.5.1
+
+### Patch Changes
+
+-   # Branding
+
+    -   Rebrand logo and banner
+
 ## 0.5.0
 
 ### Minor Changes

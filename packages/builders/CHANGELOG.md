@@ -1,5 +1,13 @@
 # @guildedts/builders
 
+## 0.2.3
+
+### Patch Changes
+
+-   # Branding
+
+    -   Rebrand logo and banner
+
 ## 0.2.2
 
 ### Patch Changes
