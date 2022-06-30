@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/builders",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "A set of builders for creating a Guilded bot.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
