@@ -2,7 +2,7 @@ name: Deploy documentation
 on:
     push:
         branches: [ master ]
-        paths: [ 'packages/*/src/**/*.ts', '!docs' ]
+        paths: [ 'packages/**', '!docs' ]
 jobs:
     gendocs:
         name: Deploy documentation
