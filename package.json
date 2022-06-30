@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/guilded.ts",
-	"version": "0.10.0",
+	"version": "0.10.1",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"private": true,
 	"scripts": {
