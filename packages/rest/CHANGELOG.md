@@ -1,5 +1,16 @@
 # @guildedts/rest
 
+## 0.7.3
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Change README banner to have a background
+
+-   Updated dependencies
+    -   guilded-api-typings@0.5.2
+
 ## 0.7.2
 
 ### Patch Changes

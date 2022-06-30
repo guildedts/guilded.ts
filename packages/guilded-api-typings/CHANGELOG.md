@@ -1,5 +1,13 @@
 # guilded-api-typings
 
+## 0.5.2
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Change README banner to have a background
+
 ## 0.5.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @guildedts/builders
 
+## 0.2.4
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Change README banner to have a background
+
 ## 0.2.3
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @guildedts/ws
 
+## 0.3.2
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Change README banner to have a background
+
 ## 0.3.1
 
 ### Patch Changes

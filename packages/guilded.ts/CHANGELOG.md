@@ -1,5 +1,19 @@
 # guilded.ts
 
+## 0.10.2
+
+### Patch Changes
+
+-   # Fixes
+
+    -   Change README banner to have a background
+
+-   Updated dependencies
+    -   @guildedts/builders@0.2.4
+    -   guilded-api-typings@0.5.2
+    -   @guildedts/rest@0.7.3
+    -   @guildedts/ws@0.3.2
+
 ## 0.10.1
 
 ### Patch Changes
