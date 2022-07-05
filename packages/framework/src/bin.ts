@@ -3,7 +3,8 @@
 import { program } from 'commander';
 import { Client } from './structures/Client';
 import { Logger } from './structures/Logger';
-import { version } from '../package.json';
+
+const { version } = require('../package.json');
 
 program.name('gts').version(version);
 
