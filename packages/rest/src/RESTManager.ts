@@ -62,11 +62,9 @@ export class RESTManager {
 		const data = (await response.json().catch(() => void 0)) as APIError | R;
 		if (response.ok) return data as R;
 		if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
-			const retryAfter = response.headers.get('Retry-After');
-			const retryDelay = retryAfter ? parseInt(retryAfter) : undefined;
-			await new Promise((resolve) =>
-				setTimeout(resolve, retryDelay ?? this.options?.retryInterval ?? 3000),
-			);
+			const retryAfter =
+				Number(response.headers.get('Retry-After')) ?? this.options.retryInterval ?? 5000;
+			await new Promise((resolve) => setTimeout(resolve, retryAfter));
 			return this.fetch<R, B, P>(path, method, options, retries++);
 		}
 		const error = data as APIError;
