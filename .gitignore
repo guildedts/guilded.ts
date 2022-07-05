@@ -3,6 +3,7 @@ node_modules
 .yarn/*
 .yarn/releases
 lib
+dist
 typings
-config.json
+gtsconfig.json
 docs
