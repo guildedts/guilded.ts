@@ -1,1 +1,1 @@
-C:/Users/dvais/Documents/Projects/guilded.ts/guilded.ts/packages/guilded.ts/README.md
+packages/guilded.ts/README.md
