@@ -1,4 +1,4 @@
-import { APIServerMember, APIServerMemberSummary, APISocialLink } from 'guilded-api-typings';
+import { APIServerMember, APIServerMemberSummary, APISocialLink, WSEvents } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Server } from './Server';
 import { User } from '../User';
@@ -71,6 +71,10 @@ export class ServerMember extends Base {
 	public async setNickname(nickname: string) {
 		await this.server.members.setNickname(this, nickname);
 		return this;
+	}
+
+	public updateCacheNickname(raw: WSEvents["TeamMemberUpdated"]): void {
+		(this.nickname as string | undefined) = 'nickname' in raw.userInfo ? raw.userInfo.nickname : undefined;
 	}
 
 	/**
