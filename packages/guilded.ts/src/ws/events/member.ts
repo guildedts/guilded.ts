@@ -56,6 +56,6 @@ export async function unbanned(client: Client, data: WSEvents['TeamMemberUnbanne
 export async function updated(client: Client, data: WSEvents['TeamMemberUpdated']) {
 	const server = await client.servers.fetch(data.serverId);
 	const member = await server.members.fetch(data.userInfo.id);
-	if(data.userInfo.nickname) member.nickname = data.userInfo.nickname
+	if (data.userInfo.nickname) member.nickname = data.userInfo.nickname;
 	client.emit('memberEdit', member);
 }
