@@ -11,9 +11,9 @@ export class ServerMember extends Base {
 	/** The user the server member belongs to. */
 	public readonly user: User;
 	/** The IDs of roles the server member has. */
-	public readonly roleIds: number[];
+	public roleIds: number[];
 	/** The nickname of the server member. */
-	public readonly nickname?: string;
+	public nickname?: string;
 	/** The date the member joined the server. */
 	public readonly joinedAt?: Date;
 	/** Whether the server member is the server owner. */
