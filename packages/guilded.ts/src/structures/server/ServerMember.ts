@@ -13,7 +13,7 @@ export class ServerMember extends Base {
 	/** The IDs of roles the server member has. */
 	public readonly roleIds: number[];
 	/** The nickname of the server member. */
-	public readonly nickname?: string;
+	public nickname?: string;
 	/** The date the member joined the server. */
 	public readonly joinedAt?: Date;
 	/** Whether the server member is the server owner. */
@@ -72,11 +72,7 @@ export class ServerMember extends Base {
 		await this.server.members.setNickname(this, nickname);
 		return this;
 	}
-
-	public updateCacheNickname(raw: WSEvents["TeamMemberUpdated"]): void {
-		(this.nickname as string | undefined) = 'nickname' in raw.userInfo ? raw.userInfo.nickname : undefined;
-	}
-
+	
 	/**
 	 * Remove the nickname of the server member.
 	 * @returns The edited server member.
