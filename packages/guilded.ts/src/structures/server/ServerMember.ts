@@ -11,7 +11,7 @@ export class ServerMember extends Base {
 	/** The user the server member belongs to. */
 	public readonly user: User;
 	/** The IDs of roles the server member has. */
-	public readonly roleIds: number[];
+	public roleIds: number[];
 	/** The nickname of the server member. */
 	public nickname?: string;
 	/** The date the member joined the server. */
@@ -72,7 +72,7 @@ export class ServerMember extends Base {
 		await this.server.members.setNickname(this, nickname);
 		return this;
 	}
-	
+
 	/**
 	 * Remove the nickname of the server member.
 	 * @returns The edited server member.
