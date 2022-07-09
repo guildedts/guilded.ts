@@ -8,13 +8,11 @@ import { Client } from '../../structures/Client';
  */
 export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpdated']) {
 	const server = await client.servers.fetch(data.serverId);
-	for (const item of data.memberRoleIds) {
+	for (const item of data.memberRoleIds)
 		if(item.roleIds) {
 			const member = await server.members.fetch(item.userId)
 			member.roleIds = item.roleIds
 		}
-	}
-
 	client.emit('rolesEdit', server);
 }
  
