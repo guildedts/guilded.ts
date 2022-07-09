@@ -1,4 +1,4 @@
-import { APIServerMember, APIServerMemberSummary, APISocialLink, WSEvents } from 'guilded-api-typings';
+import { APIServerMember, APIServerMemberSummary, APISocialLink } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Server } from './Server';
 import { User } from '../User';
