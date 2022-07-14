@@ -17,6 +17,28 @@ export interface WSReadyPayload {
 	heartbeatIntervalMs: number;
 }
 
+/** The base message payload of the websocket. */
+export interface WSMessagePayload {
+	/** The op code. */
+	op: number;
+	/** The name of the event. */
+	t?: string;
+	/** The data of the event. */
+	d?: any;
+	/** The message ID. */
+	s?: string;
+}
+
+/** The Guilded WebSocket API operation codes. */
+export enum WSOpCodes {
+	/** The event operation code. */
+	Event = 0,
+	/** The ready operation code. */
+	Ready = 1,
+	/** The resume operation code. */
+	Resume = 2,
+}
+
 /**
  * The Guilded WebSocket API events.
  * @see https://www.guilded.gg/docs/api/websockets
@@ -306,12 +328,4 @@ export interface WSEvents {
 		/** The deleted reaction. */
 		reaction: APIMessageReaction;
 	};
-}
-
-/** The Guilded WebSocket API operation codes. */
-export enum WSOpCodes {
-	/** The event operation code. */
-	Event = 0,
-	/** The ready operation code. */
-	Ready = 1,
 }
