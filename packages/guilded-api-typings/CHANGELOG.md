@@ -1,5 +1,14 @@
 # guilded-api-typings
 
+## 0.5.4
+
+### Patch Changes
+
+-   # Features
+
+    -   Add `WSMessagePayload`
+    -   Add `Resume` to `WSOpCodes`
+
 ## 0.5.3
 
 ### Patch Changes

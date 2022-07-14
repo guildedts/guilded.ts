@@ -1,10 +1,10 @@
 {
 	"name": "@guildedts/guilded.ts",
-	"version": "0.10.3",
+	"version": "0.10.4",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
 	"private": true,
 	"scripts": {
-		"test": "ts-node packages/framework/src/bin",
+		"test": "ts-node test",
 		"build": "turbo run build",
 		"lint": "eslint 'packages/*/src/**/*.ts' --fix",
 		"format": "prettier --write 'packages/*/src/**/*.ts'",

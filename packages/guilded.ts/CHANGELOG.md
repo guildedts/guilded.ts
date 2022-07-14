@@ -1,5 +1,22 @@
 # guilded.ts
 
+## 0.10.4
+
+### Patch Changes
+
+-   2cc1735: # Fixes
+
+    -   rolesEdit event updates cache and emits updated data
+    -   memberEdit event updates cache and emits updated data
+
+-   Updated dependencies
+-   Updated dependencies
+-   Updated dependencies
+    -   guilded-api-typings@0.5.4
+    -   @guildedts/rest@0.8.0
+    -   @guildedts/ws@0.4.0
+    -   @guildedts/builders@0.2.5
+
 ## 0.10.3
 
 ### Patch Changes

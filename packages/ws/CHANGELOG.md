@@ -1,5 +1,18 @@
 # @guildedts/ws
 
+## 0.4.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `User-Agent` to headers when connnecting to WebSocket
+    -   Add `raw` to `WSManagerEvents`
+
+    # Fixes
+
+    -   Use `s` in message payloads for `lastMessageId`
+
 ## 0.3.3
 
 ### Patch Changes

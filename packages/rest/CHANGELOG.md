@@ -1,5 +1,23 @@
 # @guildedts/rest
 
+## 0.8.0
+
+### Minor Changes
+
+-   # Features
+
+    -   Add `User-Agent` to headers when making requests
+    -   Add `RESTManagerEvents`
+
+    # Fixes
+
+    -   Handle the `Retry-After` header as seconds, not millieseconds
+
+### Patch Changes
+
+-   Updated dependencies
+    -   guilded-api-typings@0.5.4
+
 ## 0.7.4
 
 ### Patch Changes

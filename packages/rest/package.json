@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/rest",
-	"version": "0.7.4",
+	"version": "0.8.0",
 	"description": "The REST API manager for Guilded.TS.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
