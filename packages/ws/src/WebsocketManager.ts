@@ -1,6 +1,14 @@
 import Websocket from 'ws';
 import EventEmitter from 'events';
-import { APIClientUser, WSEvents, WSOpCodes, WSReadyPayload } from 'guilded-api-typings';
+import {
+	APIClientUser,
+	WSEvents,
+	WSMessagePayload,
+	WSOpCodes,
+	WSReadyPayload,
+} from 'guilded-api-typings';
+
+const { version } = require('../package.json');
 
 /** The Websocket manager for the Guilded API. */
 export class WebsocketManager extends EventEmitter {
@@ -63,13 +71,15 @@ export class WebsocketManager extends EventEmitter {
 		this.socket = new Websocket(this.url, {
 			headers: {
 				Authorization: `Bearer ${this.token}`,
-				...(this.lastMessageId ? { 'guilded-last-message-id': this.lastMessageId } : {}),
+				'User-Agent': `@guildedts/ws@${version} Node.JS@${process.versions.node}`,
+				'guilded-last-message-id': this.lastMessageId ?? '',
 			},
 		});
 		this.socket.on('close', this.onSocketDisconnect.bind(this));
 		this.socket.on('message', (raw) => {
-			const { op, t, d } = JSON.parse(raw.toString());
-			this.onSocketMessage(op, t, d);
+			const data: WSMessagePayload = JSON.parse(raw.toString());
+			this.emit('raw', data);
+			this.onSocketMessage(data);
 		});
 		this.socket.on('ping', this.onSocketPing.bind(this));
 		this.socket.on('pong', this.onSocketPong.bind(this));
@@ -98,16 +108,19 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/** @ignore */
-	private onSocketMessage(op: number, event: any, data: WSReadyPayload) {
+	private onSocketMessage({ op, t, d, s }: WSMessagePayload) {
+		if (s) this.lastMessageId = s;
 		switch (op) {
 			case WSOpCodes.Event:
-				this.emit('event', event, data as any);
+				this.emit('event', t as any, d);
 				break;
 			case WSOpCodes.Ready:
 				this.socket?.emit('ping');
 				this.readyAt = new Date();
-				this.lastMessageId = data.lastMessageId;
-				this.emit('ready', data.user);
+				this.emit('ready', (d as WSReadyPayload).user);
+				break;
+			case WSOpCodes.Resume:
+				delete this.lastMessageId;
 				break;
 		}
 	}
@@ -167,6 +180,8 @@ export interface WSManagerEvents {
 	reconnect: [ws: WebsocketManager];
 	/** Emitted when the Websocket is disconnected. */
 	disconnect: [ws: WebsocketManager];
+	/** Emitted when a message is received. */
+	raw: [data: WSMessagePayload];
 	/** Emitted when data is received from the Websocket API. */
 	event: {
 		[Event in keyof WSEvents]: [event: Event, data: WSEvents[Event]];

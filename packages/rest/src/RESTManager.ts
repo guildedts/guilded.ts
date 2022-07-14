@@ -1,10 +1,13 @@
 import { GuildedAPIError } from '.';
-import fetch from 'node-fetch';
+import fetch, { Response } from 'node-fetch';
 import { Router } from './routers/Router';
 import { APIError } from 'guilded-api-typings';
+import EventEmitter from 'events';
+
+const { version } = require('../package.json');
 
 /** The REST manager for the Guilded API. */
-export class RESTManager {
+export class RESTManager extends EventEmitter {
 	/** The auth token for the REST API. */
 	public token?: string;
 	/** The version of the REST API. */
@@ -14,6 +17,7 @@ export class RESTManager {
 
 	/** @param options The options for the REST manager. */
 	public constructor(public readonly options: RESTOptions) {
+		super();
 		this.token = options.token;
 		this.version = options.version;
 	}
@@ -56,15 +60,21 @@ export class RESTManager {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${this.token}`,
+				'User-Agent': `@guildedts/rest@${version} Node.JS@${process.versions.node}`,
 			},
 			body: options.body ? JSON.stringify(options.body) : undefined,
 		});
-		const data = (await response.json().catch(() => void 0)) as APIError | R;
-		if (response.ok) return data as R;
+		const data = (await response.json().catch(() => undefined)) as APIError | R;
+		if (response.ok) {
+			this.emit('raw', data, response);
+			return data as R;
+		}
 		if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
 			const retryAfter =
-				Number(response.headers.get('Retry-After')) ?? this.options.retryInterval ?? 5000;
-			await new Promise((resolve) => setTimeout(resolve, retryAfter));
+				Number(response.headers.get('Retry-After')) ??
+				this.options.retryInterval ??
+				30000 / 1000;
+			await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
 			return this.fetch<R, B, P>(path, method, options, retries++);
 		}
 		const error = data as APIError;
@@ -130,6 +140,35 @@ export class RESTManager {
 	public async delete<R>(path: string) {
 		return this.fetch<R>(path, 'DELETE');
 	}
+}
+
+export interface RESTManager {
+	/** @ignore */
+	on<Event extends keyof RESTManagerEvents>(
+		event: Event,
+		listener: (...args: RESTManagerEvents[Event]) => any,
+	): this;
+	/** @ignore */
+	once<Event extends keyof RESTManagerEvents>(
+		event: Event,
+		listener: (...args: RESTManagerEvents[Event]) => any,
+	): this;
+	/** @ignore */
+	off<Event extends keyof RESTManagerEvents>(
+		event: Event,
+		listener: (...args: RESTManagerEvents[Event]) => any,
+	): this;
+	/** @ignore */
+	emit<Event extends keyof RESTManagerEvents>(
+		event: Event,
+		...args: RESTManagerEvents[Event]
+	): boolean;
+}
+
+/** The REST manager events. */
+export interface RESTManagerEvents {
+	/** Emitted when data is received. */
+	raw: [data: any, response: Response];
 }
 
 /** The options for the REST manager. */
