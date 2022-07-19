@@ -5,17 +5,20 @@ import { FetchOptions } from '../managers/BaseManager';
 import { ServerMember } from './server/ServerMember';
 import { APIChannelPayload } from 'guilded-api-typings';
 
-/** Represents a group on Guilded. */
+/**
+ * Represents a group on Guilded.
+ * @example new Group(client, rawGroup);
+ */
 export class Group extends Base {
 	/** The manager of members that belong to the group. */
-	public readonly members: GroupMemberManager;
+	readonly members: GroupMemberManager;
 
 	/**
 	 * @param client The client the group belongs to.
 	 * @param raw The raw data of the group.
 	 * @param cache Whether to cache the group.
 	 */
-	public constructor(
+	constructor(
 		client: Client,
 		public readonly raw: { id: string },
 		cache = client.options.cacheGroups ?? true,
@@ -26,7 +29,7 @@ export class Group extends Base {
 	}
 
 	/** Whether the group is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.client.groups.cache.has(this.id);
 	}
 
@@ -34,24 +37,27 @@ export class Group extends Base {
 	 * Fetch the group.
 	 * @param options The options to fetch the group with.
 	 * @returns The fetched group.
+	 * @example group.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.client.groups.fetch(this, options) as this;
 	}
 
 	/**
 	 * Add a member to the group.
 	 * @param member The member to add.
+	 * @example group.addMember(member);
 	 */
-	public addMember(member: string | ServerMember) {
+	addMember(member: string | ServerMember) {
 		return this.members.add(member);
 	}
 
 	/**
 	 * Remove a member from the group.
 	 * @param member The member to remove.
+	 * @example group.removeMember(member);
 	 */
-	public removeMember(member: string | ServerMember) {
+	removeMember(member: string | ServerMember) {
 		return this.members.remove(member);
 	}
 
@@ -59,8 +65,9 @@ export class Group extends Base {
 	 * Create a channel in the group.
 	 * @param payload The payload of the channel.
 	 * @returns The created channel.
+	 * @example group.createChannel({ name: 'Chat', type: 'chat' });
 	 */
-	public createChannel(payload: Omit<APIChannelPayload, 'groupId'>) {
+	createChannel(payload: Omit<APIChannelPayload, 'groupId'>) {
 		return this.client.channels.create({ groupId: this.id, ...payload });
 	}
 }

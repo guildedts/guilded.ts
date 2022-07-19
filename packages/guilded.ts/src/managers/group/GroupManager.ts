@@ -2,10 +2,13 @@ import { BaseManager, FetchOptions } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Group } from '../../structures/Group';
 
-/** The manager of groups that belong to the client. */
+/**
+ * The manager of groups that belong to the client.
+ * @example new GroupManager(client);
+ */
 export class GroupManager extends BaseManager<string, Group> {
 	/** @param client The client that owns the groups. */
-	public constructor(client: Client) {
+	constructor(client: Client) {
 		super(client, client.options.maxGroupCache);
 	}
 
@@ -14,8 +17,9 @@ export class GroupManager extends BaseManager<string, Group> {
 	 * @param group The group to fetch.
 	 * @param options The options to fetch the group with.
 	 * @returns The fetched group.
+	 * @example groups.fetch(group);
 	 */
-	public fetch(group: string | Group, options?: FetchOptions) {
+	fetch(group: string | Group, options?: FetchOptions) {
 		group = group instanceof Group ? group.id : group;
 		const cached = this.cache.get(group);
 		if (cached) return cached;

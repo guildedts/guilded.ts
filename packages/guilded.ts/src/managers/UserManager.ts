@@ -4,10 +4,13 @@ import { User } from '../structures/User';
 import Collection from '@discordjs/collection';
 import { Server } from '../structures/server/Server';
 
-/** The manager of users that belong to the client. */
+/**
+ * The manager of users that belong to the client.
+ * @example new UserManager(client);
+ */
 export class UserManager extends BaseManager<string, User> {
 	/** @param client The client the users belong to. */
-	public constructor(client: Client) {
+	constructor(client: Client) {
 		super(client, client.options.maxUserCache);
 	}
 
@@ -16,16 +19,18 @@ export class UserManager extends BaseManager<string, User> {
 	 * @param server The server the user belongs to.
 	 * @param user The user to fetch.
 	 * @returns The fetched user.
+	 * @example users.fetch(server, user);
 	 */
-	public fetch(server: string | Server, user: string | User): Promise<User>;
+	fetch(server: string | Server, user: string | User): Promise<User>;
 	/**
 	 * Fetch users from a server.
 	 * @param server The server the users belong to.
 	 * @returns The fetched users.
+	 * @Example users.fetch(server);
 	 */
-	public fetch(server: string | Server): Promise<Collection<string, User>>;
+	fetch(server: string | Server): Promise<Collection<string, User>>;
 	/** @ignore */
-	public async fetch(arg1: string | Server, arg2?: string | User) {
+	fetch(arg1: string | Server, arg2?: string | User) {
 		if (arg2) return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}

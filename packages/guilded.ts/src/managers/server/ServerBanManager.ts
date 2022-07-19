@@ -4,10 +4,13 @@ import { ServerBan } from '../../structures/server/ServerBan';
 import Collection from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
 
-/** The manager of bans that belong to a server. */
+/**
+ * The manager of bans that belong to a server.
+ * @example new ServerBanManager(server);
+ */
 export class ServerBanManager extends BaseManager<string, ServerBan> {
 	/** @param server The server the bans belongs to. */
-	public constructor(public readonly server: Server) {
+	constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerBanCache);
 	}
 
@@ -16,16 +19,18 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 * @param ban The ban to fetch.
 	 * @param options The options to fetch the ban with.
 	 * @returns The fetched ban.
+	 * @example bans.fetch(ban);
 	 */
-	public fetch(ban: string | ServerBan, options?: FetchOptions): Promise<ServerBan>;
+	fetch(ban: string | ServerBan, options?: FetchOptions): Promise<ServerBan>;
 	/**
 	 * Fetch bans from thw server.
 	 * @param options The options to fetch bans with.
 	 * @returns The fetched bans.
+	 * @example bans.fetch();
 	 */
-	public fetch(options?: FetchManyOptions): Promise<Collection<string, ServerBan>>;
+	fetch(options?: FetchManyOptions): Promise<Collection<string, ServerBan>>;
 	/** @ignore */
-	public fetch(arg1?: string | ServerBan | FetchManyOptions, arg2?: FetchOptions) {
+	fetch(arg1?: string | ServerBan | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof ServerBan)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -56,8 +61,9 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 * @param member The member the ban belongs to.
 	 * @param reason The reason of the ban.
 	 * @returns The created ban.
+	 * @example bans.create(member);
 	 */
-	public async create(member: string | ServerMember, reason?: string) {
+	async create(member: string | ServerMember, reason?: string) {
 		member = member instanceof ServerMember ? member.id : member;
 		const raw = await this.client.api.serverBans.create(this.server.id, member, reason);
 		return new ServerBan(this.server, raw);
@@ -66,8 +72,9 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	/**
 	 * Remove a ban in the server.
 	 * @param ban The ban to remove.
+	 * @example bans.remove(ban);
 	 */
-	public remove(ban: string | ServerBan) {
+	remove(ban: string | ServerBan) {
 		ban = ban instanceof ServerBan ? ban.id : ban;
 		return this.client.api.serverBans.delete(this.server.id, ban);
 	}

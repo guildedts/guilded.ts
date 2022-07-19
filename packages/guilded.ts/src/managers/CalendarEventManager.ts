@@ -8,10 +8,13 @@ import { CalendarEvent } from '../structures/CalendarEvent';
 import { CalendarChannel } from '../structures/channel/CalendarChannel';
 import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 
-/** The manager of calendar events that belong to a calendar channel. */
+/**
+ * The manager of calendar events that belong to a calendar channel.
+ * @example new CalendarEventManager(channel);
+ */
 export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	/** @param channel The calendar channel the events belong to. */
-	public constructor(public readonly channel: CalendarChannel) {
+	constructor(public readonly channel: CalendarChannel) {
 		super(channel.client, channel.client.options.maxCalendarEventCache);
 	}
 
@@ -20,19 +23,18 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	 * @param calendarEvent The calendar event to fetch.
 	 * @param options The options to fetch the calendar event with.
 	 * @returns The fetched calendar event.
+	 * @example calanderEvents.fetch(calendarEvent);
 	 */
-	public fetch(
-		calendarEvent: number | CalendarEvent,
-		options?: FetchOptions,
-	): Promise<CalendarEvent>;
+	fetch(calendarEvent: number | CalendarEvent, options?: FetchOptions): Promise<CalendarEvent>;
 	/**
 	 * Fetch calendar events from the channel.
 	 * @param options The options to fetch calendar events with.
 	 * @returns The fetched calendar events.
+	 * @example calanderEvents.fetch();
 	 */
-	public fetch(options?: FetchCalendarEventsOptions): Promise<Collection<number, CalendarEvent>>;
+	fetch(options?: FetchCalendarEventsOptions): Promise<Collection<number, CalendarEvent>>;
 	/** @ignore */
-	public fetch(arg1?: number | CalendarEvent | FetchCalendarEventsOptions, arg2?: FetchOptions) {
+	fetch(arg1?: number | CalendarEvent | FetchCalendarEventsOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'number' || arg1 instanceof CalendarEvent)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -62,8 +64,9 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	 * Create a calendar event in the channel.
 	 * @param payload The payload of the calendar event.
 	 * @returns The created calendar event.
+	 * @example calanderEvents.create({ name: 'Event!' });
 	 */
-	public async create(payload: APICalendarEventPayload) {
+	async create(payload: APICalendarEventPayload) {
 		const raw = await this.client.api.calendarEvents.create(this.channel.id, payload);
 		return new CalendarEvent(this.channel, raw);
 	}
@@ -73,8 +76,9 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	 * @param calendarEvent The calendar event to edit.
 	 * @param payload The payload of the calendar event.
 	 * @returns The edited calendar event.
+	 * @example calanderEvents.edit(calendarEvent, { name: 'Event!' });
 	 */
-	public async edit(calendarEvent: number | CalendarEvent, payload: APICalendarEventEditPayload) {
+	async edit(calendarEvent: number | CalendarEvent, payload: APICalendarEventEditPayload) {
 		calendarEvent = calendarEvent instanceof CalendarEvent ? calendarEvent.id : calendarEvent;
 		const raw = await this.client.api.calendarEvents.edit(
 			this.channel.id,
@@ -87,8 +91,9 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	/**
 	 * Delete a calendar event from the channel.
 	 * @param calendarEvent The calendar event to delete.
+	 * @example calanderEvents.delete(calendarEvent);
 	 */
-	public delete(calendarEvent: number | CalendarEvent) {
+	delete(calendarEvent: number | CalendarEvent) {
 		calendarEvent = calendarEvent instanceof CalendarEvent ? calendarEvent.id : calendarEvent;
 		return this.client.api.calendarEvents.delete(this.channel.id, calendarEvent);
 	}

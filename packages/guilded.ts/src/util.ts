@@ -13,6 +13,7 @@ import { CalendarChannel } from './structures/channel/CalendarChannel';
  * @param raw The raw data of the channel.
  * @param cache Whether to cache the channel.
  * @returns The created channel structure.
+ * @example createChannel(client, rawChannel);
  */
 export const createChannel = (client: Client, raw: APIChannel, cache?: boolean): Channel =>
 	new ChannelTypeMap[raw.type](client, raw, cache);

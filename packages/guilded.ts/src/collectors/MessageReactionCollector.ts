@@ -2,7 +2,10 @@ import { Message } from '../structures/message/Message';
 import { MessageReaction } from '../structures/message/MessageReaction';
 import { Collector, CollectorOptions } from './Collector';
 
-/** The reaction collector for a message. */
+/**
+ * The reaction collector for a message.
+ * @example new MessageReactionCollector(message);
+ */
 export class MessageReactionCollector extends Collector<MessageReaction> {
 	/**
 	 * @param message The message the reaction collector belongs to.

@@ -8,12 +8,19 @@ import joi from 'joi';
 import { watch } from 'fs';
 import { Logger } from './Logger';
 
-/** The main hub for interacting with the Guilded API. */
+/**
+ * The main hub for interacting with the Guilded API.
+ * @example
+ * // Start the client
+ * new Client();
+ * // Start the client in development mode
+ * new Client({ dev: true });
+ */
 export class Client extends BaseClient {
 	/** The commands that belong to the client. */
-	public readonly commands = new Collection<string, Command>();
+	readonly commands = new Collection<string, Command>();
 	/** The config for the client. */
-	public config!: ClientConfig;
+	config!: ClientConfig;
 
 	/** The glob pattern for configs. */
 	private readonly configGlob = `**/gtsconfig.{js,ts,json}`;
@@ -35,7 +42,7 @@ export class Client extends BaseClient {
 	}
 
 	/** Initialize the client. */
-	public async init() {
+	async init() {
 		await this.loadConfig();
 		this.loadCommands();
 		this.loadEvents();
@@ -114,6 +121,7 @@ export class Client extends BaseClient {
 	 * Import a module.
 	 * @param path The path to the module.
 	 * @returns The module.
+	 * @example client.import('./path/to/module');
 	 */
 	private import(path: string) {
 		path = `${process.cwd()}/${path}`;
@@ -125,6 +133,7 @@ export class Client extends BaseClient {
 	 * Create a structure from a file.
 	 * @param path The path to the file.
 	 * @returns The structure.
+	 * @example client.createStructure('./path/to/file');
 	 */
 	private createStructure<Structure>(path: string): Structure | undefined {
 		const file = this.import(path);

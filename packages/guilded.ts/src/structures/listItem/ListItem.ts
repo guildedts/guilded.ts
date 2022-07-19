@@ -4,34 +4,37 @@ import { Note } from './Note';
 import { ListChannel } from '../channel/ListChannel';
 import { FetchOptions } from '../../managers/BaseManager';
 
-/** Represents a list item on Guilded. */
+/**
+ * Represents a list item on Guilded.
+ * @example new ListItem(channel, rawItem);
+ */
 export class ListItem extends Base {
 	/** The ID of the server the list item belongs to. */
-	public readonly serverId: string;
+	readonly serverId: string;
 	/** The ID of the channel the list item belongs to. */
-	public readonly channelId: string;
+	readonly channelId: string;
 	/** The message of the list item. */
-	public readonly message: string;
+	readonly message: string;
 	/** The mentions of the list item. */
-	public readonly mentions?: APIMentions;
+	readonly mentions?: APIMentions;
 	/** The date the list item was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The ID of the user that created the list item. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The ID of the webhook that created the list item. */
-	public readonly createdByWebhookId?: string;
+	readonly createdByWebhookId?: string;
 	/** The date the list item was edited. */
-	public readonly editedAt?: Date;
+	readonly editedAt?: Date;
 	/** The ID of the user that edited the list item. */
-	public readonly editedBy?: string;
+	readonly editedBy?: string;
 	/** The ID of the list item the list item belongs to. */
-	public readonly parentId?: string;
+	readonly parentId?: string;
 	/** The date the list item was completed. */
-	public readonly completedAt?: Date;
+	readonly completedAt?: Date;
 	/** The ID of the user that completed the list item. */
-	public readonly completedBy?: string;
+	readonly completedBy?: string;
 	/** The note of the list item. */
-	public readonly note?: Note;
+	readonly note?: Note;
 
 	/**
 	 * @param channel The list channel the item belongs to.
@@ -61,69 +64,69 @@ export class ListItem extends Base {
 	}
 
 	/** Whether the list item is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.channel.items.cache.has(this.id);
 	}
 
 	/** The server the list item belongs to. */
-	public get server() {
+	get server() {
 		return this.channel.server;
 	}
 
 	/** The timestamp the list item was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** The server member that created the list item. */
-	public get author() {
+	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The webhook that created the list item. */
-	public get webhook() {
+	get webhook() {
 		return this.createdByWebhookId
 			? this.channel.webhooks.cache.get(this.createdByWebhookId)
 			: undefined;
 	}
 
 	/** The ID of the user that created the list item. */
-	public get authorId() {
+	get authorId() {
 		return this.createdByWebhookId || this.createdBy;
 	}
 
 	/** The timestamp the list item was edited. */
-	public get editedTimestamp() {
+	get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}
 
 	/** The server member that edited the list item. */
-	public get editor() {
+	get editor() {
 		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
 	}
 
 	/** The list item the list item belongs to. */
-	public get parent() {
+	get parent() {
 		return this.parentId ? this.channel.items.cache.get(this.parentId) : undefined;
 	}
 
 	/** The timestamp the list item was completed. */
-	public get completedTimestamp() {
+	get completedTimestamp() {
 		return this.completedAt?.getTime();
 	}
 
 	/** The server member that completed the list item. */
-	public get completer() {
+	get completer() {
 		return this.completedBy ? this.server?.members.cache.get(this.completedBy) : undefined;
 	}
 
 	/** Whether the list item is completed. */
-	public get isCompleted() {
+	get isCompleted() {
 		return !!this.completedAt;
 	}
 
 	/** Whether the list item is editable. */
-	public get isEditable() {
+	get isEditable() {
 		return this.createdBy === this.client.user?.id;
 	}
 
@@ -131,8 +134,9 @@ export class ListItem extends Base {
 	 * Fetch the list item.
 	 * @param options The options to fetch the list item with.
 	 * @returns The fetched list item.
+	 * @example listItem.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.channel.items.fetch(this, options) as Promise<this>;
 	}
 
@@ -140,8 +144,9 @@ export class ListItem extends Base {
 	 * Fetch the server the list item belongs to.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example listItem.fetchServer();
 	 */
-	public async fetchServer(options?: FetchOptions) {
+	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
@@ -149,8 +154,9 @@ export class ListItem extends Base {
 	 * Fetch the server member that created the list item.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example listItem.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return server.members.fetch(this.createdBy, options);
 	}
@@ -159,8 +165,9 @@ export class ListItem extends Base {
 	 * Fetch the webhook that created the list item.
 	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
+	 * @example listItem.fetchWebhook();
 	 */
-	public async fetchWebhook(options?: FetchOptions) {
+	fetchWebhook(options?: FetchOptions) {
 		return this.createdByWebhookId
 			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
 			: undefined;
@@ -170,8 +177,9 @@ export class ListItem extends Base {
 	 * Fetch the server member that edited the list item.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example listItem.fetchEditor();
 	 */
-	public async fetchEditor(options?: FetchOptions) {
+	async fetchEditor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
 	}
@@ -180,8 +188,9 @@ export class ListItem extends Base {
 	 * Fetch the list item the list item belongs to.
 	 * @param options The options to fetch the list item with.
 	 * @returns The fetched list item.
+	 * @example listItem.fetchParent();
 	 */
-	public async fetchParent(options?: FetchOptions) {
+	async fetchParent(options?: FetchOptions) {
 		return this.parentId ? this.channel.items.fetch(this.parentId, options) : undefined;
 	}
 
@@ -189,8 +198,9 @@ export class ListItem extends Base {
 	 * Fetch the server member that completed the list item.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example listItem.fetchCompleter();
 	 */
-	public async fetchCompleter(options?: FetchOptions) {
+	async fetchCompleter(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return this.completedBy ? server.members.fetch(this.completedBy, options) : undefined;
 	}
@@ -200,16 +210,18 @@ export class ListItem extends Base {
 	 * @param message The message of the list item.
 	 * @param note The note of the list item.
 	 * @returns The edited list item.
+	 * @example listItem.edit('Hello World!');
 	 */
-	public edit(message: string, note?: string) {
+	edit(message: string, note?: string) {
 		return this.channel.items.edit(this, message, note) as Promise<this>;
 	}
 
 	/**
 	 * Remove the list item.
 	 * @returns The removed list item.
+	 * @example listItem.remove();
 	 */
-	public async remove() {
+	async remove() {
 		await this.channel.items.remove(this);
 		return this;
 	}
@@ -217,8 +229,9 @@ export class ListItem extends Base {
 	/**
 	 * Complete the list item.
 	 * @returns The completed list item.
+	 * @example listItem.complete();
 	 */
-	public async complete() {
+	async complete() {
 		await this.channel.items.complete(this);
 		return this;
 	}
@@ -226,8 +239,9 @@ export class ListItem extends Base {
 	/**
 	 * Uncomplete the list item.
 	 * @returns The uncompleted list item.
+	 * @example listItem.uncomplete();
 	 */
-	public async uncomplete() {
+	async uncomplete() {
 		await this.channel.items.uncomplete(this);
 		return this;
 	}

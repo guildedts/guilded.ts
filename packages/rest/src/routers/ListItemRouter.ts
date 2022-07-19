@@ -1,23 +1,28 @@
 import { APIListItem, APIListItemPayload, Routes } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
-/** The list item router for the Guilded REST API. */
+/**
+ * The list item router for the Guilded REST API.
+ * @example new ListItemRouter(rest);
+ */
 export class ListItemRouter extends BaseRouter {
 	/**
 	 * Fetch a list item from Guilded.
 	 * @param channelId The ID of the channel the list item belongs to.
 	 * @param listItemId The ID of the list item to fetch.
 	 * @returns The fetched list item.
+	 * @example listItems.fetch('abc', 'abc');
 	 */
-	public fetch(channelId: string, listItemId: string): Promise<APIListItem>;
+	fetch(channelId: string, listItemId: string): Promise<APIListItem>;
 	/**
 	 * Fetch list items from Guilded.
 	 * @param channelId The ID of the channel the list items belong to.
 	 * @returns The fetched list items.
+	 * @example listItems.fetch('abc');
 	 */
-	public fetch(channelId: string): Promise<APIListItem[]>;
+	fetch(channelId: string): Promise<APIListItem[]>;
 	/** @ignore */
-	public fetch(channelId: string, listItemId?: string) {
+	fetch(channelId: string, listItemId?: string) {
 		if (listItemId) return this.fetchSingle(channelId, listItemId);
 		return this.fetchMany(channelId);
 	}
@@ -44,8 +49,9 @@ export class ListItemRouter extends BaseRouter {
 	 * @param message The message of the list item.
 	 * @param note The note of the list item.
 	 * @returns The created list item.
+	 * @example listItems.create('abc', 'Random item');
 	 */
-	public async create(channelId: string, message: string, note?: string) {
+	async create(channelId: string, message: string, note?: string) {
 		const { listItem } = await this.rest.post<{ listItem: APIListItem }, APIListItemPayload>(
 			Routes.listItems(channelId),
 			{ message, note: note ? { content: note } : undefined },
@@ -60,8 +66,9 @@ export class ListItemRouter extends BaseRouter {
 	 * @param message The message of theb list item.
 	 * @param note The note of the list item.
 	 * @returns The edited list item.
+	 * @example listItems.edit('abc', 'abc', 'Random item');
 	 */
-	public async edit(channelId: string, listItemId: string, message: string, note?: string) {
+	async edit(channelId: string, listItemId: string, message: string, note?: string) {
 		const { listItem } = await this.rest.put<{ listItem: APIListItem }, APIListItemPayload>(
 			Routes.listItem(channelId, listItemId),
 			{ message, note: note ? { content: note } : undefined },
@@ -73,8 +80,9 @@ export class ListItemRouter extends BaseRouter {
 	 * Delete a list item from Guilded.
 	 * @param channelId The ID of the channel the list item belongs to.
 	 * @param listItemId The ID of the list item to delete.
+	 * @example listItems.delete('abc', 'abc');
 	 */
-	public delete(channelId: string, listItemId: string) {
+	delete(channelId: string, listItemId: string) {
 		return this.rest.post<void>(Routes.listItem(channelId, listItemId));
 	}
 
@@ -82,8 +90,9 @@ export class ListItemRouter extends BaseRouter {
 	 * Complete a list item on Guilded.
 	 * @param channelId The ID of the channel the list item belongs to.
 	 * @param listItemId The ID of the list item to complete.
+	 * @example listItems.complete('abc', 'abc');
 	 */
-	public complete(channelId: string, listItemId: string) {
+	complete(channelId: string, listItemId: string) {
 		return this.rest.put<void>(Routes.listItemComplete(channelId, listItemId));
 	}
 
@@ -91,8 +100,9 @@ export class ListItemRouter extends BaseRouter {
 	 * Uncomplete a list item on Guilded.
 	 * @param channelId The ID of the channel the list item belongs to.
 	 * @param listItemId The ID of the list item to uncomplete.
+	 * @example listItems.uncomplete('abc', 'abc');
 	 */
-	public uncomplete(channelId: string, listItemId: string) {
+	uncomplete(channelId: string, listItemId: string) {
 		return this.rest.delete<void>(Routes.listItemComplete(channelId, listItemId));
 	}
 }

@@ -3,7 +3,10 @@ import { ChatChannel } from '../structures/channel/ChatChannel';
 import { Message } from '../structures/message/Message';
 import { Collector, CollectorOptions } from './Collector';
 
-/** The message collector for a channel. */
+/**
+ * The message collector for a channel.
+ * @example new MessageCollector(channel);
+ */
 export class MessageCollector extends Collector<Message> {
 	/**
 	 * @param channel The channel the message collector belongs to.

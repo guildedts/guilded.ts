@@ -3,21 +3,31 @@ import { inlineCode, Message } from 'guilded.ts';
 import { ArgumentConstructor } from './arguments/Argument';
 import { Client } from './Client';
 
-/** Represents a command. */
+/**
+ * Represents a command.
+ * @example
+ * class Ping extends Command {
+ *     name = 'ping';
+ * 
+ *     execute(message) {
+ *         message.reply('Pong!');
+ *     }
+ * }
+ */
 export abstract class Command {
 	/** The name of the command. */
-	public name!: string;
+	name!: string;
 	/** The aliases of the command. */
-	public aliases: string[] = [];
+	aliases: string[] = [];
 	/** The description of the command. */
-	public description?: string;
+	description?: string;
 	/** The options of the command. */
-	public arguments: ArgumentConstructor[] = [];
+	arguments: ArgumentConstructor[] = [];
 	/** The cooldown of the command. */
-	public cooldown!: number;
+	cooldown!: number;
 
 	/** The cooldowns of the command. */
-	public readonly cooldowns = new Collection<string, number>();
+	readonly cooldowns = new Collection<string, number>();
 
 	/** @param client The client the command belongs to. */
 	constructor(public readonly client: Client) {
@@ -25,7 +35,7 @@ export abstract class Command {
 	}
 
 	/** The usage of the command. */
-	public get usage(): string {
+	get usage() {
 		return `${this.client.config.prefix} ${this.name} ${this.arguments
 			.map((arg) => new arg(this).usage)
 			.join(' ')}`;
@@ -35,15 +45,21 @@ export abstract class Command {
 	 * The execute method of the command.
 	 * @param message The message that triggered the command.
 	 * @param args The arguments of the command.
+	 * @example
+	 * execute(message, { content }) {
+	 *     message.reply(content);
+	 * }
 	 */
-	public abstract execute(message: Message, args: Record<string, unknown>): unknown;
+	abstract execute(message: Message, args: Record<string, unknown>): unknown;
 
 	/**
 	 * Validate the command.
 	 * @param message The message that triggered the command.
 	 * @param args The arguments of the command.
+	 * @returns The validated arguments.
+	 * @example command.validate(message, ['hello', 'world']); // { content: 'hello world' }
 	 */
-	public async validate(message: Message, args: string[]): Promise<Record<string, unknown>> {
+	async validate(message: Message, args: string[]): Promise<Record<string, unknown>> {
 		const cooldown = this.cooldowns.get(message.createdBy);
 		const now = Date.now();
 		if (cooldown && now < cooldown)
@@ -59,8 +75,9 @@ export abstract class Command {
 	 * Validate the command arguments.
 	 * @param args The arguments to validate.
 	 * @returns The validated arguments.
+	 * @example command.validateArguments(['hello', 'world']); // { content: 'hello world' }
 	 */
-	public async validateArguments(args: string[]) {
+	async validateArguments(args: string[]) {
 		const mappedArgs: Record<string, unknown> = {};
 		for (const [index, argument] of this.arguments
 			.map((Argument) => new Argument(this))
@@ -74,6 +91,7 @@ export abstract class Command {
 	/**
 	 * Set a cooldown for a user.
 	 * @param userId The ID of the user to set the cooldown for.
+	 * @example command.setCooldown('abc');
 	 */
 	public setCooldown(userId: string) {
 		if (this.cooldown > 0) this.cooldowns.set(userId, Date.now() + this.cooldown);

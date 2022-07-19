@@ -3,10 +3,13 @@ import { Client } from '../Client';
 import { Channel } from './Channel';
 import { DocManager } from '../../managers/DocManager';
 
-/** Represents a doc channel on Guilded. */
+/**
+ * Represents a doc channel on Guilded.
+ * @example new DocChannel(client, rawChannel);
+ */
 export class DocChannel extends Channel {
 	/** The manager of docs that belong to the doc channel. */
-	public readonly docs: DocManager;
+	readonly docs: DocManager;
 
 	/**
 	 * @param client The client the doc channel belongs to.
@@ -23,8 +26,9 @@ export class DocChannel extends Channel {
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The created doc.
+	 * @example channel.createDoc('Title', 'Content');
 	 */
-	public post(title: string, content: string) {
+	post(title: string, content: string) {
 		return this.docs.create(title, content);
 	}
 }

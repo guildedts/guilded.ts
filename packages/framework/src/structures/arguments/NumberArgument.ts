@@ -1,18 +1,30 @@
 import { inlineCode } from 'guilded.ts';
 import { Argument } from './Argument';
 
-/** Represents a number command argument. */
+/**
+ * Represents a number command argument.
+ * @example
+ * class MyArgument extends NumberArgument {
+ *     name = 'my-argument';
+ * }
+ */
 export abstract class NumberArgument extends Argument {
 	/** The default value of the argument. */
-	public default?: number;
+	default?: number;
 	/** The choices of the argument. */
-	public choices: number[] = [];
+	choices: number[] = [];
 	/** The max value of the argument. */
-	public max?: number;
+	max?: number;
 	/** The min value of the argument. */
-	public min?: number;
+	min?: number;
 
-	public async validate(value: string): Promise<number> {
+	/**
+	 * Validates the number argument.
+	 * @param value The value of the argument.
+	 * @returns The validated value, or error.
+	 * @example numberArgument.validate('1'); // 1
+	 */
+	async validate(value: string): Promise<number> {
 		value = (await super.validate(value)) as string;
 		if (isNaN(value as any)) throw new Error(`${inlineCode(this.name)} must be a number.`);
 		else if (this.choices.length > 0 && !this.choices.includes(Number(value)))

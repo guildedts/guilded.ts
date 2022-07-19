@@ -3,20 +3,23 @@ import EventEmitter from 'events';
 import { Base } from '../structures/Base';
 import { Client } from '../structures/Client';
 
-/** The collector of a data model. */
+/**
+ * The collector of a data model.
+ * @example new Collector(client);
+ */
 export class Collector<Model extends Base<any>> extends EventEmitter {
 	/** The collected data. */
-	public readonly collected: Collection<Model['id'], Model>;
+	readonly collected: Collection<Model['id'], Model>;
 	/** The date the collector was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The date the collector was ended. */
-	public endedAt?: Date;
+	endedAt?: Date;
 
 	/**
 	 * @param client The client the collector belongs to.
 	 * @param options The options of the collector.
 	 */
-	public constructor(
+	constructor(
 		public readonly client: Client,
 		public readonly options: CollectorOptions<Model> = {},
 	) {
@@ -27,29 +30,32 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	}
 
 	/** The timestamp the collector was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** Whether the collector has ended. */
-	public get isEnded() {
+	get isEnded() {
 		return !!this.endedAt;
 	}
 
 	/** The timestamp the collector was ended. */
-	public get endedTimestamp() {
+	get endedTimestamp() {
 		return this.endedAt?.getTime();
 	}
 
 	/** The time the collector has been running. */
-	public get uptime() {
+	get uptime() {
 		return this.isEnded
 			? this.endedAt!.getTime() - this.createdAt.getTime()
 			: Date.now() - this.createdAt.getTime();
 	}
 
-	/** End the collector. */
-	public end() {
+	/**
+	 * End the collector.
+	 * @example collector.end();
+	 */
+	end() {
 		if (this.isEnded) return;
 		this.endedAt = new Date();
 		this.emit('end', this.collected);
@@ -59,8 +65,9 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	 * Collect a item.
 	 * @param item The item to collect.
 	 * @returns The collected item.
+	 * @example collector.collect(item);
 	 */
-	public async collect(item: Model) {
+	async collect(item: Model) {
 		const filter = this.options.filter ? await this.options.filter(item) : true;
 		if (this.isEnded || !filter) return;
 		this.collected.set(item.id, item);
@@ -73,8 +80,9 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	 * Dispose a collected item.
 	 * @param itemId The ID of the item to dispose.
 	 * @returns The disposed item.
+	 * @example collector.dispose('abc');
 	 */
-	public dispose(itemId: Model['id']) {
+	dispose(itemId: Model['id']) {
 		const item = this.collected.get(itemId);
 		if (this.options.dispose === false || this.isEnded || !item) return;
 		this.collected.delete(itemId);

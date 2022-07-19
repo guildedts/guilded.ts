@@ -6,10 +6,13 @@ import { CollectorOptions } from '../../collectors/Collector';
 import { Message } from '../message/Message';
 import { MessageCollector } from '../../collectors/MessageCollector';
 
-/** Represents a chat channel on Guilded. */
+/**
+ * Represents a chat channel on Guilded.
+ * @example new ChatChannel(client, rawChannel);
+ */
 export class ChatChannel extends Channel {
 	/** The manager of messages that belong to the chat channel. */
-	public readonly messages: MessageManager;
+	readonly messages: MessageManager;
 
 	/**
 	 * @param client The client the chat channel belongs to.
@@ -25,8 +28,9 @@ export class ChatChannel extends Channel {
 	 * Create a message in the chat channel.
 	 * @param payload The payload of the message.
 	 * @returns The created message.
+	 * @example channel.send('Hello world!');
 	 */
-	public send(payload: MessagePayloadResolvable) {
+	send(payload: MessagePayloadResolvable) {
 		return this.messages.create(payload);
 	}
 
@@ -34,8 +38,9 @@ export class ChatChannel extends Channel {
 	 * Create a message collector for the chat channel.
 	 * @param options The options of the message collector.
 	 * @returns The created message collector.
+	 * @example channel.createMessageCollector();
 	 */
-	public createMessageCollector(options?: CollectorOptions<Message>) {
+	createMessageCollector(options?: CollectorOptions<Message>) {
 		return new MessageCollector(this, options);
 	}
 }

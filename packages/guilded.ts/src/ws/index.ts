@@ -11,7 +11,7 @@ import * as webhook from './events/webhook';
 
 /** A map of all WebSocket events with their respective handlers. */
 const WSEventHandler: {
-	[event in keyof WSEvents]: (client: Client, data: WSEvents[event]) => Promise<void>;
+	[event in keyof WSEvents]: (client: Client, data: WSEvents[event]) => void | Promise<void>;
 } = {
 	ChatMessageCreated: message.created,
 	ChatMessageUpdated: message.updated,
@@ -48,10 +48,10 @@ const WSEventHandler: {
  * @param event The name of the event.
  * @param data The data of the event.
  */
-export async function handleWSEvent(
+export function handleWSEvent(
 	client: Client,
 	event: keyof WSEvents,
 	data: WSEvents[keyof WSEvents],
 ) {
-	await WSEventHandler[event](client, data as any);
+	return WSEventHandler[event](client, data as any);
 }

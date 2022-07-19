@@ -14,37 +14,40 @@ import { ServerRouter } from './server/ServerRouter';
 import { WebhookRouter } from './WebhookRouter';
 import { CalendarEventRouter } from './CalendarEventRouter';
 
-/** The router for the Guilded REST API. */
+/**
+ * The router for the Guilded REST API.
+ * @example new Router(rest);
+ */
 export class Router extends BaseRouter {
 	/** The channel router for the Guilded REST API. */
-	public readonly channels: ChannelRouter;
+	readonly channels: ChannelRouter;
 	/** The message router for the Guilded REST API. */
-	public readonly messages: MessageRouter;
+	readonly messages: MessageRouter;
 	/** The server member router for the Guilded REST API. */
-	public readonly serverMembers: ServerMemberRouter;
+	readonly serverMembers: ServerMemberRouter;
 	/** The server ban router for the Guilded REST API. */
-	public readonly serverBans: ServerBanRouter;
+	readonly serverBans: ServerBanRouter;
 	/** The forum thread router for the Guilded REST API. */
-	public readonly topics: TopicRouter;
+	readonly topics: TopicRouter;
 	/** The list item router for the Guilded REST API. */
-	public readonly listItems: ListItemRouter;
+	readonly listItems: ListItemRouter;
 	/** The doc router for the Guilded REST API. */
-	public readonly docs: DocRouter;
+	readonly docs: DocRouter;
 	/** The reaction router for the Guilded REST API. */
-	public readonly reactions: ReactionRouter;
+	readonly reactions: ReactionRouter;
 	/** The server role router for the Guilded REST API. */
-	public readonly serverRoles: ServerRoleRouter;
+	readonly serverRoles: ServerRoleRouter;
 	/** The group router for the Guilded REST API. */
-	public readonly groups: GroupRouter;
+	readonly groups: GroupRouter;
 	/** The webhook router for the Guilded REST API. */
-	public readonly webhooks: WebhookRouter;
+	readonly webhooks: WebhookRouter;
 	/** The server router for the Guilded REST API. */
-	public readonly servers: ServerRouter;
+	readonly servers: ServerRouter;
 	/** The calendar event router for the Guilded REST API. */
-	public readonly calendarEvents: CalendarEventRouter;
+	readonly calendarEvents: CalendarEventRouter;
 
 	/** @param rest The REST API manager that owns this router. */
-	public constructor(rest: RESTManager) {
+	constructor(rest: RESTManager) {
 		super(rest);
 		this.channels = new ChannelRouter(rest);
 		this.messages = new MessageRouter(rest);

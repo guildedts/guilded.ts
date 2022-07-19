@@ -6,7 +6,6 @@ import {
 	APIMessageType,
 } from 'guilded-api-typings';
 import { Base } from '../Base';
-import { CacheCollection } from '../CacheCollection';
 import {
 	MessageEditPayloadResolvable,
 	MessagePayloadResolvable,
@@ -17,47 +16,51 @@ import { CollectorOptions } from '../../collectors/Collector';
 import { MessageReactionCollector } from '../../collectors/MessageReactionCollector';
 import { FetchManyOptions, FetchOptions } from '../../managers/BaseManager';
 import { ChatChannel } from '../channel/ChatChannel';
+import Collection from '@discordjs/collection';
 
-/** Represents a message on Guilded. */
+/**
+ * Represents a message on Guilded.
+ * @example new Message(channel, rawMessage);
+ */
 export class Message extends Base {
 	/** The type of the message. */
-	public readonly type: APIMessageTypeString;
+	readonly type: APIMessageTypeString;
 	/** The ID of the server the message belongs to. */
-	public readonly serverId?: string;
+	readonly serverId?: string;
 	/** The ID of the channel the message belongs to. */
-	public readonly channelId: string;
+	readonly channelId: string;
 	/** The content of the message. */
-	public readonly content?: string;
+	readonly content?: string;
 	/** The embeds in the message. */
-	public readonly embeds: APIEmbed[];
+	readonly embeds: APIEmbed[];
 	/** The IDs of messages that were replied to. */
-	public readonly replyMessageIds: string[];
+	readonly replyMessageIds: string[];
 	/** Whether the message is private. */
-	public readonly isPrivate?: boolean;
+	readonly isPrivate?: boolean;
 	/** Whether the message is silent. */
-	public readonly isSilent?: boolean;
+	readonly isSilent?: boolean;
 	/** The mentions of the message. */
-	public readonly mentions?: APIMentions;
+	readonly mentions?: APIMentions;
 	/** The date the message was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The ID of the user that created the message. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The ID of the webhook that created the message. */
-	public readonly createdByWebhookId?: string;
+	readonly createdByWebhookId?: string;
 	/** The date the message was edited. */
-	public readonly editedAt?: Date;
+	readonly editedAt?: Date;
 	/** The date the message was deleted. */
-	public deletedAt?: Date;
+	deletedAt?: Date;
 
 	/** A manager of reactions that belong to the message. */
-	public readonly reactions: MessageReactionManager;
+	readonly reactions: MessageReactionManager;
 
 	/**
 	 * @param channel The chat channel the message belongs to.
 	 * @param raw The raw data of the message.
 	 * @param cache Whether to cache the message.
 	 */
-	public constructor(
+	constructor(
 		public readonly channel: ChatChannel,
 		public readonly raw: APIMessage,
 		cache = channel.client.options.cacheMessages ?? true,
@@ -81,65 +84,65 @@ export class Message extends Base {
 	}
 
 	/** Whether the message is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.channel.messages.cache.has(this.id);
 	}
 
 	/** Whether the message is a default message. */
-	public get isDefault() {
+	get isDefault() {
 		return this.type === APIMessageType.Default;
 	}
 
 	/** Whether the message is a system message. */
-	public get isSystem() {
+	get isSystem() {
 		return this.type === APIMessageType.System;
 	}
 
 	/** The server the message belongs to. */
-	public get server() {
+	get server() {
 		return this.channel.server;
 	}
 
 	/** The group the message belongs to. */
-	public get group() {
+	get group() {
 		return this.channel.group;
 	}
 
 	/** The timestamp the message was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** The timestamp the message was edited. */
-	public get editedTimestamp() {
+	get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}
 
 	/** Whether the message is deleted. */
-	public get isDeleted() {
+	get isDeleted() {
 		return !!this.deletedAt;
 	}
 
 	/** The server member that created the message. */
-	public get author() {
+	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The webhook that created the message. */
-	public get webhook() {
+	get webhook() {
 		return this.createdByWebhookId
 			? this.channel.webhooks.cache.get(this.createdByWebhookId)
 			: undefined;
 	}
 
 	/** The ID of the user that created the message. */
-	public get authorId() {
+	get authorId() {
 		return this.createdByWebhookId || this.createdBy;
 	}
 
 	/** The messages that were replied to. */
-	public get replies() {
-		const messages = new CacheCollection<string, Message>();
+	get replies() {
+		const messages = new Collection<string, Message>();
 		for (const id of this.replyMessageIds) {
 			const message = this.channel.messages.cache.get(id);
 			if (message) messages.set(id, message);
@@ -148,12 +151,12 @@ export class Message extends Base {
 	}
 
 	/** The timestamp the message was deleted. */
-	public get deletedTimestamp() {
+	get deletedTimestamp() {
 		return this.deletedAt?.getTime();
 	}
 
 	/** Whether the message is editable. */
-	public get editable() {
+	get isEditable() {
 		return this.createdBy === this.client.user?.id;
 	}
 
@@ -161,8 +164,9 @@ export class Message extends Base {
 	 * Fetch the message.
 	 * @param options The options to fetch the message with.
 	 * @returns The fetched message.
+	 * @example message.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.channel.messages.fetch(this, options) as Promise<this>;
 	}
 
@@ -170,8 +174,9 @@ export class Message extends Base {
 	 * Fetch the server the message belongs to.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example message.fetchServer();
 	 */
-	public fetchServer(options?: FetchOptions) {
+	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
@@ -179,8 +184,9 @@ export class Message extends Base {
 	 * Fetch the group the message belongs to.
 	 * @param options The options to fetch the group with.
 	 * @returns The fetched group.
+	 * @example message.fetchGroup();
 	 */
-	public fetchGroup(options?: FetchOptions) {
+	fetchGroup(options?: FetchOptions) {
 		return this.channel.fetchGroup(options);
 	}
 
@@ -188,8 +194,9 @@ export class Message extends Base {
 	 * Fetch the server member that created the message.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example message.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return server.members.fetch(this.createdBy, options);
 	}
@@ -198,8 +205,9 @@ export class Message extends Base {
 	 * Fetch the webhook that created the message.
 	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
+	 * @example message.fetchWebhook();
 	 */
-	public fetchWebhook(options?: FetchOptions) {
+	fetchWebhook(options?: FetchOptions) {
 		return this.createdByWebhookId
 			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
 			: undefined;
@@ -210,11 +218,11 @@ export class Message extends Base {
 	 * @param options The options to fetch the messages with.
 	 * @returns The fetched messages.
 	 */
-	public async fetchReplies(options?: FetchManyOptions) {
-		const messages = new CacheCollection<string, Message>();
+	async fetchReplies(options?: FetchManyOptions) {
+		const messages = new Collection<string, Message>();
 		for (const id of this.replyMessageIds) {
 			const message = await this.channel.messages.fetch(id, { cache: options?.cache });
-			if (message) messages.set(id, message);
+			messages.set(id, message);
 		}
 		return messages;
 	}
@@ -223,16 +231,18 @@ export class Message extends Base {
 	 * Edit the message.
 	 * @param payload The payload of the message.
 	 * @returns The edited message.
+	 * @example message.edit('Hello World!');
 	 */
-	public async edit(payload: MessageEditPayloadResolvable) {
+	edit(payload: MessageEditPayloadResolvable) {
 		return this.channel.messages.edit(this, payload) as Promise<this>;
 	}
 
 	/**
 	 * Delete the message.
 	 * @returns The deleted message.
+	 * @example message.delete();
 	 */
-	public async delete() {
+	async delete() {
 		await this.channel.messages.delete(this);
 		return this;
 	}
@@ -241,8 +251,9 @@ export class Message extends Base {
 	 * Reply to the message.
 	 * @param payload The payload of the message.
 	 * @returns The created message.
+	 * @example message.reply('Hello World!');
 	 */
-	public reply(payload: MessagePayloadResolvable) {
+	reply(payload: MessagePayloadResolvable) {
 		payload =
 			typeof payload === 'string'
 				? { content: payload }
@@ -262,8 +273,9 @@ export class Message extends Base {
 	 * React to the message.
 	 * @param emojiId The ID of the emoji to react with.
 	 * @returns The message.
+	 * @example message.react(123);
 	 */
-	public async react(emojiId: number) {
+	async react(emojiId: number) {
 		await this.reactions.add(emojiId);
 		return this;
 	}
@@ -272,8 +284,9 @@ export class Message extends Base {
 	 * Create a reaction collector for the message.
 	 * @params options The options of the reaction collector.
 	 * @returns The created reaction collector.
+	 * @example message.createReactionCollector();
 	 */
-	public createReactionCollector(options: CollectorOptions<MessageReaction>) {
+	createReactionCollector(options?: CollectorOptions<MessageReaction>) {
 		return new MessageReactionCollector(this, options);
 	}
 }

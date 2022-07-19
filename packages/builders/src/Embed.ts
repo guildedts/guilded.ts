@@ -7,28 +7,34 @@ import {
 } from 'guilded-api-typings';
 import { ColorResolvable, resolveColor } from './util';
 
-/** The embed builder for Guilded embeds. */
+/**
+ * The embed builder for Guilded embeds.
+ * @example
+ * new Embed()
+ *     .setTitle('Embed Title')
+ *     .setDescription('This is the embed description.');
+ */
 export class Embed {
 	/** The title of the embed. */
-	public title?: string;
+	title?: string;
 	/** The description of the embed. */
-	public description?: string;
+	description?: string;
 	/** The URL of the embed. */
-	public url?: string;
+	url?: string;
 	/** The color of the embed. */
-	public color?: number;
+	color?: number;
 	/** The footer of the embed. */
-	public footer?: APIEmbedFooter;
+	footer?: APIEmbedFooter;
 	/** The timestamp of the embed. */
-	public timestamp?: Date;
+	timestamp?: Date;
 	/** The thumbnail of the embed. */
-	public thumbnail?: APIEmbedMedia;
+	thumbnail?: APIEmbedMedia;
 	/** The image of the embed. */
-	public image?: APIEmbedMedia;
+	image?: APIEmbedMedia;
 	/** The author of the embed. */
-	public author?: APIEmbedAuthor;
+	author?: APIEmbedAuthor;
 	/** The fields of the embed. */
-	public fields: APIEmbedField[];
+	fields: APIEmbedField[];
 
 	/** @param data The initial data of the embed. */
 	constructor(data: APIEmbed = {}) {
@@ -48,8 +54,9 @@ export class Embed {
 	 * Set the title of the embed.
 	 * @param title The title of the embed.
 	 * @returns This embed builder.
+	 * @example embed.setTitle('Embed Title');
 	 */
-	public setTitle(title?: string) {
+	setTitle(title?: string) {
 		this.title = title;
 		return this;
 	}
@@ -58,8 +65,9 @@ export class Embed {
 	 * Set the description of the embed.
 	 * @param description The description of the embed.
 	 * @returns The embed builder.
+	 * @example embed.setDescription('This is the embed description.');
 	 */
-	public setDescription(description?: string) {
+	setDescription(description?: string) {
 		this.description = description;
 		return this;
 	}
@@ -68,8 +76,9 @@ export class Embed {
 	 * Set the URL of the embed.
 	 * @param url The URL of the embed.
 	 * @returns The embed builder.
+	 * @example embed.setUrl('https://example.com');
 	 */
-	public setUrl(url?: string) {
+	setUrl(url?: string) {
 		this.url = url;
 		return this;
 	}
@@ -78,8 +87,16 @@ export class Embed {
 	 * Set the color of the embed.
 	 * @param color The color of the embed.
 	 * @returns The embed builder.
+	 * @example
+	 * // Set the color of the embed with a hex color.
+	 * embed.setColor(0xFFFFFF);
+	 * embed.setColor('#FFFFFF');
+	 * // Set the color of the embed with a preset color.
+	 * embed.setColor('WHITE');
+	 * // Set the color of the embed with RGB values.
+	 * embed.setColor([255, 255, 255]);
 	 */
-	public setColor(color?: ColorResolvable) {
+	setColor(color?: ColorResolvable) {
 		this.color = color ? resolveColor(color) : undefined;
 		return this;
 	}
@@ -89,8 +106,9 @@ export class Embed {
 	 * @param text The text of the footer.
 	 * @param iconUrl The icon URL of the footer.
 	 * @returns The embed builder.
+	 * @example embed.setFooter('Footer Text', 'https://example.com');
 	 */
-	public setFooter(text?: string, iconUrl?: string) {
+	setFooter(text?: string, iconUrl?: string) {
 		this.footer = text ? { text, icon_url: iconUrl } : undefined;
 		return this;
 	}
@@ -99,8 +117,15 @@ export class Embed {
 	 * Set the timestamp of the embed.
 	 * @param timestamp The timestamp of the embed.
 	 * @returns The embed builder.
+	 * @example
+	 * // Set the timestamp of the embed with an ISO 8601 date.
+	 * embed.setTimestamp('2022-01-01T00:00:00.000Z');
+	 * // Set the timestamp of the embed with a number of milliseconds since the epoch.
+	 * embed.setTimestamp(1640995200000);
+	 * // Set the timestamp of the embed with a Date object.
+	 * embed.setTimestamp(new Date('2022-01-01T00:00:00.000Z'));
 	 */
-	public setTimestamp(timestamp?: string | number | Date) {
+	setTimestamp(timestamp?: string | number | Date) {
 		this.timestamp = new Date(timestamp ?? Date.now());
 		return this;
 	}
@@ -109,8 +134,9 @@ export class Embed {
 	 * Set the thumbnail of the embed.
 	 * @param thumbnailUrl The thumbnail URL of the embed.
 	 * @returns The embed builder.
+	 * @example embed.setThumbnail('https://example.com');
 	 */
-	public setThumbnail(thumbnailUrl?: string) {
+	setThumbnail(thumbnailUrl?: string) {
 		this.thumbnail = { url: thumbnailUrl };
 		return this;
 	}
@@ -119,8 +145,9 @@ export class Embed {
 	 * Set the image of the embed.
 	 * @param imageUrl The image URL of the embed.
 	 * @returns The embed builder.
+	 * @example embed.setImage('https://example.com');
 	 */
-	public setImage(imageUrl?: string) {
+	setImage(imageUrl?: string) {
 		this.image = { url: imageUrl };
 		return this;
 	}
@@ -129,8 +156,13 @@ export class Embed {
 	 * Set the author of the embed.
 	 * @param author The author of the embed.
 	 * @returns The embed builder.
+	 * @example
+	 * // Set the author of the embed with a name.
+	 * embed.setAuthor('Author Name');
+	 * // Set the author of the embed with a name, icon, and URL.
+	 * embed.setAuthor({ name: 'Author Name', icon_url: 'https://example.com', url: 'https://example.com' });
 	 */
-	public setAuthor(author?: string | APIEmbedAuthor) {
+	setAuthor(author?: string | APIEmbedAuthor) {
 		this.author = typeof author === 'string' ? { name: author } : author;
 		return this;
 	}
@@ -141,8 +173,13 @@ export class Embed {
 	 * @param value The value of the field.
 	 * @param inline Whether the field is inline.
 	 * @returns The embed builder.
+	 * @example
+	 * // Add a field to the embed.
+	 * embed.addField('Field Name', 'Field Value');
+	 * // Add a inline field to the embed.
+	 * embed.addField('Field Name', 'Field Value', true);
 	 */
-	public addField(name: string, value: string, inline?: boolean) {
+	addField(name: string, value: string, inline?: boolean) {
 		this.fields.push({ name, value, inline });
 		return this;
 	}
@@ -151,8 +188,9 @@ export class Embed {
 	 * Set the fields of the embed.
 	 * @param fields The fields of the embed.
 	 * @returns The embed builder.
+	 * @example embed.setFields([{ name: 'Field Name', value: 'Field Value' }]);
 	 */
-	public setFields(fields: APIEmbedField[] = []) {
+	setFields(fields: APIEmbedField[] = []) {
 		this.fields = fields;
 		return this;
 	}

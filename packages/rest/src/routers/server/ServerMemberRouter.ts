@@ -1,23 +1,28 @@
 import { APIServerMember, APISocialLink, Routes } from 'guilded-api-typings';
 import { BaseRouter } from '../BaseRouter';
 
-/** The server member router for the Guilded REST API. */
+/**
+ * The server member router for the Guilded REST API.
+ * @example new ServerMemberRouter(rest);
+ */
 export class ServerMemberRouter extends BaseRouter {
 	/**
 	 * Fetch a server member from Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to fetch.
 	 * @returns The fetched server member.
+	 * @example serverMembers.fetch('abc', 'abc');
 	 */
-	public fetch(serverId: string, memberId: string): Promise<APIServerMember>;
+	fetch(serverId: string, memberId: string): Promise<APIServerMember>;
 	/**
 	 * Fetch server members from Guilded.
 	 * @param serverId The ID of the server the members belong to.
 	 * @returns The fetched server members.
+	 * @example serverMembers.fetch('abc');
 	 */
-	public fetch(serverId: string): Promise<APIServerMember[]>;
+	fetch(serverId: string): Promise<APIServerMember[]>;
 	/** @ignore */
-	public fetch(serverId: string, memberId?: string) {
+	fetch(serverId: string, memberId?: string) {
 		if (memberId) return this.fetchSingle(serverId, memberId);
 		return this.fetchMany(serverId);
 	}
@@ -44,8 +49,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param memberId The ID of the server member to edit.
 	 * @param nickname The nickname of the server member.
 	 * @returns The nickname that was set.
+	 * @example serverMembers.setNickname('abc', 'abc', 'nickname');
 	 */
-	public async setNickname(serverId: string, memberId: string, nickname: string) {
+	async setNickname(serverId: string, memberId: string, nickname: string) {
 		await this.rest.put(Routes.serverNickname(serverId, memberId), { nickname });
 		return nickname;
 	}
@@ -54,8 +60,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * Remove the nickname of a server member on Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to edit.
+	 * @example serverMembers.removeNickname('abc', 'abc');
 	 */
-	public removeNickname(serverId: string, memberId: string) {
+	removeNickname(serverId: string, memberId: string) {
 		return this.rest.delete<void>(Routes.serverNickname(serverId, memberId));
 	}
 
@@ -63,8 +70,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * Kick a server member on Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to kick.
+	 * @example serverMembers.kick('abc', 'abc');
 	 */
-	public kick(serverId: string, memberId: string) {
+	kick(serverId: string, memberId: string) {
 		return this.rest.delete<void>(Routes.serverMember(serverId, memberId));
 	}
 
@@ -74,8 +82,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param memberId The ID of the server member to award XP to.
 	 * @param amount The amount of XP to award to the server member.
 	 * @returns The total amount of XP the server member has.
+	 * @example serverMembers.awardXp('abc', 'abc', 100);
 	 */
-	public async awardXp(serverId: string, memberId: string, amount: number) {
+	async awardXp(serverId: string, memberId: string, amount: number) {
 		const { total } = await this.rest.post<{ total: number }, { amount: number }>(
 			Routes.serverMemberXp(serverId, memberId),
 			{ amount },
@@ -89,8 +98,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param memberId The ID of the server member to fetch the social link for.
 	 * @param type The type of social link to fetch.
 	 * @returns The fetched social link.
+	 * @example serverMembers.fetchSocialLink('abc', 'abc', 'youtube');
 	 */
-	public async fetchSocialLink(serverId: string, memberId: string, type: string) {
+	async fetchSocialLink(serverId: string, memberId: string, type: string) {
 		const { socialLink } = await this.rest.get<{ socialLink: APISocialLink }>(
 			Routes.socialLink(serverId, memberId, type),
 		);
@@ -102,8 +112,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to fetch the roles for.
 	 * @returns The IDs of roles the server member has.
+	 * @example serverMembers.fetchRoles('abc', 'abc');
 	 */
-	public async fetchRoles(serverId: string, memberId: string) {
+	async fetchRoles(serverId: string, memberId: string) {
 		const { roleIds } = await this.rest.get<{ roleIds: number[] }>(
 			Routes.serverMemberRoles(serverId, memberId),
 		);
@@ -115,8 +126,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to add the role to.
 	 * @param roleId The ID of the role to add to the server member.
+	 * @example serverMembers.addRole('abc', 'abc', 123);
 	 */
-	public addRole(serverId: string, memberId: string, roleId: number) {
+	addRole(serverId: string, memberId: string, roleId: number) {
 		return this.rest.put<void>(Routes.serverMemberRole(serverId, memberId, roleId));
 	}
 
@@ -125,8 +137,9 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to remove the role from.
 	 * @param roleId The ID of the role to remove from the server member.
+	 * @example serverMembers.removeRole('abc', 'abc', 123);
 	 */
-	public removeRole(serverId: string, memberId: string, roleId: number) {
+	removeRole(serverId: string, memberId: string, roleId: number) {
 		return this.rest.delete<void>(Routes.serverMemberRole(serverId, memberId, roleId));
 	}
 }

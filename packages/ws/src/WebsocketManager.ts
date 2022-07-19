@@ -10,54 +10,57 @@ import {
 
 const { version } = require('../package.json');
 
-/** The Websocket manager for the Guilded API. */
+/**
+ * The Websocket manager for the Guilded API.
+ * @example new WebsocketManager({ version: 1, token: 'token' });
+ */
 export class WebsocketManager extends EventEmitter {
 	/** The auth token for the websocket. */
-	public token?: string;
+	token?: string;
 	/** The version of the Websocket API. */
-	public readonly version: number;
+	readonly version: number;
 	/** The websocket. */
-	public socket?: Websocket;
+	socket?: Websocket;
 	/** The date the websocket is ready. */
-	public readyAt?: Date;
+	readyAt?: Date;
 	/** The ping of the websocket connection. */
-	public ping?: number;
+	ping?: number;
 	/** The date the websocket was pinged. */
-	public pingedAt?: Date;
+	pingedAt?: Date;
 	/** The anount of times the websocket has been reconnected. */
-	public reconnects = 0;
+	reconnects = 0;
 	/** The last message ID. */
-	public lastMessageId?: string;
+	lastMessageId?: string;
 
 	/** @param options The options for the Websocket manager. */
-	public constructor(public readonly options: WebsocketOptions) {
+	constructor(public readonly options: WebsocketOptions) {
 		super();
 		this.token = options.token;
 		this.version = options.version;
 	}
 
 	/** Whether the websocket is ready. */
-	public get isReady() {
-		return !!this.readyAt ?? false;
+	get isReady() {
+		return !!this.readyAt;
 	}
 
 	/** The timestamp of when the websocket is ready. */
-	public get readyTimestamp() {
+	get readyTimestamp() {
 		return this.readyAt?.getTime();
 	}
 
 	/** The timestamp the websocket was pinged. */
-	public get pingedTimestamp() {
+	get pingedTimestamp() {
 		return this.pingedAt?.getTime();
 	}
 
 	/** How long the websocket has been connected. */
-	public get uptime() {
+	get uptime() {
 		return this.isReady ? Date.now() - this.readyTimestamp! : undefined;
 	}
 
 	/** The URL of the Websocket. */
-	public get url(): `wss://api.guilded.gg/v${number}/websocket` {
+	get url(): `wss://api.guilded.gg/v${number}/websocket` {
 		return `wss://api.guilded.gg/v${this.version}/websocket`;
 	}
 
@@ -65,8 +68,9 @@ export class WebsocketManager extends EventEmitter {
 	 * Connect to the Websocket API.
 	 * @param token The auth token.
 	 * @returns The Websocket manager.
+	 * @example ws.connect('token');
 	 */
-	public connect(token: string = this.token!) {
+	connect(token: string = this.token!) {
 		this.token = token;
 		this.socket = new Websocket(this.url, {
 			headers: {
@@ -89,8 +93,9 @@ export class WebsocketManager extends EventEmitter {
 	/**
 	 * Disconnect from the Websocket API.
 	 * @returns The websocket manager.
+	 * @example ws.disconnect();
 	 */
-	public disconnect() {
+	disconnect() {
 		if (!this.socket || !this.socket.OPEN) throw new Error('Websocket is not connected.');
 		this.socket.terminate();
 		return this;

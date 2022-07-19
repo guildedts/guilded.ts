@@ -8,43 +8,46 @@ import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { CalendarChannel } from './channel/CalendarChannel';
 
-/** Represents a calendar event on Guilded. */
+/**
+ * Represents a calendar event on Guilded.
+ * @example new CalendarEvent(channel, rawEvent);
+ */
 export class CalendarEvent extends Base<number> {
 	/** The ID of the server the calendar event belongs to. */
-	public readonly serverId: string;
+	readonly serverId: string;
 	/** The ID of the channel the calendar event belongs to. */
-	public readonly channelId: string;
+	readonly channelId: string;
 	/** The name of the calendar event. */
-	public readonly name: string;
+	readonly name: string;
 	/** The description of the calendar event. */
-	public readonly description?: string;
+	readonly description?: string;
 	/** The location of the calendar event. */
-	public readonly location?: string;
+	readonly location?: string;
 	/** The url of the calendar event. */
-	public readonly url?: string;
+	readonly url?: string;
 	/** The color of the calendar event. */
-	public readonly color?: number;
+	readonly color?: number;
 	/** The date the calendar event starts. */
-	public readonly startsAt: Date;
+	readonly startsAt: Date;
 	/** The duration of the calendar event. */
-	public readonly duration?: number;
+	readonly duration?: number;
 	/** Whether the calendar event is private. */
-	public readonly isPrivate?: boolean;
+	readonly isPrivate?: boolean;
 	/** The mentions of the calendar event. */
-	public readonly mentions?: APIMentions;
+	readonly mentions?: APIMentions;
 	/** The date the calendar event was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The ID of the user that created the calendar event. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The cancellation of the calendar event. */
-	public readonly cancellation?: APICalendarEventCancellation;
+	readonly cancellation?: APICalendarEventCancellation;
 
 	/**
 	 * @param channel The calendar channel the event belongs to.
 	 * @param raw The raw data of the calendar event.
 	 * @param cache Whether to cache the calendar event.
 	 */
-	public constructor(
+	constructor(
 		public readonly channel: CalendarChannel,
 		public readonly raw: APICalendarEvent,
 		cache = channel.client.options.cacheCalendarEvents ?? true,
@@ -68,38 +71,38 @@ export class CalendarEvent extends Base<number> {
 	}
 
 	/** Whether the calendar event is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.channel.events.cache.has(this.id);
 	}
 
 	/** The server the calendar event belongs to. */
-	public get server() {
+	get server() {
 		return this.channel.server;
 	}
 
 	/** The time until the calendar event starts. */
-	public get startsIn() {
+	get startsIn() {
 		const startsIn = this.startsAt.getTime() - Date.now();
 		return startsIn > 0 ? startsIn : 0;
 	}
 
 	/** The date the calendar event ends. */
-	public get endsAt() {
+	get endsAt() {
 		return new Date(this.startsAt.getTime() + (this.duration ?? 0) * 1000);
 	}
 
 	/** The timestamp the calendar event was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** The server member that created the calendar event. */
-	public get author() {
+	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The ID of the user that created the calendar event. */
-	public get authorId() {
+	get authorId() {
 		return this.createdBy;
 	}
 
@@ -107,8 +110,9 @@ export class CalendarEvent extends Base<number> {
 	 * Fetch the calendar event.
 	 * @param options The options to fetch the calendar event with.
 	 * @returns The fetched calendar event.
+	 * @example event.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.channel.events.fetch(this, options);
 	}
 
@@ -116,8 +120,9 @@ export class CalendarEvent extends Base<number> {
 	 * Fetch the server the calendar event belongs to.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example event.fetchServer();
 	 */
-	public fetchServer(options?: FetchOptions) {
+	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
@@ -125,8 +130,9 @@ export class CalendarEvent extends Base<number> {
 	 * Fetch the server member that created the calendar event.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example event.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return server.members.fetch(this.createdBy, options);
 	}
@@ -135,16 +141,18 @@ export class CalendarEvent extends Base<number> {
 	 * Edit the calendar event.
 	 * @param payload The payload of the calendar event.
 	 * @returns The edited calendar event.
+	 * @example event.edit({ name: 'New name' });
 	 */
-	public edit(payload: APICalendarEventEditPayload) {
+	edit(payload: APICalendarEventEditPayload) {
 		return this.channel.events.edit(this, payload);
 	}
 
 	/**
 	 * Delete the calendar event.
 	 * @returns The deleted calendar event.
+	 * @example event.delete();
 	 */
-	public async delete() {
+	async delete() {
 		await this.channel.events.delete(this);
 		return this;
 	}

@@ -5,22 +5,25 @@ import { Base } from './Base';
 import { FetchOptions } from '../managers/BaseManager';
 import { Channel } from './channel/Channel';
 
-/** Represents a webhook on Guilded. */
+/**
+ * Represents a webhook on Guilded.
+ * @example new Webhook(channel, rawWebhook);
+ */
 export class Webhook extends Base {
 	/** The name of the webhook. */
-	public readonly name: string;
+	readonly name: string;
 	/** The ID of the server the webhook belongs to. */
-	public readonly serverId: string;
+	readonly serverId: string;
 	/** The ID of the channel the webhook belongs to. */
-	public readonly channelId: string;
+	readonly channelId: string;
 	/** The date the webhook was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The ID of the user that created the webhook. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The date the webhook was deleted. */
-	public readonly deletedAt?: Date;
+	readonly deletedAt?: Date;
 	/** The token of the webhook. */
-	public readonly token?: string;
+	readonly token?: string;
 
 	/**
 	 * @param channel The channel the webhook belongs to.
@@ -44,32 +47,32 @@ export class Webhook extends Base {
 	}
 
 	/** Whether the webhook is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.channel.webhooks.cache.has(this.id);
 	}
 
 	/** The server the webhook belongs to. */
-	public get server() {
+	get server() {
 		return this.channel.server;
 	}
 
 	/** The timestamp the webhook was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** The server member that created the webhook. */
-	public get author() {
+	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The ID of the user that created the webhook. */
-	public get authorId() {
+	get authorId() {
 		return this.createdBy;
 	}
 
 	/** The timestamp the webhook was deleted. */
-	public get deletedTimestamp() {
+	get deletedTimestamp() {
 		return this.deletedAt?.getTime();
 	}
 
@@ -77,8 +80,9 @@ export class Webhook extends Base {
 	 * Fetch the webhook.
 	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
+	 * @example webhook.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.channel.webhooks.fetch(this, options) as Promise<this>;
 	}
 
@@ -86,8 +90,9 @@ export class Webhook extends Base {
 	 * Fetch the server the webhook belongs to.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example webhook.fetchServer();
 	 */
-	public async fetchServer(options?: FetchOptions) {
+	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
@@ -95,24 +100,34 @@ export class Webhook extends Base {
 	 * Fetch the server member that created the webhook.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example webhook.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return server.members.fetch(this.createdBy, options);
 	}
 
 	/**
 	 * Send a message with the webhook.
-	 * @param content The content of the message.
-	 * @param embeds The embeds of the message.
+	 * @param payload The payload of the message.
+	 * @example webhook.send('Hello world!');
 	 */
-	public async send(content: string, embeds?: (APIEmbed | Embed)[]) {
+	async send(
+		payload:
+			| string
+			| (Embed | APIEmbed)[]
+			| { content?: string; embeds?: (Embed | APIEmbed)[] },
+	) {
 		await fetch(`https://media.guilded.gg/webhooks/${this.id}/${this.token}`, {
 			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ content, embeds }),
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(
+				typeof payload === 'string'
+					? { content: payload }
+					: Array.isArray(payload)
+					? { embeds: payload }
+					: payload,
+			),
 		});
 	}
 
@@ -121,16 +136,18 @@ export class Webhook extends Base {
 	 * @param name The name of the webhook.
 	 * @param channelId The ID of the channel the webhook belongs to.
 	 * @returns The edited webhook.
+	 * @example webhook.edit('New name');
 	 */
-	public edit(name: string, channelId?: string) {
+	edit(name: string, channelId?: string) {
 		return this.channel.webhooks.edit(this, name, channelId);
 	}
 
 	/**
 	 * Delete the webhook.
 	 * @returns The deleted webhook.
+	 * @example webhook.delete();
 	 */
-	public async delete() {
+	async delete() {
 		await this.channel.webhooks.delete(this);
 		return this;
 	}

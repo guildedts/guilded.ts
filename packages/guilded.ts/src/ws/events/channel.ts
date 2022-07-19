@@ -7,7 +7,7 @@ import { createChannel } from '../../util';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['TeamChannelCreated']) {
+export function created(client: Client, data: WSEvents['TeamChannelCreated']) {
 	const channel = createChannel(client, data.channel);
 	client.emit('channelCreate', channel);
 }
@@ -17,7 +17,7 @@ export async function created(client: Client, data: WSEvents['TeamChannelCreated
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['TeamChannelUpdated']) {
+export function updated(client: Client, data: WSEvents['TeamChannelUpdated']) {
 	const channel = createChannel(client, data.channel);
 	client.emit('channelEdit', channel);
 }
@@ -27,7 +27,7 @@ export async function updated(client: Client, data: WSEvents['TeamChannelUpdated
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function deleted(client: Client, data: WSEvents['TeamChannelDeleted']) {
+export function deleted(client: Client, data: WSEvents['TeamChannelDeleted']) {
 	const channel = createChannel(client, data.channel);
 	if (client.options.disposeCachedChannels ?? true) client.channels.cache.delete(channel.id);
 	client.emit('channelDelete', channel);

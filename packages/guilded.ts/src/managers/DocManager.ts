@@ -4,10 +4,13 @@ import { Doc } from '../structures/Doc';
 import { DocChannel } from '../structures/channel/DocChannel';
 import Collection from '@discordjs/collection';
 
-/** The manager of docs that belong to a doc channel. */
+/**
+ * The manager of docs that belong to a doc channel.
+ * @example new DocManager(channel);
+ */
 export class DocManager extends BaseManager<number, Doc> {
 	/** @param channel The doc channel the docs belong to. */
-	public constructor(public readonly channel: DocChannel) {
+	constructor(public readonly channel: DocChannel) {
 		super(channel.client, channel.client.options.maxDocCache);
 	}
 
@@ -16,16 +19,18 @@ export class DocManager extends BaseManager<number, Doc> {
 	 * @param doc The doc to fetch.
 	 * @param options The options to fetch the doc with.
 	 * @returns The fetched doc.
+	 * @example docs.fetch(doc);
 	 */
-	public fetch(doc: number | Doc, options?: FetchOptions): Promise<Doc>;
+	fetch(doc: number | Doc, options?: FetchOptions): Promise<Doc>;
 	/**
 	 * Fetch docs from the channel.
 	 * @param options The options to fetch the docs with.
 	 * @returns The fetched docs.
+	 * @example docs.fetch();
 	 */
-	public fetch(options?: FetchDocsOptions): Promise<Collection<number, Doc>>;
+	fetch(options?: FetchDocsOptions): Promise<Collection<number, Doc>>;
 	/** @ignore */
-	public fetch(arg1?: number | Doc | FetchDocsOptions, arg2?: FetchOptions) {
+	fetch(arg1?: number | Doc | FetchDocsOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'number' || arg1 instanceof Doc) return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
@@ -55,8 +60,9 @@ export class DocManager extends BaseManager<number, Doc> {
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The created doc.
+	 * @example docs.create('Title', 'Content');
 	 */
-	public async create(title: string, content: string) {
+	async create(title: string, content: string) {
 		const raw = await this.client.api.docs.create(this.channel.id, title, content);
 		return new Doc(this.channel, raw);
 	}
@@ -67,8 +73,9 @@ export class DocManager extends BaseManager<number, Doc> {
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The edited doc.
+	 * @example docs.edit(doc, 'Title', 'Content');
 	 */
-	public async edit(doc: number | Doc, title: string, content: string) {
+	async edit(doc: number | Doc, title: string, content: string) {
 		doc = doc instanceof Doc ? doc.id : doc;
 		const raw = await this.client.api.docs.edit(this.channel.id, doc, title, content);
 		return new Doc(this.channel, raw);
@@ -77,8 +84,9 @@ export class DocManager extends BaseManager<number, Doc> {
 	/**
 	 * Delete a doc from channel.
 	 * @param doc The doc to delete.
+	 * @example docs.delete(doc);
 	 */
-	public delete(doc: number | Doc) {
+	delete(doc: number | Doc) {
 		doc = doc instanceof Doc ? doc.id : doc;
 		return this.client.api.docs.delete(this.channel.id, doc);
 	}

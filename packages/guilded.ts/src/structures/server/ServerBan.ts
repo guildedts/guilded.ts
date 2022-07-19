@@ -4,23 +4,26 @@ import { Server } from './Server';
 import { User } from '../User';
 import { FetchOptions } from '../../managers/BaseManager';
 
-/** Represents a server ban on Guilded. */
+/**
+ * Represents a server ban on Guilded.
+ * @example new ServerBan(server, rawBan);
+ */
 export class ServerBan extends Base {
 	/** The user the ban belongs to. */
-	public readonly user: User;
+	readonly user: User;
 	/** The reason of the ban. */
-	public readonly reason?: string;
+	readonly reason?: string;
 	/** The ID of the user that created the ban. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The date the ban was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 
 	/**
 	 * @param server The server the ban belongs to.
 	 * @param raw The raw data of the server ban.
 	 * @param cache Whether to cache the server ban.
 	 */
-	public constructor(
+	constructor(
 		public readonly server: Server,
 		public readonly raw: APIServerBan,
 		cache = server.client.options.cacheServerBans ?? true,
@@ -34,17 +37,17 @@ export class ServerBan extends Base {
 	}
 
 	/** Whether the server ban is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.server.bans.cache.has(this.id);
 	}
 
 	/** The user that created the server ban. */
-	public get author() {
+	get author() {
 		return this.client.users.cache.get(this.createdBy);
 	}
 
 	/** The timestamp the ban was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
@@ -52,8 +55,9 @@ export class ServerBan extends Base {
 	 * Fetch the server ban.
 	 * @param options The options to fetch the server ban with.
 	 * @returns The fetched server ban.
+	 * @example ban.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.server.bans.fetch(this, options) as Promise<this>;
 	}
 
@@ -61,13 +65,17 @@ export class ServerBan extends Base {
 	 * Fetch the server member that created the ban.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example ban.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	fetchAuthor(options?: FetchOptions) {
 		return this.server.members.fetch(this.createdBy, options);
 	}
 
-	/** Remove the server ban from the server. */
-	public remove() {
+	/**
+	 * Remove the server ban from the server.
+	 * @example ban.remove();
+	 */
+	remove() {
 		return this.server.bans.remove(this);
 	}
 }

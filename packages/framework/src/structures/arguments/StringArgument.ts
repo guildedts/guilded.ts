@@ -1,18 +1,30 @@
 import { inlineCode } from 'guilded.ts';
 import { Argument } from './Argument';
 
-/** Represents a string command argument. */
+/**
+ * Represents a string command argument.
+ * @example
+ * class MyArgument extends StringArgument {
+ *     name = 'my-argument';
+ * }
+ */
 export abstract class StringArgument extends Argument {
 	/** The default value of the argument. */
-	public default?: string;
+	default?: string;
 	/** The choices of the argument. */
-	public choices: string[] = [];
+	choices: string[] = [];
 	/** The max size of the argument. */
-	public max?: number;
+	max?: number;
 	/** The min size of the argument. */
-	public min?: number;
+	min?: number;
 
-	public async validate(value: string): Promise<string> {
+	/**
+	 * Validates the string argument.
+	 * @param value The value of the argument.
+	 * @returns The validated value, or error.
+	 * @example stringArgument.validate('hello'); // 'hello'
+	 */
+	async validate(value: string): Promise<string> {
 		value = (await super.validate(value)) as string;
 		if (this.choices.length > 0 && !this.choices.includes(value))
 			throw new Error(

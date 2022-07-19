@@ -3,31 +3,34 @@ import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { ForumChannel } from './channel/ForumChannel';
 
-/** Represents a topic on Guilded. */
+/**
+ * Represents a topic on Guilded.
+ * @example new Topic(channel, rawTopic);
+ */
 export class Topic extends Base<number> {
 	/** The ID of the server the topic belongs to. */
-	public readonly serverId: string;
+	readonly serverId: string;
 	/** The ID of the channel the topic belongs to. */
-	public readonly channelId: string;
+	readonly channelId: string;
 	/** The title of the topic. */
-	public readonly title?: string;
+	readonly title?: string;
 	/** The content of the topic. */
-	public readonly content?: string;
+	readonly content?: string;
 	/** The date the topic was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The ID of the user that created the topic. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The ID of the webhook that created the topic. */
-	public readonly createdByWebhookId?: string;
+	readonly createdByWebhookId?: string;
 	/** The date the topic was edited. */
-	public readonly editedAt?: Date;
+	readonly editedAt?: Date;
 
 	/**
 	 * @param channel The forum channel the topic belongs to.
 	 * @param raw The raw data of the topic.
 	 * @param cache Whether to cache the topic.
 	 */
-	public constructor(
+	constructor(
 		public readonly channel: ForumChannel,
 		public readonly raw: APITopic,
 		cache = channel.client.options.cacheTopics ?? true,
@@ -45,39 +48,39 @@ export class Topic extends Base<number> {
 	}
 
 	/** Whether the topic is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.channel.topics.cache.has(this.id);
 	}
 
 	/** The server the topic belongs to. */
-	public get server() {
+	get server() {
 		return this.channel.server;
 	}
 
 	/** The timestamp the topic was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** The server member that created the topic. */
-	public get author() {
+	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The webhook that created the topic. */
-	public get webhook() {
+	get webhook() {
 		return this.createdByWebhookId
 			? this.channel.webhooks.cache.get(this.createdByWebhookId)
 			: undefined;
 	}
 
 	/** The ID of the user that created the topic. */
-	public get authorId() {
+	get authorId() {
 		return this.createdByWebhookId || this.createdBy;
 	}
 
 	/** The timestamp the topic was edited. */
-	public get editedTimestamp() {
+	get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}
 
@@ -85,8 +88,9 @@ export class Topic extends Base<number> {
 	 * Fetch the server the topic belongs to.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example topic.fetchServer();
 	 */
-	public fetchServer(options?: FetchOptions) {
+	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
@@ -94,8 +98,9 @@ export class Topic extends Base<number> {
 	 * Fetch the server member that created the topic.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example topic.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return server.members.fetch(this.createdBy, options);
 	}
@@ -104,8 +109,9 @@ export class Topic extends Base<number> {
 	 * Fetch the webhook that created the topic.
 	 * @param options The options to fetch the webhook with.
 	 * @returns The fetched webhook.
+	 * @example topic.fetchWebhook();
 	 */
-	public fetchWebhook(options?: FetchOptions) {
+	fetchWebhook(options?: FetchOptions) {
 		return this.createdByWebhookId
 			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
 			: undefined;

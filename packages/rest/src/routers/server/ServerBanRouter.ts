@@ -1,23 +1,28 @@
 import { APIServerBan, APIServerBanPayload, Routes } from 'guilded-api-typings';
 import { BaseRouter } from '../BaseRouter';
 
-/** The server ban router for the Guilded REST API. */
+/**
+ * The server ban router for the Guilded REST API.
+ * @example new ServerBanRouter(rest);
+ */
 export class ServerBanRouter extends BaseRouter {
 	/**
 	 * Fetch a server ban from Guilded.
 	 * @param serverId The ID of the server the ban belong to.
 	 * @param banId The ID of the server ban to fetch.
 	 * @returns The fetched server ban.
+	 * @example serverBans.fetch('abc', 'abc');
 	 */
-	public fetch(serverId: string, banId: string): Promise<APIServerBan>;
+	fetch(serverId: string, banId: string): Promise<APIServerBan>;
 	/**
 	 * Fetch server bans from Guilded.
 	 * @param serverId The ID of the server the bans belong to.
 	 * @returns The fetched server bans.
+	 * @example serverBans.fetch('abc');
 	 */
-	public fetch(serverId: string): Promise<APIServerBan[]>;
+	fetch(serverId: string): Promise<APIServerBan[]>;
 	/** @ignore */
-	public fetch(serverId: string, banId?: string) {
+	fetch(serverId: string, banId?: string) {
 		if (banId) return this.fetchSingle(serverId, banId);
 		return this.fetchMany(serverId);
 	}
@@ -44,8 +49,9 @@ export class ServerBanRouter extends BaseRouter {
 	 * @param memberId The ID of the server member to ban.
 	 * @param reason The reason of the server ban.
 	 * @returns The created server ban.
+	 * @example serverBans.create('abc', 'abc', 'Spamming');
 	 */
-	public async create(serverId: string, memberId: string, reason?: string) {
+	async create(serverId: string, memberId: string, reason?: string) {
 		const { serverMemberBan } = await this.rest.post<
 			{ serverMemberBan: APIServerBan },
 			APIServerBanPayload
@@ -57,8 +63,9 @@ export class ServerBanRouter extends BaseRouter {
 	 * Delete a server ban from Guilded.
 	 * @param serverId The ID of the server the member belongs to.
 	 * @param memberId The ID of the server member to unban.
+	 * @example serverBans.delete('abc', 'abc');
 	 */
-	public delete(serverId: string, memberId: string) {
+	delete(serverId: string, memberId: string) {
 		return this.rest.delete<void>(Routes.serverBan(serverId, memberId));
 	}
 }

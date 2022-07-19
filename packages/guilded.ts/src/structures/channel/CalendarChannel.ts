@@ -3,10 +3,13 @@ import { CalendarEventManager } from '../../managers/CalendarEventManager';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 
-/** Represents a calendar channel on Guilded. */
+/**
+ * Represents a calendar channel on Guilded.
+ * @example new CalendarChannel(client, rawChannel);
+ */
 export class CalendarChannel extends Channel {
 	/** The manager of events that belong to the calendar channel. */
-	public readonly events: CalendarEventManager;
+	readonly events: CalendarEventManager;
 
 	/**
 	 * @param client The client the calendar channel belongs to.
@@ -22,8 +25,9 @@ export class CalendarChannel extends Channel {
 	 * Creates a event in the calendar channel.
 	 * @param payload The payload of the calendar event.
 	 * @returns The created calendar event.
+	 * @example channel.createEvent({ name: 'Event!' });
 	 */
-	public createEvent(payload: APICalendarEventPayload) {
+	createEvent(payload: APICalendarEventPayload) {
 		return this.events.create(payload);
 	}
 }

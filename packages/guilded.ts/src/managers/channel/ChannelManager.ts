@@ -4,10 +4,13 @@ import { Client } from '../../structures/Client';
 import { Channel } from '../../structures/channel/Channel';
 import { createChannel } from '../../util';
 
-/** The manager of channels that belong to the client. */
+/**
+ * The manager of channels that belong to the client.
+ * @example new ChannelManager(client);
+ */
 export class ChannelManager extends BaseManager<string, Channel> {
 	/** @param client The client the channels belong to. */
-	public constructor(client: Client) {
+	constructor(client: Client) {
 		super(client, client.options.maxChannelCache);
 	}
 
@@ -16,8 +19,9 @@ export class ChannelManager extends BaseManager<string, Channel> {
 	 * @param channel The channel to fetch.
 	 * @param options The options to fetch the channel with.
 	 * @returns The fetched channel.
+	 * @example channels.fetch(channel);
 	 */
-	public async fetch(channel: string | Channel, options?: FetchOptions) {
+	async fetch(channel: string | Channel, options?: FetchOptions) {
 		channel = channel instanceof Channel ? channel.id : channel;
 		const cached = this.cache.get(channel);
 		if (cached && !options?.force) return cached;
@@ -29,8 +33,9 @@ export class ChannelManager extends BaseManager<string, Channel> {
 	 * Create a channel on Guilded.
 	 * @param payload The payload of the channel.
 	 * @returns The created channel.
+	 * @example channels.create({ name: 'Chat', type: 'chat' });
 	 */
-	public async create(payload: APIChannelPayload) {
+	async create(payload: APIChannelPayload) {
 		const raw = await this.client.api.channels.create(payload);
 		return createChannel(this.client, raw);
 	}
@@ -40,8 +45,9 @@ export class ChannelManager extends BaseManager<string, Channel> {
 	 * @param channel The channel to edit.
 	 * @param payload The payload of the channel.
 	 * @returns The edited channel.
+	 * @example channels.edit(channel, { name: 'Chat' });
 	 */
-	public async edit(channel: string | Channel, payload: APIChannelEditPayload) {
+	async edit(channel: string | Channel, payload: APIChannelEditPayload) {
 		channel = channel instanceof Channel ? channel.id : channel;
 		const raw = await this.client.api.channels.edit(channel, payload);
 		return createChannel(this.client, raw);
@@ -50,8 +56,9 @@ export class ChannelManager extends BaseManager<string, Channel> {
 	/**
 	 * Delete a channel from Guilded.
 	 * @param channel The channel to delete.
+	 * @example channels.delete(channel);
 	 */
-	public delete(channel: string | Channel) {
+	delete(channel: string | Channel) {
 		channel = channel instanceof Channel ? channel.id : channel;
 		return this.client.api.channels.delete(channel);
 	}

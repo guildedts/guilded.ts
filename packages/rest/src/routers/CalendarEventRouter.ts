@@ -7,30 +7,29 @@ import {
 } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
-/** The calendar event router for the Guilded REST API. */
+/**
+ * The calendar event router for the Guilded REST API.
+ * @example new CalendarEventRouter(rest);
+ */
 export class CalendarEventRouter extends BaseRouter {
 	/**
 	 * Fetch a calendar event from Guilded.
 	 * @param channelId The ID of the channel the calendar event belongs to.
 	 * @param calendarEventId The ID of the calendar event to fetch.
 	 * @returns The fetched calendar event.
+	 * @example calendarEvents.fetch('abc', 123);
 	 */
-	public fetch(channelId: string, calendarEventId: number): Promise<APICalendarEvent>;
+	fetch(channelId: string, calendarEventId: number): Promise<APICalendarEvent>;
 	/**
 	 * Fetch calendar events from Guilded.
 	 * @param channelId The ID of the channel the calendar events belong to.
 	 * @param options The options to fetch calendar events with.
 	 * @returns The fetched calendar events.
+	 * @example calendarEvents.fetch('abc');
 	 */
-	public fetch(
-		channelId: string,
-		options?: APIFetchCalendarEventsQuery,
-	): Promise<APICalendarEvent[]>;
+	fetch(channelId: string, options?: APIFetchCalendarEventsQuery): Promise<APICalendarEvent[]>;
 	/** @ignore */
-	public fetch(
-		channelId: string,
-		calendarEventIdOrOptions?: number | APIFetchCalendarEventsQuery,
-	) {
+	fetch(channelId: string, calendarEventIdOrOptions?: number | APIFetchCalendarEventsQuery) {
 		if (typeof calendarEventIdOrOptions === 'number')
 			return this.fetchSingle(channelId, calendarEventIdOrOptions);
 		return this.fetchMany(channelId, calendarEventIdOrOptions);
@@ -58,8 +57,9 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @param channelId The ID of the channel the calendar event belongs to.
 	 * @param payload The payload of the calendar event.
 	 * @returns The created calendar event.
+	 * @example calendarEvents.create('abc', { name: 'Event!' });
 	 */
-	public async create(channelId: string, payload: APICalendarEventPayload) {
+	async create(channelId: string, payload: APICalendarEventPayload) {
 		const { calendarEvent } = await this.rest.post<
 			{ calendarEvent: APICalendarEvent },
 			APICalendarEventPayload
@@ -73,12 +73,9 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @param calendarEventId The ID of the calendar event to edit.
 	 * @param payload The payload of the calendar event.
 	 * @returns The edited calendar event.
+	 * @example calendarEvents.edit('abc', 123, { name: 'Event!' });
 	 */
-	public async edit(
-		channelId: string,
-		calendarEventId: number,
-		payload: APICalendarEventEditPayload,
-	) {
+	async edit(channelId: string, calendarEventId: number, payload: APICalendarEventEditPayload) {
 		const { calendarEvent } = await this.rest.patch<
 			{ calendarEvent: APICalendarEvent },
 			APICalendarEventEditPayload
@@ -90,8 +87,9 @@ export class CalendarEventRouter extends BaseRouter {
 	 * Delete a calendar event from Guilded.
 	 * @param channelId The ID of the channel the calendar event belongs to.
 	 * @param calendarEventId The ID of the calendar event to delete.
+	 * @example calendarEvents.delete('abc', 123);
 	 */
-	public delete(channelId: string, calendarEventId: number) {
+	delete(channelId: string, calendarEventId: number) {
 		return this.rest.delete<void>(Routes.calendarEvent(channelId, calendarEventId));
 	}
 }

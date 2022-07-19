@@ -3,33 +3,36 @@ import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { DocChannel } from './channel/DocChannel';
 
-/** Represents a doc on Guilded. */
+/**
+ * Represents a doc on Guilded.
+ * @example new Doc(channel, rawDoc);
+ */
 export class Doc extends Base<number> {
 	/** The ID of the server the doc belongs to. */
-	public readonly serverId: string;
+	readonly serverId: string;
 	/** The ID of the channel the doc belongs to. */
-	public readonly channelId: string;
+	readonly channelId: string;
 	/** The title of the doc. */
-	public readonly title: string;
+	readonly title: string;
 	/** The content of the doc. */
-	public readonly content: string;
+	readonly content: string;
 	/** The mentions of the doc. */
-	public readonly mentions?: APIMentions;
+	readonly mentions?: APIMentions;
 	/** The date the doc was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 	/** The ID of the user that created the doc. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 	/** The date the doc was edited. */
-	public readonly editedAt?: Date;
+	readonly editedAt?: Date;
 	/** The ID of the user that edited the doc. */
-	public readonly editedBy?: string;
+	readonly editedBy?: string;
 
 	/**
 	 * @param channel The doc channel the doc belongs to.
 	 * @param raw The raw data of the doc.
 	 * @param cache Whether to cache the doc.
 	 */
-	public constructor(
+	constructor(
 		public readonly channel: DocChannel,
 		public readonly raw: APIDoc,
 		cache = channel.client.options.cacheDocs ?? true,
@@ -48,37 +51,37 @@ export class Doc extends Base<number> {
 	}
 
 	/** Whether the doc is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.channel.docs.cache.has(this.id);
 	}
 
 	/** The server the doc belongs to. */
-	public get server() {
+	get server() {
 		return this.channel.server;
 	}
 
 	/** The timestamp the doc was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
 	/** The server member that created the doc. */
-	public get author() {
+	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/** The ID of the user that created the doc. */
-	public get authorId() {
+	get authorId() {
 		return this.createdBy;
 	}
 
 	/** The timestamp the doc was edited. */
-	public get editedTimestamp() {
+	get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}
 
 	/** The server member that edited the doc. */
-	public get editor() {
+	get editor() {
 		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
 	}
 
@@ -86,8 +89,9 @@ export class Doc extends Base<number> {
 	 * Fetch the doc.
 	 * @param options The options to fetch the doc with.
 	 * @returns The fetched doc.
+	 * @example doc.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.channel.docs.fetch(this, options) as Promise<this>;
 	}
 
@@ -95,8 +99,9 @@ export class Doc extends Base<number> {
 	 * Fetch the server the doc belongs to.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example doc.fetchServer();
 	 */
-	public async fetchServer(options?: FetchOptions) {
+	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
@@ -104,8 +109,9 @@ export class Doc extends Base<number> {
 	 * Fetch the server member that created the doc.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example doc.fetchAuthor();
 	 */
-	public async fetchAuthor(options?: FetchOptions) {
+	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return server.members.fetch(this.createdBy, options);
 	}
@@ -114,8 +120,9 @@ export class Doc extends Base<number> {
 	 * Fetch the server member that edited the doc.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example doc.fetchEditor();
 	 */
-	public async fetchEditor(options?: FetchOptions) {
+	async fetchEditor(options?: FetchOptions) {
 		const server = await this.fetchServer();
 		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
 	}
@@ -125,16 +132,18 @@ export class Doc extends Base<number> {
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The edited doc.
+	 * @example doc.edit('New title', 'New content');
 	 */
-	public edit(title: string, content: string) {
+	edit(title: string, content: string) {
 		return this.channel.docs.edit(this, title, content) as Promise<this>;
 	}
 
 	/**
 	 * Delete the doc.
 	 * @returns The deleted doc.
+	 * @example doc.delete();
 	 */
-	public async delete() {
+	async delete() {
 		await this.channel.docs.delete(this);
 		return this;
 	}

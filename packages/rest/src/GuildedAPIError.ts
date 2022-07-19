@@ -1,4 +1,7 @@
-/** Represents an error that occurred while interacting with the Guilded API. */
+/**
+ * Represents an error that occurred while interacting with the Guilded API.
+ * @example new GuildedAPIError('ErrorCode', 'Message', 404, 'GET', '/channels/abc);
+ */
 export class GuildedAPIError extends Error {
 	/**
 	 * @param code The code of the error.

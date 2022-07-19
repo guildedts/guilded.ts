@@ -5,7 +5,10 @@ import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 import Collection from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
 
-/** A manager of roles that belong to a server. */
+/**
+ * A manager of roles that belong to a server.
+ * @example new ServerRoleManager(server);
+ */
 export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	/** @param server The server the roles belong to. */
 	constructor(public readonly server: Server) {
@@ -17,8 +20,9 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @param member The member the roles belong to.
 	 * @param options The options to fetch the roles with.
 	 * @returns The fetched roles that belong to the member.
+	 * @example roles.fetch(member);
 	 */
-	public async fetch(member: string | ServerMember, options?: FetchServerRolesOptions) {
+	async fetch(member: string | ServerMember, options?: FetchServerRolesOptions) {
 		member = member instanceof ServerMember ? member.id : member;
 		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, member);
 		const roles = new Collection<number, ServerRole>();
@@ -37,8 +41,9 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @param member The member the role belongs to.
 	 * @param role The role to add to the member.
 	 * @returns The role that was added to the member.
+	 * @example roles.assign(member, role);
 	 */
-	public async assign(member: string | ServerMember, role: number | ServerRole) {
+	async assign(member: string | ServerMember, role: number | ServerRole) {
 		member = member instanceof ServerMember ? member.id : member;
 		role = role instanceof ServerRole ? role.id : role;
 		await this.client.api.serverMembers.addRole(this.server.id, member, role);
@@ -50,8 +55,9 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @param member The member the role belongs to.
 	 * @param role The role to remove from the member.
 	 * @returns The role that was removed from the member.
+	 * @example roles.unassign(member, role);
 	 */
-	public async unassign(member: string | ServerMember, role: number | ServerRole) {
+	async unassign(member: string | ServerMember, role: number | ServerRole) {
 		member = member instanceof ServerMember ? member.id : member;
 		role = role instanceof ServerRole ? role.id : role;
 		await this.client.api.serverMembers.removeRole(this.server.id, member, role);
@@ -62,8 +68,9 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * Award XP to a role.
 	 * @param role The role to award XP to.
 	 * @param amount The amount of XP to award to the role.
+	 * @example roles.awardXp(role, 100);
 	 */
-	public awardXp(role: number | ServerRole, amount: number) {
+	awardXp(role: number | ServerRole, amount: number) {
 		role = role instanceof ServerRole ? role.id : role;
 		return this.client.api.serverRoles.awardXp(this.server.id, role, amount);
 	}

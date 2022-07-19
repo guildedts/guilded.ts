@@ -6,24 +6,27 @@ import EventEmitter from 'events';
 
 const { version } = require('../package.json');
 
-/** The REST manager for the Guilded API. */
+/**
+ * The REST manager for the Guilded API.
+ * @example new RESTManager({ version: 1, token: 'token' });
+ */
 export class RESTManager extends EventEmitter {
 	/** The auth token for the REST API. */
-	public token?: string;
+	token?: string;
 	/** The version of the REST API. */
-	public readonly version: number;
+	readonly version: number;
 	/** The router for the REST API. */
-	public readonly router = new Router(this);
+	readonly router = new Router(this);
 
 	/** @param options The options for the REST manager. */
-	public constructor(public readonly options: RESTOptions) {
+	constructor(public readonly options: RESTOptions) {
 		super();
 		this.token = options.token;
 		this.version = options.version;
 	}
 
 	/** The base URL for the REST API. */
-	public get baseURL(): `https://www.guilded.gg/api/v${number}/` {
+	get baseURL(): `https://www.guilded.gg/api/v${number}/` {
 		return `https://www.guilded.gg/api/v${this.version}/`;
 	}
 
@@ -31,8 +34,9 @@ export class RESTManager extends EventEmitter {
 	 * Set the auth token for the REST API.
 	 * @param token The auth token.
 	 * @returns The REST manager.
+	 * @example rest.setToken('token');
 	 */
-	public setToken(token?: string) {
+	setToken(token?: string) {
 		this.token = token;
 		return this;
 	}
@@ -44,8 +48,9 @@ export class RESTManager extends EventEmitter {
 	 * @param options The options for the request.
 	 * @param retries The number of retries.
 	 * @returns The response from the REST API.
+	 * @example rest.request('/channels/abc', 'GET');
 	 */
-	public async fetch<R = any, B = any, P extends Record<string, any> = Record<string, any>>(
+	async fetch<R = any, B = any, P extends Record<string, any> = Record<string, any>>(
 		path: string,
 		method: string,
 		options: FetchOptions<B, P> = {},
@@ -94,11 +99,9 @@ export class RESTManager extends EventEmitter {
 	 * @param path The path to the resource.
 	 * @param params The query parameters for the request.
 	 * @returns The response from the REST API.
+	 * @example rest.get('/channels/abc');
 	 */
-	public async get<R = any, P extends Record<string, any> = Record<string, any>>(
-		path: string,
-		params?: P,
-	) {
+	get<R = any, P extends Record<string, any> = Record<string, any>>(path: string, params?: P) {
 		return this.fetch<R, any, P>(path, 'GET', { params });
 	}
 
@@ -107,8 +110,9 @@ export class RESTManager extends EventEmitter {
 	 * @param path The path to the resource.
 	 * @param body The body for the request.
 	 * @returns The response from the REST API.
+	 * @example rest.post('/channels', { name: 'Chat', type: 'chat' });
 	 */
-	public async post<R = any, B = any>(path: string, body?: B) {
+	post<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, 'POST', { body });
 	}
 
@@ -117,8 +121,9 @@ export class RESTManager extends EventEmitter {
 	 * @param path The path to the resource.
 	 * @param body The body for the request.
 	 * @returns The response from the REST API.
+	 * @example rest.patch('/channels/abc', { name: 'Chat' });
 	 */
-	public async patch<R = any, B = any>(path: string, body?: B) {
+	patch<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, 'PATCH', { body });
 	}
 
@@ -127,8 +132,9 @@ export class RESTManager extends EventEmitter {
 	 * @param path The path to the resource.
 	 * @param body The body for the request.
 	 * @returns The response from the REST API.
+	 * @example rest.put('/channels/abc/messages/abc', { content: 'Hello world!' });
 	 */
-	public async put<R = any, B = any>(path: string, body?: B) {
+	put<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, 'PUT', { body });
 	}
 
@@ -136,8 +142,9 @@ export class RESTManager extends EventEmitter {
 	 * Make a DELETE request to the REST API.
 	 * @param path The path for the resource.
 	 * @returns The response from the REST API.
+	 * @example rest.delete('/channels/abc');
 	 */
-	public async delete<R>(path: string) {
+	delete<R>(path: string) {
 		return this.fetch<R>(path, 'DELETE');
 	}
 }

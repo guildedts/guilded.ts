@@ -1,24 +1,29 @@
 import { APIDoc, APIDocPayload, APIFetchDocsQuery, Routes } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
-/** The doc router for the Guilded REST API. */
+/**
+ * The doc router for the Guilded REST API.
+ * @example new DocRouter(rest);
+ */
 export class DocRouter extends BaseRouter {
 	/**
 	 * Fetch a doc from Guilded.
 	 * @param channelId The ID of the channel the doc belongs to.
 	 * @param docId The ID of the doc to fetch.
 	 * @returns The fetched doc.
+	 * @example docs.fetch('abc', 123);
 	 */
-	public fetch(channelId: string, docId: number): Promise<APIDoc>;
+	fetch(channelId: string, docId: number): Promise<APIDoc>;
 	/**
 	 * Fetch docs from Guilded.
 	 * @param channelId The ID of the channel the docs belong to.
 	 * @param options The options to fetch docs with.
 	 * @returns The fetched docs.
+	 * @example docs.fetchMany('abc');
 	 */
-	public fetch(channelId: string, options?: APIFetchDocsQuery): Promise<APIDoc[]>;
+	fetch(channelId: string, options?: APIFetchDocsQuery): Promise<APIDoc[]>;
 	/** @ignore */
-	public fetch(channelId: string, docIdOrOptions?: number | APIFetchDocsQuery) {
+	fetch(channelId: string, docIdOrOptions?: number | APIFetchDocsQuery) {
 		if (typeof docIdOrOptions === 'number') return this.fetchSingle(channelId, docIdOrOptions);
 		return this.fetchMany(channelId, docIdOrOptions);
 	}
@@ -44,8 +49,9 @@ export class DocRouter extends BaseRouter {
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The created doc.
+	 * @example docs.create('abc', 'My Doc', 'This is my doc.');
 	 */
-	public async create(channelId: string, title: string, content: string) {
+	async create(channelId: string, title: string, content: string) {
 		const { doc } = await this.rest.post<{ doc: APIDoc }, APIDocPayload>(
 			Routes.docs(channelId),
 			{ title, content },
@@ -60,8 +66,9 @@ export class DocRouter extends BaseRouter {
 	 * @param title The title of the doc.
 	 * @param content The content of the doc.
 	 * @returns The edited doc.
+	 * @example docs.edit('abc', 123, 'My Doc', 'This is my doc.');
 	 */
-	public async edit(channelId: string, docId: number, title: string, content: string) {
+	async edit(channelId: string, docId: number, title: string, content: string) {
 		const { doc } = await this.rest.put<{ doc: APIDoc }, APIDocPayload>(
 			Routes.doc(channelId, docId),
 			{ title, content },
@@ -73,8 +80,9 @@ export class DocRouter extends BaseRouter {
 	 * Delete a doc from Guilded.
 	 * @param channelId The ID of the channel the doc belongs to.
 	 * @param docId The ID of the doc to delete.
+	 * @example docs.delete('abc', 123);
 	 */
-	public delete(channelId: string, docId: number) {
+	delete(channelId: string, docId: number) {
 		return this.rest.delete<void>(Routes.doc(channelId, docId));
 	}
 }

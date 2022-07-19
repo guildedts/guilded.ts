@@ -1,10 +1,13 @@
 import { Client } from '../structures/Client';
 import { CacheCollection } from '../structures/CacheCollection';
 
-/** The manager of a Guilded data model. */
+/**
+ * The manager of a Guilded data model.
+ * @example new BaseManager(client);
+ */
 export class BaseManager<K = void, V = void> {
 	/** This cache of the manager. */
-	public readonly cache: CacheCollection<K, V>;
+	readonly cache: CacheCollection<K, V>;
 
 	/**
 	 * @param client The client the manager belongs to.
@@ -18,8 +21,9 @@ export class BaseManager<K = void, V = void> {
 	 * Set the maximum cache size of the manager.
 	 * @param maxSize The maximum size of the cache.
 	 * @returns The manager.
+	 * @example manager.setMaxCache(100);
 	 */
-	public setMaxCache(maxSize: number) {
+	setMaxCache(maxSize: number) {
 		this.cache.setMaxSize(maxSize);
 		return this;
 	}

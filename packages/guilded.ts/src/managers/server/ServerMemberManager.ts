@@ -3,10 +3,13 @@ import { Server } from '../../structures/server/Server';
 import { ServerMember } from '../../structures/server/ServerMember';
 import Collection from '@discordjs/collection';
 
-/** The manager of members that belong to a server. */
+/**
+ * The manager of members that belong to a server.
+ * @example new ServerMemberManager(server);
+ */
 export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	/** @param server The server the members belongs to. */
-	public constructor(public readonly server: Server) {
+	constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerMemberCache);
 	}
 
@@ -15,16 +18,18 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * @param member The member to fetch.
 	 * @param options The options to fetch the member with.
 	 * @returns The fetched member.
+	 * @example members.fetch(member);
 	 */
-	public fetch(member: string | ServerMember, options?: FetchOptions): Promise<ServerMember>;
+	fetch(member: string | ServerMember, options?: FetchOptions): Promise<ServerMember>;
 	/**
 	 * Fetch members from the server.
 	 * @param options The options to fetch members with.
 	 * @returns The fetched members.
+	 * @example members.fetch();
 	 */
-	public fetch(options?: FetchManyOptions): Promise<Collection<string, ServerMember>>;
+	fetch(options?: FetchManyOptions): Promise<Collection<string, ServerMember>>;
 	/** @ignore */
-	public async fetch(arg1?: string | ServerMember | FetchManyOptions, arg2?: FetchOptions) {
+	async fetch(arg1?: string | ServerMember | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof ServerMember)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -55,8 +60,9 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * @param member The member to fetch the social link from.
 	 * @param type The type of social link to fetch.
 	 * @returns The fetched social link.
+	 * @example members.fetchSocialLink(member, 'youtube');
 	 */
-	public fetchSocialLink(member: string | ServerMember, type: string) {
+	fetchSocialLink(member: string | ServerMember, type: string) {
 		member = member instanceof ServerMember ? member.id : member;
 		return this.client.api.serverMembers.fetchSocialLink(this.server.id, member, type);
 	}
@@ -66,8 +72,9 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * @param member The member to edit.
 	 * @param nickname The nickname of the member.
 	 * @returns The nickname of the member.
+	 * @example members.setNickname(member, 'new nickname');
 	 */
-	public setNickname(member: string | ServerMember, nickname: string) {
+	setNickname(member: string | ServerMember, nickname: string) {
 		member = member instanceof ServerMember ? member.id : member;
 		return this.client.api.serverMembers.setNickname(this.server.id, member, nickname);
 	}
@@ -75,8 +82,9 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	/**
 	 * Remove the nickname of a member in the server.
 	 * @param member The member to edit.
+	 * @example members.removeNickname(member);
 	 */
-	public removeNickname(member: string | ServerMember) {
+	removeNickname(member: string | ServerMember) {
 		member = member instanceof ServerMember ? member.id : member;
 		return this.client.api.serverMembers.removeNickname(this.server.id, member);
 	}
@@ -84,8 +92,9 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	/**
 	 * Kick a member from the server.
 	 * @param member The member to kick.
+	 * @example members.kick(member);
 	 */
-	public kick(member: string | ServerMember) {
+	kick(member: string | ServerMember) {
 		member = member instanceof ServerMember ? member.id : member;
 		return this.client.api.serverMembers.kick(this.server.id, member);
 	}
@@ -95,18 +104,20 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * @param member The member to ban.
 	 * @param reason The reason of the ban.
 	 * @returns The created ban.
+	 * @example members.ban(member);
 	 */
-	public ban(member: string | ServerMember, reason?: string) {
+	ban(member: string | ServerMember, reason?: string) {
 		return this.server.bans.create(member, reason);
 	}
 
 	/**
 	 * Unban a member from the server.
 	 * @param member The member to unban.
+	 * @example members.unban(member);
 	 */
-	public async unban(member: string | ServerMember) {
+	unban(member: string | ServerMember) {
 		member = member instanceof ServerMember ? member.id : member;
-		await this.server.bans.remove(member);
+		return this.server.bans.remove(member);
 	}
 
 	/**
@@ -114,8 +125,9 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * @param member The member to award XP to.
 	 * @param amount The amount of XP to award to the member.
 	 * @returns The total amount of XP the member has.
+	 * @example members.awardXp(member, 100);
 	 */
-	public awardXp(member: string | ServerMember, amount: number) {
+	awardXp(member: string | ServerMember, amount: number) {
 		member = member instanceof ServerMember ? member.id : member;
 		return this.client.api.serverMembers.awardXp(this.server.id, member, amount);
 	}

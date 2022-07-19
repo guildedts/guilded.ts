@@ -11,37 +11,40 @@ import { ServerBanManager } from '../../managers/server/ServerBanManager';
 import { ServerRoleManager } from '../../managers/server/ServerRoleManager';
 import { FetchOptions } from '../../managers/BaseManager';
 
-/** Represents a server on Guilded. */
+/**
+ * Represents a server on Guilded.
+ * @example new Server(client, rawServer);
+ */
 export class Server extends Base {
 	/** The ID of the user the server belongs to. */
-	public readonly ownerId: string;
+	readonly ownerId: string;
 	/** The type of the server. */
-	public readonly type?: APIServerTypeString;
+	readonly type?: APIServerTypeString;
 	/** The name of the server. */
-	public readonly name: string;
+	readonly name: string;
 	/** The vanity URL of the server. */
-	public readonly url?: string;
+	readonly url?: string;
 	/** The description of the server. */
-	public readonly about?: string;
+	readonly about?: string;
 	/** The avatar of the server. */
-	public readonly avatar?: string;
+	readonly avatar?: string;
 	/** The banner of the server. */
-	public readonly banner?: string;
+	readonly banner?: string;
 	/** The timezone of the server. */
-	public readonly timezone?: string;
+	readonly timezone?: string;
 	/** Whether the server is verified. */
-	public readonly isVerified?: boolean;
+	readonly isVerified?: boolean;
 	/** The ID of the server's default channel. */
-	public readonly defaultChannelId?: string;
+	readonly defaultChannelId?: string;
 	/** The date the server was created. */
-	public readonly createdAt: Date;
+	readonly createdAt: Date;
 
 	/** The manager of members that belong to the server. */
-	public readonly members: ServerMemberManager;
+	readonly members: ServerMemberManager;
 	/** The manager of bans that belong to the server. */
-	public readonly bans: ServerBanManager;
+	readonly bans: ServerBanManager;
 	/** The manager of roles that belong to the server. */
-	public readonly roles: ServerRoleManager;
+	readonly roles: ServerRoleManager;
 
 	/**
 	 * @param client The client the server belongs to.
@@ -72,57 +75,57 @@ export class Server extends Base {
 	}
 
 	/** Whether the server is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.client.servers.cache.has(this.id);
 	}
 
 	/** The server member the server belongs to. */
-	public get owner() {
+	get owner() {
 		return this.members.cache.get(this.ownerId);
 	}
 
 	/** Whether the server is a team server. */
-	public get isTeam() {
+	get isTeam() {
 		return this.type === APIServerType.Team;
 	}
 
 	/** Whether the server is a organization server. */
-	public get isOrganization() {
+	get isOrganization() {
 		return this.type === APIServerType.Organization;
 	}
 
 	/** Whether the server is a community server. */
-	public get isCommunity() {
+	get isCommunity() {
 		return this.type === APIServerType.Community;
 	}
 
 	/** Whether the server is a clan server. */
-	public get isClan() {
+	get isClan() {
 		return this.type === APIServerType.Clan;
 	}
 
 	/** Whether the server is a guild server. */
-	public get isGuild() {
+	get isGuild() {
 		return this.type === APIServerType.Guild;
 	}
 
 	/** Whether the server is a friends server. */
-	public get isFriends() {
+	get isFriends() {
 		return this.type === APIServerType.Friends;
 	}
 
 	/** Whether the server is a streaming server. */
-	public get isStreaming() {
+	get isStreaming() {
 		return this.type === APIServerType.Streaming;
 	}
 
 	/** Whether the server is a other type. */
-	public get isOther() {
+	get isOther() {
 		return this.type === APIServerType.Other;
 	}
 
 	/** The server's default channel. */
-	public get defaultChannel() {
+	get defaultChannel() {
 		return this.defaultChannelId
 			? this.client.channels.cache.get(this.defaultChannelId)
 			: undefined;
@@ -132,8 +135,9 @@ export class Server extends Base {
 	 * Fetch the server.
 	 * @param options The options to fetch the server with.
 	 * @returns The fetched server.
+	 * @example server.fetch();
 	 */
-	public fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.client.servers.fetch(this, options) as Promise<this>;
 	}
 
@@ -141,8 +145,9 @@ export class Server extends Base {
 	 * Fetch the server member the server belongs to.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example server.fetchOwner();
 	 */
-	public fetchOwner(options?: FetchOptions) {
+	fetchOwner(options?: FetchOptions) {
 		return this.members.fetch(this.ownerId, options);
 	}
 
@@ -150,8 +155,9 @@ export class Server extends Base {
 	 * Fetch the server's default channel.
 	 * @param options The options to fetch the channel with.
 	 * @returns The fetched channel.
+	 * @example server.fetchDefaultChannel();
 	 */
-	public fetchDefaultChannel(options?: FetchOptions) {
+	fetchDefaultChannel(options?: FetchOptions) {
 		return this.defaultChannelId
 			? this.client.channels.fetch(this.defaultChannelId, options)
 			: undefined;
@@ -161,8 +167,9 @@ export class Server extends Base {
 	 * Create a channel in the server.
 	 * @param payload The payload of the channel.
 	 * @returns The created channel.
+	 * @example server.createChannel({ name: 'Chat', type: 'chat' });
 	 */
-	public createChannel(payload: Omit<APIChannelPayload, 'serverId'>) {
+	createChannel(payload: Omit<APIChannelPayload, 'serverId'>) {
 		return this.client.channels.create({ serverId: this.id, ...payload });
 	}
 }

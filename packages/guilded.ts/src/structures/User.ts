@@ -8,25 +8,28 @@ import {
 import { Base } from './Base';
 import { Client } from './Client';
 
-/** Represents a user on Guilded. */
+/**
+ * Represents a user on Guilded.
+ * @example new User(client, rawUser);
+ */
 export class User extends Base {
 	/** The type of the user. */
-	public readonly type?: APIUserTypeString;
+	readonly type?: APIUserTypeString;
 	/** The name of the user. */
-	public readonly name: string;
+	readonly name: string;
 	/** The avatar of the user. */
-	public readonly avatar?: string;
+	readonly avatar?: string;
 	/** The banner of the user. */
-	public readonly banner?: string;
+	readonly banner?: string;
 	/** The date the user was created. */
-	public readonly createdAt?: Date;
+	readonly createdAt?: Date;
 
 	/**
 	 * @param client The client the user belongs to.
 	 * @param raw The raw data of the user.
 	 * @param cache Whether to cache the user.
 	 */
-	public constructor(
+	constructor(
 		client: Client,
 		public readonly raw: APIUser | APIUserSummary,
 		cache = client.options.cacheUsers ?? true,
@@ -41,39 +44,42 @@ export class User extends Base {
 	}
 
 	/** Whether the user is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.client.users.cache.has(this.id);
 	}
 
 	/** The timestamp the user was created. */
-	public get createdTimestamp() {
+	get createdTimestamp() {
 		return this.createdAt?.getTime();
 	}
 
 	/** Whether the user is a bot. */
-	public get isBot() {
+	get isBot() {
 		return this.type === APIUserType.Bot;
 	}
 
 	/** Whether the user is a human. */
-	public get isUser() {
+	get isUser() {
 		return this.type === APIUserType.User;
 	}
 }
 
-/** Represents a client user. */
+/**
+ * Represents a client user.
+ * @example new ClientUser(client, rawUser);
+ */
 export class ClientUser extends User {
 	/** The bot ID of the client user. */
-	public readonly botId: string;
+	readonly botId: string;
 	/** The ID of the user that created the client user. */
-	public readonly createdBy: string;
+	readonly createdBy: string;
 
 	/**
 	 * @param client The client the user belongs to.
 	 * @param raw The raw data of the client user.
 	 * @param cache Whether to cache the client user.
 	 */
-	public constructor(client: Client, public readonly raw: APIClientUser, cache?: boolean) {
+	constructor(client: Client, public readonly raw: APIClientUser, cache?: boolean) {
 		super(client, { type: APIUserType.Bot, ...raw }, cache);
 		this.botId = raw.botId;
 		this.createdBy = raw.createdBy;

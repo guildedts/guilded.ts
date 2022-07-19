@@ -1,7 +1,10 @@
 import { RESTManager } from '../RESTManager';
 
-/** The base router for a data model on the Guilded REST API. */
+/**
+ * The base router for a data model on the Guilded REST API.
+ * @example new BaseRouter(rest);
+ */
 export class BaseRouter {
 	/** @param rest The REST API manager the router belongs to. */
-	public constructor(public readonly rest: RESTManager) {}
+	constructor(public readonly rest: RESTManager) {}
 }

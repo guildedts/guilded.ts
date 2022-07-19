@@ -3,7 +3,10 @@ import { ServerMember } from '../../structures/server/ServerMember';
 import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 import { ServerRole } from '../../structures/server/ServerRole';
 
-/** The manager of roles that belong to a server member. */
+/**
+ * The manager of roles that belong to a server member.
+ * @example new ServerMemberRoleManager(member);
+ */
 export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRole> {
 	/** @param member The server member the roles belong to. */
 	constructor(public readonly member: ServerMember) {
@@ -14,8 +17,9 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 	 * Fetch roles that belong to the member.
 	 * @param options The options to fetch the roles with.
 	 * @returns The fetched roles that belong to the member.
+	 * @example roles.fetch();
 	 */
-	public fetch(options?: FetchServerMemberRolesOptions) {
+	fetch(options?: FetchServerMemberRolesOptions) {
 		return this.member.server.roles.fetch(this.member, {
 			cache: options?.cacheServerRoles,
 			cacheMemberRoles: options?.cache,
@@ -26,8 +30,9 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 	 * Assign a role to the member.
 	 * @param role The role to add to the member.
 	 * @returns The role that was added to the member.
+	 * @example roles.assign(role);
 	 */
-	public assign(role: number | ServerRole) {
+	assign(role: number | ServerRole) {
 		return this.member.server.roles.assign(this.member, role);
 	}
 
@@ -35,8 +40,9 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 	 * Unassign a role from the member.
 	 * @param role The role to remove from the member.
 	 * @returns The role that was removed from the member.
+	 * @example roles.unassign(role);
 	 */
-	public unassign(role: number | ServerRole) {
+	unassign(role: number | ServerRole) {
 		return this.member.server.roles.unassign(this.member, role);
 	}
 }

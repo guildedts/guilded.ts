@@ -1,7 +1,10 @@
 import { Base } from '../Base';
 import { Server } from './Server';
 
-/** Represents a server role on Guilded. */
+/**
+ * Represents a server role on Guilded.
+ * @example new ServerRole(server, rawRole);
+ */
 export class ServerRole extends Base<number> {
 	/**
 	 * @param server The server the role belongs to.
@@ -18,15 +21,16 @@ export class ServerRole extends Base<number> {
 	}
 
 	/** Whether the role is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.server.roles.cache.has(this.id);
 	}
 
 	/**
 	 * Award XP to the role.
 	 * @param amount The amount of XP to award to the role.
+	 * @example role.awardXp(100);
 	 */
-	public awardXp(amount: number) {
+	awardXp(amount: number) {
 		return this.server.roles.awardXp(this, amount);
 	}
 }

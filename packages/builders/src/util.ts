@@ -3,6 +3,14 @@
  * Inspired by Guilded.JS' {@link https://github.com/guildedjs/guilded.js/blob/main/packages/webhook-client/lib/util.ts#L8 color resolver}.
  * @param color The color to resolve.
  * @returns The resolved color.
+ * @example
+ * // Resolve the color with a hex color.
+ * resolveColor(0xFFFFFF);
+ * resolveColor('#FFFFFF');
+ * // Resolve the color with a preset color.
+ * resolveColor('WHITE');
+ * // Resolve the color with RGB values.
+ * resolveColor([255, 255, 255]);
  */
 export function resolveColor(color: ColorResolvable) {
 	if (color === 'RANDOM') color = Math.floor(Math.random() * (0xffffff + 1));

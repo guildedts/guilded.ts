@@ -19,29 +19,35 @@ import { CalendarEvent } from './CalendarEvent';
 import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
 
-/** The main hub for interacting with the Guilded API. */
+/**
+ * The main hub for interacting with the Guilded API.
+ * @example
+ * const client = new Client();
+ * client.once('ready', () => console.log(`Logged in as ${client.user!.name}!`));
+ * client.login('token');
+ */
 export class Client extends EventEmitter {
 	/** The REST manager for the Guilded API. */
-	public readonly rest: RESTManager;
+	readonly rest: RESTManager;
 	/** The Websocket manager for the Guilded API. */
-	public readonly ws: WebsocketManager;
+	readonly ws: WebsocketManager;
 
 	/** The manager of channels that belong to the client. */
-	public readonly channels: ChannelManager;
+	readonly channels: ChannelManager;
 	/** The manager of users that belong to the client. */
-	public readonly users: UserManager;
+	readonly users: UserManager;
 	/** The manager of servers that belong to the client. */
-	public readonly servers: ServerManager;
+	readonly servers: ServerManager;
 	/** The manager of groups that belong to the client. */
-	public readonly groups: GroupManager;
+	readonly groups: GroupManager;
 
 	/** The auth token for the Guilded API. */
-	public token?: string;
+	token?: string;
 	/** The user the client is logged in as. */
-	public user?: ClientUser;
+	user?: ClientUser;
 
 	/** @param options The options for the client. */
-	public constructor(public readonly options: ClientOptions = {}) {
+	constructor(public options: ClientOptions = {}) {
 		super();
 		this.token = options.token;
 		this.rest = new RESTManager({
@@ -67,27 +73,27 @@ export class Client extends EventEmitter {
 	}
 
 	/** The router for the Guilded REST API. */
-	public get api() {
+	get api() {
 		return this.rest.router;
 	}
 
 	/** Whether the client is ready to use. */
-	public get isReady() {
+	get isReady() {
 		return this.ws.isReady;
 	}
 
 	/** The date the client was ready. */
-	public get readyAt() {
+	get readyAt() {
 		return this.ws.readyAt;
 	}
 
 	/** The timestamp the client was ready. */
-	public get readyTimestamp() {
+	get readyTimestamp() {
 		return this.ws.readyTimestamp;
 	}
 
 	/** The time the client has been in the ready state. */
-	public get uptime() {
+	get uptime() {
 		return this.ws.uptime;
 	}
 
@@ -95,8 +101,9 @@ export class Client extends EventEmitter {
 	 * Login to the Guilded API.
 	 * @param token The auth token for the Guilded API.
 	 * @returns The client.
+	 * @example client.login('token');
 	 */
-	public login(token?: string) {
+	login(token?: string) {
 		this.token = token || this.token;
 		this.rest.setToken(this.token);
 		this.ws.connect(this.token);
@@ -106,9 +113,21 @@ export class Client extends EventEmitter {
 	/**
 	 * Disconnect from Guilded.
 	 * @returns The client.
+	 * @example client.disconnect();
 	 */
-	public disconnect() {
+	disconnect() {
 		this.ws.disconnect();
+		return this;
+	}
+
+	/**
+	 * Debug the client.
+	 * @param data The debug data.
+	 * @returns The client.
+	 * @example client.debug('Hello World!');
+	 */
+	debug(data?: any) {
+		this.emit('debug', this, data);
 		return this;
 	}
 
@@ -119,7 +138,7 @@ export class Client extends EventEmitter {
 	}
 
 	/** @ignore */
-	public onWSReconnect() {
+	private onWSReconnect() {
 		this.emit('reconnect', this);
 	}
 
@@ -134,16 +153,6 @@ export class Client extends EventEmitter {
 		data: WSEvents[Event],
 	) {
 		handleWSEvent(this, event, data);
-	}
-
-	/**
-	 * Debug the client.
-	 * @param data The debug data.
-	 * @returns The client.
-	 */
-	public debug(data?: any) {
-		this.emit('debug', this, data);
-		return this;
 	}
 }
 
@@ -163,6 +172,7 @@ export interface Client {
 		event: Event,
 		listener: (...args: ClientEvents[Event]) => any,
 	): this;
+	/** @ignore */
 	emit<Event extends keyof ClientEvents>(event: Event, ...args: ClientEvents[Event]): boolean;
 }
 

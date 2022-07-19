@@ -15,6 +15,3 @@ export * from './WS';
 
 // REST
 export * from './REST';
-
-// Routes
-export * from './Routes';

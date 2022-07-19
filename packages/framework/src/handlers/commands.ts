@@ -1,10 +1,16 @@
 import { Embed, inlineCode, Message, userMention } from 'guilded.ts';
 import { Event } from '../structures/Event';
 
-export default class CommandHandler extends Event {
-	public name: 'messageCreate' = 'messageCreate';
+/** The handler for commands. */
+export default class CommandHandler extends Event<'messageCreate'> {
+	name: 'messageCreate' = 'messageCreate';
 
-	public async execute(message: Message) {
+	/**
+	 * The handler for the messageCreate event.
+	 * @param message The message that was created.
+	 * @example commandHandler.execute(message);
+	 */
+	async execute(message: Message) {
 		if (
 			message.createdBy === this.client.user?.id ||
 			!message.content?.startsWith(this.client.config.prefix)
@@ -35,8 +41,9 @@ export default class CommandHandler extends Event {
 	 * Get the command with the given name.
 	 * @param name The name of the command.
 	 * @returns The command.
+	 * @example commandHandler.getCommand('ping');
 	 */
-	public getCommand(name: string) {
+	getCommand(name: string) {
 		return this.client.commands.find(
 			(command) => command.name === name || command.aliases.includes(name),
 		);
@@ -46,8 +53,9 @@ export default class CommandHandler extends Event {
 	 * Parse the content of the message.
 	 * @param content The content of the message.
 	 * @returns The command name and arguments.
+	 * @example commandHandler.parseContent('!echo hello'); // ['echo', 'hello']
 	 */
-	public parseContent(content: string) {
+	parseContent(content: string) {
 		return content.slice(this.client.config.prefix.length).split(/\s+/);
 	}
 
@@ -55,11 +63,11 @@ export default class CommandHandler extends Event {
 	 * Send a error message to the user.
 	 * @param message The message that triggered the command.
 	 * @param error The error message.
-	 * @returns The sent message.
+	 * @example commandHandler.sendError(message, 'Invalid arguments');
 	 */
-	public sendError(message: Message, error: string) {
+	sendError(message: Message, error: string) {
 		message.delete();
-		return message.channel.send({
+		message.channel.send({
 			embeds: [
 				new Embed()
 					.setColor('RED')

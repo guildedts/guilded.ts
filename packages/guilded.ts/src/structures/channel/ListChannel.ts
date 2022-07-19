@@ -3,10 +3,13 @@ import { Client } from '../Client';
 import { Channel } from './Channel';
 import { ListItemManager } from '../../managers/ListItemManager';
 
-/** Represents a list channel on Guilded. */
+/**
+ * Represents a list channel on Guilded.
+ * @example new ListChannel(client, rawChannel);
+ */
 export class ListChannel extends Channel {
 	/** The manager of items that belong to the list channel. */
-	public readonly items: ListItemManager;
+	readonly items: ListItemManager;
 
 	/**
 	 * @param client The client the list channel belongs to.
@@ -23,8 +26,9 @@ export class ListChannel extends Channel {
 	 * @param message The message of the list item.
 	 * @param note The note of the list item.
 	 * @returns The created list item.
+	 * @example channel.createItem('Hello World!');
 	 */
-	public addItem(message: string, note?: string) {
+	addItem(message: string, note?: string) {
 		return this.items.add(message, note);
 	}
 }

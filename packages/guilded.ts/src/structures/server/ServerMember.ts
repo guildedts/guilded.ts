@@ -6,30 +6,33 @@ import { ServerMemberRoleManager } from '../../managers/server/ServerMemberRoleM
 import { FetchOptions } from '../../managers/BaseManager';
 import Collection from '@discordjs/collection';
 
-/** Represents a server member on Guilded. */
+/**
+ * Represents a server member on Guilded.
+ * @example new ServerMember(server, rawMember);
+ */
 export class ServerMember extends Base {
 	/** The user the server member belongs to. */
-	public readonly user: User;
+	readonly user: User;
 	/** The IDs of roles the server member has. */
-	public roleIds: number[];
+	roleIds: number[];
 	/** The nickname of the server member. */
-	public nickname?: string;
+	nickname?: string;
 	/** The date the member joined the server. */
-	public readonly joinedAt?: Date;
+	readonly joinedAt?: Date;
 	/** Whether the server member is the server owner. */
-	public readonly isOwner?: boolean;
+	readonly isOwner?: boolean;
 	/** The social links of the server member. */
-	public readonly socialLinks = new Collection<string, APISocialLink>();
+	readonly socialLinks = new Collection<string, APISocialLink>();
 
 	/** The manager of roles that belong to the server member. */
-	public readonly roles: ServerMemberRoleManager;
+	readonly roles: ServerMemberRoleManager;
 
 	/**
 	 * @param server The server the member belongs to.
 	 * @param raw The raw data of the server member.
 	 * @param cache Whether to cache the server member.
 	 */
-	public constructor(
+	constructor(
 		public readonly server: Server,
 		public readonly raw: APIServerMember | APIServerMemberSummary,
 		cache = server.client.options.cacheServerMembers ?? true,
@@ -45,12 +48,12 @@ export class ServerMember extends Base {
 	}
 
 	/** Whether the server member is cached. */
-	public get isCached() {
+	get isCached() {
 		return this.server.members.cache.has(this.id);
 	}
 
 	/** The timestamp the member joined the server. */
-	public get joinedTimestamp() {
+	get joinedTimestamp() {
 		return this.joinedAt?.getTime();
 	}
 
@@ -58,8 +61,9 @@ export class ServerMember extends Base {
 	 * Fetch the server member.
 	 * @param options The options to fetch the server member with.
 	 * @returns The fetched server member.
+	 * @example member.fetch();
 	 */
-	public async fetch(options?: FetchOptions) {
+	fetch(options?: FetchOptions) {
 		return this.server.members.fetch(this, options) as Promise<this>;
 	}
 
@@ -67,8 +71,9 @@ export class ServerMember extends Base {
 	 * Set the nickname of the server member.
 	 * @param nickname The nickname of the server member.
 	 * @returns The edited server member.
+	 * @example member.setNickname('new nickname');
 	 */
-	public async setNickname(nickname: string) {
+	async setNickname(nickname: string) {
 		await this.server.members.setNickname(this, nickname);
 		return this;
 	}
@@ -76,8 +81,9 @@ export class ServerMember extends Base {
 	/**
 	 * Remove the nickname of the server member.
 	 * @returns The edited server member.
+	 * @example member.removeNickname();
 	 */
-	public async removeNickname() {
+	async removeNickname() {
 		await this.server.members.removeNickname(this);
 		return this;
 	}
@@ -85,8 +91,9 @@ export class ServerMember extends Base {
 	/**
 	 * Kick the server member.
 	 * @returns The kicked member.
+	 * @example member.kick();
 	 */
-	public async kick() {
+	async kick() {
 		await this.server.members.kick(this);
 		return this;
 	}
@@ -95,16 +102,18 @@ export class ServerMember extends Base {
 	 * Ban the server member.
 	 * @param reason The reason of the ban.
 	 * @returns The created server ban.
+	 * @example member.ban();
 	 */
-	public ban(reason?: string) {
+	ban(reason?: string) {
 		return this.server.members.ban(this, reason);
 	}
 
 	/**
 	 * Unban the server member.
 	 * @returns The unbanned member.
+	 * @example member.unban();
 	 */
-	public async unban() {
+	async unban() {
 		await this.server.members.unban(this);
 		return this;
 	}
@@ -113,8 +122,9 @@ export class ServerMember extends Base {
 	 * Award XP to the server member.
 	 * @param amount The amount of XP to award.
 	 * @returns The total amount of XP the server member has.
+	 * @example member.awardXp(100);
 	 */
-	public async awardXp(amount: number) {
+	awardXp(amount: number) {
 		return this.server.members.awardXp(this, amount);
 	}
 
@@ -122,8 +132,9 @@ export class ServerMember extends Base {
 	 * Fetch a social link of the server member.
 	 * @param type The type of social link to fetch.
 	 * @returns The fetched social link.
+	 * @example member.fetchSocialLink('youtube');
 	 */
-	public async fetchSocialLink(type: string) {
+	async fetchSocialLink(type: string) {
 		let socialLink = this.socialLinks.get(type);
 		if (socialLink) return socialLink;
 		socialLink = await this.server.members.fetchSocialLink(this, type);

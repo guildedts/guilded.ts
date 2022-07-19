@@ -3,10 +3,13 @@ import { ListChannel } from '../structures/channel/ListChannel';
 import { ListItem } from '../structures/listItem/ListItem';
 import Collection from '@discordjs/collection';
 
-/** The manager of items that belong to a list channel. */
+/**
+ * The manager of items that belong to a list channel.
+ * @example new ListItemManager(channel);
+ */
 export class ListItemManager extends BaseManager<string, ListItem> {
 	/** @param channel The list channel the items belong to. */
-	public constructor(public readonly channel: ListChannel) {
+	constructor(public readonly channel: ListChannel) {
 		super(channel.client, channel.client.options.maxListItemCache);
 	}
 
@@ -15,16 +18,18 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	 * @param listItem The item to fetch.
 	 * @param options The options to fetch the item with.
 	 * @returns The fetched item.
+	 * @example items.fetch(item);
 	 */
-	public fetch(listItem: string | ListItem, options?: FetchOptions): Promise<ListItem>;
+	fetch(listItem: string | ListItem, options?: FetchOptions): Promise<ListItem>;
 	/**
 	 * Fetch items from the channel.
 	 * @param options The options to fetch items with.
 	 * @returns The fetched items.
+	 * @example items.fetch();
 	 */
-	public fetch(options?: FetchManyOptions): Promise<Collection<string, ListItem>>;
+	fetch(options?: FetchManyOptions): Promise<Collection<string, ListItem>>;
 	/** @ignore */
-	public async fetch(arg1?: string | ListItem | FetchManyOptions, arg2?: FetchOptions) {
+	fetch(arg1?: string | ListItem | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof ListItem)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -55,8 +60,9 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	 * @param message The message of the item.
 	 * @param note The note of the item.
 	 * @returns The added item.
+	 * @example items.add('Hello World!');
 	 */
-	public async add(message: string, note?: string) {
+	async add(message: string, note?: string) {
 		const raw = await this.client.api.listItems.create(this.channel.id, message, note);
 		return new ListItem(this.channel, raw);
 	}
@@ -67,8 +73,9 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	 * @param message The message of the item.
 	 * @param note The note of the item.
 	 * @returns The edited item.
+	 * @example items.edit(item, 'Hello World!');
 	 */
-	public async edit(listItem: string | ListItem, message: string, note?: string) {
+	async edit(listItem: string | ListItem, message: string, note?: string) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
 		const raw = await this.client.api.listItems.edit(this.channel.id, listItem, message, note);
 		return new ListItem(this.channel, raw);
@@ -77,8 +84,9 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	/**
 	 * Remove a item in the list channel.
 	 * @param listItem The item to remove.
+	 * @example items.remove(item);
 	 */
-	public remove(listItem: string | ListItem) {
+	remove(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
 		return this.client.api.listItems.delete(this.channel.id, listItem);
 	}
@@ -86,8 +94,9 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	/**
 	 * Complete a item in the list channel.
 	 * @param listItem The item to complete.
+	 * @example items.complete(item);
 	 */
-	public complete(listItem: string | ListItem) {
+	complete(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
 		return this.client.api.listItems.complete(this.channel.id, listItem);
 	}
@@ -95,8 +104,9 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	/**
 	 * Uncomplete a item in the list channel.
 	 * @param listItem The item to uncomplete.
+	 * @example items.uncomplete(item);
 	 */
-	public uncomplete(listItem: string | ListItem) {
+	uncomplete(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
 		return this.client.api.listItems.uncomplete(this.channel.id, listItem);
 	}

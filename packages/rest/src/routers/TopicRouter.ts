@@ -1,7 +1,10 @@
 import { APITopic, APITopicPayload, Routes } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
-/** The forum thread router for the Guilded REST API. */
+/**
+ * The topic router for the Guilded REST API.
+ * @example new TopicRouter(rest);
+ */
 export class TopicRouter extends BaseRouter {
 	/**
 	 * Create a topic on Guilded.
@@ -9,8 +12,9 @@ export class TopicRouter extends BaseRouter {
 	 * @param title The title of the topic.
 	 * @param content The content of the topic.
 	 * @returns The created topic.
+	 * @example topics.create('abc', 'Title', 'Content');
 	 */
-	public async create(channelId: string, title: string, content: string) {
+	async create(channelId: string, title: string, content: string) {
 		const { forumTopic } = await this.rest.post<{ forumTopic: APITopic }, APITopicPayload>(
 			Routes.topics(channelId),
 			{ title, content },
