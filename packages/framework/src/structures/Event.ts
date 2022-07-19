@@ -6,7 +6,7 @@ import { Client } from './Client';
  * @example
  * class Ready extends Event {
  *     name = 'ready';
- * 
+ *
  *     execute() {
  *         console.log('Ready!');
  *     }

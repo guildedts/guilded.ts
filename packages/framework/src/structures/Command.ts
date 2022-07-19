@@ -8,7 +8,7 @@ import { Client } from './Client';
  * @example
  * class Ping extends Command {
  *     name = 'ping';
- * 
+ *
  *     execute(message) {
  *         message.reply('Pong!');
  *     }
