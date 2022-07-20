@@ -14,7 +14,7 @@
 		"refresh": "run clear && rimraf node_modules && yarn && run build",
 		"changeset": "changeset",
 		"version": "changeset version",
-		"publish": "changeset publish"
+		"publish": "run prepare && run build && changeset publish"
 	},
 	"keywords": [
 		"guilded",
