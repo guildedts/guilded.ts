@@ -1,11 +1,5 @@
 ---
-'guilded-api-typings': patch
+'guilded-api-typings': minor
 ---
 
-# Features
-
--   Change `Routes` into a class
-
-# Docs
-
--   Add examples
+feat: change `Routes` into a class
