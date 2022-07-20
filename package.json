@@ -12,8 +12,9 @@
 		"prepare": "run format && run lint",
 		"clear": "turbo run clear",
 		"refresh": "run clear && rimraf node_modules && yarn && run build",
-		"setchanges": "changeset",
-		"version": "changeset version"
+		"changeset": "changeset",
+		"version": "changeset version",
+		"publish": "changeset publish"
 	},
 	"keywords": [
 		"guilded",
