@@ -18,6 +18,7 @@ import { APIClientUser, APIMessageSummary, WSEvents } from 'guilded-api-typings'
 import { CalendarEvent } from './CalendarEvent';
 import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
+import Collection from '@discordjs/collection';
 
 /**
  * The main hub for interacting with the Guilded API.
@@ -203,7 +204,10 @@ export interface ClientEvents {
 	/** Emitted when a member is edited. */
 	memberEdit: [newMember: ServerMember, oldMember: ServerMember | undefined];
 	/** Emitted when roles in server are edited. */
-	rolesEdit: [newServer: Server, oldServer: Server | undefined];
+	rolesEdit: [
+		newMembers: Collection<string, ServerMember>,
+		oldMembers: Collection<string, ServerMember>,
+	];
 	/** Emitted when a channel is created. */
 	channelCreate: [channel: Channel];
 	/** Emitted when a channel is edited. */
@@ -223,7 +227,10 @@ export interface ClientEvents {
 	/** Emitted when a calendar event is created. */
 	calendarEventCreate: [event: CalendarEvent];
 	/** Emitted when a calendar event is edited. */
-	calendarEventEdit: [newEvent: CalendarEvent, oldEvent: CalendarEvent | undefined];
+	calendarEventEdit: [
+		newCalendarEvent: CalendarEvent,
+		oldCalendarEvent: CalendarEvent | undefined,
+	];
 	/** Emitted when a calendar event is deleted. */
 	calendarEventDelete: [event: CalendarEvent];
 	/** Emitted when a list item is created. */

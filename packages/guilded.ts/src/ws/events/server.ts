@@ -1,5 +1,7 @@
 import { WSEvents } from 'guilded-api-typings';
 import { Client } from '../../structures/Client';
+import Collection from '@discordjs/collection';
+import { ServerMember } from '../../structures/server/ServerMember';
 
 /**
  * Handle the teamRolesUpdated event.
@@ -7,12 +9,15 @@ import { Client } from '../../structures/Client';
  * @param data The data of the event.
  */
 export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpdated']) {
-	const oldServer = client.servers.cache.get(data.serverId)
 	const server = await client.servers.fetch(data.serverId);
-	for (const item of data.memberRoleIds)
-		if (item.roleIds) {
-			const member = await server.members.fetch(item.userId);
-			member.roleIds = item.roleIds;
-		}
-	client.emit('rolesEdit', server, oldServer);
+	const oldMembers = new Collection<string, ServerMember>();
+	const newMembers = new Collection<string, ServerMember>();
+	for (const { roleIds, userId } of data.memberRoleIds) {
+		const oldMember = await server.members.fetch(userId);
+		const newMember = oldMember;
+		newMember.roleIds = roleIds || [];
+		oldMembers.set(userId, oldMember);
+		newMembers.set(userId, newMember);
+	}
+	client.emit('rolesEdit', newMembers, oldMembers);
 }

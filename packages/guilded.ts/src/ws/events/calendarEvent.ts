@@ -21,9 +21,9 @@ export async function created(client: Client, data: WSEvents['CalendarEventCreat
  */
 export async function updated(client: Client, data: WSEvents['CalendarEventUpdated']) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
-	const oldEvent = channel.events.cache.get(data.calendarEvent.id)
-	const calendarEvent = new CalendarEvent(channel, data.calendarEvent);
-	client.emit('calendarEventEdit', calendarEvent, oldEvent);
+	const oldCalendarEvent = channel.events.cache.get(data.calendarEvent.id)
+	const newCalendarEvent = new CalendarEvent(channel, data.calendarEvent);
+	client.emit('calendarEventEdit', newCalendarEvent, oldCalendarEvent);
 }
 
 /**

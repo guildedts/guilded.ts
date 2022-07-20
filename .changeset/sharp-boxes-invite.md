@@ -1,6 +1,5 @@
 ---
 'guilded.ts': patch
 ---
-# Features
 
--   Add old data to all edit events
+feat: add old data to edit events

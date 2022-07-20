@@ -19,8 +19,8 @@ export function created(client: Client, data: WSEvents['TeamChannelCreated']) {
  */
 export function updated(client: Client, data: WSEvents['TeamChannelUpdated']) {
 	const oldChannel = client.channels.cache.get(data.channel.id)
-	const channel = createChannel(client, data.channel);
-	client.emit('channelEdit', channel, oldChannel);
+	const newChannel = createChannel(client, data.channel);
+	client.emit('channelEdit', newChannel, oldChannel);
 }
 
 /**
