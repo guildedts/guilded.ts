@@ -18,6 +18,7 @@ import { APIClientUser, APIMessageSummary, WSEvents } from 'guilded-api-typings'
 import { CalendarEvent } from './CalendarEvent';
 import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
+import Collection from '@discordjs/collection';
 
 /**
  * The main hub for interacting with the Guilded API.
@@ -189,7 +190,7 @@ export interface ClientEvents {
 	/** Emitted when a message is created. */
 	messageCreate: [message: Message];
 	/** Emitted when a message is edited. */
-	messageEdit: [message: Message];
+	messageEdit: [newMessage: Message, oldMessage: Message | undefined];
 	/** Emitted when a message is deleted. */
 	messageDelete: [message: Message | APIMessageSummary];
 	/** Emitted when a member joins a server. */
@@ -201,35 +202,41 @@ export interface ClientEvents {
 	/** Emitted when a member is unbanned from a server. */
 	memberUnban: [ban: ServerBan];
 	/** Emitted when a member is edited. */
-	memberEdit: [member: ServerMember];
+	memberEdit: [newMember: ServerMember, oldMember: ServerMember | undefined];
 	/** Emitted when roles in server are edited. */
-	rolesEdit: [server: Server];
+	rolesEdit: [
+		newMembers: Collection<string, ServerMember>,
+		oldMembers: Collection<string, ServerMember>,
+	];
 	/** Emitted when a channel is created. */
 	channelCreate: [channel: Channel];
 	/** Emitted when a channel is edited. */
-	channelEdit: [channel: Channel];
+	channelEdit: [newChannel: Channel, oldChannel: Channel | undefined];
 	/** Emitted when a channel is deleted. */
 	channelDelete: [channel: Channel];
 	/** Emitted when a webhook is created. */
 	webhookCreate: [webhook: Webhook];
 	/** Emitted when a webhook is edited. */
-	webhookEdit: [webhook: Webhook];
+	webhookEdit: [newWebhook: Webhook, oldWebhook: Webhook | undefined];
 	/** Emitted when a doc is created. */
 	docCreate: [doc: Doc];
 	/** Emitted when a doc is edited. */
-	docEdit: [doc: Doc];
+	docEdit: [newDoc: Doc, oldDoc: Doc | undefined];
 	/** Emitted when a doc is deleted. */
 	docDelete: [doc: Doc];
 	/** Emitted when a calendar event is created. */
 	calendarEventCreate: [event: CalendarEvent];
 	/** Emitted when a calendar event is edited. */
-	calendarEventEdit: [event: CalendarEvent];
+	calendarEventEdit: [
+		newCalendarEvent: CalendarEvent,
+		oldCalendarEvent: CalendarEvent | undefined,
+	];
 	/** Emitted when a calendar event is deleted. */
 	calendarEventDelete: [event: CalendarEvent];
 	/** Emitted when a list item is created. */
 	listItemCreate: [listItem: ListItem];
 	/** Emitted when a list item is edited. */
-	listItemEdit: [listItem: ListItem];
+	listItemEdit: [newListItem: ListItem, oldListItem: ListItem | undefined];
 	/** Emitted when a list item is deleted. */
 	listItemDelete: [listItem: ListItem];
 	/** Emitted when a list item is completed. */

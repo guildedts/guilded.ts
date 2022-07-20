@@ -22,8 +22,9 @@ export async function created(client: Client, data: WSEvents['ChatMessageCreated
  */
 export async function updated(client: Client, data: WSEvents['ChatMessageUpdated']) {
 	const channel = (await client.channels.fetch(data.message.channelId)) as ChatChannel;
-	const message = new Message(channel, data.message);
-	client.emit('messageEdit', message);
+	const oldMessage = channel.messages.cache.get(data.message.id)
+	const newMessage = new Message(channel, data.message);
+	client.emit('messageEdit', newMessage, oldMessage);
 }
 
 /**

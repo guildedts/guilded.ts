@@ -21,8 +21,9 @@ export async function created(client: Client, data: WSEvents['ListItemCreated'])
  */
 export async function updated(client: Client, data: WSEvents['ListItemUpdated']) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
-	const listItem = new ListItem(channel, data.listItem);
-	client.emit('listItemEdit', listItem);
+	const oldListItem = channel.items.cache.get(data.listItem.id)
+	const newListItem = new ListItem(channel, data.listItem);
+	client.emit('listItemEdit', newListItem, oldListItem);
 }
 
 /**
