@@ -20,7 +20,7 @@ export async function created(client: Client, data: WSEvents['TeamWebhookCreated
  */
 export async function updated(client: Client, data: WSEvents['TeamWebhookUpdated']) {
 	const channel = await client.channels.fetch(data.webhook.channelId);
-	const oldWebhook = channel.webhooks.cache.get(data.webhook.id)
+	const oldWebhook = channel.webhooks.cache.get(data.webhook.id);
 	const newWebhook = new Webhook(channel, data.webhook);
 	client.emit('webhookEdit', newWebhook, oldWebhook);
 }

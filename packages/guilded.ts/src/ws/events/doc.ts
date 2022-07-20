@@ -21,7 +21,7 @@ export async function created(client: Client, data: WSEvents['DocCreated']) {
  */
 export async function updated(client: Client, data: WSEvents['DocUpdated']) {
 	const channel = (await client.channels.fetch(data.doc.channelId)) as DocChannel;
-	const oldDoc = channel.docs.cache.get(data.doc.id)
+	const oldDoc = channel.docs.cache.get(data.doc.id);
 	const newDoc = new Doc(channel, data.doc);
 	client.emit('docEdit', newDoc, oldDoc);
 }
