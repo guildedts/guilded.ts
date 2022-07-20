@@ -13,10 +13,10 @@ export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpda
 	const oldMembers = new Collection<string, ServerMember>();
 	const newMembers = new Collection<string, ServerMember>();
 	for (const { roleIds, userId } of data.memberRoleIds) {
-		const oldMember = await server.members.fetch(userId);
-		const newMember = oldMember;
+		const oldMember = server.members.cache.get(userId);
+		const newMember = await server.members.fetch(userId);
 		newMember.roleIds = roleIds || [];
-		oldMembers.set(userId, oldMember);
+		if (oldMember) oldMembers.set(userId, oldMember);
 		newMembers.set(userId, newMember);
 	}
 	client.emit('rolesEdit', newMembers, oldMembers);
