@@ -33,7 +33,7 @@
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
 	"devDependencies": {
-		"rimraf": "^3.0.2",
-		"typescript": "^4.6.3"
+		"rimraf": "3.0.2",
+		"typescript": "4.6.3"
 	}
 }
