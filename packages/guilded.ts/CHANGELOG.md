@@ -1,5 +1,25 @@
 # guilded.ts
 
+## 0.11.0
+
+### Minor Changes
+
+-   677c5a2: feat: return `Collection`s of members in `rolesEdit`
+-   677c5a2: feat: add old data to edit events
+-   677c5a2: feat: change params for `send` in `Webhook`
+
+### Patch Changes
+
+-   677c5a2: docs: add examples
+-   677c5a2: types: change type of `replies` to `Collection` in `Message`
+-   677c5a2: types: change return type of `fetchReplies` to `Collection` in `Message`
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+    -   guilded-api-typings@0.6.0
+    -   @guildedts/builders@0.2.6
+    -   @guildedts/rest@0.8.1
+    -   @guildedts/ws@0.4.1
+
 ## 0.10.4
 
 ### Patch Changes

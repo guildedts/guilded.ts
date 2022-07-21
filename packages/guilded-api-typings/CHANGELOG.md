@@ -1,5 +1,15 @@
 # guilded-api-typings
 
+## 0.6.0
+
+### Minor Changes
+
+-   677c5a2: feat: change `Routes` into a class
+
+### Patch Changes
+
+-   677c5a2: docs: add examples
+
 ## 0.5.4
 
 ### Patch Changes
