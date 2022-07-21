@@ -1,5 +1,14 @@
 # @guildedts/rest
 
+## 0.8.1
+
+### Patch Changes
+
+-   677c5a2: docs: add examples
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+    -   guilded-api-typings@0.6.0
+
 ## 0.8.0
 
 ### Minor Changes
