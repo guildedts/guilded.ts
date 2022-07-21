@@ -1,7 +1,6 @@
 {
 	"$schema": "https://typedoc.org/schema.json",
 	"name": "Guilded.TS",
-	"includeVersion": true,
 	"entryPointStrategy": "packages",
 	"entryPoints": [
 		"packages/guilded.ts",
