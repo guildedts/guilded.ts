@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.1
+
+### Patch Changes
+
+-   677c5a2: docs: add examples
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.6
+
+### Patch Changes
+
+-   677c5a2: docs: add examples
+
 ## 0.2.5
 
 ### Patch Changes

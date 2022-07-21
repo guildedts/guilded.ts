@@ -1,5 +1,18 @@
 # @guildedts/framework
 
+## 0.1.3
+
+### Patch Changes
+
+-   677c5a2: docs: add examples
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+-   Updated dependencies [677c5a2]
+    -   guilded.ts@0.11.0
+
 ## 0.1.2
 
 ### Patch Changes
