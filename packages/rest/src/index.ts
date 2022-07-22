@@ -1,8 +1,7 @@
 export { RESTManager as default } from './RESTManager';
 
-export * from './RESTManager';
-export * from './GuildedAPIError';
-
+export * from './routers/calendarEvent/CalendarEventRouter';
+export * from './routers/calendarEvent/CalendarEventRsvpRouter';
 export * from './routers/server/ServerBanRouter';
 export * from './routers/server/ServerMemberRouter';
 export * from './routers/server/ServerRoleRouter';
@@ -17,3 +16,5 @@ export * from './routers/ReactionRouter';
 export * from './routers/Router';
 export * from './routers/TopicRouter';
 export * from './routers/WebhookRouter';
+export * from './GuildedAPIError';
+export * from './RESTManager';

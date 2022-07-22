@@ -4,9 +4,9 @@ import {
 	APICalendarEventPayload,
 	APIFetchCalendarEventsQuery,
 } from 'guilded-api-typings';
-import { CalendarEvent } from '../structures/CalendarEvent';
-import { CalendarChannel } from '../structures/channel/CalendarChannel';
-import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
+import { CalendarEvent } from '../../structures/calendarEvent/CalendarEvent';
+import { CalendarChannel } from '../../structures/channel/CalendarChannel';
+import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 
 /**
  * The manager of calendar events that belong to a calendar channel.

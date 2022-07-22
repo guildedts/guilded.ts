@@ -1,5 +1,5 @@
 import { APICalendarEventPayload, APIChannel } from 'guilded-api-typings';
-import { CalendarEventManager } from '../../managers/CalendarEventManager';
+import { CalendarEventManager } from '../../managers/calendarEvent/CalendarEventManager';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 

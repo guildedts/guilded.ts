@@ -4,9 +4,10 @@ import {
 	APICalendarEventEditPayload,
 	APIMentions,
 } from 'guilded-api-typings';
-import { FetchOptions } from '../managers/BaseManager';
-import { Base } from './Base';
-import { CalendarChannel } from './channel/CalendarChannel';
+import { FetchOptions } from '../../managers/BaseManager';
+import { CalendarEventRsvpManager } from '../../managers/calendarEvent/CalendarEventRsvpManager';
+import { Base } from '../Base';
+import { CalendarChannel } from '../channel/CalendarChannel';
 
 /**
  * Represents a calendar event on Guilded.
@@ -27,6 +28,8 @@ export class CalendarEvent extends Base<number> {
 	readonly url?: string;
 	/** The color of the calendar event. */
 	readonly color?: number;
+	/** The limit of RSVPs of the calendar event. */
+	readonly rsvpLimit?: number;
 	/** The date the calendar event starts. */
 	readonly startsAt: Date;
 	/** The duration of the calendar event. */
@@ -42,6 +45,9 @@ export class CalendarEvent extends Base<number> {
 	/** The cancellation of the calendar event. */
 	readonly cancellation?: APICalendarEventCancellation;
 
+	/** A manager of RSVPs that belong to the calendar event. */
+	readonly rsvps: CalendarEventRsvpManager;
+
 	/**
 	 * @param channel The calendar channel the event belongs to.
 	 * @param raw The raw data of the calendar event.
@@ -53,6 +59,7 @@ export class CalendarEvent extends Base<number> {
 		cache = channel.client.options.cacheCalendarEvents ?? true,
 	) {
 		super(channel.client, raw.id);
+		this.rsvps = new CalendarEventRsvpManager(this);
 		this.serverId = raw.serverId;
 		this.channelId = raw.channelId;
 		this.name = raw.name;
@@ -60,6 +67,7 @@ export class CalendarEvent extends Base<number> {
 		this.location = raw.location;
 		this.url = raw.url;
 		this.color = raw.color;
+		this.rsvpLimit = raw.rsvpLimit;
 		this.startsAt = new Date(raw.startsAt);
 		this.duration = raw.duration;
 		this.isPrivate = raw.isPrivate;
@@ -144,7 +152,7 @@ export class CalendarEvent extends Base<number> {
 	 * @example event.edit({ name: 'New name' });
 	 */
 	edit(payload: APICalendarEventEditPayload) {
-		return this.channel.events.edit(this, payload);
+		return this.channel.events.edit(this, payload) as Promise<this>;
 	}
 
 	/**

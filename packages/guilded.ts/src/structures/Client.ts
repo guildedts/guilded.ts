@@ -15,10 +15,11 @@ import { ServerManager } from '../managers/server/ServerManager';
 import { UserManager } from '../managers/UserManager';
 import { handleWSEvent } from '../ws';
 import { APIClientUser, APIMessageSummary, WSEvents } from 'guilded-api-typings';
-import { CalendarEvent } from './CalendarEvent';
+import { CalendarEvent } from './calendarEvent/CalendarEvent';
 import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
 import Collection from '@discordjs/collection';
+import { CalendarEventRsvp } from './calendarEvent/CalendarEventRsvp';
 
 /**
  * The main hub for interacting with the Guilded API.
@@ -228,6 +229,18 @@ export interface ClientEvents {
 	calendarEventCreate: [event: CalendarEvent];
 	/** Emitted when a calendar event is edited. */
 	calendarEventEdit: [newCalendarEvent: CalendarEvent, oldCalendarEvent?: CalendarEvent];
+	/** Emitted when a calendar event RSVP is edited. */
+	calendarEventRsvpEdit: [
+		newCalendarEventRsvp: CalendarEventRsvp,
+		oldCalendarEventRsvp?: CalendarEventRsvp,
+	];
+	/** Emitted when calendar event RSVPs are edited. */
+	calendarEventRsvpsEdit: [
+		newCalendarEventRsvps: Collection<string, CalendarEventRsvp>,
+		oldCalendarEventRsvps: Collection<string, CalendarEventRsvp>,
+	];
+	/** Emitted when a calendar event RSVP is deleted. */
+	calendarEventRsvpDelete: [calendarEventRsvp: CalendarEventRsvp];
 	/** Emitted when a calendar event is deleted. */
 	calendarEventDelete: [event: CalendarEvent];
 	/** Emitted when a list item is created. */
@@ -330,6 +343,12 @@ export interface ClientOptions {
 	maxCalendarEventCache?: number;
 	/** Whether to dispose cached calendar events. */
 	disposeCachedCalendarEvents?: boolean;
+	/** Whether to cache calendar event RSVPs. */
+	cacheCalendarEventRsvps?: boolean;
+	/** The max cache size for calendar event RSVPs. */
+	maxCalendarEventRsvpCache?: number;
+	/** Whether to dispose cached calendar event RSVPs. */
+	disposeCachedCalendarEventRsvps?: boolean;
 	/** Whether to cache message reactions. */
 	cacheMessageReactions?: boolean;
 	/** The max cache size for message reactions. */

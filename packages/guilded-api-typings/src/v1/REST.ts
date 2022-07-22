@@ -226,6 +226,36 @@ export class Routes {
 	}
 
 	/**
+	 * The endpoint for a calendar event RSVP on Guilded.
+	 * @param channelId The ID of the channel the calendar event belongs to.
+	 * @param calendarEventId The ID of the calendar event the RSVP belongs to.
+	 * @param userId The ID of the user the RSVP belongs to.
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpRead
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpUpdate
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpDelete
+	 */
+	static calendarEventRsvp(
+		channelId: string,
+		calendarEventId: number,
+		userId: string,
+	): `/channels/${string}/events/${number}/rsvps/${string}` {
+		return `/channels/${channelId}/events/${calendarEventId}/rsvps/${userId}`;
+	}
+
+	/**
+	 * The endpoint for calendar event RSVPs on Guilded.
+	 * @param channelId The ID of the channel the calendar event belongs to.
+	 * @param calendarEventId The ID of the calendar event the RSVPs belong to.
+	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpReadMany
+	 */
+	static calendarEventRsvps(
+		channelId: string,
+		calendarEventId: number,
+	): `/channels/${string}/events/${number}/rsvps` {
+		return `/channels/${channelId}/events/${calendarEventId}/rsvps`;
+	}
+
+	/**
 	 * The endpoint for a content reaction on Guilded.
 	 * @param channelId The ID of the channel the content belongs to.
 	 * @param contentId The ID of the content.

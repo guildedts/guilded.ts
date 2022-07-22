@@ -4,7 +4,7 @@ import { APIDoc } from './structures/Doc';
 import { APIListItem } from './structures/ListItem';
 import { APIServerMember, APIServerBan } from './structures/Server';
 import { APIWebhook } from './structures/Webhook';
-import { APICalendarEvent } from './structures/CalendarEvent';
+import { APICalendarEvent, APICalendarEventRsvp } from './structures/CalendarEvent';
 import { APIClientUser } from './structures/User';
 
 /** The ready payload of the websocket. */
@@ -257,6 +257,36 @@ export interface WSEvents {
 		serverId: string;
 		/** The deleted calendar event. */
 		calendarEvent: APICalendarEvent;
+	};
+	/**
+	 * Emitted when a calendar event RSVP is edited.
+	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventRsvpUpdated
+	 */
+	CalendarEventRsvpUpdated: {
+		/** The ID of the server the calendar event RSVP belongs to. */
+		serverId: string;
+		/** The edited calendar event RSVP. */
+		calendarEventRsvp: APICalendarEventRsvp;
+	};
+	/**
+	 * Emitted when calendar event RSVPs are edited.
+	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventRsvpManyUpdated
+	 */
+	CalendarEventRsvpManyUpdated: {
+		/** The ID of the server the calendar event RSVPs belong to. */
+		serverId: string;
+		/** The edited calendar event RSVPs. */
+		calendarEventRsvps: APICalendarEventRsvp[];
+	};
+	/**
+	 * Emitted when a calendar event RSVP is deleted.
+	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventRsvpDeleted
+	 */
+	CalendarEventRsvpDeleted: {
+		/** The ID of the server the calendar event RSVP belongs to. */
+		serverId: string;
+		/** The deleted calendar event RSVP. */
+		calendarEventRsvp: APICalendarEventRsvp;
 	};
 	/**
 	 * Emitted when a list item is created.

@@ -7,6 +7,8 @@ export * from './collectors/MessageCollector';
 export * from './collectors/MessageReactionCollector';
 
 // Managers
+export * from './managers/calendarEvent/CalendarEventManager';
+export * from './managers/calendarEvent/CalendarEventRsvpManager';
 export * from './managers/channel/ChannelManager';
 export * from './managers/channel/ChannelWebhookManager';
 export * from './managers/group/GroupManager';
@@ -19,13 +21,14 @@ export * from './managers/server/ServerMemberManager';
 export * from './managers/server/ServerMemberRoleManager';
 export * from './managers/server/ServerRoleManager';
 export * from './managers/BaseManager';
-export * from './managers/CalendarEventManager';
 export * from './managers/DocManager';
 export * from './managers/ListItemManager';
 export * from './managers/TopicManager';
 export * from './managers/UserManager';
 
 // Structures
+export * from './structures/calendarEvent/CalendarEvent';
+export * from './structures/calendarEvent/CalendarEventRsvp';
 export * from './structures/channel/CalendarChannel';
 export * from './structures/channel/Channel';
 export * from './structures/channel/ChatChannel';
@@ -43,7 +46,6 @@ export * from './structures/server/ServerMemberRole';
 export * from './structures/server/ServerRole';
 export * from './structures/Base';
 export * from './structures/CacheCollection';
-export * from './structures/CalendarEvent';
 export * from './structures/Client';
 export * from './structures/Doc';
 export * from './structures/Group';

@@ -5,7 +5,7 @@ import {
 	APIFetchCalendarEventsQuery,
 	Routes,
 } from 'guilded-api-typings';
-import { BaseRouter } from './BaseRouter';
+import { BaseRouter } from '../BaseRouter';
 
 /**
  * The calendar event router for the Guilded REST API.

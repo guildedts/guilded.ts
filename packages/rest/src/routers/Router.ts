@@ -1,18 +1,19 @@
-import { RESTManager } from '../RESTManager';
-import { BaseRouter } from './BaseRouter';
-import { ChannelRouter } from './ChannelRouter';
-import { DocRouter } from './DocRouter';
-import { TopicRouter } from './TopicRouter';
-import { GroupRouter } from './GroupRouter';
-import { ListItemRouter } from './ListItemRouter';
-import { MessageRouter } from './MessageRouter';
-import { ReactionRouter } from './ReactionRouter';
+import { CalendarEventRouter } from './calendarEvent/CalendarEventRouter';
+import { CalendarEventRsvpRouter } from './calendarEvent/CalendarEventRsvpRouter';
 import { ServerBanRouter } from './server/ServerBanRouter';
 import { ServerMemberRouter } from './server/ServerMemberRouter';
 import { ServerRoleRouter } from './server/ServerRoleRouter';
 import { ServerRouter } from './server/ServerRouter';
+import { BaseRouter } from './BaseRouter';
+import { ChannelRouter } from './ChannelRouter';
+import { DocRouter } from './DocRouter';
+import { GroupRouter } from './GroupRouter';
+import { ListItemRouter } from './ListItemRouter';
+import { MessageRouter } from './MessageRouter';
+import { ReactionRouter } from './ReactionRouter';
+import { TopicRouter } from './TopicRouter';
 import { WebhookRouter } from './WebhookRouter';
-import { CalendarEventRouter } from './CalendarEventRouter';
+import { RESTManager } from '../RESTManager';
 
 /**
  * The router for the Guilded REST API.
@@ -45,6 +46,8 @@ export class Router extends BaseRouter {
 	readonly servers: ServerRouter;
 	/** The calendar event router for the Guilded REST API. */
 	readonly calendarEvents: CalendarEventRouter;
+	/** The calendar event RSVP router for the Guilded REST API. */
+	readonly calendarEventRsvps: CalendarEventRsvpRouter;
 
 	/** @param rest The REST API manager that owns this router. */
 	constructor(rest: RESTManager) {
@@ -62,5 +65,6 @@ export class Router extends BaseRouter {
 		this.webhooks = new WebhookRouter(rest);
 		this.servers = new ServerRouter(rest);
 		this.calendarEvents = new CalendarEventRouter(rest);
+		this.calendarEventRsvps = new CalendarEventRsvpRouter(rest);
 	}
 }
