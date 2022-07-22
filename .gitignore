@@ -1,7 +1,4 @@
 node_modules
-.turbo
-.yarn/*
-!.yarn/releases
 lib
 dist
 typings

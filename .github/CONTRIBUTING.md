@@ -2,17 +2,15 @@
 
 Contributing helps us maintain Guilded.TS. All contributions are greatly appreciated.
 
-We utilize [Yarn](https://yarnpkg.com) and [Turbo](https://turborepo.org) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of these two.
+We utilize [PNPM](https://pnpm.io) to manage our Monorepo. If you want to contribute we highly recommend knowing the basics of it.
 
 ## Getting started
 
 To get started, run the following scripts:
 
-```
-# Install all dependencies
-yarn install
-# Build all local packages
-yarn build
+```sh
+# Install Dependencies and Build Packages
+pnpm i
 ```
 
 ## Committing your changes

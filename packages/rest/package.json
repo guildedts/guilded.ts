@@ -9,9 +9,9 @@
 		"typings"
 	],
 	"scripts": {
-		"build": "run clear && tsc",
+		"build": "pnpm clear && tsc",
 		"clear": "rimraf lib typings",
-		"prepublishOnly": "run build"
+		"prepublishOnly": "pnpm build"
 	},
 	"keywords": [
 		"guilded",

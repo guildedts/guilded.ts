@@ -15,14 +15,16 @@ jobs:
                 uses: actions/setup-node@v3
                 with:
                     node-version: 18
-            -   name: Install Dependencies
-                run: yarn
+            -   name: Install PNPM
+                uses: pnpm/action-setup@v2
+            -   name: Install Dependencies and Prepare Packages
+                run: pnpm i
             -   name: Create Release Pull Request or Publish to NPM
                 id: changesets
                 uses: changesets/action@v1
                 with:
-                    publish: yarn publish
-                    version: yarn version
+                    publish: pnpm publish
+                    version: pnpm version
                     title: 'chore: release packages'
                     commit: 'chore: release packages'
                 env:
@@ -40,12 +42,12 @@ jobs:
                 uses: actions/setup-node@v3
                 with:
                     node-version: 18
-            -   name: Install Dependencies
-                run: yarn
-            -   name: Build Packages
-                run: yarn build
+            -   name: Install PNPM
+                uses: pnpm/action-setup@v2
+            -   name: Install Dependencies and Prepare Packages
+                run: pnpm i
             -   name: Generate Documentation
-                run: yarn docs
+                run: pnpm docs
             -   name: Commit Changes
                 uses: cpina/github-action-push-to-another-repository@main
                 env:
