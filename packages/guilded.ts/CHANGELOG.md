@@ -1,19 +1,5 @@
 # guilded.ts
 
-## 0.12.0
-
-### Minor Changes
-
--   f4e2633: feat: calendar event RSVPs
-
-### Patch Changes
-
--   Updated dependencies [f4e2633]
-    -   guilded-api-typings@0.7.0
-    -   @guildedts/rest@0.9.0
-    -   @guildedts/builders@0.2.6
-    -   @guildedts/ws@0.4.1
-
 ## 0.11.0
 
 ### Minor Changes
