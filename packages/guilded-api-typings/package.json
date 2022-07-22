@@ -1,6 +1,6 @@
 {
 	"name": "guilded-api-typings",
-	"version": "0.7.0",
+	"version": "0.6.0",
 	"description": "Type definitions for the Guilded API.",
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",

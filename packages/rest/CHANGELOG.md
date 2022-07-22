@@ -1,16 +1,5 @@
 # @guildedts/rest
 
-## 0.9.0
-
-### Minor Changes
-
--   f4e2633: feat: calendar event RSVPs
-
-### Patch Changes
-
--   Updated dependencies [f4e2633]
-    -   guilded-api-typings@0.7.0
-
 ## 0.8.1
 
 ### Patch Changes
