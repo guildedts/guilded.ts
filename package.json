@@ -50,7 +50,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"prettier": "^2.6.2",
 		"rimraf": "^3.0.2",
-		"ts-node": "^10.7.0",
+		"ts-node": "10.9.1",
 		"turbo": "^1.2.5",
 		"typedoc": "^0.22.15",
 		"typedoc-plugin-missing-exports": "^0.22.6",
