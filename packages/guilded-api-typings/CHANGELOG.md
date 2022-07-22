@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.7.0
+
+### Minor Changes
+
+-   6b230b2: feat: calendar event RSVPs
+
 ## 0.6.0
 
 ### Minor Changes
