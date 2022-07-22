@@ -1,6 +1,6 @@
 import { WSEvents } from 'guilded-api-typings';
 import { Client } from '../../structures/Client';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**

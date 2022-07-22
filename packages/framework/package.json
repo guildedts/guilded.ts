@@ -36,15 +36,15 @@
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"@discordjs/collection": "^0.7.0",
-		"chalk": "4",
-		"commander": "^9.3.0",
-		"glob": "7",
+		"@discordjs/collection": "^1.0.0",
+		"chalk": "^4.1.2",
+		"commander": "^9.4.0",
+		"glob": "^8.0.3",
 		"guilded.ts": "workspace:^",
 		"joi": "^17.6.0"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
-		"typescript": "^4.6.3"
+		"typescript": "^4.7.4"
 	}
 }

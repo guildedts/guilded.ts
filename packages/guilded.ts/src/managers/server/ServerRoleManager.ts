@@ -2,7 +2,7 @@ import { BaseManager, FetchManyOptions } from '../BaseManager';
 import { ServerRole } from '../../structures/server/ServerRole';
 import { Server } from '../../structures/server/Server';
 import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**

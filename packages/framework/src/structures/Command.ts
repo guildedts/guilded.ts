@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { inlineCode, Message } from 'guilded.ts';
 import { ArgumentConstructor } from './arguments/Argument';
 import { Client } from './Client';

@@ -2,7 +2,7 @@ import { APIFetchDocsQuery } from 'guilded-api-typings';
 import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { Doc } from '../structures/Doc';
 import { DocChannel } from '../structures/channel/DocChannel';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 /**
  * The manager of docs that belong to a doc channel.

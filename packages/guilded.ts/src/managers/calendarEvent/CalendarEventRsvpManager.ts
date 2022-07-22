@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { APICalendarEventRsvpStatusString } from 'guilded-api-typings';
 import { CalendarEvent } from '../../structures/calendarEvent/CalendarEvent';
 import { CalendarEventRsvp } from '../../structures/calendarEvent/CalendarEventRsvp';

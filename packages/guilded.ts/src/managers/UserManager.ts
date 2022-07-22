@@ -1,7 +1,7 @@
 import { BaseManager } from './BaseManager';
 import { Client } from '../structures/Client';
 import { User } from '../structures/User';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { Server } from '../structures/server/Server';
 
 /**

@@ -16,7 +16,7 @@ import { CollectorOptions } from '../../collectors/Collector';
 import { MessageReactionCollector } from '../../collectors/MessageReactionCollector';
 import { FetchManyOptions, FetchOptions } from '../../managers/BaseManager';
 import { ChatChannel } from '../channel/ChatChannel';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 /**
  * Represents a message on Guilded.

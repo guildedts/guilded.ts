@@ -10,7 +10,7 @@ import { Embed } from '@guildedts/builders';
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { Message } from '../../structures/message/Message';
 import { ChatChannel } from '../../structures/channel/ChatChannel';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 /**
  * The manager of messages that belong to a chat based channel.

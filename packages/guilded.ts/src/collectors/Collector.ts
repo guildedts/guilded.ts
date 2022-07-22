@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import EventEmitter from 'events';
 import { Base } from '../structures/Base';
 import { Client } from '../structures/Client';

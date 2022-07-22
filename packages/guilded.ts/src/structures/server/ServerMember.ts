@@ -4,7 +4,7 @@ import { Server } from './Server';
 import { User } from '../User';
 import { ServerMemberRoleManager } from '../../managers/server/ServerMemberRoleManager';
 import { FetchOptions } from '../../managers/BaseManager';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 /**
  * Represents a server member on Guilded.

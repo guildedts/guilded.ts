@@ -18,7 +18,7 @@ import { APIClientUser, APIMessageSummary, WSEvents } from 'guilded-api-typings'
 import { CalendarEvent } from './calendarEvent/CalendarEvent';
 import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { CalendarEventRsvp } from './calendarEvent/CalendarEventRsvp';
 
 /**

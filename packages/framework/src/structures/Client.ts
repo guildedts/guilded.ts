@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 import { glob, IOptions } from 'glob';
 import BaseClient, { ClientOptions as BaseClientOptions } from 'guilded.ts';
 import { Command } from './Command';

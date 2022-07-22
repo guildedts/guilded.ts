@@ -1,7 +1,7 @@
 import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { ListChannel } from '../structures/channel/ListChannel';
 import { ListItem } from '../structures/listItem/ListItem';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 /**
  * The manager of items that belong to a list channel.

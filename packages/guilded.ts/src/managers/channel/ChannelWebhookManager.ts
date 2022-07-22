@@ -1,7 +1,7 @@
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
-import Collection from '@discordjs/collection';
+import { Collection } from '@discordjs/collection';
 
 /**
  * The manager of webhooks that belong to a channel.
