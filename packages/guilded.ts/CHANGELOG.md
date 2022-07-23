@@ -1,5 +1,16 @@
 # guilded.ts
 
+## 0.13.2
+
+### Patch Changes
+
+-   79e4290: attempt to use changeset publish
+-   Updated dependencies [79e4290]
+    -   @guildedts/builders@0.2.9
+    -   guilded-api-typings@0.8.2
+    -   @guildedts/rest@0.10.2
+    -   @guildedts/ws@0.4.4
+
 ## 0.13.1
 
 ### Patch Changes

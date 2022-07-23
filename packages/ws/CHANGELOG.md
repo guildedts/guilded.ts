@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.4
+
+### Patch Changes
+
+-   79e4290: attempt to use changeset publish
+
 ## 0.4.3
 
 ### Patch Changes

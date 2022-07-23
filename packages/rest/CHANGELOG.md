@@ -1,5 +1,13 @@
 # @guildedts/rest
 
+## 0.10.2
+
+### Patch Changes
+
+-   79e4290: attempt to use changeset publish
+-   Updated dependencies [79e4290]
+    -   guilded-api-typings@0.8.2
+
 ## 0.10.1
 
 ### Patch Changes
