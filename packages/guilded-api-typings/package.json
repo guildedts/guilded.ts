@@ -5,6 +5,7 @@
 	"main": "lib/index.js",
 	"types": "typings/index.d.ts",
 	"files": [
+		"CHANGELOG.md",
 		"lib",
 		"typings"
 	],
