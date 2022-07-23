@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.9
+
+### Patch Changes
+
+-   79e4290: attempt to use changeset publish
+
 ## 0.2.8
 
 ### Patch Changes
