@@ -52,7 +52,6 @@ jobs:
               uses: cpina/github-action-push-to-another-repository@main
               env:
                   API_TOKEN_GITHUB: ${{ secrets.API_GITHUB_TOKEN }}
-                  GUILDED_WEBHOOK_URL: ${{ secrets.GUILDED_WEBHOOK_URL }}
               with:
                   source-directory: docs
                   destination-github-username: guildedts
