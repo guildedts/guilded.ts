@@ -3,6 +3,7 @@ import { Client } from '../structures/Client';
 import * as calendarEvent from './events/calendarEvent';
 import * as channel from './events/channel';
 import * as doc from './events/doc';
+import * as forumTopic from './events/forumTopic';
 import * as listItem from './events/listItem';
 import * as member from './events/member';
 import * as message from './events/message';
@@ -33,6 +34,9 @@ const WSEventHandler: {
 	CalendarEventCreated: calendarEvent.created,
 	CalendarEventUpdated: calendarEvent.updated,
 	CalendarEventDeleted: calendarEvent.deleted,
+	ForumTopicCreated: forumTopic.created,
+	ForumTopicUpdated: forumTopic.updated,
+	ForumTopicDeleted: forumTopic.deleted,
 	CalendarEventRsvpUpdated: calendarEvent.rsvpUpdated,
 	CalendarEventRsvpManyUpdated: calendarEvent.rsvpsUpdated,
 	CalendarEventRsvpDeleted: calendarEvent.rsvpDeleted,

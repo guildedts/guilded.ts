@@ -84,10 +84,10 @@ export interface APICalendarEventEditPayload {
 }
 
 /**
- * The query parameters for fetching calendar events.
+ * The options for fetching calendar events.
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventReadMany
  */
-export interface APIFetchCalendarEventsQuery {
+export interface APICalendarEventFetchManyOptions {
 	/** The date to fetch calendar events before. */
 	before?: Date;
 	/** The date to fetch calendar events after. */

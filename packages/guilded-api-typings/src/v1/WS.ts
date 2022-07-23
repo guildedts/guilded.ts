@@ -6,6 +6,7 @@ import { APIServerMember, APIServerBan } from './structures/Server';
 import { APIWebhook } from './structures/Webhook';
 import { APICalendarEvent, APICalendarEventRsvp } from './structures/CalendarEvent';
 import { APIClientUser } from './structures/User';
+import { APIForumTopic } from './structures/ForumTopic';
 
 /** The ready payload of the websocket. */
 export interface WSReadyPayload {
@@ -257,6 +258,36 @@ export interface WSEvents {
 		serverId: string;
 		/** The deleted calendar event. */
 		calendarEvent: APICalendarEvent;
+	};
+	/**
+	 * Emitted when a forum topic is created.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicCreated
+	 */
+	ForumTopicCreated: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The created forum topic. */
+		forumTopic: APIForumTopic;
+	};
+	/**
+	 * Emitted when a forum topic is edited.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicUpdated
+	 */
+	ForumTopicUpdated: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The edited forum topic. */
+		forumTopic: APIForumTopic;
+	};
+	/**
+	 * Emitted when a forum topic is deleted.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicDeleted
+	 */
+	ForumTopicDeleted: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The deleted forum topic. */
+		forumTopic: APIForumTopic;
 	};
 	/**
 	 * Emitted when a calendar event RSVP is edited.

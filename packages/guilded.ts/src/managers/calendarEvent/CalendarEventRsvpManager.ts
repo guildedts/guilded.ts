@@ -32,7 +32,6 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 	 * @example calanderEventRsvps.fetch();
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, CalendarEventRsvp>>;
-	/** @ignore */
 	fetch(arg1?: string | CalendarEventRsvp | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof CalendarEventRsvp)
 			return this.fetchSingle(arg1, arg2);

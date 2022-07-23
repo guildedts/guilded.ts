@@ -29,7 +29,6 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 * @example bans.fetch();
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, ServerBan>>;
-	/** @ignore */
 	fetch(arg1?: string | ServerBan | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof ServerBan)
 			return this.fetchSingle(arg1, arg2);

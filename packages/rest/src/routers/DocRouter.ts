@@ -1,4 +1,4 @@
-import { APIDoc, APIDocPayload, APIFetchDocsQuery, Routes } from 'guilded-api-typings';
+import { APIDoc, APIDocPayload, APIDocFetchManyOptions, Routes } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
 /**
@@ -21,9 +21,9 @@ export class DocRouter extends BaseRouter {
 	 * @returns The fetched docs.
 	 * @example docs.fetchMany('abc');
 	 */
-	fetch(channelId: string, options?: APIFetchDocsQuery): Promise<APIDoc[]>;
+	fetch(channelId: string, options?: APIDocFetchManyOptions): Promise<APIDoc[]>;
 	/** @ignore */
-	fetch(channelId: string, docIdOrOptions?: number | APIFetchDocsQuery) {
+	fetch(channelId: string, docIdOrOptions?: number | APIDocFetchManyOptions) {
 		if (typeof docIdOrOptions === 'number') return this.fetchSingle(channelId, docIdOrOptions);
 		return this.fetchMany(channelId, docIdOrOptions);
 	}
@@ -35,8 +35,8 @@ export class DocRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APIFetchDocsQuery) {
-		const { docs } = await this.rest.get<{ docs: APIDoc[] }, APIFetchDocsQuery>(
+	private async fetchMany(channelId: string, options?: APIDocFetchManyOptions) {
+		const { docs } = await this.rest.get<{ docs: APIDoc[] }, APIDocFetchManyOptions>(
 			Routes.docs(channelId),
 			options,
 		);

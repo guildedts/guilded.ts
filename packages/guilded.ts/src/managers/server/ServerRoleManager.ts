@@ -22,7 +22,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @returns The fetched roles that belong to the member.
 	 * @example roles.fetch(member);
 	 */
-	async fetch(member: string | ServerMember, options?: FetchServerRolesOptions) {
+	async fetch(member: string | ServerMember, options?: ServerRoleFetchManyOptions) {
 		member = member instanceof ServerMember ? member.id : member;
 		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, member);
 		const roles = new Collection<number, ServerRole>();
@@ -77,7 +77,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 }
 
 /** The options for fetching server roles. */
-export interface FetchServerRolesOptions extends FetchManyOptions {
+export interface ServerRoleFetchManyOptions extends FetchManyOptions {
 	/** Whether to cache the fetched member roles. */
 	cacheMemberRoles?: boolean;
 }

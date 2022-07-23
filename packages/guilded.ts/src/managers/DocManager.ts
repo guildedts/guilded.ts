@@ -1,4 +1,4 @@
-import { APIFetchDocsQuery } from 'guilded-api-typings';
+import { APIDocFetchManyOptions } from 'guilded-api-typings';
 import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { Doc } from '../structures/Doc';
 import { DocChannel } from '../structures/channel/DocChannel';
@@ -28,9 +28,8 @@ export class DocManager extends BaseManager<number, Doc> {
 	 * @returns The fetched docs.
 	 * @example docs.fetch();
 	 */
-	fetch(options?: FetchDocsOptions): Promise<Collection<number, Doc>>;
-	/** @ignore */
-	fetch(arg1?: number | Doc | FetchDocsOptions, arg2?: FetchOptions) {
+	fetch(options?: DocFetchManyOptions): Promise<Collection<number, Doc>>;
+	fetch(arg1?: number | Doc | DocFetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'number' || arg1 instanceof Doc) return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
@@ -45,7 +44,7 @@ export class DocManager extends BaseManager<number, Doc> {
 	}
 
 	/** @ignore */
-	private async fetchMany(options?: FetchDocsOptions) {
+	private async fetchMany(options?: DocFetchManyOptions) {
 		const raw = await this.client.api.docs.fetch(this.channel.id, options);
 		const docs = new Collection<number, Doc>();
 		for (const data of raw) {
@@ -82,7 +81,7 @@ export class DocManager extends BaseManager<number, Doc> {
 	}
 
 	/**
-	 * Delete a doc from channel.
+	 * Delete a doc from the channel.
 	 * @param doc The doc to delete.
 	 * @example docs.delete(doc);
 	 */
@@ -93,4 +92,4 @@ export class DocManager extends BaseManager<number, Doc> {
 }
 
 /** The options for fetching docs. */
-export interface FetchDocsOptions extends FetchManyOptions, APIFetchDocsQuery {}
+export interface DocFetchManyOptions extends FetchManyOptions, APIDocFetchManyOptions {}

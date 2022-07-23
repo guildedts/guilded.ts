@@ -1,6 +1,6 @@
 import { APIListItem, APIListItemSummary, APIMentions } from 'guilded-api-typings';
 import { Base } from '../Base';
-import { Note } from './Note';
+import { ListItemNote } from './ListItemNote';
 import { ListChannel } from '../channel/ListChannel';
 import { FetchOptions } from '../../managers/BaseManager';
 
@@ -34,7 +34,7 @@ export class ListItem extends Base {
 	/** The ID of the user that completed the list item. */
 	readonly completedBy?: string;
 	/** The note of the list item. */
-	readonly note?: Note;
+	readonly note?: ListItemNote;
 
 	/**
 	 * @param channel The list channel the item belongs to.
@@ -59,7 +59,7 @@ export class ListItem extends Base {
 		this.parentId = raw.parentListItemId;
 		this.completedAt = raw.completedAt ? new Date(raw.completedAt) : undefined;
 		this.completedBy = raw.completedBy;
-		this.note = raw.note ? new Note(this, raw.note) : undefined;
+		this.note = raw.note ? new ListItemNote(this, raw.note) : undefined;
 		if (cache) channel.items.cache.set(this.id, this);
 	}
 

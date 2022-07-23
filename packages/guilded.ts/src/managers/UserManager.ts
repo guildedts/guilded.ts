@@ -29,7 +29,6 @@ export class UserManager extends BaseManager<string, User> {
 	 * @Example users.fetch(server);
 	 */
 	fetch(server: string | Server): Promise<Collection<string, User>>;
-	/** @ignore */
 	fetch(arg1: string | Server, arg2?: string | User) {
 		if (arg2) return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);

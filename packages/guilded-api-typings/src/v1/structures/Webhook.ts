@@ -42,10 +42,10 @@ export interface APIWebhookEditPayload {
 }
 
 /**
- * The query parameters for fetching webhooks.
+ * The options for fetching webhooks.
  * @see https://www.guilded.gg/docs/api/webhook/WebhookReadMany
  */
-export interface APIFetchWebhooksQuery {
+export interface APIhWebhookFetchManyOptions {
 	/** The ID of the channel the webhooks belong to. */
 	channelId: string;
 }

@@ -102,20 +102,3 @@ export interface APIMentions {
 	/** Whether here was mentioned. */
 	here?: boolean;
 }
-
-/**
- * Represents a content reaction on Guilded.
- * @see https://www.guilded.gg/docs/api/reactions/ContentReaction
- */
-export interface APIReaction {
-	/** The ID of the reaction. */
-	id: number;
-	/** The ID of the server the reaction belongs to. */
-	serverId?: string;
-	/** The date the reaction was created. */
-	createdAt: string;
-	/** The ID of the user that created the reaction. */
-	createdBy: string;
-	/** The ID of the webhook that created the reaction. */
-	createdByWebhookId?: string;
-}

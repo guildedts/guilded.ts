@@ -1,7 +1,7 @@
 import {
 	APIMessagePayload,
 	APIEmbed,
-	APIFetchMessagesQuery,
+	APIMessageFetchOptions,
 	APIMessageEditPayload,
 	APIMessageEditPayloadResolvable,
 	APIMessagePayloadResolvable,
@@ -36,9 +36,8 @@ export class MessageManager extends BaseManager<string, Message> {
 	 * @returns The fetched messages.
 	 * @example messages.fetch();
 	 */
-	fetch(options?: FetchMessagesOptions): Promise<Collection<string, Message>>;
-	/** @ignore */
-	fetch(arg1?: string | Message | FetchMessagesOptions, arg2?: FetchOptions) {
+	fetch(options?: MessageFetchManyOptions): Promise<Collection<string, Message>>;
+	fetch(arg1?: string | Message | MessageFetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof Message)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -54,7 +53,7 @@ export class MessageManager extends BaseManager<string, Message> {
 	}
 
 	/** @ignore */
-	private async fetchMany(options?: FetchMessagesOptions) {
+	private async fetchMany(options?: MessageFetchManyOptions) {
 		const raw = await this.client.api.messages.fetch(this.channel.id, options);
 		const messages = new Collection<string, Message>();
 		for (const data of raw) {
@@ -107,7 +106,7 @@ export class MessageManager extends BaseManager<string, Message> {
 }
 
 /** The options for fetching messages. */
-export interface FetchMessagesOptions extends FetchManyOptions, APIFetchMessagesQuery {}
+export interface MessageFetchManyOptions extends FetchManyOptions, APIMessageFetchOptions {}
 
 /** The payload for creating a message. */
 export interface MessagePayload extends Omit<APIMessagePayload, 'embeds'> {

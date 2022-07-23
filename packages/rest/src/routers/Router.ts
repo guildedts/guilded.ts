@@ -7,11 +7,11 @@ import { ServerRouter } from './server/ServerRouter';
 import { BaseRouter } from './BaseRouter';
 import { ChannelRouter } from './ChannelRouter';
 import { DocRouter } from './DocRouter';
+import { ForumTopicRouter } from './ForumTopicRouter';
 import { GroupRouter } from './GroupRouter';
 import { ListItemRouter } from './ListItemRouter';
 import { MessageRouter } from './MessageRouter';
 import { ReactionRouter } from './ReactionRouter';
-import { TopicRouter } from './TopicRouter';
 import { WebhookRouter } from './WebhookRouter';
 import { RESTManager } from '../RESTManager';
 
@@ -28,8 +28,8 @@ export class Router extends BaseRouter {
 	readonly serverMembers: ServerMemberRouter;
 	/** The server ban router for the Guilded REST API. */
 	readonly serverBans: ServerBanRouter;
-	/** The forum thread router for the Guilded REST API. */
-	readonly topics: TopicRouter;
+	/** The forum topic router for the Guilded REST API. */
+	readonly forumTopics: ForumTopicRouter;
 	/** The list item router for the Guilded REST API. */
 	readonly listItems: ListItemRouter;
 	/** The doc router for the Guilded REST API. */
@@ -56,7 +56,7 @@ export class Router extends BaseRouter {
 		this.messages = new MessageRouter(rest);
 		this.serverMembers = new ServerMemberRouter(rest);
 		this.serverBans = new ServerBanRouter(rest);
-		this.topics = new TopicRouter(rest);
+		this.forumTopics = new ForumTopicRouter(rest);
 		this.listItems = new ListItemRouter(rest);
 		this.docs = new DocRouter(rest);
 		this.reactions = new ReactionRouter(rest);

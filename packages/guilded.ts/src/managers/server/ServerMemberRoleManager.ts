@@ -19,7 +19,7 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 	 * @returns The fetched roles that belong to the member.
 	 * @example roles.fetch();
 	 */
-	fetch(options?: FetchServerMemberRolesOptions) {
+	fetch(options?: ServerMemberRoleFetchManyOptions) {
 		return this.member.server.roles.fetch(this.member, {
 			cache: options?.cacheServerRoles,
 			cacheMemberRoles: options?.cache,
@@ -48,7 +48,7 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 }
 
 /** The options for fetching server member roles. */
-export interface FetchServerMemberRolesOptions extends FetchManyOptions {
+export interface ServerMemberRoleFetchManyOptions extends FetchManyOptions {
 	/** Whether to cache the fetched server roles. */
 	cacheServerRoles?: boolean;
 }

@@ -5,12 +5,18 @@ importers:
   .:
     specifiers:
       '@changesets/cli': ^2.24.0
+      '@guildedts/builders': workspace:^
+      '@guildedts/framework': workspace:^
+      '@guildedts/rest': workspace:^
+      '@guildedts/ws': workspace:^
       '@types/glob': ^7.2.0
       '@types/node': ^18.0.6
       '@typescript-eslint/eslint-plugin': ^5.30.7
       '@typescript-eslint/parser': ^5.30.7
       eslint: ^8.20.0
       eslint-config-prettier: ^8.5.0
+      guilded-api-typings: workspace:^
+      guilded.ts: workspace:^
       prettier: ^2.7.1
       rimraf: ^3.0.2
       ts-node: ^10.9.1
@@ -19,12 +25,18 @@ importers:
       typescript: ^4.7.4
     devDependencies:
       '@changesets/cli': 2.24.0
+      '@guildedts/builders': link:packages/builders
+      '@guildedts/framework': link:packages/framework
+      '@guildedts/rest': link:packages/rest
+      '@guildedts/ws': link:packages/ws
       '@types/glob': 7.2.0
       '@types/node': 18.0.6
       '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       eslint: 8.20.0
       eslint-config-prettier: 8.5.0_eslint@8.20.0
+      guilded-api-typings: link:packages/guilded-api-typings
+      guilded.ts: link:packages/guilded.ts
       prettier: 2.7.1
       rimraf: 3.0.2
       ts-node: 10.9.1_tdn3ypgnfy6bmey2q4hu5jonwi

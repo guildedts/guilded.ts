@@ -28,7 +28,6 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	 * @example items.fetch();
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, ListItem>>;
-	/** @ignore */
 	fetch(arg1?: string | ListItem | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof ListItem)
 			return this.fetchSingle(arg1, arg2);

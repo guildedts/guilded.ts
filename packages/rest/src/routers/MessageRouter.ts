@@ -1,5 +1,5 @@
 import {
-	APIFetchMessagesQuery,
+	APIMessageFetchOptions,
 	APIMessage,
 	APIMessageEditPayload,
 	APIMessagePayload,
@@ -29,9 +29,9 @@ export class MessageRouter extends BaseRouter {
 	 * @returns The fetched messages.
 	 * @example messages.fetch('abc');
 	 */
-	fetch(channelId: string, options?: APIFetchMessagesQuery): Promise<APIMessage[]>;
+	fetch(channelId: string, options?: APIMessageFetchOptions): Promise<APIMessage[]>;
 	/** @ignore */
-	fetch(channelId: string, messageIdOrOptions?: string | APIFetchMessagesQuery) {
+	fetch(channelId: string, messageIdOrOptions?: string | APIMessageFetchOptions) {
 		if (typeof messageIdOrOptions === 'string')
 			return this.fetchSingle(channelId, messageIdOrOptions);
 		return this.fetchMany(channelId, messageIdOrOptions);
@@ -46,11 +46,11 @@ export class MessageRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APIFetchMessagesQuery) {
-		const { messages } = await this.rest.get<{ messages: APIMessage[] }, APIFetchMessagesQuery>(
-			Routes.messages(channelId),
-			options,
-		);
+	private async fetchMany(channelId: string, options?: APIMessageFetchOptions) {
+		const { messages } = await this.rest.get<
+			{ messages: APIMessage[] },
+			APIMessageFetchOptions
+		>(Routes.messages(channelId), options);
 		return messages;
 	}
 

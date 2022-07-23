@@ -40,10 +40,10 @@ export interface APIDocPayload {
 }
 
 /**
- * The query parameters for fetching docs.
+ * The options for fetching docs.
  * @see https://www.guilded.gg/docs/api/docs/DocReadMany
  */
-export interface APIFetchDocsQuery {
+export interface APIDocFetchManyOptions {
 	/** The date to fetch docs before. */
 	before?: Date;
 	/** The maximum number of docs to fetch. */

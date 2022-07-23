@@ -92,10 +92,10 @@ export type APIMessagePayloadResolvable = string | APIEmbed[] | APIMessagePayloa
 export type APIMessageEditPayloadResolvable = string | APIEmbed[] | APIMessageEditPayload;
 
 /**
- * The query parameters for fetching messages.
+ * The options for fetching messages.
  * @see https://www.guilded.gg/docs/api/chat/ChannelMessageReadMany
  */
-export interface APIFetchMessagesQuery {
+export interface APIMessageFetchOptions {
 	/** The date to fetch messages before. */
 	before?: Date;
 	/** The date to fetch messages after. */

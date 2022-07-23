@@ -28,8 +28,7 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * @example members.fetch();
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, ServerMember>>;
-	/** @ignore */
-	async fetch(arg1?: string | ServerMember | FetchManyOptions, arg2?: FetchOptions) {
+	fetch(arg1?: string | ServerMember | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof ServerMember)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);

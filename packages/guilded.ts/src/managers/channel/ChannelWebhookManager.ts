@@ -28,7 +28,6 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	 * @example webhooks.fetch();
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, Webhook>>;
-	/** @ignore */
 	fetch(arg1?: string | Webhook | FetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'string' || arg1 instanceof Webhook)
 			return this.fetchSingle(arg1, arg2);

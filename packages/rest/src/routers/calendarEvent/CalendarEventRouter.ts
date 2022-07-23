@@ -2,7 +2,7 @@ import {
 	APICalendarEvent,
 	APICalendarEventEditPayload,
 	APICalendarEventPayload,
-	APIFetchCalendarEventsQuery,
+	APICalendarEventFetchManyOptions,
 	Routes,
 } from 'guilded-api-typings';
 import { BaseRouter } from '../BaseRouter';
@@ -27,9 +27,12 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @returns The fetched calendar events.
 	 * @example calendarEvents.fetch('abc');
 	 */
-	fetch(channelId: string, options?: APIFetchCalendarEventsQuery): Promise<APICalendarEvent[]>;
+	fetch(
+		channelId: string,
+		options?: APICalendarEventFetchManyOptions,
+	): Promise<APICalendarEvent[]>;
 	/** @ignore */
-	fetch(channelId: string, calendarEventIdOrOptions?: number | APIFetchCalendarEventsQuery) {
+	fetch(channelId: string, calendarEventIdOrOptions?: number | APICalendarEventFetchManyOptions) {
 		if (typeof calendarEventIdOrOptions === 'number')
 			return this.fetchSingle(channelId, calendarEventIdOrOptions);
 		return this.fetchMany(channelId, calendarEventIdOrOptions);
@@ -44,10 +47,10 @@ export class CalendarEventRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APIFetchCalendarEventsQuery) {
+	private async fetchMany(channelId: string, options?: APICalendarEventFetchManyOptions) {
 		const { calendarEvents } = await this.rest.get<
 			{ calendarEvents: APICalendarEvent[] },
-			APIFetchCalendarEventsQuery
+			APICalendarEventFetchManyOptions
 		>(Routes.calendarEvents(channelId), options);
 		return calendarEvents;
 	}

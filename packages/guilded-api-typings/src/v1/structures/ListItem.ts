@@ -6,7 +6,7 @@ import { APIMentions } from './Channel';
  */
 export interface APIListItem extends APIListItemSummary {
 	/** The note of the list item. */
-	note?: APINote;
+	note?: APIListItemNote;
 }
 
 /**
@@ -41,15 +41,15 @@ export interface APIListItemSummary {
 	/** The ID of the user that completed the list item. */
 	completedBy?: string;
 	/** The note of the list item. */
-	note?: APINoteSummary;
+	note?: APIListItemNoteSummary;
 }
 
 /**
  * Represents a list item note on Guilded.
  * @see https://www.guilded.gg/docs/api/listItems/ListItem
  */
-export interface APINote extends APINoteSummary {
-	/** The content of the note. */
+export interface APIListItemNote extends APIListItemNoteSummary {
+	/** The content of the list item note. */
 	content: string;
 }
 
@@ -57,16 +57,16 @@ export interface APINote extends APINoteSummary {
  * Represents a summary of a note on a list item on Guilded.
  * @see https://www.guilded.gg/docs/api/listItems/ListItemSummary
  */
-export interface APINoteSummary {
-	/** The mentions of the note. */
+export interface APIListItemNoteSummary {
+	/** The mentions of the list item note. */
 	mentions?: APIMentions;
-	/** The date the note was created. */
+	/** The date the list item note was created. */
 	createdAt: string;
-	/** The ID of the user that created the note. */
+	/** The ID of the user that created the list item note. */
 	createdBy: string;
-	/** The date the note was edited. */
+	/** The date the list item note was edited. */
 	updatedAt?: string;
-	/** The ID of the user that edited the note. */
+	/** The ID of the user that edited the list item note. */
 	updatedBy?: string;
 }
 
@@ -78,14 +78,14 @@ export interface APIListItemPayload {
 	/** The message of the list item. */
 	message: string;
 	/** The note of the list item. */
-	note?: APINotePayload;
+	note?: APIListItemNotePayload;
 }
 
 /**
  * The payload for creating a note.
  * @see https://www.guilded.gg/docs/api/listItems/ListItemCreate
  */
-export interface APINotePayload {
-	/** The content of the note. */
+export interface APIListItemNotePayload {
+	/** The content of the list item note. */
 	content: string;
 }

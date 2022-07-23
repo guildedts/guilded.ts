@@ -1,7 +1,7 @@
-import { APIChannel } from 'guilded-api-typings';
+import { APIChannel, APIForumTopicPayload } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
-import { TopicManager } from '../../managers/TopicManager';
+import { ForumTopicManager } from '../../managers/ForumTopicManager';
 
 /**
  * Represents a forum channel on Guilded.
@@ -9,7 +9,7 @@ import { TopicManager } from '../../managers/TopicManager';
  */
 export class ForumChannel extends Channel {
 	/** The manager of topics that belong to the forum channel. */
-	readonly topics: TopicManager;
+	readonly topics: ForumTopicManager;
 
 	/**
 	 * @param client The client the forum channel belongs to.
@@ -18,7 +18,7 @@ export class ForumChannel extends Channel {
 	 */
 	constructor(client: Client, raw: APIChannel, cache?: boolean) {
 		super(client, raw, cache);
-		this.topics = new TopicManager(this);
+		this.topics = new ForumTopicManager(this);
 	}
 
 	/**
@@ -26,9 +26,9 @@ export class ForumChannel extends Channel {
 	 * @param title The title of the topic.
 	 * @param content The content of the topic.
 	 * @returns The created topic.
-	 * @example channel.post('Title', 'Content');
+	 * @example channel.post({ title: 'My Topic' });
 	 */
-	post(title: string, content: string) {
-		return this.topics.post(title, content);
+	post(payload: APIForumTopicPayload) {
+		return this.topics.create(payload);
 	}
 }

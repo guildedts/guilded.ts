@@ -1,5 +1,5 @@
 import {
-	APIFetchWebhooksQuery,
+	APIhWebhookFetchManyOptions,
 	APIWebhook,
 	APIWebhookEditPayload,
 	APIWebhookPayload,
@@ -34,10 +34,10 @@ export class WebhookRouter extends BaseRouter {
 	 * @example webhooks.fetchMany('abc', 'abc');
 	 */
 	async fetchMany(serverId: string, channelId: string) {
-		const { webhooks } = await this.rest.get<{ webhooks: APIWebhook[] }, APIFetchWebhooksQuery>(
-			Routes.webhooks(serverId),
-			{ channelId },
-		);
+		const { webhooks } = await this.rest.get<
+			{ webhooks: APIWebhook[] },
+			APIhWebhookFetchManyOptions
+		>(Routes.webhooks(serverId), { channelId });
 		return webhooks;
 	}
 

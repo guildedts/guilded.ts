@@ -126,13 +126,27 @@ export class Routes {
 	}
 
 	/**
-	 * The endpoint for topics.
-	 * @param channelId The ID of the channel the topics belongs to.
+	 * The endpoint for forum topics.
+	 * @param channelId The ID of the channel the forum topics belongs to.
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicReadMany
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicCreate
-	 * @example Routes.topics('abc'); // '/channels/abc/topics'
+	 * @example Routes.forumTopics('abc'); // '/channels/abc/topics'
 	 */
-	static topics(channelId: string): `/channels/${string}/topics` {
+	static forumTopics(channelId: string): `/channels/${string}/topics` {
 		return `/channels/${channelId}/topics`;
+	}
+
+	/**
+	 * The endpoint for a forum topic.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param topicId The ID of the forum topic.
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicRead
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicUpdate
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicDelete
+	 * @example Routes.forumTopic('abc', 123); // '/channels/abc/topics/123'
+	 */
+	static forumTopic(channelId: string, topicId: number): `/channels/${string}/topics/${number}` {
+		return `/channels/${channelId}/topics/${topicId}`;
 	}
 
 	/**

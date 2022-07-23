@@ -20,6 +20,7 @@ import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
 import { Collection } from '@discordjs/collection';
 import { CalendarEventRsvp } from './calendarEvent/CalendarEventRsvp';
+import { ForumTopic } from './ForumTopic';
 
 /**
  * The main hub for interacting with the Guilded API.
@@ -229,6 +230,14 @@ export interface ClientEvents {
 	calendarEventCreate: [event: CalendarEvent];
 	/** Emitted when a calendar event is edited. */
 	calendarEventEdit: [newCalendarEvent: CalendarEvent, oldCalendarEvent?: CalendarEvent];
+	/** Emitted when a calendar event is deleted. */
+	calendarEventDelete: [event: CalendarEvent];
+	/** Emitted when a forum topic is created. */
+	forumTopicCreate: [forumTopic: ForumTopic];
+	/** Emitted when a forum topic is edited. */
+	forumTopicEdit: [newForumTopic: ForumTopic, oldForumTopic?: ForumTopic];
+	/** Emitted when a forum topic is deleted. */
+	forumTopicDelete: [forumTopic: ForumTopic];
 	/** Emitted when a calendar event RSVP is edited. */
 	calendarEventRsvpEdit: [
 		newCalendarEventRsvp: CalendarEventRsvp,
@@ -241,8 +250,6 @@ export interface ClientEvents {
 	];
 	/** Emitted when a calendar event RSVP is deleted. */
 	calendarEventRsvpDelete: [calendarEventRsvp: CalendarEventRsvp];
-	/** Emitted when a calendar event is deleted. */
-	calendarEventDelete: [event: CalendarEvent];
 	/** Emitted when a list item is created. */
 	listItemCreate: [listItem: ListItem];
 	/** Emitted when a list item is edited. */
@@ -313,10 +320,12 @@ export interface ClientOptions {
 	cacheUsers?: boolean;
 	/** The max cache size for users. */
 	maxUserCache?: number;
-	/** Whether to cache topics. */
-	cacheTopics?: boolean;
-	/** The max cache size for topics. */
-	maxTopicCache?: number;
+	/** Whether to cache forum topics. */
+	cacheForumTopics?: boolean;
+	/** The max cache size for forum topics. */
+	maxForumTopicCache?: number;
+	/** Whether to dispose cached forum topics. */
+	disposeCachedForumTopics?: boolean;
 	/** Whether to cache list items. */
 	cacheListItems?: boolean;
 	/** The max cache size for list items. */

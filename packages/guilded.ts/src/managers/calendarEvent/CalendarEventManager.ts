@@ -2,7 +2,7 @@ import { Collection } from '@discordjs/collection';
 import {
 	APICalendarEventEditPayload,
 	APICalendarEventPayload,
-	APIFetchCalendarEventsQuery,
+	APICalendarEventFetchManyOptions,
 } from 'guilded-api-typings';
 import { CalendarEvent } from '../../structures/calendarEvent/CalendarEvent';
 import { CalendarChannel } from '../../structures/channel/CalendarChannel';
@@ -32,9 +32,8 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	 * @returns The fetched calendar events.
 	 * @example calanderEvents.fetch();
 	 */
-	fetch(options?: FetchCalendarEventsOptions): Promise<Collection<number, CalendarEvent>>;
-	/** @ignore */
-	fetch(arg1?: number | CalendarEvent | FetchCalendarEventsOptions, arg2?: FetchOptions) {
+	fetch(options?: CalendarEventFetchManyOptions): Promise<Collection<number, CalendarEvent>>;
+	fetch(arg1?: number | CalendarEvent | CalendarEventFetchManyOptions, arg2?: FetchOptions) {
 		if (typeof arg1 === 'number' || arg1 instanceof CalendarEvent)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
@@ -50,7 +49,7 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	}
 
 	/** @ignore */
-	private async fetchMany(options?: FetchCalendarEventsOptions) {
+	private async fetchMany(options?: CalendarEventFetchManyOptions) {
 		const raw = await this.client.api.calendarEvents.fetch(this.channel.id, options);
 		const calendarEvents = new Collection<number, CalendarEvent>();
 		for (const data of raw) {
@@ -100,4 +99,6 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 }
 
 /** The options for fetching calendar events. */
-export interface FetchCalendarEventsOptions extends FetchManyOptions, APIFetchCalendarEventsQuery {}
+export interface CalendarEventFetchManyOptions
+	extends FetchManyOptions,
+		APICalendarEventFetchManyOptions {}
