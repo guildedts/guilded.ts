@@ -22,7 +22,6 @@ jobs:
             -   name: Create Release Pull Request or Publish to NPM
                 id: changesets
                 uses: changesets/action@v1
-                continue-on-error: true
                 with:
                     publish: pnpm run publish --ignore-scripts
                     version: pnpm run version
