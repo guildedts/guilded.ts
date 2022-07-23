@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.11
+
+### Patch Changes
+
+-   8575cf6: feat: new publish method
+
 ## 0.2.10
 
 ### Patch Changes

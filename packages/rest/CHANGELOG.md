@@ -1,5 +1,13 @@
 # @guildedts/rest
 
+## 0.10.4
+
+### Patch Changes
+
+-   8575cf6: feat: new publish method
+-   Updated dependencies [8575cf6]
+    -   guilded-api-typings@0.8.4
+
 ## 0.10.3
 
 ### Patch Changes
