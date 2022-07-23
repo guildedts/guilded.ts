@@ -1,5 +1,16 @@
 # guilded.ts
 
+## 0.13.5
+
+### Patch Changes
+
+-   a8aeeca: fix: fix doc generation
+-   Updated dependencies [a8aeeca]
+    -   @guildedts/builders@0.2.12
+    -   guilded-api-typings@0.8.5
+    -   @guildedts/rest@0.10.5
+    -   @guildedts/ws@0.4.7
+
 ## 0.13.4
 
 ### Patch Changes

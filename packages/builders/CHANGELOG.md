@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.12
+
+### Patch Changes
+
+-   a8aeeca: fix: fix doc generation
+
 ## 0.2.11
 
 ### Patch Changes
