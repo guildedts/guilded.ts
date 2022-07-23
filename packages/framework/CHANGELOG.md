@@ -1,5 +1,13 @@
 # @guildedts/framework
 
+## 0.1.9
+
+### Patch Changes
+
+-   8575cf6: feat: new publish method
+-   Updated dependencies [8575cf6]
+    -   guilded.ts@0.13.4
+
 ## 0.1.8
 
 ### Patch Changes
