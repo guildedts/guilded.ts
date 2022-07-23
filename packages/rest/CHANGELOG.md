@@ -1,5 +1,13 @@
 # @guildedts/rest
 
+## 0.10.3
+
+### Patch Changes
+
+-   f88c395: attempt 2 of using changeset publish
+-   Updated dependencies [f88c395]
+    -   guilded-api-typings@0.8.3
+
 ## 0.10.2
 
 ### Patch Changes

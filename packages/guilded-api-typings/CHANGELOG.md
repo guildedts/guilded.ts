@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.8.3
+
+### Patch Changes
+
+-   f88c395: attempt 2 of using changeset publish
+
 ## 0.8.2
 
 ### Patch Changes
