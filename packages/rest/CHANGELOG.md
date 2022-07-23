@@ -1,5 +1,13 @@
 # @guildedts/rest
 
+## 0.10.1
+
+### Patch Changes
+
+-   49dc7d8: fix: fix publish
+-   Updated dependencies [49dc7d8]
+    -   guilded-api-typings@0.8.1
+
 ## 0.10.0
 
 ### Minor Changes
