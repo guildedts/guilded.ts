@@ -1,5 +1,13 @@
 # @guildedts/rest
 
+## 0.10.5
+
+### Patch Changes
+
+-   a8aeeca: fix: fix doc generation
+-   Updated dependencies [a8aeeca]
+    -   guilded-api-typings@0.8.5
+
 ## 0.10.4
 
 ### Patch Changes

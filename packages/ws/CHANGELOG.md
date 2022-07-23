@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.7
+
+### Patch Changes
+
+-   a8aeeca: fix: fix doc generation
+
 ## 0.4.6
 
 ### Patch Changes
