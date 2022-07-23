@@ -37,9 +37,6 @@
 	},
 	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
-	"workspaces": [
-		"packages/*"
-	],
 	"devDependencies": {
 		"@changesets/cli": "^2.24.0",
 		"@types/glob": "^7.2.0",
