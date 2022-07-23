@@ -1,5 +1,23 @@
 # @guildedts/rest
 
+## 0.10.0
+
+### Minor Changes
+
+-   4fd7f3f: feat: full forum topic support
+
+### Patch Changes
+
+-   a402608: refactor: switch from Yarn to PNPM
+-   4fd7f3f: feat: improve consistancy in naming
+
+    **example:** `FetchDocsOptions` is now `DocFetchManyOptions`
+
+-   Updated dependencies [a402608]
+-   Updated dependencies [4fd7f3f]
+-   Updated dependencies [4fd7f3f]
+    -   guilded-api-typings@0.8.0
+
 ## 0.9.0
 
 ### Minor Changes
