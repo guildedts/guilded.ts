@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.8
+
+### Patch Changes
+
+-   49dc7d8: fix: fix publish
+
 ## 0.2.7
 
 ### Patch Changes

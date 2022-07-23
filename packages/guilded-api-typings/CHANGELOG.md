@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.8.1
+
+### Patch Changes
+
+-   49dc7d8: fix: fix publish
+
 ## 0.8.0
 
 ### Minor Changes

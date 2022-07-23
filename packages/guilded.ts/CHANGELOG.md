@@ -1,5 +1,16 @@
 # guilded.ts
 
+## 0.13.1
+
+### Patch Changes
+
+-   49dc7d8: fix: fix publish
+-   Updated dependencies [49dc7d8]
+    -   @guildedts/builders@0.2.8
+    -   guilded-api-typings@0.8.1
+    -   @guildedts/rest@0.10.1
+    -   @guildedts/ws@0.4.3
+
 ## 0.13.0
 
 ### Minor Changes
