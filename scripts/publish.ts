@@ -2,14 +2,14 @@ import { execSync } from 'child_process';
 import { rmSync } from 'fs';
 import fetch from 'node-fetch';
 
+console.log(process.env);
+
 if (!process.env.GUILDED_WEBHOOK_URL)
 	throw new Error('Missing GUILDED_WEBHOOK_URL environment variable');
 
 execSync('pnpm publish -r --ignore-scripts --report-summary', { stdio: 'inherit' });
 
 const { publishedPackages }: PublishSummary = require('../pnpm-publish-summary.json');
-
-console.log(process);
 
 if (publishedPackages.length > 0) {
 	execSync('pnpm changeset tag', { stdio: 'inherit' });
@@ -20,7 +20,9 @@ if (publishedPackages.length > 0) {
 	fetch(process.env.GUILDED_WEBHOOK_URL!, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ content: `@everyone New releases out now!\n\n${packages.join('\n')}` }),
+		body: JSON.stringify({
+			content: `@everyone New releases out now!\n\n${packages.join('\n')}`,
+		}),
 	}).then((req) =>
 		req.ok
 			? console.log('Release webhook sent')
