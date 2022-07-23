@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.3
+
+### Patch Changes
+
+-   49dc7d8: fix: fix publish
+
 ## 0.4.2
 
 ### Patch Changes
