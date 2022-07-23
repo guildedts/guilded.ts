@@ -11,6 +11,7 @@ importers:
       '@guildedts/ws': workspace:^
       '@types/glob': ^7.2.0
       '@types/node': ^18.0.6
+      '@types/node-fetch': ^2.6.2
       '@typescript-eslint/eslint-plugin': ^5.30.7
       '@typescript-eslint/parser': ^5.30.7
       eslint: ^8.20.0
@@ -19,6 +20,7 @@ importers:
       guilded.ts: workspace:^
       husky: ^8.0.1
       lint-staged: ^13.0.3
+      node-fetch: ^2.6.7
       prettier: ^2.7.1
       pretty-quick: ^3.1.3
       rimraf: ^3.0.2
@@ -34,6 +36,7 @@ importers:
       '@guildedts/ws': link:packages/ws
       '@types/glob': 7.2.0
       '@types/node': 18.0.6
+      '@types/node-fetch': 2.6.2
       '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
       '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
       eslint: 8.20.0
@@ -42,6 +45,7 @@ importers:
       guilded.ts: link:packages/guilded.ts
       husky: 8.0.1
       lint-staged: 13.0.3
+      node-fetch: 2.6.7
       prettier: 2.7.1
       pretty-quick: 3.1.3_prettier@2.7.1
       rimraf: 3.0.2
@@ -2174,7 +2178,6 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-    dev: false
 
   /normalize-package-data/2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -2846,7 +2849,6 @@ packages:
 
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
-    dev: false
 
   /trim-newlines/3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}
@@ -3027,14 +3029,12 @@ packages:
 
   /webidl-conversions/3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
-    dev: false
 
   /whatwg-url/5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
-    dev: false
 
   /which-boxed-primitive/1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
