@@ -8,7 +8,7 @@
 		"build": "pnpm -r build",
 		"lint": "eslint packages/**/*.ts --fix",
 		"format": "prettier --write packages/**/*.ts",
-		"docs": "rimraf docs && typedoc --options tsdoc.json",
+		"docs": "rimraf docs && typedoc --options typedoc.json",
 		"prepare": "pnpm build",
 		"clear": "pnpm -r clear",
 		"refresh": "pnpm clear && rimraf node_modules && pnpm i",

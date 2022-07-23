@@ -13,10 +13,11 @@
 	"lightHighlightTheme": "github-light",
 	"darkHighlightTheme": "github-dark",
 	"excludeExternals": true,
+	"excludeInternal": true,
 	"excludePrivate": true,
 	"media": "media",
 	"out": "docs",
-	"readme": "README.md",
+	"readme": "packages/guilded.ts/README.md",
 	"tsconfig": "tsconfig.json",
 	"hideGenerator": true,
 	"cname": "guildedts.js.org"

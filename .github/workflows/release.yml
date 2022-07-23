@@ -47,7 +47,7 @@ jobs:
             -   name: Install Dependencies and Prepare Packages
                 run: pnpm i
             -   name: Generate Documentation
-                run: pnpm docs
+                run: pnpm run docs
             -   name: Commit Changes
                 uses: cpina/github-action-push-to-another-repository@main
                 env:
