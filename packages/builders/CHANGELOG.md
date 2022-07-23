@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.10
+
+### Patch Changes
+
+-   f88c395: attempt 2 of using changeset publish
+
 ## 0.2.9
 
 ### Patch Changes

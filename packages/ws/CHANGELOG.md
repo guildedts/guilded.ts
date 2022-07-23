@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.5
+
+### Patch Changes
+
+-   f88c395: attempt 2 of using changeset publish
+
 ## 0.4.4
 
 ### Patch Changes

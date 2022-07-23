@@ -1,5 +1,16 @@
 # guilded.ts
 
+## 0.13.3
+
+### Patch Changes
+
+-   f88c395: attempt 2 of using changeset publish
+-   Updated dependencies [f88c395]
+    -   @guildedts/builders@0.2.10
+    -   guilded-api-typings@0.8.3
+    -   @guildedts/rest@0.10.3
+    -   @guildedts/ws@0.4.5
+
 ## 0.13.2
 
 ### Patch Changes
