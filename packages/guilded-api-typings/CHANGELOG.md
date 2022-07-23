@@ -1,5 +1,18 @@
 # guilded-api-typings
 
+## 0.8.0
+
+### Minor Changes
+
+-   4fd7f3f: feat: full forum topic support
+-   4fd7f3f: feat: improve consistancy in naming
+
+    **example:** `FetchDocsOptions` is now `DocFetchManyOptions`
+
+### Patch Changes
+
+-   a402608: refactor: switch from Yarn to PNPM
+
 ## 0.7.0
 
 ### Minor Changes

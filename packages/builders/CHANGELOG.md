@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.7
+
+### Patch Changes
+
+-   a402608: refactor: switch from Yarn to PNPM
+
 ## 0.2.6
 
 ### Patch Changes

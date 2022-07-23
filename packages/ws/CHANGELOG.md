@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.2
+
+### Patch Changes
+
+-   a402608: refactor: switch from Yarn to PNPM
+
 ## 0.4.1
 
 ### Patch Changes

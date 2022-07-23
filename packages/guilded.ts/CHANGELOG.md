@@ -1,5 +1,25 @@
 # guilded.ts
 
+## 0.13.0
+
+### Minor Changes
+
+-   4fd7f3f: feat: full forum topic support
+-   4fd7f3f: feat: improve consistancy in naming
+
+    **example:** `FetchDocsOptions` is now `DocFetchManyOptions`
+
+### Patch Changes
+
+-   a402608: refactor: switch from Yarn to PNPM
+-   Updated dependencies [a402608]
+-   Updated dependencies [4fd7f3f]
+-   Updated dependencies [4fd7f3f]
+    -   @guildedts/builders@0.2.7
+    -   guilded-api-typings@0.8.0
+    -   @guildedts/rest@0.10.0
+    -   @guildedts/ws@0.4.2
+
 ## 0.12.0
 
 ### Minor Changes
