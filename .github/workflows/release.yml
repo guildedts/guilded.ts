@@ -19,10 +19,6 @@ jobs:
                 uses: pnpm/action-setup@v2
             -   name: Install Dependencies and Prepare Packages
                 run: pnpm i
-            -   name: Setup npmrc
-                run: echo '//registry.npmjs.org/:_authToken=${{ secrets.API_NPM_TOKEN }}' > .npmrc
-            -   name: Setup PNPM config
-                run: pnpm config set store-dir .pnpm-store
             -   name: Create Release Pull Request or Publish to NPM
                 id: changesets
                 uses: changesets/action@v1
@@ -33,6 +29,7 @@ jobs:
                     commit: 'chore: release packages'
                 env:
                     GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
+                    NPM_TOKEN: ${{ secrets.API_NPM_TOKEN }}
     docs:
         name: Deploy Documentation
         runs-on: ubuntu-latest

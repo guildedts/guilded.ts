@@ -14,7 +14,7 @@
 		"refresh": "pnpm clear && rimraf node_modules && pnpm i",
 		"changeset": "changeset",
 		"version": "changeset version",
-		"publish": "changeset publish"
+		"publish": "changeset tag && pnpm -r publish"
 	},
 	"keywords": [
 		"guilded",
