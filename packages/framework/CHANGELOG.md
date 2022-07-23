@@ -1,5 +1,13 @@
 # @guildedts/framework
 
+## 0.1.10
+
+### Patch Changes
+
+-   a8aeeca: fix: fix doc generation
+-   Updated dependencies [a8aeeca]
+    -   guilded.ts@0.13.5
+
 ## 0.1.9
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.8.5
+
+### Patch Changes
+
+-   a8aeeca: fix: fix doc generation
+
 ## 0.8.4
 
 ### Patch Changes
