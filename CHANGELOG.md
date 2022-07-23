@@ -1,1 +1,0 @@
-packages/guilded.ts/CHANGELOG.md
