@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.8.4
+
+### Patch Changes
+
+-   8575cf6: feat: new publish method
+
 ## 0.8.3
 
 ### Patch Changes

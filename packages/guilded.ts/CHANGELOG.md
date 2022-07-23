@@ -1,5 +1,16 @@
 # guilded.ts
 
+## 0.13.4
+
+### Patch Changes
+
+-   8575cf6: feat: new publish method
+-   Updated dependencies [8575cf6]
+    -   @guildedts/builders@0.2.11
+    -   guilded-api-typings@0.8.4
+    -   @guildedts/rest@0.10.4
+    -   @guildedts/ws@0.4.6
+
 ## 0.13.3
 
 ### Patch Changes

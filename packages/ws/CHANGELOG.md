@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.6
+
+### Patch Changes
+
+-   8575cf6: feat: new publish method
+
 ## 0.4.5
 
 ### Patch Changes
