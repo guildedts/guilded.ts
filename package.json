@@ -6,12 +6,11 @@
 	"scripts": {
 		"test": "ts-node test",
 		"build": "pnpm -r build",
-		"lint": "eslint packages/**/*.ts --fix",
-		"format": "prettier --write packages/**/*.ts",
+		"lint": "eslint packages/*/src/**/*.ts scripts/*.ts",
+		"format": "prettier --write **/*.{ts,md,json,yml,yaml}",
 		"docs": "rimraf docs && typedoc --options typedoc.json",
 		"prepare": "husky install && pnpm build",
 		"clear": "pnpm -r clear",
-		"refresh": "pnpm clear && rimraf node_modules && pnpm i",
 		"changeset": "changeset",
 		"version": "changeset version",
 		"publish": "ts-node scripts/publish"

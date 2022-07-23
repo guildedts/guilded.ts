@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: ''
 assignees: ''
-
 ---
 
 **Describe the bug**
@@ -12,6 +11,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -24,9 +24,10 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Please fill out the versions this bug is happening in:**
- - Node.JS: V0.0.0
- - Package manager (NPM): V0.0.0
- - Package (Guilded.TS): V0.0.0
+
+-   Node.JS: V0.0.0
+-   Package manager (NPM): V0.0.0
+-   Package (Guilded.TS): V0.0.0
 
 **Additional context**
 Add any other context about the problem here.
