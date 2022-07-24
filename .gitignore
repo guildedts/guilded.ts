@@ -4,3 +4,5 @@ dist
 typings
 docs
 gtsconfig.*
+pnpm-publish-summary.json
+changeset-status.json
