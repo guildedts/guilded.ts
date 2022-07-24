@@ -17,3 +17,21 @@ jobs:
               run: pnpm i
             - name: Lint Packages
               run: pnpm run lint
+	publish-dev:
+		name: Publish Dev
+		runs-on: ubuntu-latest
+		steps:
+			- name: Checkout
+			  uses: actions/checkout@v3
+			- name: Install Node
+			  uses: actions/setup-node@v3
+			  with:
+			      node-version: 18
+			- name: Install PNPM
+			  uses: pnpm/action-setup@v2
+			- name: Install Dependencies
+			  run: pnpm i
+			- name: Version Packages
+			  run: pnpm run version:dev
+			- name: Publish Packages
+			  run: pnpm run publish:dev
