@@ -1,0 +1,20 @@
+{
+	"$schema": "https://json-schema.org/draft-07/schema",
+	"type": "object",
+	"properties": {
+		"token": {
+			"description": "The token to use for authentication",
+			"type": "string"
+		},
+		"commandCooldown": {
+			"description": "The default cooldown for commands",
+			"type": "number",
+			"default": 0
+		},
+		"prefix": {
+			"description": "The default prefix for commands",
+			"type": "string"
+		}
+	},
+	"required": ["token", "prefix"]
+}
