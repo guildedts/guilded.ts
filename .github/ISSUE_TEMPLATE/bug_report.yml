@@ -17,14 +17,14 @@ body:
               - '@guildedts/rest'
               - '@guildedts/ws'
       validations:
-          - required: true
+          required: true
     - type: input
       attributes:
           label: Package Version
           description: The version of the package that is causing the issue.
           placeholder: 0.0.0
       validations:
-          - required: true
+          required: true
     - type: textarea
       attributes:
           label: Description
@@ -36,7 +36,7 @@ body:
               3. Unexpected behavior occurs
               4. See error message
       validations:
-          - required: true
+          required: true
     - type: textarea
       attributes:
           label: Code Snippet
@@ -52,14 +52,14 @@ body:
               2. Do that
               3. Expected behavior
       validations:
-          - required: true
+          required: true
     - type: input
       attributes:
           label: Node.JS Version
           description: The version of Node.JS that you are using.
           placeholder: We recommend using Node.JS v16.0.0+.
       validations:
-          - required: true
+          required: true
     - type: input
       attributes:
           label: Operating System
@@ -68,7 +68,4 @@ body:
       attributes:
           label: Priority
           description: The priority of the issue.
-          options:
-              - Low
-              - Medium
-              - High
+          options: [Low, Medium, High]
