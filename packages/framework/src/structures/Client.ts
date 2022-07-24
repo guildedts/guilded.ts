@@ -7,6 +7,8 @@ import CommandHandler from '../handlers/commands';
 import joi from 'joi';
 import { watch } from 'fs';
 import { Logger } from './Logger';
+import { parse as parseYaml } from 'yaml';
+import { readFile } from 'fs/promises';
 
 /**
  * The main hub for interacting with the Guilded API.
@@ -23,7 +25,7 @@ export class Client extends BaseClient {
 	config!: ClientConfig;
 
 	/** The glob pattern for configs. */
-	private readonly configGlob = `**/gtsconfig.{js,ts,json}`;
+	private readonly configGlob = `**/gtsconfig.{js,ts,json,yml,yaml}`;
 	/** The glob pattern for command directories. */
 	private readonly commandDirGlob = `**/commands`;
 	/** The glob pattern for event directories. */
@@ -44,8 +46,8 @@ export class Client extends BaseClient {
 	/** Initialize the client. */
 	async init() {
 		await this.loadConfig();
-		this.loadCommands();
-		this.loadEvents();
+		await this.loadCommands();
+		await this.loadEvents();
 		if (this.options.dev) this.devMode();
 		this.login(this.config.token);
 		this.on('ready', () => Logger.ready(`Logged in as ${this.user?.name}`));
@@ -75,7 +77,7 @@ export class Client extends BaseClient {
 			Logger.error('No gtsconfig found');
 			process.exit(1);
 		}
-		const file = this.import(path);
+		const file = await this.import(path);
 		try {
 			this.config = await ClientConfigSchema.validateAsync(file.default ?? file);
 		} catch (error: any) {
@@ -86,35 +88,39 @@ export class Client extends BaseClient {
 	}
 
 	/** Load commands. */
-	private loadCommands() {
+	private async loadCommands() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading commands...');
 		this.commands.clear();
 		const paths = glob.sync(this.commandGlob, this.globOptions);
+		let loadedCommands = 0;
 		for (const path of paths) {
-			const command = this.createStructure<Command>(path);
+			const command = await this.createStructure<Command>(path);
 			if (!command) continue;
+			loadedCommands++;
 			command.name = command.name ?? path.split('/').pop()!.split('.')[0];
 			this.commands.set(command.name, command);
 		}
-		Logger.event(`Loaded ${paths.length} command files in ${Date.now() - startedTimestamp}ms`);
+		Logger.event(`Loaded ${loadedCommands} commands in ${Date.now() - startedTimestamp}ms`);
 	}
 
 	/** Load events. */
-	private loadEvents() {
+	private async loadEvents() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading events...');
 		this.removeAllListeners();
 		const paths = glob.sync(this.eventGlob, this.globOptions);
+		let loadedEvents = 0;
 		for (const path of paths) {
-			const event = this.createStructure<Event>(path);
+			const event = await this.createStructure<Event>(path);
 			if (!event) continue;
+			loadedEvents++;
 			event.name = event.name ?? path.split('/').pop()!.split('.')[0];
 			this[event.once ? 'once' : 'on'](event.name, event.execute.bind(event));
 		}
 		const commandHandler = new CommandHandler(this);
 		this.on(commandHandler.name, commandHandler.execute.bind(commandHandler));
-		Logger.event(`Loaded ${paths.length} event files in ${Date.now() - startedTimestamp}ms`);
+		Logger.event(`Loaded ${loadedEvents} events in ${Date.now() - startedTimestamp}ms`);
 	}
 
 	/**
@@ -123,8 +129,12 @@ export class Client extends BaseClient {
 	 * @returns The module.
 	 * @example client.import('./path/to/module');
 	 */
-	private import(path: string) {
+	private async import(path: string) {
 		path = `${process.cwd()}/${path}`;
+		if (['.yml', '.yaml'].some((ext) => path.endsWith(ext))) {
+			const raw = await readFile(path, 'utf8');
+			return parseYaml(raw);
+		}
 		delete require.cache[require.resolve(path)];
 		return require(path);
 	}
@@ -135,8 +145,8 @@ export class Client extends BaseClient {
 	 * @returns The structure.
 	 * @example client.createStructure('./path/to/file');
 	 */
-	private createStructure<Structure>(path: string): Structure | undefined {
-		const file = this.import(path);
+	private async createStructure<Structure>(path: string): Promise<Structure | undefined> {
+		const file = await this.import(path);
 		return typeof file.default === 'function'
 			? new file.default(this)
 			: typeof file === 'function'

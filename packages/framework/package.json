@@ -42,7 +42,8 @@
 		"commander": "^9.4.0",
 		"glob": "^8.0.3",
 		"guilded.ts": "workspace:^",
-		"joi": "^17.6.0"
+		"joi": "^17.6.0",
+		"yaml": "^2.1.1"
 	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
