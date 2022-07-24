@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { rmSync } from 'fs';
 
 const dev = process.argv.includes('--dev');
-let publishCommand = 'pnpm publish -r --ignore-scripts --report-summary';
+let publishCommand = 'pnpm publish -r --report-summary';
 if (dev) publishCommand += ' --tag dev --no-git-checks';
 
 execSync(publishCommand, { stdio: 'inherit' });
