@@ -3,7 +3,7 @@ import { rmSync } from 'fs';
 
 const dev = process.argv.includes('--dev');
 let publishCommand = 'pnpm publish -r --ignore-scripts --report-summary';
-if (dev) publishCommand += ' --tag dev';
+if (dev) publishCommand += ' --tag dev --no-git-checks';
 
 execSync(publishCommand, { stdio: 'inherit' });
 
