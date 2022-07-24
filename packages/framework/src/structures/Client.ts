@@ -166,7 +166,7 @@ export interface ClientConfig {
 	/** The token for the client. */
 	token: string;
 	/** The default cooldown for commands. */
-	commandCooldown: number;
+	commandCooldown?: number;
 	/** The default prefix for commands. */
 	prefix: string;
 }
@@ -176,6 +176,6 @@ export const ClientConfigSchema = joi
 	.object<ClientConfig>({
 		token: joi.string().required().description('The token for the client.'),
 		commandCooldown: joi.number().default(0).description('The default cooldown for commands.'),
-		prefix: joi.string().default('!').description('The default prefix for commands.'),
+		prefix: joi.string().required().description('The default prefix for commands.'),
 	})
 	.required();
