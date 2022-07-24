@@ -1,5 +1,17 @@
 # @guildedts/framework
 
+## 0.2.0
+
+### Minor Changes
+
+-   6c9054b: feat(gtsconfig): add support for yml/yaml
+-   9d1189b: feat(prefixes): per server prefixes
+
+### Patch Changes
+
+-   608c70a: feat(gtsconfig): make `prefix` required
+-   6c9054b: fix(commands/events): give more accurate results after loading has finished
+
 ## 0.1.10
 
 ### Patch Changes

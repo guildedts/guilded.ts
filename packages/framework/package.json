@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/framework",
-	"version": "0.1.6",
+	"version": "0.2.0",
 	"description": "A framework for creating a Guilded bot.",
 	"main": "dist/index.js",
 	"bin": {
