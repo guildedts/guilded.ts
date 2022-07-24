@@ -11,12 +11,10 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	 * @example commandHandler.execute(message);
 	 */
 	async execute(message: Message) {
-		if (
-			message.createdBy === this.client.user?.id ||
-			!message.content?.startsWith(this.client.config.prefix)
-		)
+		const prefix = this.getPrefix(message.serverId);
+		if (message.createdBy === this.client.user?.id || !message.content?.startsWith(prefix))
 			return;
-		const [commandName, ...args] = this.parseContent(message.content);
+		const [commandName, ...args] = this.parseContent(prefix, message.content);
 		const command = this.getCommand(commandName);
 		if (!command) return;
 		let mappedArgs: Record<string, unknown>;
@@ -50,13 +48,26 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	}
 
 	/**
+	 * Get the prefix of the message.
+	 * @param serverId The ID of the server the message belongs to.
+	 * @returns The prefix.
+	 * @example commandHandler.getPrefix(serverId);
+	 */
+	getPrefix(serverId?: string) {
+		return serverId
+			? this.client.prefixes.get(serverId) || this.client.config.prefix
+			: this.client.config.prefix;
+	}
+
+	/**
 	 * Parse the content of the message.
+	 * @param prefix The prefix of the message content.
 	 * @param content The content of the message.
 	 * @returns The command name and arguments.
 	 * @example commandHandler.parseContent('!echo hello'); // ['echo', 'hello']
 	 */
-	parseContent(content: string) {
-		return content.slice(this.client.config.prefix.length).split(/\s+/);
+	parseContent(prefix: string, content: string) {
+		return content.slice(prefix.length).split(/\s+/);
 	}
 
 	/**

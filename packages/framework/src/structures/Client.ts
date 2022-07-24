@@ -21,6 +21,8 @@ import { readFile } from 'fs/promises';
 export class Client extends BaseClient {
 	/** The commands that belong to the client. */
 	readonly commands = new Collection<string, Command>();
+	/** The prefixes per server. */
+	readonly prefixes = new Collection<string, string>();
 	/** The config for the client. */
 	config!: ClientConfig;
 

@@ -34,9 +34,17 @@ export abstract class Command {
 		this.cooldown = this.cooldown ?? client.config.commandCooldown;
 	}
 
-	/** The usage of the command. */
-	get usage() {
-		return `${this.client.config.prefix} ${this.name} ${this.arguments
+	/**
+	 * Get the usage of the command.
+	 * @param serverId The ID of the server the command is used in.
+	 * @returns The usage of the command.
+	 * @example command.getUsage();
+	 */
+	getUsage(serverId?: string) {
+		const prefix = serverId
+			? this.client.prefixes.get(serverId) || this.client.config.prefix
+			: this.client.config.prefix;
+		return `${prefix}${this.name} ${this.arguments
 			.map((arg) => new arg(this).usage)
 			.join(' ')}`;
 	}
