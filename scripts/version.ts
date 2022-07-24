@@ -11,7 +11,6 @@ execSync(versionCommand, { stdio: 'inherit' });
 const { releases } = require('../changeset-status.json');
 
 if (dev)
-	for (const { name } of releases)
-		execSync(`pnpm nd -n *dev* -p ${name} --verbose`, { stdio: 'inherit' });
+	for (const { name } of releases) execSync(`pnpm nd -n *dev* -p ${name}`, { stdio: 'inherit' });
 
 rmSync('changeset-status.json');
