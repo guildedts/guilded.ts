@@ -1,0 +1,74 @@
+name: Bug Report
+description: Report incorrect or unexpected behavior of a package.
+labels: bug
+body:
+    - type: markdown
+      attributes:
+          value: Visit our [Guilded Server](https://guilded.gg/guildedts) for general support.
+    - type: dropdown
+      attributes:
+          label: Package
+          description: The package that is causing the issue.
+          options:
+              - '@guildedts/builders'
+              - '@guildedts/framework'
+              - guilded-api-typings
+              - guilded.ts
+              - '@guildedts/rest'
+              - '@guildedts/ws'
+      validations:
+          - required: true
+    - type: input
+      attributes:
+          label: Package Version
+          description: The version of the package that is causing the issue.
+          placeholder: 0.0.0
+      validations:
+          - required: true
+    - type: textarea
+      attributes:
+          label: Description
+          description: Describe the issue in as much detail as possible.
+          placeholder: |
+              Steps to reproduce the issue:
+              1. Do this
+              2. Do that
+              3. Unexpected behavior occurs
+              4. See error message
+      validations:
+          - required: true
+    - type: textarea
+      attributes:
+          label: Code Snippet
+          description: Some code that reproduces the issue.
+          placeholder: Your code snippet here.
+    - type: textarea
+      attributes:
+          label: Expected Behavior
+          description: What is the expected behavior?
+          placeholder: |
+              Expected behavior:
+              1. Do this
+              2. Do that
+              3. Expected behavior
+      validations:
+          - required: true
+    - type: input
+      attributes:
+          label: Node.JS Version
+          description: The version of Node.JS that you are using.
+          placeholder: We recommend using Node.JS v16.0.0+.
+      validations:
+          - required: true
+    - type: input
+      attributes:
+          label: Operating System
+          description: The operating system that you are using.
+    - type: dropdown
+      attributes:
+          label: Priority
+          description: The priority of the issue.
+          options:
+              - Low
+              - Medium
+              - High

@@ -1,0 +1,38 @@
+name: Feature Request
+description: Request a new feature for the package.
+labels: enhancement
+body:
+    - type: markdown
+      attributes:
+          value: Visit our [Guilded Server](https://guilded.gg/guildedts) for general support.
+    - type: dropdown
+      attributes:
+          label: Package
+          description: The package the feature is for.
+          options:
+              - '@guildedts/builders'
+              - '@guildedts/framework'
+              - guilded-api-typings
+              - guilded.ts
+              - '@guildedts/rest'
+              - '@guildedts/ws'
+      validations:
+          - required: true
+    - type: textarea
+      attributes:
+          label: Description
+          description: Describe the feature in as much detail as possible.
+          placeholder: Guilded recently added a new feature...
+      validations:
+          - required: true
+    - type: textarea
+      attributes:
+          label: Solution
+          description: A detailed description of how you would want to implement the feature.
+          placeholder: We could do something like...
+      validations:
+          - required: true
+    - type: textarea
+      attributes:
+          label: Alternative Solutions
+          description: Any alternative solutions that you may have considered.
