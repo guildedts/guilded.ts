@@ -50,6 +50,8 @@ jobs:
               run: pnpm i
             - name: Version Packages
               run: pnpm run version:dev
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.API_NPM_TOKEN }}
             - name: Publish to NPM
               run: pnpm run publish:dev
     docs:
