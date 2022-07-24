@@ -13,9 +13,7 @@
 		"clear": "pnpm -r clear",
 		"changeset": "changeset",
 		"version": "changeset version",
-		"version:dev": "pnpm run version --snapshot dev",
-		"publish": "ts-node scripts/publish",
-		"publish:dev": "pnpm run publish --dev"
+		"publish": "ts-node scripts/publish"
 	},
 	"keywords": [
 		"guilded",
