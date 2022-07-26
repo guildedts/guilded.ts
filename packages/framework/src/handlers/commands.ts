@@ -3,7 +3,7 @@ import { Event } from '../structures/Event';
 
 /** The handler for commands. */
 export default class CommandHandler extends Event<'messageCreate'> {
-	name: 'messageCreate' = 'messageCreate';
+	name = 'messageCreate' as const;
 
 	/**
 	 * The handler for the messageCreate event.
