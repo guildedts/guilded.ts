@@ -1,9 +1,4 @@
-import {
-	APIChannelPayload,
-	APIServer,
-	APIServerType,
-	APIServerTypeString,
-} from 'guilded-api-typings';
+import { APIChannelPayload, APIServer, ServerType } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Base } from '../Base';
 import { ServerMemberManager } from '../../managers/server/ServerMemberManager';
@@ -19,7 +14,7 @@ export class Server extends Base {
 	/** The ID of the user the server belongs to. */
 	readonly ownerId: string;
 	/** The type of the server. */
-	readonly type?: APIServerTypeString;
+	readonly type?: ServerType;
 	/** The name of the server. */
 	readonly name: string;
 	/** The vanity URL of the server. */
@@ -86,42 +81,42 @@ export class Server extends Base {
 
 	/** Whether the server is a team server. */
 	get isTeam() {
-		return this.type === APIServerType.Team;
+		return this.type === ServerType.Team;
 	}
 
 	/** Whether the server is a organization server. */
 	get isOrganization() {
-		return this.type === APIServerType.Organization;
+		return this.type === ServerType.Organization;
 	}
 
 	/** Whether the server is a community server. */
 	get isCommunity() {
-		return this.type === APIServerType.Community;
+		return this.type === ServerType.Community;
 	}
 
 	/** Whether the server is a clan server. */
 	get isClan() {
-		return this.type === APIServerType.Clan;
+		return this.type === ServerType.Clan;
 	}
 
 	/** Whether the server is a guild server. */
 	get isGuild() {
-		return this.type === APIServerType.Guild;
+		return this.type === ServerType.Guild;
 	}
 
 	/** Whether the server is a friends server. */
 	get isFriends() {
-		return this.type === APIServerType.Friends;
+		return this.type === ServerType.Friends;
 	}
 
 	/** Whether the server is a streaming server. */
 	get isStreaming() {
-		return this.type === APIServerType.Streaming;
+		return this.type === ServerType.Streaming;
 	}
 
 	/** Whether the server is a other type. */
 	get isOther() {
-		return this.type === APIServerType.Other;
+		return this.type === ServerType.Other;
 	}
 
 	/** The server's default channel. */
@@ -173,3 +168,5 @@ export class Server extends Base {
 		return this.client.channels.create({ serverId: this.id, ...payload });
 	}
 }
+
+export { ServerType };

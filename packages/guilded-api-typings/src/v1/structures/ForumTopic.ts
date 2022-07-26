@@ -36,8 +36,10 @@ export interface APIForumTopicSummary {
  * The payload for creating a forum topic.
  * @see https://www.guilded.gg/docs/api/forums/ForumTopicCreate
  */
-export interface APIForumTopicPayload extends APIForumTopicEditPayload {
+export interface APIForumTopicPayload {
+	/** The title of the forum topic. */
 	title: string;
+	/** The content of the forum topic. */
 	content: string;
 }
 
@@ -45,12 +47,7 @@ export interface APIForumTopicPayload extends APIForumTopicEditPayload {
  * The payload for editing a forum topic.
  * @see https://www.guilded.gg/docs/api/forums/ForumTopicUpdate
  */
-export interface APIForumTopicEditPayload {
-	/** The title of the forum topic. */
-	title?: string;
-	/** The content of the forum topic. */
-	content?: string;
-}
+export type APIForumTopicEditPayload = Partial<APIForumTopicPayload>;
 
 /**
  * The options for fetching forum topics.

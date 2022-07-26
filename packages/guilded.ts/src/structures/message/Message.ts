@@ -1,10 +1,4 @@
-import {
-	APIMessage,
-	APIEmbed,
-	APIMentions,
-	APIMessageTypeString,
-	APIMessageType,
-} from 'guilded-api-typings';
+import { APIMessage, APIEmbed, APIMentions, MessageType } from 'guilded-api-typings';
 import { Base } from '../Base';
 import {
 	MessageEditPayloadResolvable,
@@ -24,7 +18,7 @@ import { Collection } from '@discordjs/collection';
  */
 export class Message extends Base {
 	/** The type of the message. */
-	readonly type: APIMessageTypeString;
+	readonly type: MessageType;
 	/** The ID of the server the message belongs to. */
 	readonly serverId?: string;
 	/** The ID of the channel the message belongs to. */
@@ -90,12 +84,12 @@ export class Message extends Base {
 
 	/** Whether the message is a default message. */
 	get isDefault() {
-		return this.type === APIMessageType.Default;
+		return this.type === MessageType.Default;
 	}
 
 	/** Whether the message is a system message. */
 	get isSystem() {
-		return this.type === APIMessageType.System;
+		return this.type === MessageType.System;
 	}
 
 	/** The server the message belongs to. */
@@ -290,3 +284,5 @@ export class Message extends Base {
 		return new MessageReactionCollector(this, options);
 	}
 }
+
+export { MessageType };

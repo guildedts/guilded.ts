@@ -1,9 +1,4 @@
-import {
-	APIChannel,
-	APIChannelEditPayload,
-	APIChannelType,
-	APIChannelTypeString,
-} from 'guilded-api-typings';
+import { APIChannel, APIChannelEditPayload, ChannelType } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Client } from '../Client';
 import { ChannelWebhookManager } from '../../managers/channel/ChannelWebhookManager';
@@ -15,7 +10,7 @@ import { FetchOptions } from '../../managers/BaseManager';
  */
 export class Channel extends Base {
 	/** The type of the channel. */
-	readonly type: APIChannelTypeString;
+	readonly type: ChannelType;
 	/** The name of the channel. */
 	readonly name: string;
 	/** The topic of the channel. */
@@ -124,61 +119,61 @@ export class Channel extends Base {
 
 	/** Whether the channel is a announcement channel. */
 	get isAnnouncement() {
-		return this.type === APIChannelType.Announcements;
+		return this.type === ChannelType.Announcements;
 	}
 
 	/** Whther the channel is a chat channel. */
 	get isChat() {
-		return this.type === APIChannelType.Chat;
+		return this.type === ChannelType.Chat;
 	}
 
 	/** Whether the channel is chat based. */
 	get isChatBased() {
 		return (
-			this.type === APIChannelType.Chat ||
-			this.type === APIChannelType.Stream ||
-			this.type === APIChannelType.Voice
+			this.type === ChannelType.Chat ||
+			this.type === ChannelType.Stream ||
+			this.type === ChannelType.Voice
 		);
 	}
 
 	/** Whther the channel is a calendar channel. */
 	get isCalendar() {
-		return this.type === APIChannelType.Calendar;
+		return this.type === ChannelType.Calendar;
 	}
 
 	/** Whther the channel is a forum channel. */
 	get isForum() {
-		return this.type === APIChannelType.Forums;
+		return this.type === ChannelType.Forums;
 	}
 
 	/** Whther the channel is a media channel. */
 	get isMedia() {
-		return this.type === APIChannelType.Media;
+		return this.type === ChannelType.Media;
 	}
 
 	/** Whther the channel is a doc channel. */
 	get isDoc() {
-		return this.type === APIChannelType.Docs;
+		return this.type === ChannelType.Docs;
 	}
 
 	/** Whther the channel is a voice channel. */
 	get isVoice() {
-		return this.type === APIChannelType.Voice;
+		return this.type === ChannelType.Voice;
 	}
 
 	/** Whther the channel is a list channel. */
 	get isList() {
-		return this.type === APIChannelType.List;
+		return this.type === ChannelType.List;
 	}
 
 	/** Whther the channel is a schedule channel. */
 	get isSchedule() {
-		return this.type === APIChannelType.Scheduling;
+		return this.type === ChannelType.Scheduling;
 	}
 
 	/** Whther the channel is a stream channel. */
 	get isStream() {
-		return this.type === APIChannelType.Stream;
+		return this.type === ChannelType.Stream;
 	}
 
 	/**
@@ -293,3 +288,5 @@ export class Channel extends Base {
 		return this;
 	}
 }
+
+export { ChannelType };

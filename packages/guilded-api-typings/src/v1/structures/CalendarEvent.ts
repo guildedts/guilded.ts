@@ -54,17 +54,9 @@ export interface APICalendarEventCancellation {
  * The payload for creating a calendar event.
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventCreate
  */
-export interface APICalendarEventPayload extends APICalendarEventEditPayload {
-	name: string;
-}
-
-/**
- * The payload for editing a calendar event.
- * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventUpdate
- */
-export interface APICalendarEventEditPayload {
+export interface APICalendarEventPayload {
 	/** The name of the calendar event. */
-	name?: string;
+	name: string;
 	/** The description of the calendar event. */
 	description?: string;
 	/** The location of the calendar event. */
@@ -82,6 +74,12 @@ export interface APICalendarEventEditPayload {
 	/** Whether the calendar event is private. */
 	isPrivate?: boolean;
 }
+
+/**
+ * The payload for editing a calendar event.
+ * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventUpdate
+ */
+export type APICalendarEventEditPayload = Partial<APICalendarEventPayload>;
 
 /**
  * The options for fetching calendar events.
@@ -110,7 +108,7 @@ export interface APICalendarEventRsvp {
 	/** The ID of the user the RSVP belongs to. */
 	userId: string;
 	/** The status of the RSVP. */
-	status: APICalendarEventRsvpStatusString;
+	status: CalendarEventRsvpStatus;
 	/** The ID of the user that created the RSVP. */
 	createdBy: string;
 	/** The date the RSVP was created. */
@@ -125,7 +123,7 @@ export interface APICalendarEventRsvp {
  * The status of a calendar event RSVP.
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvp
  */
-export enum APICalendarEventRsvpStatus {
+export enum CalendarEventRsvpStatus {
 	Going = 'going',
 	Maybe = 'maybe',
 	Declined = 'declined',
@@ -134,16 +132,10 @@ export enum APICalendarEventRsvpStatus {
 }
 
 /**
- * The status string of a calendar event RSVP.
- * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvp
- */
-export type APICalendarEventRsvpStatusString = `${APICalendarEventRsvpStatus}`;
-
-/**
  * The payload for editing a calendar event RSVP.
  * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpUpdate
  */
 export interface APICalendarEventRsvpEditPayload {
 	/** The status of the RSVP. */
-	status: APICalendarEventRsvpStatusString;
+	status: CalendarEventRsvpStatus;
 }

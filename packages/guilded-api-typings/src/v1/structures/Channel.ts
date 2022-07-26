@@ -6,7 +6,7 @@ export interface APIChannel {
 	/** The ID of the channel. */
 	id: string;
 	/** The type of the channel. */
-	type: APIChannelTypeString;
+	type: ChannelType;
 	/** The name of the channel. */
 	name: string;
 	/** The topic of the channel. */
@@ -37,7 +37,7 @@ export interface APIChannel {
  * The type of a channel on Guilded.
  * @see https://www.guilded.gg/docs/api/channels/ServerChannel
  */
-export enum APIChannelType {
+export enum ChannelType {
 	Announcements = 'announcements',
 	Chat = 'chat',
 	Calendar = 'calendar',
@@ -51,20 +51,13 @@ export enum APIChannelType {
 }
 
 /**
- * The type string of a channel on Guilded.
- * @see https://www.guilded.gg/docs/api/channels/ServerChannel
- */
-export type APIChannelTypeString = `${APIChannelType}`;
-
-/**
  * The payload for creating a channel.
  * @see https://www.guilded.gg/docs/api/channels/ChannelCreate
  */
 export interface APIChannelPayload extends APIChannelEditPayload {
-	/** The name of the channel. */
 	name: string;
 	/** The type of the channel. */
-	type: APIChannelTypeString;
+	type: ChannelType;
 	/** The ID of the server the channel belongs to. */
 	serverId?: string;
 	/** The ID of the group the channel belongs to. */

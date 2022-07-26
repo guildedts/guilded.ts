@@ -1,4 +1,4 @@
-import { APIChannel, APIChannelTypeString } from 'guilded-api-typings';
+import { APIChannel, ChannelType } from 'guilded-api-typings';
 import { Client } from './structures/Client';
 import { Channel } from './structures/channel/Channel';
 import { ChatChannel } from './structures/channel/ChatChannel';
@@ -20,7 +20,7 @@ export const createChannel = (client: Client, raw: APIChannel, cache?: boolean):
 
 /** A map of channel types to their respective classes. */
 const ChannelTypeMap: {
-	[type in APIChannelTypeString]: typeof Channel;
+	[type in ChannelType]: typeof Channel;
 } = {
 	announcements: Channel,
 	media: Channel,

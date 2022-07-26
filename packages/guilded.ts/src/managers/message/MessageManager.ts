@@ -1,7 +1,7 @@
 import {
 	APIMessagePayload,
 	APIEmbed,
-	APIMessageFetchOptions,
+	APIMessageFetchManyOptions,
 	APIMessageEditPayload,
 	APIMessageEditPayloadResolvable,
 	APIMessagePayloadResolvable,
@@ -106,7 +106,7 @@ export class MessageManager extends BaseManager<string, Message> {
 }
 
 /** The options for fetching messages. */
-export interface MessageFetchManyOptions extends FetchManyOptions, APIMessageFetchOptions {}
+export interface MessageFetchManyOptions extends FetchManyOptions, APIMessageFetchManyOptions {}
 
 /** The payload for creating a message. */
 export interface MessagePayload extends Omit<APIMessagePayload, 'embeds'> {

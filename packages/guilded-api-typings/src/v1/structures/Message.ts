@@ -8,7 +8,7 @@ import { APIEmote } from './Server';
  */
 export interface APIMessage extends Omit<APIMessageSummary, 'deletedAt'> {
 	/** The type of the message. */
-	type: APIMessageTypeString;
+	type: MessageType;
 	/** The content of the message. */
 	content?: string;
 	/** The embeds of the message. */
@@ -50,16 +50,10 @@ export interface APIMessageSummary {
  * The type of a message on Guilded.
  * @see https://www.guilded.gg/docs/api/chat/ChatMessage
  */
-export enum APIMessageType {
+export enum MessageType {
 	Default = 'default',
 	System = 'system',
 }
-
-/**
- * The type string of a message on Guilded.
- * @see https://www.guilded.gg/docs/api/chat/ChatMessage
- */
-export type APIMessageTypeString = `${APIMessageType}`;
 
 /**
  * The payload for creating a message.
@@ -95,7 +89,7 @@ export type APIMessageEditPayloadResolvable = string | APIEmbed[] | APIMessageEd
  * The options for fetching messages.
  * @see https://www.guilded.gg/docs/api/chat/ChannelMessageReadMany
  */
-export interface APIMessageFetchOptions {
+export interface APIMessageFetchManyOptions {
 	/** The date to fetch messages before. */
 	before?: Date;
 	/** The date to fetch messages after. */

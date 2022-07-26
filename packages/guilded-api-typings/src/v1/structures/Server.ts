@@ -10,7 +10,7 @@ export interface APIServer {
 	/** The ID of the user the server belongs to. */
 	ownerId: string;
 	/** The type of the server. */
-	type?: APIServerTypeString;
+	type?: ServerType;
 	/** The name of the server. */
 	name: string;
 	/** The vanity URL of the server. */
@@ -35,7 +35,7 @@ export interface APIServer {
  * The type of a server on Guilded.
  * @see https://www.guilded.gg/docs/api/servers/Server
  */
-export enum APIServerType {
+export enum ServerType {
 	Team = 'team',
 	Organization = 'organization',
 	Community = 'community',
@@ -45,12 +45,6 @@ export enum APIServerType {
 	Streaming = 'streaming',
 	Other = 'other',
 }
-
-/**
- * The type string of a server on Guilded.
- * @see https://www.guilded.gg/docs/api/servers/Server
- */
-export type APIServerTypeString = `${APIServerType}`;
 
 /**
  * Represents a server member on Guilded.
@@ -96,7 +90,7 @@ export interface APIServerBan {
  * The payload for editing the nickname of a server member.
  * @see https://www.guilded.gg/docs/api/members/MemberNicknameUpdate
  */
-export interface APIServerNicknamePayload {
+export interface APIServerNicknameEditPayload {
 	/** The nickname of the server member. */
 	nickname: string;
 }

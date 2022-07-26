@@ -1,4 +1,4 @@
-import { APICalendarEventRsvp, APICalendarEventRsvpStatusString } from 'guilded-api-typings';
+import { APICalendarEventRsvp, CalendarEventRsvpStatus } from 'guilded-api-typings';
 import { FetchOptions } from '../../managers/BaseManager';
 import { Base } from '../Base';
 import { CalendarEvent } from './CalendarEvent';
@@ -17,7 +17,7 @@ export class CalendarEventRsvp extends Base {
 	/** The ID of the user the calendar event RSVP belongs to. */
 	readonly userId: string;
 	/** The status of the calendar event RSVP. */
-	readonly status: APICalendarEventRsvpStatusString;
+	readonly status: CalendarEventRsvpStatus;
 	/** The ID of the user that created the calendar event RSVP. */
 	readonly createdBy: string;
 	/** The date the calendar event RSVP was created. */
@@ -152,7 +152,7 @@ export class CalendarEventRsvp extends Base {
 	 * @returns The edited calendar event RSVP.
 	 * @example calendarEventRsvp.edit('going');
 	 */
-	edit(status: APICalendarEventRsvpStatusString) {
+	edit(status: CalendarEventRsvpStatus) {
 		return this.calendarEvent.rsvps.edit(this, status) as Promise<this>;
 	}
 
@@ -166,3 +166,5 @@ export class CalendarEventRsvp extends Base {
 		return this;
 	}
 }
+
+export { CalendarEventRsvpStatus };

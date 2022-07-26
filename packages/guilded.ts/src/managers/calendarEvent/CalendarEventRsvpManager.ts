@@ -1,5 +1,5 @@
 import { Collection } from '@discordjs/collection';
-import { APICalendarEventRsvpStatusString } from 'guilded-api-typings';
+import { CalendarEventRsvpStatus } from 'guilded-api-typings';
 import { CalendarEvent } from '../../structures/calendarEvent/CalendarEvent';
 import { CalendarEventRsvp } from '../../structures/calendarEvent/CalendarEventRsvp';
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
@@ -82,10 +82,7 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 	 * @returns The edited calendar event RSVP.
 	 * @example calanderEventRsvps.edit(calendarEventRsvp, 'going');
 	 */
-	async edit(
-		calendarEventRsvp: string | CalendarEventRsvp,
-		status: APICalendarEventRsvpStatusString,
-	) {
+	async edit(calendarEventRsvp: string | CalendarEventRsvp, status: CalendarEventRsvpStatus) {
 		calendarEventRsvp =
 			calendarEventRsvp instanceof CalendarEventRsvp
 				? calendarEventRsvp.id
