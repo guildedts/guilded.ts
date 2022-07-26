@@ -180,4 +180,5 @@ export const ClientConfigSchema = joi
 		commandCooldown: joi.number().default(0).description('The default cooldown for commands.'),
 		prefix: joi.string().required().description('The default prefix for commands.'),
 	})
-	.required();
+	.required()
+	.unknown(true);
