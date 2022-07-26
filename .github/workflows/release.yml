@@ -18,12 +18,12 @@ jobs:
             - name: Install PNPM
               uses: pnpm/action-setup@v2
             - name: Install Dependencies
-              run: pnpm i
+              run: pnpm i --ignore-scripts
             - name: Create Release Pull Request or Publish to NPM
               id: changesets
               uses: changesets/action@v1
               with:
-                  publish: pnpm run publish --ignore-scripts
+                  publish: pnpm run publish
                   version: pnpm run version
                   title: 'chore: release packages'
                   commit: 'chore: release packages'
@@ -47,7 +47,7 @@ jobs:
             - name: Setup .npmrc
               run: echo '//registry.npmjs.org/:_authToken=${{ secrets.API_NPM_TOKEN }}' > .npmrc
             - name: Install Dependencies
-              run: pnpm i
+              run: pnpm i --ignore-scripts
             - name: Version Packages
               run: pnpm run version:dev
               env:

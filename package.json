@@ -14,7 +14,7 @@
 		"changeset": "changeset",
 		"version": "ts-node scripts/version",
 		"version:dev": "pnpm run version --dev",
-		"publish": "ts-node scripts/publish",
+		"publish": "pnpm build && ts-node scripts/publish",
 		"publish:dev": "pnpm run publish --dev"
 	},
 	"keywords": [

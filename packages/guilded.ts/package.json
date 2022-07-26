@@ -11,8 +11,7 @@
 	],
 	"scripts": {
 		"build": "pnpm clear && tsc",
-		"clear": "rimraf lib typings",
-		"prepublishOnly": "pnpm build"
+		"clear": "rimraf lib typings"
 	},
 	"keywords": [
 		"guilded",
