@@ -2,14 +2,7 @@
 	"$schema": "https://typedoc.org/schema.json",
 	"name": "Guilded.TS",
 	"entryPointStrategy": "packages",
-	"entryPoints": [
-		"packages/builders",
-		"packages/framework",
-		"packages/guilded-api-typings",
-		"packages/guilded.ts",
-		"packages/rest",
-		"packages/ws"
-	],
+	"entryPoints": ["packages/*"],
 	"cleanOutputDir": true,
 	"lightHighlightTheme": "github-light",
 	"darkHighlightTheme": "github-dark",
