@@ -3,9 +3,10 @@
 	"name": "Guilded.TS",
 	"entryPointStrategy": "packages",
 	"entryPoints": [
-		"packages/guilded.ts",
 		"packages/builders",
+		"packages/framework",
 		"packages/guilded-api-typings",
+		"packages/guilded.ts",
 		"packages/rest",
 		"packages/ws"
 	],
