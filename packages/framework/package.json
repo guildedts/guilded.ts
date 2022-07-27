@@ -9,8 +9,8 @@
 	"homepage": "https://guildedts.js.org",
 	"main": "dist",
 	"bin": {
-		"gts": "dist/bin",
-		"guildedts": "dist/bin"
+		"gts": "dist/bin.js",
+		"guildedts": "dist/bin.js"
 	},
 	"typings": "typings",
 	"files": [
