@@ -2,36 +2,33 @@
 	"name": "guilded-api-typings",
 	"version": "0.8.2",
 	"description": "Type definitions for the Guilded API.",
-	"main": "lib/index.js",
-	"types": "typings/index.d.ts",
+	"repository": {
+		"url": "guildedts/guilded.ts",
+		"directory": "packages/guilded-api-typings"
+	},
+	"homepage": "https://guildedts.js.org",
+	"main": "lib",
+	"types": "typings",
 	"files": [
 		"CHANGELOG.md",
 		"lib",
 		"typings"
 	],
-	"scripts": {
-		"build": "pnpm clear && tsc",
-		"clear": "rimraf lib typings"
-	},
 	"keywords": [
 		"guilded",
 		"api",
 		"js",
 		"ts",
-		"types"
+		"typings"
 	],
 	"contributors": [
-		"Gamertike (https://gamertike.com)"
+		"Danielius | Gamertike (https://gamertike.com)"
 	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/guildedts/guilded.ts.git"
-	},
-	"bugs": {
-		"url": "https://github.com/guildedts/guilded.ts/issues"
-	},
-	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
+	"scripts": {
+		"build": "pnpm clear && tsc",
+		"clear": "rimraf lib typings"
+	},
 	"devDependencies": {
 		"rimraf": "^3.0.2",
 		"typescript": "^4.7.4"

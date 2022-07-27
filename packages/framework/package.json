@@ -2,9 +2,15 @@
 	"name": "@guildedts/framework",
 	"version": "0.2.0",
 	"description": "A framework for creating a Guilded bot.",
-	"main": "dist/index.js",
+	"repository": {
+		"url": "guildedts/guilded.ts",
+		"directory": "packages/framework"
+	},
+	"homepage": "https://guildedts.js.org",
+	"main": "dist",
 	"bin": {
-		"gts": "dist/bin.js"
+		"gts": "dist/bin",
+		"guildedts": "dist/bin"
 	},
 	"typings": "typings",
 	"files": [
@@ -12,29 +18,22 @@
 		"dist",
 		"typings"
 	],
-	"scripts": {
-		"build": "pnpm clear && tsc",
-		"clear": "rimraf dist typings"
-	},
 	"keywords": [
 		"guilded",
 		"api",
 		"js",
 		"ts",
+		"typings",
 		"framework"
 	],
 	"contributors": [
-		"Gamertike (https://gamertike.com)"
+		"Danielius | Gamertike (https://gamertike.com)"
 	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/guildedts/guilded.ts.git"
-	},
-	"bugs": {
-		"url": "https://github.com/guildedts/guilded.ts/issues"
-	},
-	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
+	"scripts": {
+		"build": "pnpm clear && tsc",
+		"clear": "rimraf dist typings"
+	},
 	"dependencies": {
 		"@discordjs/collection": "^1.0.0",
 		"chalk": "^4.1.2",

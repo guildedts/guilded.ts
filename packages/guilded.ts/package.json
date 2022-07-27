@@ -2,36 +2,33 @@
 	"name": "guilded.ts",
 	"version": "0.13.1",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
-	"main": "lib/index.js",
-	"types": "typings/index.d.ts",
+	"repository": {
+		"url": "guildedts/guilded.ts",
+		"directory": "packages/guilded.ts"
+	},
+	"homepage": "https://guildedts.js.org",
+	"main": "lib",
+	"types": "typings",
 	"files": [
 		"CHANGELOG.md",
 		"lib",
 		"typings"
 	],
-	"scripts": {
-		"build": "pnpm clear && tsc",
-		"clear": "rimraf lib typings"
-	},
 	"keywords": [
 		"guilded",
 		"api",
 		"js",
 		"ts",
-		"types"
+		"typings"
 	],
 	"contributors": [
-		"Gamertike (https://gamertike.com)"
+		"Danielius | Gamertike (https://gamertike.com)"
 	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/guildedts/guilded.ts.git"
-	},
-	"bugs": {
-		"url": "https://github.com/guildedts/guilded.ts/issues"
-	},
-	"homepage": "https://guildedts.js.org",
 	"license": "Apache-2.0",
+	"scripts": {
+		"build": "pnpm clear && tsc",
+		"clear": "rimraf lib typings"
+	},
 	"dependencies": {
 		"@discordjs/collection": "^1.0.0",
 		"@guildedts/builders": "workspace:^",

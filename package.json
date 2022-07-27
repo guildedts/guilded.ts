@@ -2,7 +2,13 @@
 	"name": "@guildedts/guilded.ts",
 	"version": "0.0.0",
 	"description": "A powerful NPM module that allows you to easily interact with the Guilded API.",
+	"repository": "guildedts/guilded.ts",
+	"homepage": "https://guildedts.js.org",
 	"private": true,
+	"contributors": [
+		"Danielius | Gamertike (https://gamertike.com)"
+	],
+	"license": "Apache-2.0",
 	"scripts": {
 		"test": "ts-node test",
 		"build": "pnpm -r build",
@@ -17,27 +23,6 @@
 		"publish": "pnpm build && ts-node scripts/publish",
 		"publish:dev": "pnpm run publish --dev"
 	},
-	"keywords": [
-		"guilded",
-		"api",
-		"js",
-		"ts",
-		"types"
-	],
-	"contributors": [
-		"Gamertike (https://gamertike.com)",
-		"Bruno Lepis (https://brunolepis.xyz)",
-		"vyPal"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/guildedts/guilded.ts.git"
-	},
-	"bugs": {
-		"url": "https://github.com/guildedts/guilded.ts/issues"
-	},
-	"homepage": "https://guildedts.js.org",
-	"license": "Apache-2.0",
 	"devDependencies": {
 		"@changesets/cli": "^2.24.0",
 		"@favware/npm-deprecate": "^1.0.4",
