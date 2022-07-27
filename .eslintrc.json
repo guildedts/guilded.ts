@@ -1,5 +1,5 @@
 {
-	"extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+	"extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
 	"rules": {
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
