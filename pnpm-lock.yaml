@@ -14,6 +14,7 @@ importers:
             '@typescript-eslint/eslint-plugin': ^5.30.7
             '@typescript-eslint/parser': ^5.30.7
             eslint: ^8.20.0
+            eslint-config-prettier: ^8.5.0
             eslint-plugin-prettier: ^4.2.1
             guilded-api-typings: workspace:^
             guilded.ts: workspace:^
@@ -37,7 +38,8 @@ importers:
             '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
             '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
             eslint: 8.20.0
-            eslint-plugin-prettier: 4.2.1_vvfpqh5kol6rhqy7beehv5uezq
+            eslint-config-prettier: 8.5.0_eslint@8.20.0
+            eslint-plugin-prettier: 4.2.1_g4fztgbwjyq2fvmcscny2sj6fy
             guilded-api-typings: link:packages/guilded-api-typings
             guilded.ts: link:packages/guilded.ts
             husky: 8.0.1
@@ -1778,7 +1780,19 @@ packages:
         engines: { node: '>=10' }
         dev: true
 
-    /eslint-plugin-prettier/4.2.1_vvfpqh5kol6rhqy7beehv5uezq:
+    /eslint-config-prettier/8.5.0_eslint@8.20.0:
+        resolution:
+            {
+                integrity: sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==,
+            }
+        hasBin: true
+        peerDependencies:
+            eslint: '>=7.0.0'
+        dependencies:
+            eslint: 8.20.0
+        dev: true
+
+    /eslint-plugin-prettier/4.2.1_g4fztgbwjyq2fvmcscny2sj6fy:
         resolution:
             {
                 integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==,
@@ -1793,6 +1807,7 @@ packages:
                 optional: true
         dependencies:
             eslint: 8.20.0
+            eslint-config-prettier: 8.5.0_eslint@8.20.0
             prettier: 2.7.1
             prettier-linter-helpers: 1.0.0
         dev: true
