@@ -1,5 +1,19 @@
 # @guildedts/rest
 
+## 0.10.2
+
+### Patch Changes
+
+-   4d06b33: feat(types): use enums instead of unions types
+
+    This removes all `*String` types and just uses the enum itself
+
+    This also removes the `API` prefix for enums. `APIChannelType` becomes `ChannelType`
+
+-   Updated dependencies [9cac330]
+-   Updated dependencies [4d06b33]
+    -   guilded-api-typings@0.9.0
+
 ## 0.10.5
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # guilded-api-typings
 
+## 0.9.0
+
+### Minor Changes
+
+-   4d06b33: feat(types): use enums instead of unions types
+
+    This removes all `*String` types and just uses the enum itself
+
+    This also removes the `API` prefix for enums. `APIChannelType` becomes `ChannelType`
+
+### Patch Changes
+
+-   9cac330: feat: add `mentions` to forum topics
+
 ## 0.8.5
 
 ### Patch Changes
