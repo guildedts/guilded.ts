@@ -1,5 +1,14 @@
 # @guildedts/framework
 
+## 0.2.1
+
+### Patch Changes
+
+-   2d150b7: fix: allow unknown properties in gtsconfig such as `$schema`
+-   Updated dependencies [9cac330]
+-   Updated dependencies [4d06b33]
+    -   guilded.ts@0.14.0
+
 ## 0.2.0
 
 ### Minor Changes
