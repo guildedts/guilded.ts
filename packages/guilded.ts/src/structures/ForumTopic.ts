@@ -1,4 +1,9 @@
-import { APIForumTopic, APIForumTopicEditPayload, APIForumTopicSummary } from 'guilded-api-typings';
+import {
+	APIForumTopic,
+	APIForumTopicEditPayload,
+	APIForumTopicSummary,
+	APIMentions,
+} from 'guilded-api-typings';
 import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { ForumChannel } from './channel/ForumChannel';
@@ -26,6 +31,8 @@ export class ForumTopic extends Base<number> {
 	readonly bumpedAt?: Date;
 	/** The content of the forum topic. */
 	readonly content?: string;
+	/** The mentions of the forum topic. */
+	readonly mentions?: APIMentions;
 
 	/**
 	 * @param channel The forum channel the topic belongs to.
@@ -47,6 +54,7 @@ export class ForumTopic extends Base<number> {
 		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
 		this.bumpedAt = raw.bumpedAt ? new Date(raw.bumpedAt) : undefined;
 		this.content = 'content' in raw ? raw.content : undefined;
+		this.mentions = 'mentions' in raw ? raw.mentions : undefined;
 		if (cache) channel.topics.cache.set(this.id, this);
 	}
 

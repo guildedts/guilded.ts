@@ -1,3 +1,5 @@
+import { APIMentions } from './Channel';
+
 /**
  * Represents a forum topic on Guilded.
  * @see https://www.guilded.gg/docs/api/forums/ForumTopic
@@ -5,6 +7,8 @@
 export interface APIForumTopic extends APIForumTopicSummary {
 	/** The content of the forum topic. */
 	content: string;
+	/** The mentions of the forum topic. */
+	mentions?: APIMentions;
 }
 
 /**
