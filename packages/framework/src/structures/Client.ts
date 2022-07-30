@@ -38,7 +38,7 @@ export class Client extends BaseClient {
 	/** The glob pattern for event files. */
 	private readonly eventGlob = `${this.eventDirGlob}/**/*.{js,ts}`;
 	/** The options for glob. */
-	private readonly globOptions: Options = { ignore: ['node_modules/**', '**/*.d.ts'] };
+	private readonly globOptions: Options = { ignore: ['node_modules', '**/*.d.ts'] };
 
 	/** @param options The options for the client. */
 	constructor(public readonly options: ClientOptions = {}) {
@@ -75,7 +75,7 @@ export class Client extends BaseClient {
 	private async loadConfig() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading config...');
-		const path: string = await glob(this.configGlob, this.globOptions)[0];
+		const path = (await glob(this.configGlob, this.globOptions))[0];
 		if (!path) {
 			Logger.error('No gtsconfig found');
 			process.exit(1);
