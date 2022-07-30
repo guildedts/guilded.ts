@@ -24,15 +24,15 @@
 		"publish:dev": "pnpm run publish --dev"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.24.0",
-		"@favware/npm-deprecate": "^1.0.4",
+		"@changesets/cli": "^2.24.1",
+		"@favware/npm-deprecate": "^1.0.5",
 		"@guildedts/builders": "workspace:^",
 		"@guildedts/framework": "workspace:^",
 		"@guildedts/rest": "workspace:^",
 		"@guildedts/ws": "workspace:^",
-		"@types/node": "^18.0.6",
-		"@typescript-eslint/eslint-plugin": "^5.30.7",
-		"@typescript-eslint/parser": "^5.30.7",
+		"@types/node": "^18.6.3",
+		"@typescript-eslint/eslint-plugin": "^5.31.0",
+		"@typescript-eslint/parser": "^5.31.0",
 		"eslint": "^8.20.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -43,9 +43,9 @@
 		"prettier": "^2.7.1",
 		"rimraf": "^3.0.2",
 		"ts-node": "^10.9.1",
-		"typedoc": "^0.23.8",
+		"typedoc": "^0.23.9",
 		"typedoc-plugin-missing-exports": "^0.23.0",
 		"typescript": "^4.7.4"
 	},
-	"packageManager": "pnpm@7.6.0"
+	"packageManager": "pnpm@7.7.1"
 }
