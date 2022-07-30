@@ -1,5 +1,5 @@
 import { Collection } from '@discordjs/collection';
-import { glob, IOptions } from 'glob';
+import glob, { Options } from 'fast-glob';
 import BaseClient, { ClientOptions as BaseClientOptions } from 'guilded.ts';
 import { Command } from './Command';
 import { Event } from './Event';
@@ -9,6 +9,7 @@ import { watch } from 'fs';
 import { Logger } from './Logger';
 import { parse as parseYaml } from 'yaml';
 import { readFile } from 'fs/promises';
+import { basename, extname } from 'path';
 
 /**
  * The main hub for interacting with the Guilded API.
@@ -37,7 +38,7 @@ export class Client extends BaseClient {
 	/** The glob pattern for event files. */
 	private readonly eventGlob = `${this.eventDirGlob}/**/*.{js,ts}`;
 	/** The options for glob. */
-	private readonly globOptions: IOptions = { ignore: ['node_modules/**', '**/*.d.ts'] };
+	private readonly globOptions: Options = { ignore: ['node_modules/**', '**/*.d.ts'] };
 
 	/** @param options The options for the client. */
 	constructor(public readonly options: ClientOptions = {}) {
@@ -57,10 +58,10 @@ export class Client extends BaseClient {
 	}
 
 	/** Handle dev mode. */
-	private devMode() {
+	private async devMode() {
 		let timeout: NodeJS.Timeout | undefined;
-		const commandDirs = glob.sync(this.commandDirGlob, this.globOptions);
-		const eventDirs = glob.sync(this.eventDirGlob, this.globOptions);
+		const commandDirs = await glob(this.commandDirGlob, this.globOptions);
+		const eventDirs = await glob(this.eventDirGlob, this.globOptions);
 		for (const dirs of [commandDirs, eventDirs])
 			for (const dir of dirs)
 				watch(dir, { recursive: true }, () => {
@@ -74,7 +75,7 @@ export class Client extends BaseClient {
 	private async loadConfig() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading config...');
-		const path = glob.sync(this.configGlob, this.globOptions)[0];
+		const path: string = await glob(this.configGlob, this.globOptions)[0];
 		if (!path) {
 			Logger.error('No gtsconfig found');
 			process.exit(1);
@@ -94,13 +95,13 @@ export class Client extends BaseClient {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading commands...');
 		this.commands.clear();
-		const paths = glob.sync(this.commandGlob, this.globOptions);
+		const paths = await glob(this.commandGlob, this.globOptions);
 		let loadedCommands = 0;
 		for (const path of paths) {
 			const command = await this.createStructure<Command>(path);
 			if (!command) continue;
 			loadedCommands++;
-			command.name = command.name ?? path.split('/').pop()!.split('.')[0];
+			command.name = command.name ?? basename(path, extname(path));
 			this.commands.set(command.name, command);
 		}
 		Logger.event(`Loaded ${loadedCommands} commands in ${Date.now() - startedTimestamp}ms`);
@@ -111,13 +112,13 @@ export class Client extends BaseClient {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading events...');
 		this.removeAllListeners();
-		const paths = glob.sync(this.eventGlob, this.globOptions);
+		const paths = await glob(this.eventGlob, this.globOptions);
 		let loadedEvents = 0;
 		for (const path of paths) {
 			const event = await this.createStructure<Event>(path);
 			if (!event) continue;
 			loadedEvents++;
-			event.name = event.name ?? path.split('/').pop()!.split('.')[0];
+			event.name = event.name ?? basename(path, extname(path));
 			this[event.once ? 'once' : 'on'](event.name, event.execute.bind(event));
 		}
 		const commandHandler = new CommandHandler(this);
