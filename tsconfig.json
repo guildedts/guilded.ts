@@ -11,5 +11,5 @@
 		"resolveJsonModule": true,
 		"noImplicitAny": false
 	},
-	"include": ["packages/*/src/**/*", "scripts/*"]
+	"include": ["packages/*/src", "scripts/*"]
 }
