@@ -1,5 +1,11 @@
 # @guildedts/framework
 
+## 0.2.2
+
+### Patch Changes
+
+-   5662666: feat: switch from the `glob` module to the `fast-glob` module
+
 ## 0.2.1
 
 ### Patch Changes
