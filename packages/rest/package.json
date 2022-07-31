@@ -7,11 +7,11 @@
 		"directory": "packages/rest"
 	},
 	"homepage": "https://guildedts.js.org",
-	"main": "lib",
+	"main": "dist",
 	"types": "typings",
 	"files": [
 		"CHANGELOG.md",
-		"lib",
+		"dist",
 		"typings"
 	],
 	"keywords": [
@@ -28,7 +28,7 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"build": "pnpm clear && tsc",
-		"clear": "rimraf lib typings"
+		"clear": "rimraf dist typings"
 	},
 	"dependencies": {
 		"guilded-api-typings": "workspace:^",
