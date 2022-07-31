@@ -23,21 +23,23 @@
 		"publish": "pnpm build && ts-node scripts/publish",
 		"publish:dev": "pnpm run publish --dev"
 	},
-	"devDependencies": {
-		"@changesets/cli": "^2.24.1",
-		"@favware/npm-deprecate": "^1.0.5",
+	"dependencies": {
 		"@guildedts/builders": "workspace:^",
 		"@guildedts/framework": "workspace:^",
 		"@guildedts/rest": "workspace:^",
 		"@guildedts/ws": "workspace:^",
+		"guilded-api-typings": "workspace:^",
+		"guilded.ts": "workspace:^"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.24.1",
+		"@favware/npm-deprecate": "^1.0.5",
 		"@types/node": "^18.6.3",
 		"@typescript-eslint/eslint-plugin": "^5.31.0",
 		"@typescript-eslint/parser": "^5.31.0",
 		"eslint": "^8.20.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
-		"guilded-api-typings": "workspace:^",
-		"guilded.ts": "workspace:^",
 		"husky": "^8.0.1",
 		"lint-staged": "^13.0.3",
 		"prettier": "^2.7.1",
@@ -47,5 +49,5 @@
 		"typedoc-plugin-missing-exports": "^0.23.0",
 		"typescript": "^4.7.4"
 	},
-	"packageManager": "pnpm@7.7.1"
+	"packageManager": "pnpm@7.8.0"
 }
