@@ -22,7 +22,7 @@ export async function joined(client: Client, data: WSEvents['TeamMemberJoined'])
 export async function removed(client: Client, data: WSEvents['TeamMemberRemoved']) {
 	const server = await client.servers.fetch(data.serverId);
 	if (client.options.disposeCachedServerMembers ?? true) server.members.cache.delete(data.userId);
-	client.emit('memberRemove', server);
+	client.emit('memberRemove', data, server);
 }
 
 /**
