@@ -1,5 +1,12 @@
 # guilded.ts
 
+## 0.14.1
+
+### Patch Changes
+
+-   926b0d4: feat: return client **when** client is ready in `client.login`
+-   6fc8c60: fix: give full data for the memberRemove event
+
 ## 0.14.0
 
 ### Minor Changes
