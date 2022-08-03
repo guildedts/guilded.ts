@@ -110,7 +110,7 @@ export class Client extends EventEmitter {
 		this.token = token || this.token;
 		this.rest.setToken(this.token);
 		this.ws.connect(this.token);
-		return this;
+		return new Promise<this>((resolve) => this.once('ready', () => resolve(this)));
 	}
 
 	/**

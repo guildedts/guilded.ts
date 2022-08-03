@@ -52,8 +52,8 @@ export class Client extends BaseClient {
 		await this.loadCommands();
 		await this.loadEvents();
 		if (this.options.dev) this.devMode();
-		this.login(this.config.token);
-		this.on('ready', () => Logger.ready(`Logged in as ${this.user?.name}`));
+		await this.login(this.config.token);
+		Logger.ready(`Logged in as ${this.user?.name}`);
 		process.on('uncaughtException', console.log);
 	}
 
