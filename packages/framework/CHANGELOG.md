@@ -1,5 +1,14 @@
 # @guildedts/framework
 
+## 0.2.2
+
+### Patch Changes
+
+-   5662666: feat: switch from the `glob` module to the `fast-glob` module
+-   Updated dependencies [926b0d4]
+-   Updated dependencies [6fc8c60]
+    -   guilded.ts@0.14.1
+
 ## 0.2.1
 
 ### Patch Changes
