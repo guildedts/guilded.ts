@@ -1,5 +1,11 @@
 # guilded.ts
 
+## 0.14.2
+
+### Patch Changes
+
+-   a8f8155: test: test tag creation
+
 ## 0.14.1
 
 ### Patch Changes
