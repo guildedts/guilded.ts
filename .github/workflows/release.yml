@@ -32,10 +32,6 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.API_NPM_TOKEN }}
-            - name: Test tag creation
-              run: |
-                  pnpm changeset tag
-                  git push --tags
     release-dev:
         name: Release Packages (dev)
         runs-on: ubuntu-latest
