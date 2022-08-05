@@ -11,6 +11,8 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
             - name: Install Node
               uses: actions/setup-node@v3
               with:
@@ -30,6 +32,10 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
                   NPM_TOKEN: ${{ secrets.API_NPM_TOKEN }}
+            - name: Test tag creation
+              run: |
+                  pnpm changeset tag
+                  git push --tags
     release-dev:
         name: Release Packages (dev)
         runs-on: ubuntu-latest
