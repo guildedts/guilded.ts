@@ -32,7 +32,6 @@ jobs:
                   NPM_TOKEN: ${{ secrets.API_NPM_TOKEN }}
             - name: Force create tags
               run: |
-                  pnpm changeset tag
                   git push --tags
     release-dev:
         name: Release Packages (dev)
