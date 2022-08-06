@@ -4,7 +4,7 @@ import {
 	APIClientUser,
 	WSEvents,
 	WSMessagePayload,
-	WSOpCodes,
+	WSOpCode,
 	WSReadyPayload,
 } from 'guilded-api-typings';
 
@@ -116,15 +116,15 @@ export class WebsocketManager extends EventEmitter {
 	private onSocketMessage({ op, t, d, s }: WSMessagePayload) {
 		if (s) this.lastMessageId = s;
 		switch (op) {
-			case WSOpCodes.Event:
+			case WSOpCode.Event:
 				this.emit('event', t as any, d);
 				break;
-			case WSOpCodes.Ready:
+			case WSOpCode.Ready:
 				this.socket?.emit('ping');
 				this.readyAt = new Date();
 				this.emit('ready', (d as WSReadyPayload).user);
 				break;
-			case WSOpCodes.Resume:
+			case WSOpCode.Resume:
 				delete this.lastMessageId;
 				break;
 		}
