@@ -33,11 +33,11 @@ export interface WSMessagePayload {
 /** The Guilded WebSocket API operation codes. */
 export enum WSOpCode {
 	/** The event operation code. */
-	Event = 0,
+	Event,
 	/** The ready operation code. */
-	Ready = 1,
+	Ready,
 	/** The resume operation code. */
-	Resume = 2,
+	Resume,
 }
 
 /**
