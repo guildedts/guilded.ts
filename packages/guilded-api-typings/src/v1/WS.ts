@@ -21,7 +21,7 @@ export interface WSReadyPayload {
 /** The base message payload of the websocket. */
 export interface WSMessagePayload {
 	/** The op code. */
-	op: number;
+	op: WSOpCode;
 	/** The name of the event. */
 	t?: string;
 	/** The data of the event. */
@@ -31,7 +31,7 @@ export interface WSMessagePayload {
 }
 
 /** The Guilded WebSocket API operation codes. */
-export enum WSOpCodes {
+export enum WSOpCode {
 	/** The event operation code. */
 	Event = 0,
 	/** The ready operation code. */
