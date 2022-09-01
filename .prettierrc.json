@@ -4,5 +4,6 @@
 	"printWidth": 100,
 	"singleQuote": true,
 	"semi": true,
-	"useTabs": true
+	"useTabs": true,
+	"endOfLine": "auto"
 }

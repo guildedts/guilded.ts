@@ -129,6 +129,16 @@ export class ServerMember extends Base {
 	}
 
 	/**
+	 * Set XP of the server member.
+	 * @param amount The total XP of the server member.
+	 * @returns The total amount of XP the server member has.
+	 * @example member.setXp(100);
+	 */
+	setXp(amount: number) {
+		return this.server.members.setXp(this, amount);
+	}
+
+	/**
 	 * Fetch a social link of the server member.
 	 * @param type The type of social link to fetch.
 	 * @returns The fetched social link.

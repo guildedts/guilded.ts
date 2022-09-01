@@ -1,4 +1,10 @@
-import { APIServerMember, APISocialLink, Routes } from 'guilded-api-typings';
+import {
+	APIServerMember,
+	APIServerXpEditPayload,
+	APIServerXpPayload,
+	APISocialLink,
+	Routes,
+} from 'guilded-api-typings';
 import { BaseRouter } from '../BaseRouter';
 
 /**
@@ -85,9 +91,25 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @example serverMembers.awardXp('abc', 'abc', 100);
 	 */
 	async awardXp(serverId: string, memberId: string, amount: number) {
-		const { total } = await this.rest.post<{ total: number }, { amount: number }>(
+		const { total } = await this.rest.post<{ total: number }, APIServerXpPayload>(
 			Routes.serverMemberXp(serverId, memberId),
 			{ amount },
+		);
+		return total;
+	}
+
+	/**
+	 * Set XP of a server member on Guilded.
+	 * @param serverId The ID of the server the member belongs to.
+	 * @param memberId The ID of the server member to set XP for.
+	 * @param amount The total XP of the server member.
+	 * @returns The total amount of XP the server member has.
+	 * @example serverMembers.setXp('abc', 'abc', 100);
+	 */
+	async setXp(serverId: string, memberId: string, amount: number) {
+		const { total } = await this.rest.put<{ total: number }, APIServerXpEditPayload>(
+			Routes.serverMemberXp(serverId, memberId),
+			{ total: amount },
 		);
 		return total;
 	}
