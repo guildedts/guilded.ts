@@ -115,6 +115,15 @@ export interface APIServerXpPayload {
 }
 
 /**
+ * The payload for editing XP.
+ * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForUserUpdate
+ */
+export interface APIServerXpEditPayload {
+	/** The total XP */
+	total: number;
+}
+
+/**
  * Represents a social link on Guilded.
  * @see https://www.guilded.gg/docs/api/socialLinks/MemberSocialLinkRead
  */

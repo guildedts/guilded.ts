@@ -123,11 +123,23 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	 * Award XP to a member in the server.
 	 * @param member The member to award XP to.
 	 * @param amount The amount of XP to award to the member.
-	 * @returns The total amount of XP the member has.
+	 * @returns The total amount of XP the server member has.
 	 * @example members.awardXp(member, 100);
 	 */
 	awardXp(member: string | ServerMember, amount: number) {
 		member = member instanceof ServerMember ? member.id : member;
 		return this.client.api.serverMembers.awardXp(this.server.id, member, amount);
+	}
+
+	/**
+	 * Set XP of a member in the server.
+	 * @param member The member to set XP for.
+	 * @param amount The total XP of the server member.
+	 * @returns The total amount of XP the server member has.
+	 * @example members.setXp(member, 100);
+	 */
+	setXp(member: string | ServerMember, amount: number) {
+		member = member instanceof ServerMember ? member.id : member;
+		return this.client.api.serverMembers.setXp(this.server.id, member, amount);
 	}
 }
