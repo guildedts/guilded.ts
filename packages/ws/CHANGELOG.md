@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.4.4
+
+### Patch Changes
+
+-   a6cd7a6: feat: switch to new WebSocket URL
+
 ## 0.4.7
 
 ### Patch Changes

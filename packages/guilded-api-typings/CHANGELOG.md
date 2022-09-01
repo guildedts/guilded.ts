@@ -1,5 +1,15 @@
 # guilded-api-typings
 
+## 0.10.0
+
+### Minor Changes
+
+-   bb54674: feat: set server member XP
+
+### Patch Changes
+
+-   13a6533: types: change `WSOpCodes` to `WSOpCode`
+
 ## 0.9.0
 
 ### Minor Changes

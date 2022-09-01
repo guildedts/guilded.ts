@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/framework",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "A framework for creating a Guilded bot.",
 	"repository": {
 		"url": "guildedts/guilded.ts",
