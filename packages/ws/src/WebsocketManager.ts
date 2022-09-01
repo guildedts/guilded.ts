@@ -60,8 +60,8 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/** The URL of the Websocket. */
-	get url(): `wss://api.guilded.gg/v${number}/websocket` {
-		return `wss://api.guilded.gg/v${this.version}/websocket`;
+	get url(): `wss://www.guilded.gg/websocket/v${number}` {
+		return `wss://www.guilded.gg/websocket/v${this.version}`;
 	}
 
 	/**
