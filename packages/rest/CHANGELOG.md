@@ -1,5 +1,17 @@
 # @guildedts/rest
 
+## 0.11.0
+
+### Minor Changes
+
+-   bb54674: feat: set server member XP
+
+### Patch Changes
+
+-   Updated dependencies [bb54674]
+-   Updated dependencies [13a6533]
+    -   guilded-api-typings@0.10.0
+
 ## 0.10.2
 
 ### Patch Changes
