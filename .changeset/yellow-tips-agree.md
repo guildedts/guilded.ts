@@ -1,5 +1,5 @@
 ---
-'guilded-api-typings': minor
+'guilded-api-typings': patch
 ---
 
-types: change WSOpCodes to WSOpCode
+types: change `WSOpCodes` to `WSOpCode`
