@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.11.0
+
+### Minor Changes
+
+-   2d36b59: feat: forum topic pinning
+
 ## 0.10.0
 
 ### Minor Changes
