@@ -139,14 +139,32 @@ export class Routes {
 	/**
 	 * The endpoint for a forum topic.
 	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param topicId The ID of the forum topic.
+	 * @param forumTopicId The ID of the forum topic.
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicRead
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicUpdate
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicDelete
 	 * @example Routes.forumTopic('abc', 123); // '/channels/abc/topics/123'
 	 */
-	static forumTopic(channelId: string, topicId: number): `/channels/${string}/topics/${number}` {
-		return `/channels/${channelId}/topics/${topicId}`;
+	static forumTopic(
+		channelId: string,
+		forumTopicId: number,
+	): `/channels/${string}/topics/${number}` {
+		return `/channels/${channelId}/topics/${forumTopicId}`;
+	}
+
+	/**
+	 * The endpoint for a forum topic pin.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param forumTopicId The ID of the forum topic.
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicPin
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicUnpin
+	 * @example Routes.forumTopicPin('abc', 123); // '/channels/abc/topics/123/pin'
+	 */
+	static forumTopicPin(
+		channelId: string,
+		forumTopicId: number,
+	): `/channels/${string}/topics/${number}/pin` {
+		return `/channels/${channelId}/topics/${forumTopicId}/pin`;
 	}
 
 	/**

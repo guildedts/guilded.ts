@@ -159,7 +159,27 @@ export class ForumTopic extends Base<number> {
 	 * @example forumTopic.delete();
 	 */
 	async delete() {
-		this.channel.topics.delete(this);
+		await this.channel.topics.delete(this);
+		return this;
+	}
+
+	/**
+	 * Pin the forum topic.
+	 * @returns The pinned forum topic.
+	 * @example forumTopic.pin();
+	 */
+	async pin() {
+		await this.channel.topics.pin(this);
+		return this;
+	}
+
+	/**
+	 * Unpin the forum topic.
+	 * @returns The unpinned forum topic.
+	 * @example forumTopic.unpin();
+	 */
+	async unpin() {
+		await this.channel.topics.unpin(this);
 		return this;
 	}
 }

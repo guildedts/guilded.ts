@@ -95,4 +95,24 @@ export class ForumTopicRouter extends BaseRouter {
 	delete(channelId: string, forumTopicId: number) {
 		return this.rest.delete<void>(Routes.forumTopic(channelId, forumTopicId));
 	}
+
+	/**
+	 * Pin a forum topic on Guilded.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param forumTopicId The ID of the forum topic to pin.
+	 * @example topics.pin('abc', 123);
+	 */
+	pin(channelId: string, forumTopicId: number) {
+		return this.rest.put<void>(Routes.forumTopicPin(channelId, forumTopicId));
+	}
+
+	/**
+	 * Unpin a forum topic on Guilded.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param forumTopicId The ID of the forum topic to unpin.
+	 * @example topics.unpin('abc', 123);
+	 */
+	unpin(channelId: string, forumTopicId: number) {
+		return this.rest.delete<void>(Routes.forumTopicPin(channelId, forumTopicId));
+	}
 }

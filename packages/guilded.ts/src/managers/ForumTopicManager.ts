@@ -92,6 +92,26 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
 		return this.client.api.forumTopics.delete(this.channel.id, forumTopic);
 	}
+
+	/**
+	 * Pin a forum topic in the channel.
+	 * @param forumTopic The forum topic to pin.
+	 * @example topics.pin(forumTopic);
+	 */
+	pin(forumTopic: number | ForumTopic) {
+		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
+		return this.client.api.forumTopics.pin(this.channel.id, forumTopic);
+	}
+
+	/**
+	 * Unpin a forum topic from the channel.
+	 * @param forumTopic The forum topic to unpin.
+	 * @example topics.unpin(forumTopic);
+	 */
+	unpin(forumTopic: number | ForumTopic) {
+		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
+		return this.client.api.forumTopics.unpin(this.channel.id, forumTopic);
+	}
 }
 
 /** The options for fetching forum topics. */

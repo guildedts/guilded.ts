@@ -290,6 +290,26 @@ export interface WSEvents {
 		forumTopic: APIForumTopic;
 	};
 	/**
+	 * Emitted when a forum topic is pinned.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicPinned
+	 */
+	ForumTopicPinned: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The pinned forum topic. */
+		forumTopic: APIForumTopic;
+	};
+	/**
+	 * Emitted when a forum topic is unpinned.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicUnpinned
+	 */
+	ForumTopicUnpinned: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The unpinned forum topic. */
+		forumTopic: APIForumTopic;
+	};
+	/**
 	 * Emitted when a calendar event RSVP is edited.
 	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventRsvpUpdated
 	 */

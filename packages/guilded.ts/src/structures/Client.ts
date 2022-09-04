@@ -238,6 +238,10 @@ export interface ClientEvents {
 	forumTopicEdit: [newForumTopic: ForumTopic, oldForumTopic?: ForumTopic];
 	/** Emitted when a forum topic is deleted. */
 	forumTopicDelete: [forumTopic: ForumTopic];
+	/** Emitted when a forum topic is pinned. */
+	forumTopicPin: [forumTopic: ForumTopic];
+	/** Emitted when a forum topic is unpinned. */
+	forumTopicUnpin: [forumTopic: ForumTopic];
 	/** Emitted when a calendar event RSVP is edited. */
 	calendarEventRsvpEdit: [
 		newCalendarEventRsvp: CalendarEventRsvp,
