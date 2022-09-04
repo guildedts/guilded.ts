@@ -37,3 +37,25 @@ export async function deleted(client: Client, data: WSEvents['ForumTopicDeleted'
 	if (client.options.disposeCachedForumTopics ?? true) channel.topics.cache.delete(forumTopic.id);
 	client.emit('forumTopicDelete', forumTopic);
 }
+
+/**
+ * Handle the ForumTopicPinned event.
+ * @param client The client the Websocket belongs to.
+ * @param data The data of the event.
+ */
+export async function pinned(client: Client, data: WSEvents['ForumTopicPinned']) {
+	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
+	const forumTopic = new ForumTopic(channel, data.forumTopic);
+	client.emit('forumTopicPin', forumTopic);
+}
+
+/**
+ * Handle the ForumTopicUnpinned event.
+ * @param client The client the Websocket belongs to.
+ * @param data The data of the event.
+ */
+export async function unpinned(client: Client, data: WSEvents['ForumTopicUnpinned']) {
+	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
+	const forumTopic = new ForumTopic(channel, data.forumTopic);
+	client.emit('forumTopicUnpin', forumTopic);
+}
