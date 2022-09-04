@@ -1,5 +1,16 @@
 # @guildedts/rest
 
+## 0.12.0
+
+### Minor Changes
+
+-   2d36b59: feat: forum topic pinning
+
+### Patch Changes
+
+-   Updated dependencies [2d36b59]
+    -   guilded-api-typings@0.11.0
+
 ## 0.11.0
 
 ### Minor Changes

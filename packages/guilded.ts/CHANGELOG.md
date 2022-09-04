@@ -1,5 +1,20 @@
 # guilded.ts
 
+## 0.16.0
+
+### Minor Changes
+
+-   2d36b59: feat: forum topic pinning
+
+### Patch Changes
+
+-   08fcb08: fix: unrecognised events throw error
+-   Updated dependencies [2d36b59]
+    -   guilded-api-typings@0.11.0
+    -   @guildedts/rest@0.12.0
+    -   @guildedts/builders@0.2.8
+    -   @guildedts/ws@0.4.4
+
 ## 0.15.0
 
 ### Minor Changes
