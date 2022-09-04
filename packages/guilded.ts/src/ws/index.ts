@@ -60,5 +60,5 @@ export function handleWSEvent(
 	event: keyof WSEvents,
 	data: WSEvents[keyof WSEvents],
 ) {
-	return WSEventHandler[event](client, data as any);
+	return WSEventHandler[event]?.(client, data as any);
 }
