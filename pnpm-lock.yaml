@@ -97,9 +97,7 @@ importers:
             '@guildedts/builders': workspace:^
             '@guildedts/rest': workspace:^
             '@guildedts/ws': workspace:^
-            '@types/node-fetch': ^2.6.2
             guilded-api-typings: workspace:^
-            node-fetch: ^2.6.7
             rimraf: ^3.0.2
             typescript: ^4.7.4
         dependencies:
@@ -108,9 +106,7 @@ importers:
             '@guildedts/rest': link:../rest
             '@guildedts/ws': link:../ws
             guilded-api-typings: link:../guilded-api-typings
-            node-fetch: 2.6.7
         devDependencies:
-            '@types/node-fetch': 2.6.2
             rimraf: 3.0.2
             typescript: 4.7.4
 
