@@ -14,20 +14,24 @@ export class RESTManager extends EventEmitter {
 	/** The auth token for the REST API. */
 	token?: string;
 	/** The version of the REST API. */
-	readonly version: number;
+	readonly version?: number;
+	/** The proxy url of the REST API. */
+	readonly proxyUrl?: string;
 	/** The router for the REST API. */
-	readonly router = new Router(this);
+	readonly router: Router;
 
 	/** @param options The options for the REST manager. */
 	constructor(public readonly options: RESTOptions) {
 		super();
 		this.token = options.token;
-		this.version = options.version;
+		this.proxyUrl = options.proxyUrl;
+		if (!this.proxyUrl) this.version = options.version;
+		this.router = new Router(this);
 	}
 
 	/** The base URL for the REST API. */
-	get baseURL(): `https://www.guilded.gg/api/v${number}/` {
-		return `https://www.guilded.gg/api/v${this.version}/`;
+	get baseURL() {
+		return this.proxyUrl ? this.proxyUrl : `https://www.guilded.gg/api/v${this.version}/`;
 	}
 
 	/**
@@ -64,7 +68,7 @@ export class RESTManager extends EventEmitter {
 			method,
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${this.token}`,
+				...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
 				'User-Agent': `@guildedts/rest@${version} Node.JS@${process.versions.node}`,
 			},
 			body: options.body ? JSON.stringify(options.body) : undefined,
@@ -183,7 +187,9 @@ export interface RESTOptions {
 	/** The auth token for the REST API. */
 	token?: string;
 	/** The version of the REST API. */
-	version: number;
+	version?: number;
+	/** The proxy URL of the REST API. */
+	proxyUrl?: string;
 	/** The interval to wait between retries. */
 	retryInterval?: number;
 	/** The maximum number of retry attempts. */
