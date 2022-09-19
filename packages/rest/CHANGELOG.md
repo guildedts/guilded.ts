@@ -1,5 +1,17 @@
 # @guildedts/rest
 
+## 0.13.0
+
+### Minor Changes
+
+-   88420fe: feat: webhook `username` and `avatar_url` support
+-   cbcedfb: feat(RESTOptions): add `proxyUrl`
+
+### Patch Changes
+
+-   Updated dependencies [88420fe]
+    -   guilded-api-typings@0.12.0
+
 ## 0.12.0
 
 ### Minor Changes

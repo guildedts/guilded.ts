@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.12.0
+
+### Minor Changes
+
+-   88420fe: feat: webhook `username` and `avatar_url` support
+
 ## 0.11.0
 
 ### Minor Changes
