@@ -410,4 +410,17 @@ export class Routes {
 	static webhook(serverId: string, webhookId: string): `/servers/${string}/webhooks/${string}` {
 		return `/servers/${serverId}/webhooks/${webhookId}`;
 	}
+
+	/**
+	 * The endpoint for a webhook execution on Guilded.
+	 * @param webhookId The ID of the webhook.
+	 * @param webhookToken The ID of the webhook.
+	 * @example Routes.webhookExecute('abc', 'abc'); // '/webhooks/abc/abc'
+	 */
+	static webhookExecute(
+		webhookId: string,
+		webhookToken: string,
+	): `/webhooks/${string}/${string}` {
+		return `/webhooks/${webhookId}/${webhookToken}`;
+	}
 }

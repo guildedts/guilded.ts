@@ -34,11 +34,9 @@
 		"@guildedts/builders": "workspace:^",
 		"@guildedts/rest": "workspace:^",
 		"@guildedts/ws": "workspace:^",
-		"guilded-api-typings": "workspace:^",
-		"node-fetch": "^2.6.7"
+		"guilded-api-typings": "workspace:^"
 	},
 	"devDependencies": {
-		"@types/node-fetch": "^2.6.2",
 		"rimraf": "^3.0.2",
 		"typescript": "^4.7.4"
 	}
