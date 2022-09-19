@@ -18,7 +18,9 @@ export class WebsocketManager extends EventEmitter {
 	/** The auth token for the websocket. */
 	token?: string;
 	/** The version of the Websocket API. */
-	readonly version: number;
+	readonly version?: number;
+	/** The proxy URL of the Websocket API. */
+	readonly proxyUrl?: string;
 	/** The websocket. */
 	socket?: Websocket;
 	/** The date the websocket is ready. */
@@ -36,7 +38,8 @@ export class WebsocketManager extends EventEmitter {
 	constructor(public readonly options: WebsocketOptions) {
 		super();
 		this.token = options.token;
-		this.version = options.version;
+		this.proxyUrl = options.proxyUrl;
+		if (!this.proxyUrl) this.version = options.version;
 	}
 
 	/** Whether the websocket is ready. */
@@ -60,8 +63,8 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/** The URL of the Websocket. */
-	get url(): `wss://www.guilded.gg/websocket/v${number}` {
-		return `wss://www.guilded.gg/websocket/v${this.version}`;
+	get url() {
+		return this.proxyUrl ? this.proxyUrl : `wss://www.guilded.gg/websocket/v${this.version}`;
 	}
 
 	/**
@@ -170,7 +173,9 @@ export interface WebsocketOptions {
 	/** The auth token for the Websocket API. */
 	token?: string;
 	/** The version of the Websocket API. */
-	version: number;
+	version?: number;
+	/** The proxy URL of the Websocket API. */
+	proxyUrl?: string;
 	/** The maximum number of reconnect attempts. */
 	maxReconnects?: number;
 	/** Whether to allow reconnects. */
