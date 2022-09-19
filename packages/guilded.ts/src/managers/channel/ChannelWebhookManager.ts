@@ -2,6 +2,8 @@ import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
 import { Collection } from '@discordjs/collection';
+import { APIEmbed, APIWebhookMessagePayload } from 'guilded-api-typings';
+import { Embed } from '@guildedts/builders';
 
 /**
  * The manager of webhooks that belong to a channel.
@@ -101,3 +103,12 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 		return this.client.api.webhooks.delete(this.channel.serverId, webhook);
 	}
 }
+
+/** The payload for creating a webhook message. */
+export interface WebhookMessagePayload extends Omit<APIWebhookMessagePayload, 'embeds'> {
+	/** The embeds of the message. */
+	embeds?: (Embed | APIEmbed)[];
+}
+
+/** The resolvable payload for creating a webhook message. */
+export type WebhookMessagePayloadResolvable = string | (Embed | APIEmbed)[] | WebhookMessagePayload;

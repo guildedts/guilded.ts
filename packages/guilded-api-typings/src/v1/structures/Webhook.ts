@@ -1,3 +1,6 @@
+import { APIEmbed } from './Embed';
+import { APIMessageEditPayload } from './Message';
+
 /**
  * Represents a webhook on Guilded.
  * @see https://www.guilded.gg/docs/api/webhook/Webhook
@@ -29,6 +32,20 @@ export interface APIWebhookPayload extends APIWebhookEditPayload {
 	/** The ID of the channel the webhook belongs to. */
 	channelId: string;
 }
+
+/**
+ * The payload for creating a webhook message.
+ * @see https://guildedapi.com/resources/webhook/#execute-webhook
+ */
+export interface APIWebhookMessagePayload extends APIMessageEditPayload {
+	/** The name of the webhook. */
+	username?: string;
+	/** The avatar URL of the webhook. */
+	avatar_url?: string;
+}
+
+/** The resolvable payload for creating a webhook message. */
+export type APIWebhookMessagePayloadResolvable = string | APIEmbed[] | APIWebhookMessagePayload;
 
 /**
  * The payload for editing a webhook.

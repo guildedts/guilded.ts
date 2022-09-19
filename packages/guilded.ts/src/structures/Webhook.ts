@@ -1,9 +1,8 @@
-import { APIEmbed, APIWebhook } from 'guilded-api-typings';
-import { Embed } from '@guildedts/builders';
-import fetch from 'node-fetch';
+import { APIWebhook } from 'guilded-api-typings';
 import { Base } from './Base';
 import { FetchOptions } from '../managers/BaseManager';
 import { Channel } from './channel/Channel';
+import { WebhookMessagePayloadResolvable } from '../managers/channel/ChannelWebhookManager';
 
 /**
  * Represents a webhook on Guilded.
@@ -112,23 +111,8 @@ export class Webhook extends Base {
 	 * @param payload The payload of the message.
 	 * @example webhook.send('Hello world!');
 	 */
-	async send(
-		payload:
-			| string
-			| (Embed | APIEmbed)[]
-			| { content?: string; embeds?: (Embed | APIEmbed)[] },
-	) {
-		await fetch(`https://media.guilded.gg/webhooks/${this.id}/${this.token}`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(
-				typeof payload === 'string'
-					? { content: payload }
-					: Array.isArray(payload)
-					? { embeds: payload }
-					: payload,
-			),
-		});
+	send(payload: WebhookMessagePayloadResolvable) {
+		return this.client.api.webhooks.send(this.id, this.token!, payload);
 	}
 
 	/**

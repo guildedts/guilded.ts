@@ -2,10 +2,12 @@ import {
 	APIhWebhookFetchManyOptions,
 	APIWebhook,
 	APIWebhookEditPayload,
+	APIWebhookMessagePayloadResolvable,
 	APIWebhookPayload,
 	Routes,
 } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
+import fetch from 'node-fetch';
 
 /**
  * The webhook router for the Guilded REST API.
@@ -39,6 +41,31 @@ export class WebhookRouter extends BaseRouter {
 			APIhWebhookFetchManyOptions
 		>(Routes.webhooks(serverId), { channelId });
 		return webhooks;
+	}
+
+	/**
+	 * Create a webhook message on Guilded.
+	 * @param webhookId The ID of the webhook.
+	 * @param webhookToken The token of the webhook.
+	 * @param payload The payload of the message.
+	 * @example webhooks.send('abc', 'abc', 'Hello world!');
+	 */
+	async send(
+		webhookId: string,
+		webhookToken: string,
+		payload: APIWebhookMessagePayloadResolvable,
+	) {
+		await fetch(`https://media.guilded.gg${Routes.webhookExecute(webhookId, webhookToken)}`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(
+				typeof payload === 'string'
+					? { content: payload }
+					: Array.isArray(payload)
+					? { embeds: payload }
+					: payload,
+			),
+		});
 	}
 
 	/**
