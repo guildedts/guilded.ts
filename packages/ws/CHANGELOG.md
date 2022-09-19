@@ -1,5 +1,11 @@
 # @guildedts/ws
 
+## 0.5.0
+
+### Minor Changes
+
+-   837ebfc: feat(WebsocketOptions): add `proxyUrl`
+
 ## 0.4.4
 
 ### Patch Changes

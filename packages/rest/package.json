@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/rest",
-	"version": "0.12.0",
+	"version": "0.13.0",
 	"description": "The REST API manager for Guilded.TS.",
 	"repository": {
 		"url": "guildedts/guilded.ts",

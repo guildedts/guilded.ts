@@ -1,5 +1,21 @@
 # guilded.ts
 
+## 0.17.0
+
+### Minor Changes
+
+-   88420fe: feat: webhook `username` and `avatar_url` support
+
+### Patch Changes
+
+-   Updated dependencies [88420fe]
+-   Updated dependencies [cbcedfb]
+-   Updated dependencies [837ebfc]
+    -   guilded-api-typings@0.12.0
+    -   @guildedts/rest@0.13.0
+    -   @guildedts/ws@0.5.0
+    -   @guildedts/builders@0.2.8
+
 ## 0.16.0
 
 ### Minor Changes
