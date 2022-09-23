@@ -5,6 +5,7 @@ import { MessageManager, MessagePayloadResolvable } from '../../managers/message
 import { CollectorOptions } from '../../collectors/Collector';
 import { Message } from '../message/Message';
 import { MessageCollector } from '../../collectors/MessageCollector';
+import { Collection } from '@discordjs/collection';
 
 /**
  * Represents a chat channel on Guilded.
@@ -42,5 +43,17 @@ export class ChatChannel extends Channel {
 	 */
 	createMessageCollector(options?: CollectorOptions<Message>) {
 		return new MessageCollector(this, options);
+	}
+
+	/**
+	 * Similar to createMessageCollector but in promise form.
+	 * @param options The options of the message collector.
+	 * @returns The collected messages.
+	 * @example channel.awaitMessages();
+	 */
+	awaitMessages(options?: CollectorOptions<Message>) {
+		return new Promise<Collection<string, Message>>((resolve) =>
+			this.createMessageCollector(options).once('end', resolve),
+		);
 	}
 }

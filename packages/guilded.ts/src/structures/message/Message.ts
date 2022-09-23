@@ -283,6 +283,18 @@ export class Message extends Base {
 	createReactionCollector(options?: CollectorOptions<MessageReaction>) {
 		return new MessageReactionCollector(this, options);
 	}
+
+	/**
+	 * Similar to createReactionCollector but in promise form.
+	 * @param options The options of the reaction collector.
+	 * @returns The collected reactions.
+	 * @example message.awaitReactions();
+	 */
+	awaitReactions(options?: CollectorOptions<MessageReaction>) {
+		return new Promise<Collection<number, MessageReaction>>((resolve) =>
+			this.createReactionCollector(options).once('end', resolve),
+		);
+	}
 }
 
 export { MessageType };
