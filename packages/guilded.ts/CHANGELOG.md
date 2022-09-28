@@ -1,5 +1,22 @@
 # guilded.ts
 
+## 0.18.0
+
+### Minor Changes
+
+-   cdd033e: feat: add `idle` to collector options
+-   d188c45: feat: add `<ChatChannel>.awaitMessages` and `<Message>.awaitReactions`
+-   0423e02: feat: forum topic lock and unlock
+
+### Patch Changes
+
+-   Updated dependencies [34c82fd]
+-   Updated dependencies [0423e02]
+    -   @guildedts/builders@0.2.9
+    -   guilded-api-typings@0.12.1
+    -   @guildedts/rest@0.14.0
+    -   @guildedts/ws@0.5.0
+
 ## 0.17.0
 
 ### Minor Changes

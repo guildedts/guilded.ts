@@ -1,5 +1,12 @@
 # guilded-api-typings
 
+## 0.12.1
+
+### Patch Changes
+
+-   34c82fd: feat: generic typings
+-   0423e02: feat: forum topic lock and unlock
+
 ## 0.12.0
 
 ### Minor Changes

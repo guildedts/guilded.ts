@@ -1,5 +1,17 @@
 # @guildedts/rest
 
+## 0.14.0
+
+### Minor Changes
+
+-   0423e02: feat: forum topic lock and unlock
+
+### Patch Changes
+
+-   Updated dependencies [34c82fd]
+-   Updated dependencies [0423e02]
+    -   guilded-api-typings@0.12.1
+
 ## 0.13.0
 
 ### Minor Changes
