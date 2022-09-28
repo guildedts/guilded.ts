@@ -59,3 +59,25 @@ export async function unpinned(client: Client, data: WSEvents['ForumTopicUnpinne
 	const forumTopic = new ForumTopic(channel, data.forumTopic);
 	client.emit('forumTopicUnpin', forumTopic);
 }
+
+/**
+ * Handle the ForumTopicLocked event.
+ * @param client The client the Websocket belongs to.
+ * @param data The data of the event.
+ */
+export async function locked(client: Client, data: WSEvents['ForumTopicLocked']) {
+	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
+	const forumTopic = new ForumTopic(channel, data.forumTopic);
+	client.emit('forumTopicLock', forumTopic);
+}
+
+/**
+ * Handle the ForumTopicUnlocked event.
+ * @param client The client the Websocket belongs to.
+ * @param data The data of the event.
+ */
+export async function unlocked(client: Client, data: WSEvents['ForumTopicUnlocked']) {
+	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
+	const forumTopic = new ForumTopic(channel, data.forumTopic);
+	client.emit('forumTopicUnlock', forumTopic);
+}

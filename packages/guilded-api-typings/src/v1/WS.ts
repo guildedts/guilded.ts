@@ -310,6 +310,26 @@ export interface WSEvents {
 		forumTopic: APIForumTopic;
 	};
 	/**
+	 * Emitted when a forum topic is locked.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicLocked
+	 */
+	ForumTopicLocked: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The locked forum topic. */
+		forumTopic: APIForumTopic;
+	};
+	/**
+	 * Emitted when a forum topic is unlocked.
+	 * @see https://www.guilded.gg/docs/api/websockets/ForumTopicUnlocked
+	 */
+	ForumTopicUnlocked: {
+		/** The ID of the server the forum topic belongs to. */
+		serverId: string;
+		/** The unlocked forum topic. */
+		forumTopic: APIForumTopic;
+	};
+	/**
 	 * Emitted when a calendar event RSVP is edited.
 	 * @see https://www.guilded.gg/docs/api/websockets/CalendarEventRsvpUpdated
 	 */

@@ -39,6 +39,8 @@ const WSEventHandler: {
 	ForumTopicDeleted: forumTopic.deleted,
 	ForumTopicPinned: forumTopic.pinned,
 	ForumTopicUnpinned: forumTopic.unpinned,
+	ForumTopicLocked: forumTopic.locked,
+	ForumTopicUnlocked: forumTopic.unlocked,
 	CalendarEventRsvpUpdated: calendarEvent.rsvpUpdated,
 	CalendarEventRsvpManyUpdated: calendarEvent.rsvpsUpdated,
 	CalendarEventRsvpDeleted: calendarEvent.rsvpDeleted,

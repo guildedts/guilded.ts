@@ -112,6 +112,26 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
 		return this.client.api.forumTopics.unpin(this.channel.id, forumTopic);
 	}
+
+	/**
+	 * Lock a forum topic in the channel.
+	 * @param forumTopic The forum topic to lock.
+	 * @example topics.lock(forumTopic);
+	 */
+	lock(forumTopic: number | ForumTopic) {
+		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
+		return this.client.api.forumTopics.lock(this.channel.id, forumTopic);
+	}
+
+	/**
+	 * Unlock a forum topic in the channel.
+	 * @param forumTopic The forum topic to unlock.
+	 * @example topics.unlock(forumTopic);
+	 */
+	unlock(forumTopic: number | ForumTopic) {
+		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
+		return this.client.api.forumTopics.unlock(this.channel.id, forumTopic);
+	}
 }
 
 /** The options for fetching forum topics. */

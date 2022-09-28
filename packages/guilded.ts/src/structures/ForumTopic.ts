@@ -182,4 +182,24 @@ export class ForumTopic extends Base<number> {
 		await this.channel.topics.unpin(this);
 		return this;
 	}
+
+	/**
+	 * Lock the forum topic.
+	 * @returns The locked forum topic.
+	 * @example forumTopic.lock();
+	 */
+	async lock() {
+		await this.channel.topics.lock(this);
+		return this;
+	}
+
+	/**
+	 * Unlock the forum topic.
+	 * @returns The unlocked forum topic.
+	 * @example forumTopic.unlock();
+	 */
+	async unlock() {
+		await this.channel.topics.unlock(this);
+		return this;
+	}
 }
