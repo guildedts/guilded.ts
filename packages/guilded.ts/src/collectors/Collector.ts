@@ -14,6 +14,8 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	readonly createdAt: Date;
 	/** The date the collector was ended. */
 	endedAt?: Date;
+	/** The idle timeout for the collector. */
+	private idleTimeout?: NodeJS.Timeout;
 
 	/**
 	 * @param client The client the collector belongs to.
@@ -27,6 +29,7 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 		this.createdAt = new Date();
 		this.collected = new Collection();
 		if (options.time) setTimeout(this.end.bind(this), options.time);
+		if (options.idle) this.idleTimeout = setTimeout(this.end.bind(this), options.idle);
 	}
 
 	/** The timestamp the collector was created. */
@@ -72,6 +75,10 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 		if (this.isEnded || !filter) return;
 		this.collected.set(item.id, item);
 		this.emit('collect', item);
+		if (this.idleTimeout) {
+			clearTimeout(this.idleTimeout);
+			this.idleTimeout = setTimeout(this.end.bind(this), this.options.idle);
+		}
 		if (this.collected.size >= (this.options.max ?? Infinity)) this.end();
 		return item;
 	}
@@ -129,6 +136,8 @@ export interface CollectorOptions<Model extends Base<any>> {
 	filter?: CollectorFilter<Model>;
 	/** The time in milliseconds to wait before ending the collector. */
 	time?: number;
+	/** The time in milliseconds to wait before ending the collector due to it being idle. */
+	idle?: number;
 	/** The max amount of items to collect. */
 	max?: number;
 	/** Whether to dispose data when it is deleted. */
