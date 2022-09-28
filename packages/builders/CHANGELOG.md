@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.9
+
+### Patch Changes
+
+-   34c82fd: feat: generic typings
+
 ## 0.2.12
 
 ### Patch Changes
