@@ -156,6 +156,18 @@ export class Routes {
 	}
 
 	/**
+	 * The endpoint for a forum topic lock.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param forumTopicId The ID of the forum topic.
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicLock
+	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicUnlock
+	 * @example Routes.forumTopicLock('abc', 123); // '/channels/abc/topics/123/lock'
+	 */
+	static forumTopicLock<C extends string, F extends number>(channelId: C, forumTopicId: F) {
+		return `/channels/${channelId}/topics/${forumTopicId}/lock` as const;
+	}
+
+	/**
 	 * The endpoint for list items on Guilded.
 	 * @param channelId The ID of the channel the list items belongs to.
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemCreate

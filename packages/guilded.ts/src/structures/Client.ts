@@ -242,6 +242,10 @@ export interface ClientEvents {
 	forumTopicPin: [forumTopic: ForumTopic];
 	/** Emitted when a forum topic is unpinned. */
 	forumTopicUnpin: [forumTopic: ForumTopic];
+	/** Emitted when a forum topic is locked. */
+	forumTopicLock: [forumTopic: ForumTopic];
+	/** Emitted when a forum topic is unlocked. */
+	forumTopicUnlock: [forumTopic: ForumTopic];
 	/** Emitted when a calendar event RSVP is edited. */
 	calendarEventRsvpEdit: [
 		newCalendarEventRsvp: CalendarEventRsvp,

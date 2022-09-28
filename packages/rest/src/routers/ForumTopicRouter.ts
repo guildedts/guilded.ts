@@ -115,4 +115,24 @@ export class ForumTopicRouter extends BaseRouter {
 	unpin(channelId: string, forumTopicId: number) {
 		return this.rest.delete<void>(Routes.forumTopicPin(channelId, forumTopicId));
 	}
+
+	/**
+	 * Lock a forum topic on Guilded.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param forumTopicId The ID of the forum topic to lock.
+	 * @example topics.lock('abc', 123);
+	 */
+	lock(channelId: string, forumTopicId: number) {
+		return this.rest.put<void>(Routes.forumTopicLock(channelId, forumTopicId));
+	}
+
+	/**
+	 * Unlock a forum topic on Guilded.
+	 * @param channelId The ID of the channel the forum topic belongs to.
+	 * @param forumTopicId The ID of the forum topic to unlock.
+	 * @example topics.unlock('abc', 123);
+	 */
+	unlock(channelId: string, forumTopicId: number) {
+		return this.rest.delete<void>(Routes.forumTopicLock(channelId, forumTopicId));
+	}
 }
