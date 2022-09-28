@@ -7,7 +7,7 @@ export * from './util';
  * @returns The formatted text.
  * @example bold('bold text'); // '**bold text**'
  */
-export const bold = (text: string): `**${string}**` => `**${text}**`;
+export const bold = <T extends string>(text: T) => `**${text}**` as const;
 
 /**
  * Create italic text.
@@ -15,7 +15,7 @@ export const bold = (text: string): `**${string}**` => `**${text}**`;
  * @returns The formatted text.
  * @example italic('italic text'); // '*italic text*'
  */
-export const italic = (text: string): `*${string}*` => `*${text}*`;
+export const italic = <T extends string>(text: T) => `*${text}*` as const;
 
 /**
  * Create a spoiler.
@@ -23,7 +23,7 @@ export const italic = (text: string): `*${string}*` => `*${text}*`;
  * @returns The formatted text.
  * @example spoiler('spoiler text'); // '||spoiler text||'
  */
-export const spoiler = (text: string): `||${string}||` => `||${text}||`;
+export const spoiler = <T extends string>(text: T) => `||${text}||` as const;
 
 /**
  * Underline text.
@@ -31,7 +31,7 @@ export const spoiler = (text: string): `||${string}||` => `||${text}||`;
  * @returns The formatted text.
  * @example underline('underlined text'); // '__underlined text__'
  */
-export const underline = (text: string): `__${string}__` => `__${text}__`;
+export const underline = <T extends string>(text: T) => `__${text}__` as const;
 
 /**
  * Strikethrough text.
@@ -39,7 +39,7 @@ export const underline = (text: string): `__${string}__` => `__${text}__`;
  * @returns The formatted text.
  * @example strikethrough('strikethrough text'); // '~~strikethrough text~~'
  */
-export const strikeThrough = (text: string): `~~${string}~~` => `~~${text}~~`;
+export const strikeThrough = <T extends string>(text: T) => `~~${text}~~` as const;
 
 /**
  * Create inline code.
@@ -47,7 +47,7 @@ export const strikeThrough = (text: string): `~~${string}~~` => `~~${text}~~`;
  * @returns The formatted text.
  * @example inlineCode('inline code'); // '`inline code`'
  */
-export const inlineCode = (text: string): `\`${string}\`` => `\`${text}\``;
+export const inlineCode = <T extends string>(text: T) => `\`${text}\`` as const;
 
 /**
  * Create a divider
@@ -59,7 +59,8 @@ export const inlineCode = (text: string): `\`${string}\`` => `\`${text}\``;
  * // Create a divider with a new line
  * divider(true); // '\n---\n'
  */
-export const divider = (newLine = false): `\n---\n` | '---' => (newLine ? '\n---\n' : '---');
+export const divider = <NL extends boolean>(newLine = false as NL) =>
+	(newLine ? '\n---\n' : '---') as NL extends true ? '\n---\n' : '---';
 
 /**
  * Create a big heading.
@@ -67,7 +68,7 @@ export const divider = (newLine = false): `\n---\n` | '---' => (newLine ? '\n---
  * @returns The formatted text.
  * @example h1('big heading'); // '# big heading'
  */
-export const h1 = (text: string): `# ${string}` => `# ${text}`;
+export const h1 = <T extends string>(text: T) => `# ${text}` as const;
 
 /**
  * Create a medium heading.
@@ -75,7 +76,7 @@ export const h1 = (text: string): `# ${string}` => `# ${text}`;
  * @returns The formatted text.
  * @example h2('medium heading'); // '## medium heading'
  */
-export const h2 = (text: string): `## ${string}` => `## ${text}`;
+export const h2 = <T extends string>(text: T) => `## ${text}` as const;
 
 /**
  * Create a user mention.
@@ -83,4 +84,4 @@ export const h2 = (text: string): `## ${string}` => `## ${text}`;
  * @returns The formatted text.
  * @example userMention('abc'); // '<@abc>'
  */
-export const userMention = (userId: string): `<@${string}>` => `<@${userId}>`;
+export const userMention = <U extends string>(userId: U) => `<@${userId}>` as const;
