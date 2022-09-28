@@ -14,7 +14,7 @@ export class Routes {
 	 * The enpoint for channels on Guilded.
 	 * @see https://www.guilded.gg/docs/api/channels/ChannelCreate
 	 */
-	static channels: '/channels' = '/channels';
+	static channels = '/channels' as const;
 
 	/**
 	 * The endpoint for a channel on Guilded.
@@ -24,8 +24,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/channels/ChannelDelete
 	 * @example Routes.channel('abc'); // '/channels/abc'
 	 */
-	static channel(channelId: string): `/channels/${string}` {
-		return `/channels/${channelId}`;
+	static channel<C extends string>(channelId: C) {
+		return `/channels/${channelId}` as const;
 	}
 
 	/**
@@ -34,8 +34,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/servers/ServerRead
 	 * @example Routes.server('abc'); // '/servers/abc'
 	 */
-	static server(serverId: string): `/servers/${string}` {
-		return `/servers/${serverId}`;
+	static server<S extends string>(serverId: S) {
+		return `/servers/${serverId}` as const;
 	}
 
 	/**
@@ -45,8 +45,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/chat/ChannelMessageReadMany
 	 * @example Routes.messages('abc'); // '/channels/abc/messages'
 	 */
-	static messages(channelId: string): `/channels/${string}/messages` {
-		return `/channels/${channelId}/messages`;
+	static messages<C extends string>(channelId: C) {
+		return `/channels/${channelId}/messages` as const;
 	}
 
 	/**
@@ -58,8 +58,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/chat/ChannelMessageDelete
 	 * @example Routes.message('abc', 'abc'); // '/channels/abc/messages/abc'
 	 */
-	static message(channelId: string, messageId: string): `/channels/${string}/messages/${string}` {
-		return `/channels/${channelId}/messages/${messageId}`;
+	static message<C extends string, M extends string>(channelId: C, messageId: M) {
+		return `/channels/${channelId}/messages/${messageId}` as const;
 	}
 
 	/**
@@ -70,11 +70,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/members/MemberNicknameDelete
 	 * @example Routes.serverNickname('abc', 'abc'); // '/servers/abc/members/abc/nickname'
 	 */
-	static serverNickname(
-		serverId: string,
-		memberId: string,
-	): `/servers/${string}/members/${string}/nickname` {
-		return `/servers/${serverId}/members/${memberId}/nickname`;
+	static serverNickname<S extends string, M extends string>(serverId: S, memberId: M) {
+		return `/servers/${serverId}/members/${memberId}/nickname` as const;
 	}
 
 	/**
@@ -85,11 +82,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/members/ServerMemberDelete
 	 * @example Routes.serverMember('abc', 'abc'); // '/servers/abc/members/abc'
 	 */
-	static serverMember(
-		serverId: string,
-		memberId: string,
-	): `/servers/${string}/members/${string}` {
-		return `/servers/${serverId}/members/${memberId}`;
+	static serverMember<S extends string, M extends string>(serverId: S, memberId: M) {
+		return `/servers/${serverId}/members/${memberId}` as const;
 	}
 
 	/**
@@ -98,8 +92,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/members/ServerMemberReadMany
 	 * @example Routes.serverMembers('abc'); // '/servers/abc/members'
 	 */
-	static serverMembers(serverId: string): `/servers/${string}/members` {
-		return `/servers/${serverId}/members`;
+	static serverMembers<S extends string>(serverId: S) {
+		return `/servers/${serverId}/members` as const;
 	}
 
 	/**
@@ -111,8 +105,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/member-bans/ServerMemberBanDelete
 	 * @example Routes.serverBan('abc', 'abc'); // '/servers/abc/bans/abc'
 	 */
-	static serverBan(serverId: string, banId: string): `/servers/${string}/bans/${string}` {
-		return `/servers/${serverId}/bans/${banId}`;
+	static serverBan<S extends string, B extends string>(serverId: S, banId: B) {
+		return `/servers/${serverId}/bans/${banId}` as const;
 	}
 
 	/**
@@ -121,8 +115,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/member-bans/ServerMemberBanReadMany
 	 * @example Routes.serverBans('abc'); // '/servers/abc/bans'
 	 */
-	static serverBans(serverId: string): `/servers/${string}/bans` {
-		return `/servers/${serverId}/bans`;
+	static serverBans<S extends string>(serverId: S) {
+		return `/servers/${serverId}/bans` as const;
 	}
 
 	/**
@@ -132,8 +126,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicCreate
 	 * @example Routes.forumTopics('abc'); // '/channels/abc/topics'
 	 */
-	static forumTopics(channelId: string): `/channels/${string}/topics` {
-		return `/channels/${channelId}/topics`;
+	static forumTopics<C extends string>(channelId: C) {
+		return `/channels/${channelId}/topics` as const;
 	}
 
 	/**
@@ -145,11 +139,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicDelete
 	 * @example Routes.forumTopic('abc', 123); // '/channels/abc/topics/123'
 	 */
-	static forumTopic(
-		channelId: string,
-		forumTopicId: number,
-	): `/channels/${string}/topics/${number}` {
-		return `/channels/${channelId}/topics/${forumTopicId}`;
+	static forumTopic<C extends string, F extends number>(channelId: C, forumTopicId: F) {
+		return `/channels/${channelId}/topics/${forumTopicId}` as const;
 	}
 
 	/**
@@ -160,11 +151,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/forums/ForumTopicUnpin
 	 * @example Routes.forumTopicPin('abc', 123); // '/channels/abc/topics/123/pin'
 	 */
-	static forumTopicPin(
-		channelId: string,
-		forumTopicId: number,
-	): `/channels/${string}/topics/${number}/pin` {
-		return `/channels/${channelId}/topics/${forumTopicId}/pin`;
+	static forumTopicPin<C extends string, F extends number>(channelId: C, forumTopicId: F) {
+		return `/channels/${channelId}/topics/${forumTopicId}/pin` as const;
 	}
 
 	/**
@@ -174,8 +162,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemReadMany
 	 * @example Routes.listItems('abc'); // '/channels/abc/items'
 	 */
-	static listItems(channelId: string): `/channels/${string}/items` {
-		return `/channels/${channelId}/items`;
+	static listItems<C extends string>(channelId: C) {
+		return `/channels/${channelId}/items` as const;
 	}
 
 	/**
@@ -187,8 +175,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemDelete
 	 * @example Routes.listItem('abc', 'abc'); // '/channels/abc/items/abc'
 	 */
-	static listItem(channelId: string, listItemId: string): `/channels/${string}/items/${string}` {
-		return `/channels/${channelId}/items/${listItemId}`;
+	static listItem<C extends string, L extends string>(channelId: C, listItemId: L) {
+		return `/channels/${channelId}/items/${listItemId}` as const;
 	}
 
 	/**
@@ -199,11 +187,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/listItems/ListItemCompleteDelete
 	 * @example Routes.listItemComplete('abc', 'abc'); // '/channels/abc/items/abc/complete'
 	 */
-	static listItemComplete(
-		channelId: string,
-		listItemId: string,
-	): `/channels/${string}/items/${string}/complete` {
-		return `/channels/${channelId}/items/${listItemId}/complete`;
+	static listItemComplete<C extends string, L extends string>(channelId: C, listItemId: L) {
+		return `/channels/${channelId}/items/${listItemId}/complete` as const;
 	}
 
 	/**
@@ -213,8 +198,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/docs/DocReadMany
 	 * @example Routes.docs('abc'); // '/channels/abc/docs'
 	 */
-	static docs(channelId: string): `/channels/${string}/docs` {
-		return `/channels/${channelId}/docs`;
+	static docs<C extends string>(channelId: C) {
+		return `/channels/${channelId}/docs` as const;
 	}
 
 	/**
@@ -226,8 +211,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/docs/DocDelete
 	 * @example Routes.doc('abc', 123); // '/channels/abc/docs/123'
 	 */
-	static doc(channelId: string, docId: number): `/channels/${string}/docs/${number}` {
-		return `/channels/${channelId}/docs/${docId}`;
+	static doc<C extends string, D extends number>(channelId: C, docId: D) {
+		return `/channels/${channelId}/docs/${docId}` as const;
 	}
 
 	/**
@@ -237,8 +222,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventReadMany
 	 * @example Routes.calendarEvents('abc'); // '/channels/abc/events'
 	 */
-	static calendarEvents(channelId: string): `/channels/${string}/events` {
-		return `/channels/${channelId}/events`;
+	static calendarEvents<C extends string>(channelId: C) {
+		return `/channels/${channelId}/events` as const;
 	}
 
 	/**
@@ -250,11 +235,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventDelete
 	 * @example Routes.calendarEvent('abc', 123); // '/channels/abc/events/123'
 	 */
-	static calendarEvent(
-		channelId: string,
-		calendarEventId: number,
-	): `/channels/${string}/events/${number}` {
-		return `/channels/${channelId}/events/${calendarEventId}`;
+	static calendarEvent<C extends string, CE extends number>(channelId: C, calendarEventId: CE) {
+		return `/channels/${channelId}/events/${calendarEventId}` as const;
 	}
 
 	/**
@@ -266,12 +248,12 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpUpdate
 	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpDelete
 	 */
-	static calendarEventRsvp(
-		channelId: string,
-		calendarEventId: number,
-		userId: string,
-	): `/channels/${string}/events/${number}/rsvps/${string}` {
-		return `/channels/${channelId}/events/${calendarEventId}/rsvps/${userId}`;
+	static calendarEventRsvp<C extends string, CE extends number, U extends string>(
+		channelId: C,
+		calendarEventId: CE,
+		userId: U,
+	) {
+		return `/channels/${channelId}/events/${calendarEventId}/rsvps/${userId}` as const;
 	}
 
 	/**
@@ -280,10 +262,10 @@ export class Routes {
 	 * @param calendarEventId The ID of the calendar event the RSVPs belong to.
 	 * @see https://www.guilded.gg/docs/api/calendarEvents/CalendarEventRsvpReadMany
 	 */
-	static calendarEventRsvps(
-		channelId: string,
-		calendarEventId: number,
-	): `/channels/${string}/events/${number}/rsvps` {
+	static calendarEventRsvps<C extends string, CE extends number>(
+		channelId: C,
+		calendarEventId: CE,
+	) {
 		return `/channels/${channelId}/events/${calendarEventId}/rsvps`;
 	}
 
@@ -295,12 +277,12 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/reactions/ContentReactionCreate
 	 * @example Routes.reaction('abc', 'abc', 123); // '/channels/abc/content/abc/emotes/123'
 	 */
-	static reaction(
-		channelId: string,
-		contentId: string,
-		emoteId: number,
-	): `/channels/${string}/content/${string}/emotes/${number}` {
-		return `/channels/${channelId}/content/${contentId}/emotes/${emoteId}`;
+	static reaction<C extends string, Co extends string, E extends number>(
+		channelId: C,
+		contentId: Co,
+		emoteId: E,
+	) {
+		return `/channels/${channelId}/content/${contentId}/emotes/${emoteId}` as const;
 	}
 
 	/**
@@ -310,11 +292,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForUserCreate
 	 * @example Routes.serverMemberXp('abc', 'abc'); // '/servers/abc/members/abc/xp'
 	 */
-	static serverMemberXp(
-		serverId: string,
-		memberId: string,
-	): `/servers/${string}/members/${string}/xp` {
-		return `/servers/${serverId}/members/${memberId}/xp`;
+	static serverMemberXp<S extends string, M extends string>(serverId: S, memberId: M) {
+		return `/servers/${serverId}/members/${memberId}/xp` as const;
 	}
 
 	/**
@@ -324,8 +303,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/server-xp/ServerXpForRoleCreate
 	 * @example Routes.serverRoleXp('abc', 123); // '/servers/abc/roles/123/xp'
 	 */
-	static serverRoleXp(serverId: string, roleId: number): `/servers/${string}/roles/${number}/xp` {
-		return `/servers/${serverId}/roles/${roleId}/xp`;
+	static serverRoleXp<S extends string, R extends number>(serverId: S, roleId: R) {
+		return `/servers/${serverId}/roles/${roleId}/xp` as const;
 	}
 
 	/**
@@ -336,12 +315,12 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/socialLinks/MemberSocialLinkRead
 	 * @example Routes.socialLink('abc', 'abc', 'youtube'); // '/servers/abc/members/abc/social-links/youtube'
 	 */
-	static socialLink(
-		serverId: string,
-		memberId: string,
-		type: string,
-	): `/servers/${string}/members/${string}/social-links/${string}` {
-		return `/servers/${serverId}/members/${memberId}/social-links/${type}`;
+	static socialLink<S extends string, M extends string, T extends string>(
+		serverId: S,
+		memberId: M,
+		type: T,
+	) {
+		return `/servers/${serverId}/members/${memberId}/social-links/${type}` as const;
 	}
 
 	/**
@@ -352,8 +331,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/groupMembership/GroupMembershipDelete
 	 * @example Routes.groupMember('abc', 'abc'); // '/groups/abc/members/abc'
 	 */
-	static groupMember(groupId: string, memberId: string): `/groups/${string}/members/${string}` {
-		return `/groups/${groupId}/members/${memberId}`;
+	static groupMember<G extends string, M extends string>(groupId: G, memberId: M) {
+		return `/groups/${groupId}/members/${memberId}` as const;
 	}
 
 	/**
@@ -365,12 +344,12 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/roleMembership/RoleMembershipDelete
 	 * @example Routes.serverMemberRole('abc', 'abc', 123); // '/servers/abc/members/abc/roles/123'
 	 */
-	static serverMemberRole(
-		serverId: string,
-		memberId: string,
-		roleId: number,
-	): `/servers/${string}/members/${string}/roles/${number}` {
-		return `/servers/${serverId}/members/${memberId}/roles/${roleId}`;
+	static serverMemberRole<S extends string, M extends string, R extends number>(
+		serverId: S,
+		memberId: M,
+		roleId: R,
+	) {
+		return `/servers/${serverId}/members/${memberId}/roles/${roleId}` as const;
 	}
 
 	/**
@@ -380,11 +359,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/roleMembership/RoleMembershipReadMany
 	 * @example Routes.serverMemberRoles('abc', 'abc'); // '/servers/abc/members/abc/roles'
 	 */
-	static serverMemberRoles(
-		serverId: string,
-		memberId: string,
-	): `/servers/${string}/members/${string}/roles` {
-		return `/servers/${serverId}/members/${memberId}/roles`;
+	static serverMemberRoles<S extends string, M extends string>(serverId: S, memberId: M) {
+		return `/servers/${serverId}/members/${memberId}/roles` as const;
 	}
 
 	/**
@@ -394,8 +370,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/webhook/WebhookReadMany
 	 * @example Routes.webhooks('abc'); // '/servers/abc/webhooks'
 	 */
-	static webhooks(serverId: string): `/servers/${string}/webhooks` {
-		return `/servers/${serverId}/webhooks`;
+	static webhooks<S extends string>(serverId: S) {
+		return `/servers/${serverId}/webhooks` as const;
 	}
 
 	/**
@@ -407,8 +383,8 @@ export class Routes {
 	 * @see https://www.guilded.gg/docs/api/webhook/WebhookDelete
 	 * @example Routes.webhook('abc', 'abc'); // '/servers/abc/webhooks/abc'
 	 */
-	static webhook(serverId: string, webhookId: string): `/servers/${string}/webhooks/${string}` {
-		return `/servers/${serverId}/webhooks/${webhookId}`;
+	static webhook<S extends string, W extends string>(serverId: S, webhookId: W) {
+		return `/servers/${serverId}/webhooks/${webhookId}` as const;
 	}
 
 	/**
@@ -417,10 +393,7 @@ export class Routes {
 	 * @param webhookToken The ID of the webhook.
 	 * @example Routes.webhookExecute('abc', 'abc'); // '/webhooks/abc/abc'
 	 */
-	static webhookExecute(
-		webhookId: string,
-		webhookToken: string,
-	): `/webhooks/${string}/${string}` {
-		return `/webhooks/${webhookId}/${webhookToken}`;
+	static webhookExecute<W extends string, WT extends string>(webhookId: W, webhookToken: WT) {
+		return `/webhooks/${webhookId}/${webhookToken}` as const;
 	}
 }
