@@ -5,3 +5,5 @@ docs
 gtsconfig.*
 pnpm-publish-summary.json
 changeset-status.json
+.next
+next-env.d.ts

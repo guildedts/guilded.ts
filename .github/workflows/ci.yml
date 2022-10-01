@@ -17,3 +17,5 @@ jobs:
               run: pnpm i --ignore-scripts
             - name: Lint Packages
               run: pnpm run lint
+            - name: Commit Lint
+              run: pnpm commitlint -f HEAD~1 -V
