@@ -129,10 +129,13 @@ importers:
     packages/ws:
         specifiers:
             '@types/ws': ^8.5.3
+            guilded-api-typings: workspace:^
             ws: ^8.8.1
         dependencies:
             '@types/ws': 8.5.3
             ws: 8.8.1
+        devDependencies:
+            guilded-api-typings: link:../guilded-api-typings
 
 packages:
     /@babel/code-frame/7.18.6:
