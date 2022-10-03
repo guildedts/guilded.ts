@@ -12,12 +12,11 @@
 	"scripts": {
 		"test": "ts-node test",
 		"build": "pnpm -r build",
-		"lint": "eslint packages/*/src/**/*.ts scripts/*.ts",
-		"format": "prettier --write **/*.{ts,md,json,yml,yaml}",
+		"lint": "pnpm -r lint && eslint scripts",
+		"lint:fix": "pnpm -r lint --fix && eslint scripts --fix",
 		"docs": "rimraf docs && typedoc",
 		"prepare": "husky install && pnpm build",
 		"clear": "pnpm -r clear",
-		"changeset": "changeset",
 		"version": "ts-node scripts/version",
 		"version:dev": "pnpm run version --dev",
 		"publish": "pnpm build && ts-node scripts/publish",
@@ -32,14 +31,14 @@
 		"guilded.ts": "workspace:^"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.24.1",
+		"@changesets/cli": "^2.25.0",
 		"@commitlint/cli": "^17.1.2",
 		"@commitlint/config-angular": "^17.1.0",
 		"@favware/npm-deprecate": "^1.0.5",
-		"@types/node": "^18.6.3",
-		"@typescript-eslint/eslint-plugin": "^5.31.0",
-		"@typescript-eslint/parser": "^5.31.0",
-		"eslint": "^8.20.0",
+		"@types/node": "^18.8.0",
+		"@typescript-eslint/eslint-plugin": "^5.38.1",
+		"@typescript-eslint/parser": "^5.38.1",
+		"eslint": "^8.24.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"husky": "^8.0.1",
@@ -47,9 +46,9 @@
 		"prettier": "^2.7.1",
 		"rimraf": "^3.0.2",
 		"ts-node": "^10.9.1",
-		"typedoc": "^0.23.9",
-		"typedoc-plugin-missing-exports": "^0.23.0",
-		"typescript": "^4.7.4"
+		"typedoc": "^0.23.15",
+		"typedoc-plugin-missing-exports": "^1.0.0",
+		"typescript": "^4.8.4"
 	},
-	"packageManager": "pnpm@7.8.0"
+	"packageManager": "pnpm@7.13.0"
 }

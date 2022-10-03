@@ -32,7 +32,8 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"build": "pnpm clear && tsc",
-		"clear": "rimraf dist typings"
+		"clear": "rimraf dist typings",
+		"lint": "eslint src"
 	},
 	"dependencies": {
 		"@discordjs/collection": "^1.0.0",
@@ -42,9 +43,5 @@
 		"guilded.ts": "workspace:^",
 		"joi": "^17.6.0",
 		"yaml": "^2.1.1"
-	},
-	"devDependencies": {
-		"rimraf": "^3.0.2",
-		"typescript": "^4.7.4"
 	}
 }
