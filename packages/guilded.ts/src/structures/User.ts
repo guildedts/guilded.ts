@@ -54,7 +54,7 @@ export class User extends Base {
 
 	/** Whether the user is a human. */
 	get isUser() {
-		return this.type === UserType.User;
+		return !this.type || this.type === UserType.User;
 	}
 }
 

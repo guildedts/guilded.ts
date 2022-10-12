@@ -38,7 +38,7 @@ export class Client extends BaseClient {
 	/** The glob pattern for event files. */
 	private readonly eventGlob = `${this.eventDirGlob}/**/*.{js,ts}`;
 	/** The options for glob. */
-	private readonly globOptions: Options = { ignore: ['node_modules', '**/*.d.ts'] };
+	private readonly globOptions: Options = { ignore: ['**/node_modules', '**/*.d.ts'] };
 
 	/** @param options The options for the client. */
 	constructor(public readonly options: ClientOptions = {}) {
@@ -119,6 +119,7 @@ export class Client extends BaseClient {
 			if (!event) continue;
 			loadedEvents++;
 			event.name = event.name ?? basename(path, extname(path));
+			console.log(path, event);
 			this[event.once ? 'once' : 'on'](event.name, event.execute.bind(event));
 		}
 		const commandHandler = new CommandHandler(this);
