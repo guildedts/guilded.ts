@@ -1,5 +1,13 @@
 # @guildedts/framework
 
+## 0.2.8
+
+### Patch Changes
+
+-   124c91a: fix: glob ignore pattern
+-   Updated dependencies [124c91a]
+    -   guilded.ts@0.18.1
+
 ## 0.2.7
 
 ### Patch Changes
