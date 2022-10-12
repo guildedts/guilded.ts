@@ -1,5 +1,11 @@
 # guilded.ts
 
+## 0.18.1
+
+### Patch Changes
+
+-   124c91a: fix: `User.isUser` always returns `false`
+
 ## 0.18.0
 
 ### Minor Changes
