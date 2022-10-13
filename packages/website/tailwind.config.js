@@ -12,6 +12,10 @@ module.exports = {
 						dark: '#292b32',
 						darkest: '#1e2025',
 					},
+					white: '#ececee',
+				},
+				typescript: {
+					blue: '#3178c6',
 				},
 			},
 		},
