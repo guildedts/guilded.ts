@@ -14,5 +14,5 @@
 	"readme": "packages/guilded.ts/README.md",
 	"tsconfig": "tsconfig.json",
 	"hideGenerator": true,
-	"cname": "guildedts.js.org"
+	"cname": "docs.guildedts.js.org"
 }
