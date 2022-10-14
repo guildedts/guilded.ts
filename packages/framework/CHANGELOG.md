@@ -1,5 +1,11 @@
 # @guildedts/framework
 
+## 0.2.9
+
+### Patch Changes
+
+-   a28a159: fix: random log when loading events
+
 ## 0.2.8
 
 ### Patch Changes
