@@ -18,6 +18,7 @@
 				"typings",
 				"wip"
 			]
-		]
+		],
+		"scope-case": [0]
 	}
 }

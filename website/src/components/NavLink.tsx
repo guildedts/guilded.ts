@@ -1,8 +1,16 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { MouseEventHandler, ReactNode } from 'react';
 
-export default function NavLink({ children, href }: { children: ReactNode; href: string }) {
+export default function NavLink({
+	children,
+	href,
+	onClick,
+}: {
+	children: ReactNode;
+	href: string;
+	onClick?: MouseEventHandler<HTMLDivElement>;
+}) {
 	const { asPath } = useRouter();
 
 	return (
@@ -12,6 +20,7 @@ export default function NavLink({ children, href }: { children: ReactNode; href:
 					? 'bg-guilded-grey-light'
 					: null
 			}`}
+			onClick={onClick}
 		>
 			<Link href={href}>{children}</Link>
 		</div>

@@ -40,12 +40,12 @@ export default function Navbar() {
 				</button>
 				<div className={`space-y-2 ${opened ? 'block' : 'hidden'}`}>
 					{Object.entries(links).map(([name, href], index) => (
-						<NavLink key={index} href={href}>
+						<NavLink key={index} href={href} onClick={() => setOpened(!opened)}>
 							{name}
 						</NavLink>
 					))}
 					{Object.entries(externalLinks).map(([name, href], index) => (
-						<NavExternalLink key={index} href={href}>
+						<NavExternalLink key={index} href={href} onClick={() => setOpened(!opened)}>
 							{name}
 						</NavExternalLink>
 					))}
