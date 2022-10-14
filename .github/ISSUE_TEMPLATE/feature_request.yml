@@ -4,7 +4,7 @@ labels: enhancement
 body:
     - type: markdown
       attributes:
-          value: Visit our [Guilded Server](https://guilded.gg/guildedts) for general support.
+          value: Visit our [Guilded Server](https://guildedts.js.org/support) for general support.
     - type: dropdown
       attributes:
           label: Package

@@ -119,7 +119,6 @@ export class Client extends BaseClient {
 			if (!event) continue;
 			loadedEvents++;
 			event.name = event.name ?? basename(path, extname(path));
-			console.log(path, event);
 			this[event.once ? 'once' : 'on'](event.name, event.execute.bind(event));
 		}
 		const commandHandler = new CommandHandler(this);

@@ -9,7 +9,6 @@
 	"excludeExternals": true,
 	"excludeInternal": true,
 	"excludePrivate": true,
-	"media": "media",
 	"out": "docs",
 	"readme": "packages/guilded.ts/README.md",
 	"tsconfig": "tsconfig.json",

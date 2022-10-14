@@ -1,9 +1,9 @@
 <div align="center">
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/media/banner.png" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/banner.png" alt="Guilded.TS"/>
     </a>
     <div>
-        <A href="https://guilded.gg/guildedts">
+        <A href="https://guildedts.js.org/support">
             <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server">
         </a>
         <a href="https://npmjs.com/guilded.ts">
@@ -24,10 +24,12 @@ Guilded.TS is feature rich NPM package for interacting with the Guilded API.
 
 # Links
 
+-   [Website](https://guildedts.js.org)
+-   [Documentation](https://docs.guildedts.js.org/modules/guilded_ts)
+-   [Guide](https://guildedts.js.org/guide)
+-   [Guilded.TS Guilded Server](https://guildedts.js.org/support)
 -   [GitHub](https://github.com/guildedts/guilded.ts/tree/main/packages/guilded.ts)
 -   [NPM](https://npmjs.com/guilded.ts)
--   [Documentation](https://guildedts.js.org/modules/guilded_ts)
--   [Guide](https://guide.guildedts.js.org)
 
 # Packages
 

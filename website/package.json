@@ -5,7 +5,7 @@
 	"private": true,
 	"repository": {
 		"url": "guildedts/guilded.ts",
-		"directory": "packages/website"
+		"directory": "website"
 	},
 	"homepage": "https://guildedts.js.org",
 	"contributors": [
