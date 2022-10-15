@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
-import NavExternalLink from './NavExternalLink';
-import NavLink from './NavLink';
+import NavExternalLink from 'components/NavExternalLink';
+import NavLink from 'components/NavLink';
 
 const links = {
 	'Guilded.TS': '/',

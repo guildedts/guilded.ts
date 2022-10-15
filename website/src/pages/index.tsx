@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import Command from '../components/Command';
-import ExternalLink from '../components/ExternalLink';
+import Command from 'components/Command';
+import ExternalLink from 'components/ExternalLink';
 
 export default function Home() {
 	return (
