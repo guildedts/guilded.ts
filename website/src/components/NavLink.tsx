@@ -14,15 +14,15 @@ export default function NavLink({
 	const { asPath } = useRouter();
 
 	return (
-		<div
-			className={`text-white rounded-md hover:bg-guilded-grey-dark py-2 px-3 text-sm font-semibold ${
-				(href === '/' ? asPath === href : asPath.startsWith(href))
-					? 'bg-guilded-grey-light'
-					: null
-			}`}
-			onClick={onClick}
-		>
-			<Link href={href}>{children}</Link>
+		<div className="rounded-md overflow-hidden" onClick={onClick}>
+			<div
+				className={`text-white hover:bg-guilded-grey-dark py-2 px-3 text-sm font-semibold ${
+					(href === '/' ? asPath === href : asPath.startsWith(href)) &&
+					'bg-guilded-grey-light border-b-4 border-guilded-gilded'
+				}`}
+			>
+				<Link href={href}>{children}</Link>
+			</div>
 		</div>
 	);
 }
