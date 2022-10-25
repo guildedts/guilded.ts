@@ -6,6 +6,6 @@ export default class extends Command {
 
 	execute(message: Message) {
 		const seconds = (Date.now() - message.createdTimestamp) / 1000;
-		message.reply(`Pong! It took me ${seconds} seconds to respond.`);
+		message.reply(`Pong! It took me ${seconds} seconds to respond`);
 	}
 }

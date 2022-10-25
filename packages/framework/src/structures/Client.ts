@@ -38,7 +38,10 @@ export class Client extends BaseClient {
 	/** The glob pattern for event files. */
 	private readonly eventGlob = `${this.eventDirGlob}/**/*.{js,ts}`;
 	/** The options for glob. */
-	private readonly globOptions: Options = { ignore: ['**/node_modules', '**/*.d.ts'] };
+	private readonly globOptions: Options = {
+		ignore: ['**/node_modules', '**/*.d.ts'],
+		onlyFiles: false,
+	};
 
 	/** @param options The options for the client. */
 	constructor(public readonly options: ClientOptions = {}) {

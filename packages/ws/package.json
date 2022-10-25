@@ -34,7 +34,7 @@
 	},
 	"dependencies": {
 		"@types/ws": "^8.5.3",
-		"ws": "^8.8.1"
+		"ws": "^8.10.0"
 	},
 	"devDependencies": {
 		"guilded-api-typings": "workspace:^"

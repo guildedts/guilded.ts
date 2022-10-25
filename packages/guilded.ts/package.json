@@ -31,7 +31,7 @@
 		"lint": "eslint src"
 	},
 	"dependencies": {
-		"@discordjs/collection": "^1.0.0",
+		"@discordjs/collection": "^1.2.0",
 		"@guildedts/builders": "workspace:^",
 		"@guildedts/rest": "workspace:^",
 		"@guildedts/ws": "workspace:^",

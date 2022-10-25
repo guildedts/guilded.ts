@@ -15,7 +15,7 @@ export default function NavExternalLink({
 			href={href}
 			target="_blank"
 			rel="noreferrer"
-			className="text-white rounded-md hover:bg-guilded-grey-dark py-2 px-3 text-sm font-semibold flex space-x-2"
+			className="text-white rounded-md hover:bg-guilded-grey-dark py-2 px-3 text-sm font-semibold flex space-x-2 transition ease-in-out duration-300"
 			onClick={onClick}
 		>
 			<span>{children}</span>
