@@ -1,5 +1,11 @@
 # @guildedts/framework
 
+## 0.2.10
+
+### Patch Changes
+
+-   9386dd4: fix: dev mode
+
 ## 0.2.9
 
 ### Patch Changes
