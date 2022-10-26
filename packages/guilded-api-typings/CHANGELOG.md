@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.13.0
+
+### Minor Changes
+
+-   88aaf2b: feat: `BotTeamMembershipCreated` event
+
 ## 0.12.1
 
 ### Patch Changes

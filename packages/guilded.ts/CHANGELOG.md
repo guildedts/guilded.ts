@@ -1,5 +1,19 @@
 # guilded.ts
 
+## 0.19.0
+
+### Minor Changes
+
+-   88aaf2b: feat: `BotTeamMembershipCreated` event
+
+### Patch Changes
+
+-   Updated dependencies [88aaf2b]
+    -   guilded-api-typings@0.13.0
+    -   @guildedts/builders@0.2.9
+    -   @guildedts/rest@0.14.1
+    -   @guildedts/ws@0.5.0
+
 ## 0.18.1
 
 ### Patch Changes
