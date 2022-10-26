@@ -189,6 +189,8 @@ export interface ClientEvents {
 	reconnect: [client: Client];
 	/** Emitted when debug data is received. */
 	debug: [client: Client, data: any];
+	/** Emitted when the bot is added to a server. */
+	serverAdd: [server: Server, addedBy: ServerMember];
 	/** Emitted when a message is created. */
 	messageCreate: [message: Message];
 	/** Emitted when a message is edited. */

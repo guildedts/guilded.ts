@@ -14,6 +14,7 @@ import * as webhook from './events/webhook';
 const WSEventHandler: {
 	[event in keyof WSEvents]: (client: Client, data: WSEvents[event]) => void | Promise<void>;
 } = {
+	BotTeamMembershipCreated: server.botAdded,
 	ChatMessageCreated: message.created,
 	ChatMessageUpdated: message.updated,
 	ChatMessageDeleted: message.deleted,

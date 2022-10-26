@@ -2,6 +2,7 @@ import { WSEvents } from 'guilded-api-typings';
 import { Client } from '../../structures/Client';
 import { Collection } from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
+import { Server } from '../../structures/server/Server';
 
 /**
  * Handle the teamRolesUpdated event.
@@ -20,4 +21,15 @@ export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpda
 		newMembers.set(userId, newMember);
 	}
 	client.emit('rolesEdit', newMembers, oldMembers);
+}
+
+/**
+ * Handle the BotTeamMembershipCreated event.
+ * @param client The client the Websocket belongs to.
+ * @param data The data of the event.
+ */
+export async function botAdded(client: Client, data: WSEvents['BotTeamMembershipCreated']) {
+	const server = new Server(client, data.server);
+	const addedBy = await server.members.fetch(data.createdBy);
+	client.emit('serverAdd', server, addedBy);
 }

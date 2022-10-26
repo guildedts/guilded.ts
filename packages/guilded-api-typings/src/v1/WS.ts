@@ -2,7 +2,7 @@ import { APIChannel } from './structures/Channel';
 import { APIMessage, APIMessageReaction, APIMessageSummary } from './structures/Message';
 import { APIDoc } from './structures/Doc';
 import { APIListItem } from './structures/ListItem';
-import { APIServerMember, APIServerBan } from './structures/Server';
+import { APIServerMember, APIServerBan, APIServer } from './structures/Server';
 import { APIWebhook } from './structures/Webhook';
 import { APICalendarEvent, APICalendarEventRsvp } from './structures/CalendarEvent';
 import { APIClientUser } from './structures/User';
@@ -45,6 +45,16 @@ export enum WSOpCode {
  * @see https://www.guilded.gg/docs/api/websockets
  */
 export interface WSEvents {
+	/**
+	 * Emitted when a bot is added to a server.
+	 * @see https://www.guilded.gg/docs/api/websockets/BotTeamMembershipCreated
+	 */
+	BotTeamMembershipCreated: {
+		/** The server the bot was added to. */
+		server: APIServer;
+		/** The ID of the user that added the bot to the server. */
+		createdBy: string;
+	};
 	/**
 	 * Emitted when a message is created.
 	 * @see https://www.guilded.gg/docs/api/websockets/ChatMessageCreated
