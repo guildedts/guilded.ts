@@ -198,19 +198,19 @@ export interface ClientEvents {
 	/** Emitted when a message is deleted. */
 	messageDelete: [message: Message | APIMessageSummary];
 	/** Emitted when a member joins a server. */
-	memberAdd: [member: ServerMember];
+	serverMemberAdd: [serverMember: ServerMember];
 	/** Emitted when a member leaves a server. */
-	memberRemove: [data: WSEvents['TeamMemberRemoved'], server: Server];
+	serverMemberRemove: [data: WSEvents['TeamMemberRemoved'], server: Server];
 	/** Emitted when a member is banned from a server. */
-	memberBan: [ban: ServerBan];
+	serverMemberBan: [serverBan: ServerBan];
 	/** Emitted when a member is unbanned from a server. */
-	memberUnban: [ban: ServerBan];
-	/** Emitted when a member is edited. */
-	memberEdit: [newMember: ServerMember, oldMember?: ServerMember];
-	/** Emitted when roles in server are edited. */
-	rolesEdit: [
-		newMembers: Collection<string, ServerMember>,
-		oldMembers: Collection<string, ServerMember>,
+	serverMemberUnban: [serverBan: ServerBan];
+	/** Emitted when a server member is edited. */
+	serverMemberEdit: [newServerMember: ServerMember, oldServerMember?: ServerMember];
+	/** Emitted when server roles are edited. */
+	serverRolesEdit: [
+		newServerMembers: Collection<string, ServerMember>,
+		oldServerMembers: Collection<string, ServerMember>,
 	];
 	/** Emitted when a channel is created. */
 	channelCreate: [channel: Channel];

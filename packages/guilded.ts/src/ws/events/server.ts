@@ -20,7 +20,7 @@ export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpda
 		if (oldMember) oldMembers.set(userId, oldMember);
 		newMembers.set(userId, newMember);
 	}
-	client.emit('rolesEdit', newMembers, oldMembers);
+	client.emit('serverRolesEdit', newMembers, oldMembers);
 }
 
 /**

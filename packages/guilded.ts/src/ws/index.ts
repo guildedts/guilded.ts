@@ -5,9 +5,9 @@ import * as channel from './events/channel';
 import * as doc from './events/doc';
 import * as forumTopic from './events/forumTopic';
 import * as listItem from './events/listItem';
-import * as member from './events/member';
 import * as message from './events/message';
 import * as server from './events/server';
+import * as serverMember from './events/serverMember';
 import * as webhook from './events/webhook';
 
 /** A map of all WebSocket events with their respective handlers. */
@@ -18,11 +18,11 @@ const WSEventHandler: {
 	ChatMessageCreated: message.created,
 	ChatMessageUpdated: message.updated,
 	ChatMessageDeleted: message.deleted,
-	TeamMemberJoined: member.joined,
-	TeamMemberRemoved: member.removed,
-	TeamMemberBanned: member.banned,
-	TeamMemberUnbanned: member.unbanned,
-	TeamMemberUpdated: member.updated,
+	TeamMemberJoined: serverMember.joined,
+	TeamMemberRemoved: serverMember.removed,
+	TeamMemberBanned: serverMember.banned,
+	TeamMemberUnbanned: serverMember.unbanned,
+	TeamMemberUpdated: serverMember.updated,
 	teamRolesUpdated: server.rolesUpdated,
 	TeamChannelCreated: channel.created,
 	TeamChannelUpdated: channel.updated,

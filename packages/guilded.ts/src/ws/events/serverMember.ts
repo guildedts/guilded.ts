@@ -11,7 +11,7 @@ import { ServerMember } from '../../structures/server/ServerMember';
 export async function joined(client: Client, data: WSEvents['TeamMemberJoined']) {
 	const server = await client.servers.fetch(data.serverId);
 	const member = new ServerMember(server, data.member);
-	client.emit('memberAdd', member);
+	client.emit('serverMemberAdd', member);
 }
 
 /**
@@ -22,7 +22,7 @@ export async function joined(client: Client, data: WSEvents['TeamMemberJoined'])
 export async function removed(client: Client, data: WSEvents['TeamMemberRemoved']) {
 	const server = await client.servers.fetch(data.serverId);
 	if (client.options.disposeCachedServerMembers ?? true) server.members.cache.delete(data.userId);
-	client.emit('memberRemove', data, server);
+	client.emit('serverMemberRemove', data, server);
 }
 
 /**
@@ -33,7 +33,7 @@ export async function removed(client: Client, data: WSEvents['TeamMemberRemoved'
 export async function banned(client: Client, data: WSEvents['TeamMemberBanned']) {
 	const server = await client.servers.fetch(data.serverId);
 	const ban = new ServerBan(server, data.serverMemberBan);
-	client.emit('memberBan', ban);
+	client.emit('serverMemberBan', ban);
 }
 
 /**
@@ -45,7 +45,7 @@ export async function unbanned(client: Client, data: WSEvents['TeamMemberUnbanne
 	const server = await client.servers.fetch(data.serverId);
 	const ban = new ServerBan(server, data.serverMemberBan);
 	if (client.options.disposeCachedServerBans ?? true) server.bans.cache.delete(ban.id);
-	client.emit('memberUnban', ban);
+	client.emit('serverMemberUnban', ban);
 }
 
 /**
@@ -58,5 +58,5 @@ export async function updated(client: Client, data: WSEvents['TeamMemberUpdated'
 	const oldMember = server.members.cache.get(data.userInfo.id);
 	const newMember = await server.members.fetch(data.userInfo.id);
 	newMember.nickname = data.userInfo.nickname;
-	client.emit('memberEdit', newMember, oldMember);
+	client.emit('serverMemberEdit', newMember, oldMember);
 }
