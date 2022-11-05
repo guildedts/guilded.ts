@@ -8,11 +8,9 @@
 	},
 	"homepage": "https://guildedts.js.org",
 	"main": "dist",
-	"types": "typings",
 	"files": [
 		"CHANGELOG.md",
-		"dist",
-		"typings"
+		"dist"
 	],
 	"keywords": [
 		"guilded",
@@ -27,7 +25,7 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"build": "pnpm clear && tsc",
-		"clear": "rimraf dist typings",
+		"clear": "rimraf dist",
 		"lint": "eslint src"
 	},
 	"dependencies": {
