@@ -3,10 +3,10 @@ import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 import NavExternalLink from 'components/NavExternalLink';
 import NavLink from 'components/NavLink';
 
-const links = {
+const Links = {
 	'Guilded.TS': '/',
 };
-const externalLinks = {
+const ExternalLinks = {
 	Documentation: '/docs',
 	Guide: '/guide',
 	GitHub: '/github',
@@ -19,12 +19,12 @@ export default function Navbar() {
 	return (
 		<header className="text-white sticky bg-guilded-grey-darkest p-3">
 			<nav className="hidden max-w-7xl mx-auto space-x-3 md:flex">
-				{Object.entries(links).map(([name, href], index) => (
+				{Object.entries(Links).map(([name, href], index) => (
 					<NavLink key={index} href={href}>
 						{name}
 					</NavLink>
 				))}
-				{Object.entries(externalLinks).map(([name, href], index) => (
+				{Object.entries(ExternalLinks).map(([name, href], index) => (
 					<NavExternalLink key={index} href={href}>
 						{name}
 					</NavExternalLink>
@@ -39,12 +39,12 @@ export default function Navbar() {
 					)}
 				</button>
 				<div className={`space-y-2 ${opened ? 'block' : 'hidden'}`}>
-					{Object.entries(links).map(([name, href], index) => (
+					{Object.entries(Links).map(([name, href], index) => (
 						<NavLink key={index} href={href} onClick={() => setOpened(!opened)}>
 							{name}
 						</NavLink>
 					))}
-					{Object.entries(externalLinks).map(([name, href], index) => (
+					{Object.entries(ExternalLinks).map(([name, href], index) => (
 						<NavExternalLink key={index} href={href} onClick={() => setOpened(!opened)}>
 							{name}
 						</NavExternalLink>

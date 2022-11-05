@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { MouseEventHandler, ReactNode } from 'react';
 import { HiOutlineExternalLink } from 'react-icons/hi';
 
@@ -11,7 +12,7 @@ export default function NavExternalLink({
 	onClick?: MouseEventHandler<HTMLAnchorElement>;
 }) {
 	return (
-		<a
+		<Link
 			href={href}
 			target="_blank"
 			rel="noreferrer"
@@ -20,6 +21,6 @@ export default function NavExternalLink({
 		>
 			<span>{children}</span>
 			<HiOutlineExternalLink className="h-5 w-5" />
-		</a>
+		</Link>
 	);
 }
