@@ -81,7 +81,7 @@ export default class CommandHandler extends Event<'messageCreate'> {
 		message.channel.send({
 			embeds: [
 				new Embed()
-					.setColor('RED')
+					.setColor('Red')
 					.setTitle(userMention(message.createdBy))
 					.setDescription(error)
 					.setFooter(message.content),

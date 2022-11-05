@@ -1,5 +1,5 @@
 export * from './Embed';
-export * from './util';
+export * from '@guildedts/util';
 
 /**
  * Create bold text.

@@ -5,7 +5,7 @@ import {
 	APIEmbedFooter,
 	APIEmbedMedia,
 } from 'guilded-api-typings';
-import { ColorResolvable, resolveColor } from './util';
+import { ColorResolvable, resolveColor } from '@guildedts/util';
 
 /**
  * The embed builder for Guilded embeds.

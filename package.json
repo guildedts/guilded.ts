@@ -23,12 +23,8 @@
 		"publish:dev": "pnpm run publish --dev"
 	},
 	"dependencies": {
-		"@guildedts/builders": "workspace:^",
-		"@guildedts/framework": "workspace:^",
-		"@guildedts/rest": "workspace:^",
-		"@guildedts/ws": "workspace:^",
-		"guilded-api-typings": "workspace:^",
-		"guilded.ts": "workspace:^"
+		"guilded.ts": "workspace:^",
+		"@guildedts/framework": "workspace:^"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.25.0",
@@ -36,6 +32,7 @@
 		"@commitlint/config-angular": "^17.1.0",
 		"@favware/npm-deprecate": "^1.0.5",
 		"@types/node": "^18.11.5",
+		"@types/node-fetch": "^2.6.2",
 		"@typescript-eslint/eslint-plugin": "^5.41.0",
 		"@typescript-eslint/parser": "^5.41.0",
 		"eslint": "^8.26.0",
@@ -50,5 +47,5 @@
 		"typedoc-plugin-missing-exports": "^1.0.0",
 		"typescript": "^4.8.4"
 	},
-	"packageManager": "pnpm@7.13.0"
+	"packageManager": "pnpm@7.14.1"
 }
