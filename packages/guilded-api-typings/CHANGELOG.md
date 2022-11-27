@@ -1,5 +1,13 @@
 # guilded-api-typings
 
+## 0.13.1
+
+### Patch Changes
+
+-   913a2b8: fix: switch to `Server` WebSocket events
+
+    BREAKING CHANGES: This removes `team`/`Team` WebSocket events in favour of `Server` events
+
 ## 0.13.0
 
 ### Minor Changes

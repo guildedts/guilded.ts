@@ -1,5 +1,14 @@
 # @guildedts/framework
 
+## 0.2.12
+
+### Patch Changes
+
+-   2145aad: feat: add util package
+-   Updated dependencies [913a2b8]
+-   Updated dependencies [e398248]
+    -   guilded.ts@0.20.0
+
 ## 0.2.11
 
 ### Patch Changes
