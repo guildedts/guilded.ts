@@ -3,22 +3,22 @@ import { Client } from '../../structures/Client';
 import { Webhook } from '../../structures/Webhook';
 
 /**
- * Handle the TeamWebhookCreated event.
+ * Handle the ServerWebhookCreated event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['TeamWebhookCreated']) {
+export async function created(client: Client, data: WSEvents['ServerWebhookCreated']) {
 	const channel = await client.channels.fetch(data.webhook.channelId);
 	const webhook = new Webhook(channel, data.webhook);
 	client.emit('webhookCreate', webhook);
 }
 
 /**
- * Handle the TeamWebhookUpdated event.
+ * Handle the ServerWebhookUpdated event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['TeamWebhookUpdated']) {
+export async function updated(client: Client, data: WSEvents['ServerWebhookUpdated']) {
 	const channel = await client.channels.fetch(data.webhook.channelId);
 	const oldWebhook = channel.webhooks.cache.get(data.webhook.id);
 	const newWebhook = new Webhook(channel, data.webhook);

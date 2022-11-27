@@ -4,44 +4,44 @@ import { ServerBan } from '../../structures/server/ServerBan';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**
- * Handle the TeamMemberJoined event.
+ * Handle the ServerMemberJoined event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function joined(client: Client, data: WSEvents['TeamMemberJoined']) {
+export async function joined(client: Client, data: WSEvents['ServerMemberJoined']) {
 	const server = await client.servers.fetch(data.serverId);
 	const member = new ServerMember(server, data.member);
 	client.emit('serverMemberAdd', member);
 }
 
 /**
- * Handle the TeamMemberRemoved event.
+ * Handle the ServerMemberRemoved event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function removed(client: Client, data: WSEvents['TeamMemberRemoved']) {
+export async function removed(client: Client, data: WSEvents['ServerMemberRemoved']) {
 	const server = await client.servers.fetch(data.serverId);
 	if (client.options.disposeCachedServerMembers ?? true) server.members.cache.delete(data.userId);
 	client.emit('serverMemberRemove', data, server);
 }
 
 /**
- * Handle the TeamMemberBanned event.
+ * Handle the ServerMemberBanned event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function banned(client: Client, data: WSEvents['TeamMemberBanned']) {
+export async function banned(client: Client, data: WSEvents['ServerMemberBanned']) {
 	const server = await client.servers.fetch(data.serverId);
 	const ban = new ServerBan(server, data.serverMemberBan);
 	client.emit('serverMemberBan', ban);
 }
 
 /**
- * Handle the TeamMemberUnbanned event.
+ * Handle the ServerMemberUnbanned event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function unbanned(client: Client, data: WSEvents['TeamMemberUnbanned']) {
+export async function unbanned(client: Client, data: WSEvents['ServerMemberUnbanned']) {
 	const server = await client.servers.fetch(data.serverId);
 	const ban = new ServerBan(server, data.serverMemberBan);
 	if (client.options.disposeCachedServerBans ?? true) server.bans.cache.delete(ban.id);
@@ -49,11 +49,11 @@ export async function unbanned(client: Client, data: WSEvents['TeamMemberUnbanne
 }
 
 /**
- * Handle the TeamMemberUpdated event.
+ * Handle the ServerMemberUpdated event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['TeamMemberUpdated']) {
+export async function updated(client: Client, data: WSEvents['ServerMemberUpdated']) {
 	const server = await client.servers.fetch(data.serverId);
 	const oldMember = server.members.cache.get(data.userInfo.id);
 	const newMember = await server.members.fetch(data.userInfo.id);

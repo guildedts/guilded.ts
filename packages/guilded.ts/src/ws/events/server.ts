@@ -5,11 +5,11 @@ import { ServerMember } from '../../structures/server/ServerMember';
 import { Server } from '../../structures/server/Server';
 
 /**
- * Handle the teamRolesUpdated event.
+ * Handle the ServerRolesUpdated event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpdated']) {
+export async function rolesUpdated(client: Client, data: WSEvents['ServerRolesUpdated']) {
 	const server = await client.servers.fetch(data.serverId);
 	const oldMembers = new Collection<string, ServerMember>();
 	const newMembers = new Collection<string, ServerMember>();
@@ -24,11 +24,11 @@ export async function rolesUpdated(client: Client, data: WSEvents['teamRolesUpda
 }
 
 /**
- * Handle the BotTeamMembershipCreated event.
+ * Handle the BotServerMembershipCreated event.
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function botAdded(client: Client, data: WSEvents['BotTeamMembershipCreated']) {
+export async function botAdded(client: Client, data: WSEvents['BotServerMembershipCreated']) {
 	const server = new Server(client, data.server);
 	const addedBy = await server.members.fetch(data.createdBy);
 	client.emit('serverAdd', server, addedBy);

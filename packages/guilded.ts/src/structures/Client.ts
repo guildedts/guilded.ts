@@ -200,7 +200,7 @@ export interface ClientEvents {
 	/** Emitted when a member joins a server. */
 	serverMemberAdd: [serverMember: ServerMember];
 	/** Emitted when a member leaves a server. */
-	serverMemberRemove: [data: WSEvents['TeamMemberRemoved'], server: Server];
+	serverMemberRemove: [data: WSEvents['ServerMemberRemoved'], server: Server];
 	/** Emitted when a member is banned from a server. */
 	serverMemberBan: [serverBan: ServerBan];
 	/** Emitted when a member is unbanned from a server. */
