@@ -1,5 +1,28 @@
 # guilded.ts
 
+## 0.20.0
+
+### Minor Changes
+
+-   e398248: refactor: change server related events to start with `server`
+
+    Change server related events such as `memberAdd` to start with `server`, in this case, this is renamed to `serverMemberAdd`.
+
+    BREAKING CHANGE: event names are changed as shown above.
+
+### Patch Changes
+
+-   913a2b8: fix: switch to `Server` WebSocket events
+
+    BREAKING CHANGES: This removes `team`/`Team` WebSocket events in favour of `Server` events
+
+-   Updated dependencies [913a2b8]
+-   Updated dependencies [2145aad]
+    -   guilded-api-typings@0.13.1
+    -   @guildedts/builders@0.2.10
+    -   @guildedts/rest@0.14.2
+    -   @guildedts/ws@0.5.0
+
 ## 0.19.0
 
 ### Minor Changes

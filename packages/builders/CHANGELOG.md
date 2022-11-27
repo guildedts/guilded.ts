@@ -1,5 +1,11 @@
 # @guildedts/builders
 
+## 0.2.10
+
+### Patch Changes
+
+-   2145aad: feat: add util package
+
 ## 0.2.9
 
 ### Patch Changes
