@@ -1,5 +1,11 @@
 # @guildedts/framework
 
+## 0.2.13
+
+### Patch Changes
+
+-   guilded.ts@0.20.1
+
 ## 0.2.12
 
 ### Patch Changes
