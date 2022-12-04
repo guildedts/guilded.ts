@@ -63,16 +63,22 @@ export class RESTManager extends EventEmitter {
 		const searchParams = new URLSearchParams();
 		if (options.params)
 			for (const [key, value] of Object.entries(options.params))
-				searchParams.append(key, value.toString());
-		const response = await fetch(this.baseURL + path + searchParams, {
-			method,
-			headers: {
-				'Content-Type': 'application/json',
-				...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
-				'User-Agent': `@guildedts/rest@${version} Node.JS@${process.versions.node}`,
+				searchParams.append(
+					key,
+					value instanceof Date ? value.toISOString() : String(value),
+				);
+		const response = await fetch(
+			`${this.baseURL}${path}${searchParams ? `?${searchParams}` : ''}`,
+			{
+				method,
+				headers: {
+					'Content-Type': 'application/json',
+					...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+					'User-Agent': `@guildedts/rest@${version} Node.JS@${process.versions.node}`,
+				},
+				body: options.body ? JSON.stringify(options.body) : undefined,
 			},
-			body: options.body ? JSON.stringify(options.body) : undefined,
-		});
+		);
 		const data = (await response.json().catch(() => undefined)) as APIError | R;
 		if (response.ok) {
 			this.emit('raw', data, response);
