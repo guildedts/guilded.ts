@@ -1,5 +1,11 @@
 # @guildedts/rest
 
+## 0.14.3
+
+### Patch Changes
+
+-   ab5493c: fix: query parameters
+
 ## 0.14.2
 
 ### Patch Changes

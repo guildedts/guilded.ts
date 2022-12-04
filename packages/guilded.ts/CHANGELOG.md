@@ -1,5 +1,12 @@
 # guilded.ts
 
+## 0.20.1
+
+### Patch Changes
+
+-   Updated dependencies [ab5493c]
+    -   @guildedts/rest@0.14.3
+
 ## 0.20.0
 
 ### Minor Changes
