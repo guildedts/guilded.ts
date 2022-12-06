@@ -1,5 +1,13 @@
 # @guildedts/framework
 
+## 0.2.14
+
+### Patch Changes
+
+-   Updated dependencies [9550271]
+-   Updated dependencies [9550271]
+    -   guilded.ts@0.20.2
+
 ## 0.2.13
 
 ### Patch Changes
