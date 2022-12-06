@@ -33,3 +33,14 @@ export async function botAdded(client: Client, data: WSEvents['BotServerMembersh
 	const addedBy = await server.members.fetch(data.createdBy);
 	client.emit('serverAdd', server, addedBy);
 }
+
+/**
+ * Handle the BotServerMembershipDeleted event.
+ * @param client The client the Websocket belongs to.
+ * @param data The data of the event.
+ */
+export async function botRemoved(client: Client, data: WSEvents['BotServerMembershipDeleted']) {
+	const server = new Server(client, data.server);
+	const removedBy = server.members.cache.get(data.deletedBy);
+	client.emit('serverRemove', server, removedBy);
+}

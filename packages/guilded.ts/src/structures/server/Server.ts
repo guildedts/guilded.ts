@@ -167,6 +167,15 @@ export class Server extends Base {
 	createChannel(payload: Omit<APIChannelPayload, 'serverId'>) {
 		return this.client.channels.create({ serverId: this.id, ...payload });
 	}
+
+	/**
+	 * Leave the server.
+	 * @returns The server.
+	 * @example server.leave();
+	 */
+	leave() {
+		return this.members.kick(this.client.user!.id);
+	}
 }
 
 export { ServerType };

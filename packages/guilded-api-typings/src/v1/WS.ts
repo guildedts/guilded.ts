@@ -56,6 +56,16 @@ export interface WSEvents {
 		createdBy: string;
 	};
 	/**
+	 * Emitted when the bot is removed from a server.
+	 * @see https://www.guilded.gg/docs/api/websockets/BotServerMembershipDeleted
+	 */
+	BotServerMembershipDeleted: {
+		/** The server the bot was removed from. */
+		server: APIServer;
+		/** The ID of the user that removed the bot from the server. */
+		deletedBy: string;
+	};
+	/**
 	 * Emitted when a message is created.
 	 * @see https://www.guilded.gg/docs/api/websockets/ChatMessageCreated
 	 */

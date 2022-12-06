@@ -15,6 +15,7 @@ const WSEventHandler: {
 	[event in keyof WSEvents]: (client: Client, data: WSEvents[event]) => void | Promise<void>;
 } = {
 	BotServerMembershipCreated: server.botAdded,
+	BotServerMembershipDeleted: server.botRemoved,
 	ChatMessageCreated: message.created,
 	ChatMessageUpdated: message.updated,
 	ChatMessageDeleted: message.deleted,

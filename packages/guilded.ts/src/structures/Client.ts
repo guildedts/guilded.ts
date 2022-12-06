@@ -191,6 +191,8 @@ export interface ClientEvents {
 	debug: [client: Client, data: any];
 	/** Emitted when the bot is added to a server. */
 	serverAdd: [server: Server, addedBy: ServerMember];
+	/** Emitted when the bot is removed from a server. */
+	serverRemove: [server: Server, removedBy?: ServerMember];
 	/** Emitted when a message is created. */
 	messageCreate: [message: Message];
 	/** Emitted when a message is edited. */
