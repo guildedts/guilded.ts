@@ -1,5 +1,11 @@
 # guilded-api-typings
 
+## 0.13.2
+
+### Patch Changes
+
+-   9550271: faet: add the `BotServerMembershipDeleted` event
+
 ## 0.13.1
 
 ### Patch Changes

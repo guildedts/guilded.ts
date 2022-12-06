@@ -1,5 +1,17 @@
 # guilded.ts
 
+## 0.20.2
+
+### Patch Changes
+
+-   9550271: feat: add `<Server>.remove` method
+-   9550271: faet: add the `BotServerMembershipDeleted` event
+-   Updated dependencies [9550271]
+    -   guilded-api-typings@0.13.2
+    -   @guildedts/builders@0.2.10
+    -   @guildedts/rest@0.14.4
+    -   @guildedts/ws@0.5.0
+
 ## 0.20.1
 
 ### Patch Changes

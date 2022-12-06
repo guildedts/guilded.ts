@@ -1,5 +1,12 @@
 # @guildedts/rest
 
+## 0.14.4
+
+### Patch Changes
+
+-   Updated dependencies [9550271]
+    -   guilded-api-typings@0.13.2
+
 ## 0.14.3
 
 ### Patch Changes
