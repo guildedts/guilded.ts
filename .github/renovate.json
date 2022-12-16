@@ -1,5 +1,15 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:base"],
-	"labels": ["Dependencies"]
+	"labels": ["Dependencies"],
+	"packageRules": [
+		{
+			"matchPackageNames": ["node-fetch"],
+			"allowedVersions": "<3"
+		},
+		{
+			"matchPackageNames": ["chalk"],
+			"allowedVersions": "<5"
+		}
+	]
 }
