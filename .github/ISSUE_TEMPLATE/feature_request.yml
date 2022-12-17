@@ -10,13 +10,13 @@ body:
           label: Package
           description: The package the feature is for.
           options:
-              - builders
+              - guilded.ts
               - framework
               - guilded-api-typings
-              - guilded.ts
               - rest
-              - util
               - ws
+              - builders
+              - util
       validations:
           required: true
     - type: textarea
