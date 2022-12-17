@@ -1,6 +1,6 @@
 name: Feature Request
-description: Request a new feature for the package.
-labels: enhancement
+description: Request a new feature for a package.
+labels: Enhancement
 body:
     - type: markdown
       attributes:
@@ -10,12 +10,13 @@ body:
           label: Package
           description: The package the feature is for.
           options:
-              - '@guildedts/builders'
-              - '@guildedts/framework'
+              - builders
+              - framework
               - guilded-api-typings
               - guilded.ts
-              - '@guildedts/rest'
-              - '@guildedts/ws'
+              - rest
+              - util
+              - ws
       validations:
           required: true
     - type: textarea
