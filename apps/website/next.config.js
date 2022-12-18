@@ -7,22 +7,22 @@ module.exports = {
 			{
 				source: '/docs',
 				destination: 'https://docs.guildedts.js.org',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/guide',
 				destination: 'https://guide.guildedts.js.org',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/github',
 				destination: 'https://github.com/guildedts/guilded.ts',
-				permanent: true,
+				permanent: false,
 			},
 			{
 				source: '/support',
 				destination: 'https://guilded.gg/guildedts',
-				permanent: true,
+				permanent: false,
 			},
 		];
 	},
