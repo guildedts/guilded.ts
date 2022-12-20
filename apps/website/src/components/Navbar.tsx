@@ -1,7 +1,9 @@
+'use client';
+
 import { useState } from 'react';
-import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
-import NavExternalLink from 'components/NavExternalLink';
 import NavLink from 'components/NavLink';
+import NavExternalLink from 'components/NavExternalLink';
+import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 
 const Links = {
 	'Guilded.TS': '/',
@@ -14,10 +16,10 @@ const ExternalLinks = {
 };
 
 export default function Navbar() {
-	const [opened, setOpened] = useState(false);
+	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<header className="text-white sticky bg-guilded-grey-darkest p-3">
+		<header className="sticky bg-guilded-grey-darkest p-3">
 			<nav className="hidden max-w-7xl mx-auto space-x-3 md:flex">
 				{Object.entries(Links).map(([name, href], index) => (
 					<NavLink key={index} href={href}>
@@ -31,21 +33,25 @@ export default function Navbar() {
 				))}
 			</nav>
 			<nav className="container mx-auto block space-y-3 md:hidden">
-				<button onClick={() => setOpened(!opened)} className="align-middle">
-					{opened ? (
+				<button onClick={() => setIsOpened(!isOpened)} className="align-middle">
+					{isOpened ? (
 						<HiOutlineX className="h-6 w-6" />
 					) : (
 						<HiOutlineMenu className="h-6 w-6" />
 					)}
 				</button>
-				<div className={`space-y-2 ${opened ? 'block' : 'hidden'}`}>
+				<div className={`space-y-2 ${isOpened ? 'block' : 'hidden'}`}>
 					{Object.entries(Links).map(([name, href], index) => (
-						<NavLink key={index} href={href} onClick={() => setOpened(!opened)}>
+						<NavLink key={index} href={href} onClick={() => setIsOpened(!isOpened)}>
 							{name}
 						</NavLink>
 					))}
 					{Object.entries(ExternalLinks).map(([name, href], index) => (
-						<NavExternalLink key={index} href={href} onClick={() => setOpened(!opened)}>
+						<NavExternalLink
+							key={index}
+							href={href}
+							onClick={() => setIsOpened(!isOpened)}
+						>
 							{name}
 						</NavExternalLink>
 					))}
