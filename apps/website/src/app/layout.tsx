@@ -4,8 +4,7 @@ import Navbar from 'components/Navbar';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<html>
-			<head />
+		<html lang="en">
 			<body>
 				<div className="flex flex-col h-screen">
 					<Navbar />
