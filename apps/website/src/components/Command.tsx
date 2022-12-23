@@ -13,7 +13,7 @@ export default function Command({ children }: { children: string }) {
 	}
 
 	return (
-		<code className="text-lg space-x-3 inline-flex w-fit">
+		<code className="text-lg space-x-3 inline-flex w-fit shadow-lg">
 			<span>{children}</span>
 			<button onClick={handleCopy}>
 				{copied ? (

@@ -19,7 +19,7 @@ export default function Navbar() {
 	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<header className="sticky bg-guilded-grey-darkest p-3">
+		<header className="sticky bg-guilded-grey-darkest p-3 shadow-xl">
 			<nav className="hidden max-w-7xl mx-auto space-x-3 md:flex">
 				{Object.entries(Links).map(([name, href], index) => (
 					<NavLink key={index} href={href}>
