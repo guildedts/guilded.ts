@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply bg-guilded-grey-lightest text-white;
+	}
+
+	a {
+		@apply hover:brightness-90;
+	}
+
+	a,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-semibold;
+	}
+
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply pb-1 border-b-2 border-guilded-grey-lightest brightness-125 mt-2;
+	}
+
+	h1 {
+		@apply text-4xl mb-8;
+	}
+
+	h2 {
+		@apply text-3xl;
+	}
+
+	h3 {
+		@apply text-2xl;
+	}
+
+	h4 {
+		@apply text-xl;
+	}
+
+	h5 {
+		@apply text-lg;
+	}
+
+	code {
+		@apply text-guilded-white bg-guilded-grey-dark rounded-md py-3 px-4;
+	}
+}

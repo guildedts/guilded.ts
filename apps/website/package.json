@@ -5,7 +5,7 @@
 	"private": true,
 	"repository": {
 		"url": "guildedts/guilded.ts",
-		"directory": "website"
+		"directory": "apps/website"
 	},
 	"homepage": "https://guildedts.js.org",
 	"contributors": [
@@ -25,7 +25,7 @@
 		"react-icons": "^4.6.0"
 	},
 	"devDependencies": {
-		"@types/react": "18.0.23",
+		"@types/react": "18.0.26",
 		"@types/react-dom": "^18.0.7",
 		"autoprefixer": "^10.4.12",
 		"eslint-config-next": "^13.0.0",

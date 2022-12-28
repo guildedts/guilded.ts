@@ -1,6 +1,6 @@
 name: Bug Report
 description: Report incorrect or unexpected behavior of a package.
-labels: bug
+labels: Bug
 body:
     - type: markdown
       attributes:
@@ -10,12 +10,13 @@ body:
           label: Package
           description: The package that is causing the issue.
           options:
-              - '@guildedts/builders'
-              - '@guildedts/framework'
-              - guilded-api-typings
               - guilded.ts
-              - '@guildedts/rest'
-              - '@guildedts/ws'
+              - framework
+              - guilded-api-typings
+              - rest
+              - ws
+              - builders
+              - util
       validations:
           required: true
     - type: input
@@ -37,11 +38,6 @@ body:
               4. See error message
       validations:
           required: true
-    - type: textarea
-      attributes:
-          label: Code Snippet
-          description: Some code that reproduces the issue.
-          placeholder: Your code snippet here.
     - type: textarea
       attributes:
           label: Expected Behavior

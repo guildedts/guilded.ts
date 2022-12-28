@@ -1,4 +1,6 @@
-import { useState } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from 'react-icons/hi';
 
 export default function Command({ children }: { children: string }) {
@@ -11,7 +13,7 @@ export default function Command({ children }: { children: string }) {
 	}
 
 	return (
-		<code className="text-guilded-white bg-guilded-grey-dark text-lg rounded-md py-3 px-4 space-x-3 flex mx-auto w-fit">
+		<code className="text-lg space-x-3 inline-flex w-fit shadow-lg">
 			<span>{children}</span>
 			<button onClick={handleCopy}>
 				{copied ? (

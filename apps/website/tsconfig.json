@@ -1,5 +1,5 @@
 {
-	"extends": "../tsconfig.json",
+	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"jsx": "preserve",
 		"lib": ["dom", "dom.iterable", "esnext"],
@@ -9,8 +9,9 @@
 		"noEmit": true,
 		"incremental": true,
 		"isolatedModules": true,
-		"baseUrl": "src"
+		"baseUrl": "src",
+		"plugins": [{ "name": "next" }]
 	},
-	"include": ["src"],
+	"include": ["src", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }

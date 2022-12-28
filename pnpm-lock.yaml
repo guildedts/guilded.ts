@@ -48,6 +48,33 @@ importers:
             typedoc-plugin-missing-exports: 1.0.0_typedoc@0.23.20
             typescript: 4.8.4
 
+    apps/website:
+        specifiers:
+            '@types/react': 18.0.26
+            '@types/react-dom': ^18.0.7
+            autoprefixer: ^10.4.12
+            eslint-config-next: ^13.0.0
+            next: ^13.0.0
+            postcss: ^8.4.18
+            react: ^18.2.0
+            react-dom: ^18.2.0
+            react-icons: ^4.6.0
+            tailwindcss: ^3.2.1
+            typescript: ^4.8.4
+        dependencies:
+            next: 13.0.0_biqbaboplfbrettd7655fr4n2y
+            react: 18.2.0
+            react-dom: 18.2.0_react@18.2.0
+            react-icons: 4.6.0_react@18.2.0
+        devDependencies:
+            '@types/react': 18.0.26
+            '@types/react-dom': 18.0.7
+            autoprefixer: 10.4.12_postcss@8.4.18
+            eslint-config-next: 13.0.0_wyqvi574yv7oiwfeinomdzmc3m
+            postcss: 8.4.18
+            tailwindcss: 3.2.1_postcss@8.4.18
+            typescript: 4.8.4
+
     packages/builders:
         specifiers:
             '@guildedts/util': workspace:^
@@ -123,33 +150,6 @@ importers:
             ws: 8.10.0
         devDependencies:
             guilded-api-typings: link:../guilded-api-typings
-
-    website:
-        specifiers:
-            '@types/react': 18.0.23
-            '@types/react-dom': ^18.0.7
-            autoprefixer: ^10.4.12
-            eslint-config-next: ^13.0.0
-            next: ^13.0.0
-            postcss: ^8.4.18
-            react: ^18.2.0
-            react-dom: ^18.2.0
-            react-icons: ^4.6.0
-            tailwindcss: ^3.2.1
-            typescript: ^4.8.4
-        dependencies:
-            next: 13.0.0_biqbaboplfbrettd7655fr4n2y
-            react: 18.2.0
-            react-dom: 18.2.0_react@18.2.0
-            react-icons: 4.6.0_react@18.2.0
-        devDependencies:
-            '@types/react': 18.0.23
-            '@types/react-dom': 18.0.7
-            autoprefixer: 10.4.12_postcss@8.4.18
-            eslint-config-next: 13.0.0_wyqvi574yv7oiwfeinomdzmc3m
-            postcss: 8.4.18
-            tailwindcss: 3.2.1_postcss@8.4.18
-            typescript: 4.8.4
 
 packages:
     /@babel/code-frame/7.18.6:
@@ -1250,13 +1250,13 @@ packages:
                 integrity: sha512-HaXc+BbqAZE1RdsK3tC8SbkFy6UL2xF76lT9rQs5JkPrJg3rWA3Ou/Lhw3YJQzEDkBpmJ79nBsfnd05WrBd2QQ==,
             }
         dependencies:
-            '@types/react': 18.0.23
+            '@types/react': 18.0.26
         dev: true
 
-    /@types/react/18.0.23:
+    /@types/react/18.0.26:
         resolution:
             {
-                integrity: sha512-R1wTULtCiJkudAN2DJGoYYySbGtOdzZyUWAACYinKdiQC8auxso4kLDUhQ7AJ2kh3F6A6z4v69U6tNY39hihVQ==,
+                integrity: sha512-hCR3PJQsAIXyxhTNSiDFY//LhnMZWpNNr5etoCqx/iUfGc5gXWtQR2Phl908jVR6uPXacojQWTg4qRpkxTuGug==,
             }
         dependencies:
             '@types/prop-types': 15.7.5
