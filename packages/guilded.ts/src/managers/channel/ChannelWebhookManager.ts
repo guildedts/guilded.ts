@@ -2,7 +2,7 @@ import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
 import { Collection } from '@discordjs/collection';
-import { APIEmbed, APIWebhookMessagePayload } from 'guilded-api-typings';
+import { APIEmbed, RESTPostWebhookMessageJSONBody } from 'guilded-api-typings';
 import { Embed } from '@guildedts/builders';
 
 /**
@@ -105,7 +105,7 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 }
 
 /** The payload for creating a webhook message. */
-export interface WebhookMessagePayload extends Omit<APIWebhookMessagePayload, 'embeds'> {
+export interface WebhookMessagePayload extends Omit<RESTPostWebhookMessageJSONBody, 'embeds'> {
 	/** The embeds of the message. */
 	embeds?: (Embed | APIEmbed)[];
 }

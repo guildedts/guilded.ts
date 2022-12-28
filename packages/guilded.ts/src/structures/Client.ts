@@ -14,7 +14,12 @@ import { GroupManager } from '../managers/group/GroupManager';
 import { ServerManager } from '../managers/server/ServerManager';
 import { UserManager } from '../managers/UserManager';
 import { handleWSEvent } from '../ws';
-import { APIClientUser, APIMessageSummary, WSEvents } from 'guilded-api-typings';
+import {
+	APIBot,
+	APIMessageSummary,
+	WebSocketEvent,
+	WebSocketServerMemberRemoveEventData,
+} from 'guilded-api-typings';
 import { CalendarEvent } from './calendarEvent/CalendarEvent';
 import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
@@ -135,7 +140,7 @@ export class Client extends EventEmitter {
 	}
 
 	/** @ignore */
-	private onWSConnect(user: APIClientUser) {
+	private onWSConnect(user: APIBot) {
 		this.user = new ClientUser(this, user);
 		this.emit('ready', this);
 	}
@@ -151,10 +156,7 @@ export class Client extends EventEmitter {
 	}
 
 	/** @ignore */
-	private onWSEvent<Event extends keyof WSEvents = keyof WSEvents>(
-		event: Event,
-		data: WSEvents[Event],
-	) {
+	private onWSEvent(event: WebSocketEvent, data: unknown) {
 		handleWSEvent(this, event, data);
 	}
 }
@@ -202,7 +204,7 @@ export interface ClientEvents {
 	/** Emitted when a member joins a server. */
 	serverMemberAdd: [serverMember: ServerMember];
 	/** Emitted when a member leaves a server. */
-	serverMemberRemove: [data: WSEvents['ServerMemberRemoved'], server: Server];
+	serverMemberRemove: [data: WebSocketServerMemberRemoveEventData, server: Server];
 	/** Emitted when a member is banned from a server. */
 	serverMemberBan: [serverBan: ServerBan];
 	/** Emitted when a member is unbanned from a server. */

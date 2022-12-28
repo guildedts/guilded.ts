@@ -1,4 +1,8 @@
-import { WSEvents } from 'guilded-api-typings';
+import {
+	WebSocketChannelCreateEventData,
+	WebSocketChannelDeleteEventData,
+	WebSocketChannelUpdateEventData,
+} from 'guilded-api-typings';
 import { Client } from '../../structures/Client';
 import { createChannel } from '../../util';
 
@@ -7,7 +11,7 @@ import { createChannel } from '../../util';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export function created(client: Client, data: WSEvents['ServerChannelCreated']) {
+export function created(client: Client, data: WebSocketChannelCreateEventData) {
 	const channel = createChannel(client, data.channel);
 	client.emit('channelCreate', channel);
 }
@@ -17,7 +21,7 @@ export function created(client: Client, data: WSEvents['ServerChannelCreated']) 
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export function updated(client: Client, data: WSEvents['ServerChannelUpdated']) {
+export function updated(client: Client, data: WebSocketChannelUpdateEventData) {
 	const oldChannel = client.channels.cache.get(data.channel.id);
 	const newChannel = createChannel(client, data.channel);
 	client.emit('channelEdit', newChannel, oldChannel);
@@ -28,7 +32,7 @@ export function updated(client: Client, data: WSEvents['ServerChannelUpdated']) 
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export function deleted(client: Client, data: WSEvents['ServerChannelDeleted']) {
+export function deleted(client: Client, data: WebSocketChannelDeleteEventData) {
 	const channel = createChannel(client, data.channel);
 	if (client.options.disposeCachedChannels ?? true) client.channels.cache.delete(channel.id);
 	client.emit('channelDelete', channel);

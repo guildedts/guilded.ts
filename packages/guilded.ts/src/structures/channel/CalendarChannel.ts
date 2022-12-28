@@ -1,4 +1,4 @@
-import { APICalendarEventPayload, APIChannel } from 'guilded-api-typings';
+import { RESTPostCalendarEventJSONBody, APIChannel } from 'guilded-api-typings';
 import { CalendarEventManager } from '../../managers/calendarEvent/CalendarEventManager';
 import { Client } from '../Client';
 import { Channel } from './Channel';
@@ -27,7 +27,7 @@ export class CalendarChannel extends Channel {
 	 * @returns The created calendar event.
 	 * @example channel.createEvent({ name: 'Event!' });
 	 */
-	createEvent(payload: APICalendarEventPayload) {
+	createEvent(payload: RESTPostCalendarEventJSONBody) {
 		return this.events.create(payload);
 	}
 }

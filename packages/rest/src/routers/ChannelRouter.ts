@@ -1,4 +1,9 @@
-import { APIChannel, APIChannelEditPayload, APIChannelPayload, Routes } from 'guilded-api-typings';
+import {
+	APIChannel,
+	RESTPatchChannelJSONBody,
+	RESTPostChannelJSONBody,
+	Routes,
+} from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
 /**
@@ -23,8 +28,8 @@ export class ChannelRouter extends BaseRouter {
 	 * @returns The created channel.
 	 * @example channels.create({ name: 'Chat', type: 'chat' });
 	 */
-	async create(payload: APIChannelPayload) {
-		const { channel } = await this.rest.post<{ channel: APIChannel }, APIChannelPayload>(
+	async create(payload: RESTPostChannelJSONBody) {
+		const { channel } = await this.rest.post<{ channel: APIChannel }, RESTPostChannelJSONBody>(
 			Routes.channels,
 			payload,
 		);
@@ -38,11 +43,11 @@ export class ChannelRouter extends BaseRouter {
 	 * @returns The edited channel.
 	 * @example channels.edit('abc', { name: 'Chat' });
 	 */
-	async edit(channelId: string, payload: APIChannelEditPayload) {
-		const { channel } = await this.rest.patch<{ channel: APIChannel }, APIChannelEditPayload>(
-			Routes.channel(channelId),
-			payload,
-		);
+	async edit(channelId: string, payload: RESTPatchChannelJSONBody) {
+		const { channel } = await this.rest.patch<
+			{ channel: APIChannel },
+			RESTPatchChannelJSONBody
+		>(Routes.channel(channelId), payload);
 		return channel;
 	}
 

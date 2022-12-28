@@ -1,4 +1,4 @@
-import { APIChannelPayload, APIServer, ServerType } from 'guilded-api-typings';
+import { RESTPostChannelJSONBody, APIServer, ServerType } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Base } from '../Base';
 import { ServerMemberManager } from '../../managers/server/ServerMemberManager';
@@ -164,7 +164,7 @@ export class Server extends Base {
 	 * @returns The created channel.
 	 * @example server.createChannel({ name: 'Chat', type: 'chat' });
 	 */
-	createChannel(payload: Omit<APIChannelPayload, 'serverId'>) {
+	createChannel(payload: Omit<RESTPostChannelJSONBody, 'serverId'>) {
 		return this.client.channels.create({ serverId: this.id, ...payload });
 	}
 

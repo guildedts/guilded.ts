@@ -1,4 +1,4 @@
-import { APIWebhook } from 'guilded-api-typings';
+import { APIWebhook, RESTPostWebhookMessageJSONBody } from 'guilded-api-typings';
 import { Base } from './Base';
 import { FetchOptions } from '../managers/BaseManager';
 import { Channel } from './channel/Channel';
@@ -112,7 +112,15 @@ export class Webhook extends Base {
 	 * @example webhook.send('Hello world!');
 	 */
 	send(payload: WebhookMessagePayloadResolvable) {
-		return this.client.api.webhooks.send(this.id, this.token!, payload);
+		return this.client.api.webhooks.send(
+			this.id,
+			this.token!,
+			(typeof payload === 'string'
+				? { content: payload }
+				: Array.isArray(payload)
+				? { embeds: payload }
+				: payload) as RESTPostWebhookMessageJSONBody,
+		);
 	}
 
 	/**

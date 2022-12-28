@@ -1,11 +1,9 @@
 import {
-	APIMessageFetchManyOptions,
+	RESTGetMessagesQuery,
 	APIMessage,
-	APIMessageEditPayload,
-	APIMessagePayload,
+	RESTPutMessageJSONBody,
+	RESTPostMessageJSONBody,
 	Routes,
-	APIMessagePayloadResolvable,
-	APIMessageEditPayloadResolvable,
 } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
@@ -29,9 +27,9 @@ export class MessageRouter extends BaseRouter {
 	 * @returns The fetched messages.
 	 * @example messages.fetch('abc');
 	 */
-	fetch(channelId: string, options?: APIMessageFetchManyOptions): Promise<APIMessage[]>;
+	fetch(channelId: string, options?: RESTGetMessagesQuery): Promise<APIMessage[]>;
 	/** @ignore */
-	fetch(channelId: string, messageIdOrOptions?: string | APIMessageFetchManyOptions) {
+	fetch(channelId: string, messageIdOrOptions?: string | RESTGetMessagesQuery) {
 		if (typeof messageIdOrOptions === 'string')
 			return this.fetchSingle(channelId, messageIdOrOptions);
 		return this.fetchMany(channelId, messageIdOrOptions);
@@ -46,11 +44,11 @@ export class MessageRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APIMessageFetchManyOptions) {
-		const { messages } = await this.rest.get<
-			{ messages: APIMessage[] },
-			APIMessageFetchManyOptions
-		>(Routes.messages(channelId), options);
+	private async fetchMany(channelId: string, options?: RESTGetMessagesQuery) {
+		const { messages } = await this.rest.get<{ messages: APIMessage[] }, RESTGetMessagesQuery>(
+			Routes.messages(channelId),
+			options,
+		);
 		return messages;
 	}
 
@@ -61,14 +59,10 @@ export class MessageRouter extends BaseRouter {
 	 * @returns The created message.
 	 * @example messages.create('abc', 'Hello world!');
 	 */
-	async create(channelId: string, payload: APIMessagePayloadResolvable) {
-		const { message } = await this.rest.post<{ message: APIMessage }, APIMessagePayload>(
+	async create(channelId: string, payload: RESTPostMessageJSONBody) {
+		const { message } = await this.rest.post<{ message: APIMessage }, RESTPostMessageJSONBody>(
 			Routes.messages(channelId),
-			typeof payload === 'string'
-				? { content: payload }
-				: Array.isArray(payload)
-				? { embeds: payload }
-				: payload,
+			payload,
 		);
 		return message;
 	}
@@ -81,14 +75,10 @@ export class MessageRouter extends BaseRouter {
 	 * @returns The edited message.
 	 * @example messages.edit('abc', 'abc', 'Hello world!');
 	 */
-	async edit(channelId: string, messageId: string, payload: APIMessageEditPayloadResolvable) {
-		const { message } = await this.rest.put<{ message: APIMessage }, APIMessageEditPayload>(
+	async edit(channelId: string, messageId: string, payload: RESTPutMessageJSONBody) {
+		const { message } = await this.rest.put<{ message: APIMessage }, RESTPutMessageJSONBody>(
 			Routes.message(channelId, messageId),
-			typeof payload === 'string'
-				? { content: payload }
-				: Array.isArray(payload)
-				? { embeds: payload }
-				: payload,
+			payload,
 		);
 		return message;
 	}

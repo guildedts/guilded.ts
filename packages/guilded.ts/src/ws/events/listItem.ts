@@ -1,4 +1,10 @@
-import { WSEvents } from 'guilded-api-typings';
+import {
+	WebSocketListItemCompleteEventData,
+	WebSocketListItemCreateEventData,
+	WebSocketListItemDeleteEventData,
+	WebSocketListItemUncompleteEventData,
+	WebSocketListItemUpdateEventData,
+} from 'guilded-api-typings';
 import { Client } from '../../structures/Client';
 import { ListItem } from '../../structures/listItem/ListItem';
 import { ListChannel } from '../../structures/channel/ListChannel';
@@ -8,7 +14,7 @@ import { ListChannel } from '../../structures/channel/ListChannel';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['ListItemCreated']) {
+export async function created(client: Client, data: WebSocketListItemCreateEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
 	const listItem = new ListItem(channel, data.listItem);
 	client.emit('listItemCreate', listItem);
@@ -19,7 +25,7 @@ export async function created(client: Client, data: WSEvents['ListItemCreated'])
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['ListItemUpdated']) {
+export async function updated(client: Client, data: WebSocketListItemUpdateEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
 	const oldListItem = channel.items.cache.get(data.listItem.id);
 	const newListItem = new ListItem(channel, data.listItem);
@@ -31,7 +37,7 @@ export async function updated(client: Client, data: WSEvents['ListItemUpdated'])
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function deleted(client: Client, data: WSEvents['ListItemDeleted']) {
+export async function deleted(client: Client, data: WebSocketListItemDeleteEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
 	const listItem = new ListItem(channel, data.listItem);
 	if (client.options.disposeCachedListItems ?? true) channel.items.cache.delete(listItem.id);
@@ -43,7 +49,7 @@ export async function deleted(client: Client, data: WSEvents['ListItemDeleted'])
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function completed(client: Client, data: WSEvents['ListItemCompleted']) {
+export async function completed(client: Client, data: WebSocketListItemCompleteEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
 	const listItem = new ListItem(channel, data.listItem);
 	client.emit('listItemComplete', listItem);
@@ -54,7 +60,7 @@ export async function completed(client: Client, data: WSEvents['ListItemComplete
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function uncompleted(client: Client, data: WSEvents['ListItemUncompleted']) {
+export async function uncompleted(client: Client, data: WebSocketListItemUncompleteEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
 	const listItem = new ListItem(channel, data.listItem);
 	client.emit('listItemUncomplete', listItem);

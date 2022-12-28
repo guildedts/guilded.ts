@@ -1,4 +1,12 @@
-import { WSEvents } from 'guilded-api-typings';
+import {
+	WebSocketForumTopicCreateEventData,
+	WebSocketForumTopicDeleteEventData,
+	WebSocketForumTopicLockEventData,
+	WebSocketForumTopicPinEventData,
+	WebSocketForumTopicUnlockEventData,
+	WebSocketForumTopicUnpinEventData,
+	WebSocketForumTopicUpdateEventData,
+} from 'guilded-api-typings';
 import { ForumChannel } from '../../structures/channel/ForumChannel';
 import { Client } from '../../structures/Client';
 import { ForumTopic } from '../../structures/ForumTopic';
@@ -8,7 +16,7 @@ import { ForumTopic } from '../../structures/ForumTopic';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['ForumTopicCreated']) {
+export async function created(client: Client, data: WebSocketForumTopicCreateEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const topic = new ForumTopic(channel, data.forumTopic);
 	client.emit('forumTopicCreate', topic);
@@ -19,7 +27,7 @@ export async function created(client: Client, data: WSEvents['ForumTopicCreated'
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['ForumTopicUpdated']) {
+export async function updated(client: Client, data: WebSocketForumTopicUpdateEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const oldForumTopic = channel.topics.cache.get(data.forumTopic.id);
 	const newForumTopic = new ForumTopic(channel, data.forumTopic);
@@ -31,7 +39,7 @@ export async function updated(client: Client, data: WSEvents['ForumTopicUpdated'
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function deleted(client: Client, data: WSEvents['ForumTopicDeleted']) {
+export async function deleted(client: Client, data: WebSocketForumTopicDeleteEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const forumTopic = new ForumTopic(channel, data.forumTopic);
 	if (client.options.disposeCachedForumTopics ?? true) channel.topics.cache.delete(forumTopic.id);
@@ -43,7 +51,7 @@ export async function deleted(client: Client, data: WSEvents['ForumTopicDeleted'
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function pinned(client: Client, data: WSEvents['ForumTopicPinned']) {
+export async function pinned(client: Client, data: WebSocketForumTopicPinEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const forumTopic = new ForumTopic(channel, data.forumTopic);
 	client.emit('forumTopicPin', forumTopic);
@@ -54,7 +62,7 @@ export async function pinned(client: Client, data: WSEvents['ForumTopicPinned'])
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function unpinned(client: Client, data: WSEvents['ForumTopicUnpinned']) {
+export async function unpinned(client: Client, data: WebSocketForumTopicUnpinEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const forumTopic = new ForumTopic(channel, data.forumTopic);
 	client.emit('forumTopicUnpin', forumTopic);
@@ -65,7 +73,7 @@ export async function unpinned(client: Client, data: WSEvents['ForumTopicUnpinne
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function locked(client: Client, data: WSEvents['ForumTopicLocked']) {
+export async function locked(client: Client, data: WebSocketForumTopicLockEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const forumTopic = new ForumTopic(channel, data.forumTopic);
 	client.emit('forumTopicLock', forumTopic);
@@ -76,7 +84,7 @@ export async function locked(client: Client, data: WSEvents['ForumTopicLocked'])
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function unlocked(client: Client, data: WSEvents['ForumTopicUnlocked']) {
+export async function unlocked(client: Client, data: WebSocketForumTopicUnlockEventData) {
 	const channel = (await client.channels.fetch(data.forumTopic.channelId)) as ForumChannel;
 	const forumTopic = new ForumTopic(channel, data.forumTopic);
 	client.emit('forumTopicUnlock', forumTopic);

@@ -1,4 +1,4 @@
-import { WSEvents } from 'guilded-api-typings';
+import { WebSocketEvent } from 'guilded-api-typings';
 import { Client } from '../structures/Client';
 import * as calendarEvent from './events/calendarEvent';
 import * as channel from './events/channel';
@@ -12,47 +12,47 @@ import * as webhook from './events/webhook';
 
 /** A map of all WebSocket events with their respective handlers. */
 const WSEventHandler: {
-	[event in keyof WSEvents]: (client: Client, data: WSEvents[event]) => void | Promise<void>;
+	[event in WebSocketEvent]?: (client: Client, data: any) => void | Promise<void>;
 } = {
-	BotServerMembershipCreated: server.botAdded,
-	BotServerMembershipDeleted: server.botRemoved,
-	ChatMessageCreated: message.created,
-	ChatMessageUpdated: message.updated,
-	ChatMessageDeleted: message.deleted,
-	ServerMemberJoined: serverMember.joined,
-	ServerMemberRemoved: serverMember.removed,
-	ServerMemberBanned: serverMember.banned,
-	ServerMemberUnbanned: serverMember.unbanned,
-	ServerMemberUpdated: serverMember.updated,
-	ServerRolesUpdated: server.rolesUpdated,
-	ServerChannelCreated: channel.created,
-	ServerChannelUpdated: channel.updated,
-	ServerChannelDeleted: channel.deleted,
-	ServerWebhookCreated: webhook.created,
-	ServerWebhookUpdated: webhook.updated,
-	DocCreated: doc.created,
-	DocUpdated: doc.updated,
-	DocDeleted: doc.deleted,
-	CalendarEventCreated: calendarEvent.created,
-	CalendarEventUpdated: calendarEvent.updated,
-	CalendarEventDeleted: calendarEvent.deleted,
-	ForumTopicCreated: forumTopic.created,
-	ForumTopicUpdated: forumTopic.updated,
-	ForumTopicDeleted: forumTopic.deleted,
-	ForumTopicPinned: forumTopic.pinned,
-	ForumTopicUnpinned: forumTopic.unpinned,
-	ForumTopicLocked: forumTopic.locked,
-	ForumTopicUnlocked: forumTopic.unlocked,
-	CalendarEventRsvpUpdated: calendarEvent.rsvpUpdated,
-	CalendarEventRsvpManyUpdated: calendarEvent.rsvpsUpdated,
-	CalendarEventRsvpDeleted: calendarEvent.rsvpDeleted,
-	ListItemCreated: listItem.created,
-	ListItemUpdated: listItem.updated,
-	ListItemDeleted: listItem.deleted,
-	ListItemCompleted: listItem.completed,
-	ListItemUncompleted: listItem.uncompleted,
-	ChannelMessageReactionCreated: message.reactionCreated,
-	ChannelMessageReactionDeleted: message.reactionDeleted,
+	[WebSocketEvent.MessageCreate]: message.created,
+	[WebSocketEvent.MessageUpdate]: message.updated,
+	[WebSocketEvent.MessageDelete]: message.deleted,
+	[WebSocketEvent.MessageReactionAdd]: message.reactionCreated,
+	[WebSocketEvent.MessageReactionRemove]: message.reactionDeleted,
+	[WebSocketEvent.ServerAdd]: server.botAdded,
+	[WebSocketEvent.ServerRemove]: server.botRemoved,
+	[WebSocketEvent.ServerMemberAdd]: serverMember.joined,
+	[WebSocketEvent.ServerMemberRemove]: serverMember.removed,
+	[WebSocketEvent.ServerBanAdd]: serverMember.banned,
+	[WebSocketEvent.ServerBanRemove]: serverMember.unbanned,
+	[WebSocketEvent.ServerMemberUpdate]: serverMember.updated,
+	[WebSocketEvent.ServerRolesUpdate]: server.rolesUpdated,
+	[WebSocketEvent.ChannelCreate]: channel.created,
+	[WebSocketEvent.ChannelUpdate]: channel.updated,
+	[WebSocketEvent.ChannelDelete]: channel.deleted,
+	[WebSocketEvent.WebhookCreate]: webhook.created,
+	[WebSocketEvent.WebhookUpdate]: webhook.updated,
+	[WebSocketEvent.DocCreate]: doc.created,
+	[WebSocketEvent.DocUpdate]: doc.updated,
+	[WebSocketEvent.DocDelete]: doc.deleted,
+	[WebSocketEvent.CalendarEventCreate]: calendarEvent.created,
+	[WebSocketEvent.CalendarEventUpdate]: calendarEvent.updated,
+	[WebSocketEvent.CalendarEventDelete]: calendarEvent.deleted,
+	[WebSocketEvent.ForumTopicCreate]: forumTopic.created,
+	[WebSocketEvent.ForumTopicUpdate]: forumTopic.updated,
+	[WebSocketEvent.ForumTopicDelete]: forumTopic.deleted,
+	[WebSocketEvent.ForumTopicPin]: forumTopic.pinned,
+	[WebSocketEvent.ForumTopicUnpin]: forumTopic.unpinned,
+	[WebSocketEvent.ForumTopicLock]: forumTopic.locked,
+	[WebSocketEvent.ForumTopicUnlock]: forumTopic.unlocked,
+	[WebSocketEvent.CalendarEventRsvpUpdate]: calendarEvent.rsvpUpdated,
+	[WebSocketEvent.CalendarEventRsvpsUpdate]: calendarEvent.rsvpsUpdated,
+	[WebSocketEvent.CalendarEventRsvpDelete]: calendarEvent.rsvpDeleted,
+	[WebSocketEvent.ListItemCreate]: listItem.created,
+	[WebSocketEvent.ListItemUpdate]: listItem.updated,
+	[WebSocketEvent.ListItemDelete]: listItem.deleted,
+	[WebSocketEvent.ListItemComplete]: listItem.completed,
+	[WebSocketEvent.ListItemUncomplete]: listItem.uncompleted,
 };
 
 /**
@@ -61,10 +61,6 @@ const WSEventHandler: {
  * @param event The name of the event.
  * @param data The data of the event.
  */
-export function handleWSEvent(
-	client: Client,
-	event: keyof WSEvents,
-	data: WSEvents[keyof WSEvents],
-) {
+export function handleWSEvent(client: Client, event: WebSocketEvent, data: unknown) {
 	return WSEventHandler[event]?.(client, data as any);
 }

@@ -1,7 +1,7 @@
 import { GuildedAPIError } from '.';
 import fetch, { Response } from 'node-fetch';
 import { Router } from './routers/Router';
-import { APIError } from 'guilded-api-typings';
+import { RESTError, RESTMethod, RESTStatusCode } from 'guilded-api-typings';
 import EventEmitter from 'events';
 
 const { version } = require('../package.json');
@@ -79,12 +79,15 @@ export class RESTManager extends EventEmitter {
 				body: options.body ? JSON.stringify(options.body) : undefined,
 			},
 		);
-		const data = (await response.json().catch(() => undefined)) as APIError | R;
+		const data = (await response.json().catch(() => undefined)) as RESTError | R;
 		if (response.ok) {
 			this.emit('raw', data, response);
 			return data as R;
 		}
-		if (response.status === 429 && retries <= (this.options?.maxRetries ?? 3)) {
+		if (
+			response.status === RESTStatusCode.TooManyRequests &&
+			retries <= (this.options?.maxRetries ?? 3)
+		) {
 			const retryAfter =
 				Number(response.headers.get('Retry-After')) ??
 				this.options.retryInterval ??
@@ -92,7 +95,7 @@ export class RESTManager extends EventEmitter {
 			await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
 			return this.fetch<R, B, P>(path, method, options, retries++);
 		}
-		const error = data as APIError;
+		const error = data as RESTError;
 		throw new GuildedAPIError(
 			error.code,
 			error.message,
@@ -112,7 +115,7 @@ export class RESTManager extends EventEmitter {
 	 * @example rest.get('/channels/abc');
 	 */
 	get<R = any, P extends Record<string, any> = Record<string, any>>(path: string, params?: P) {
-		return this.fetch<R, any, P>(path, 'GET', { params });
+		return this.fetch<R, any, P>(path, RESTMethod.Get, { params });
 	}
 
 	/**
@@ -123,7 +126,7 @@ export class RESTManager extends EventEmitter {
 	 * @example rest.post('/channels', { name: 'Chat', type: 'chat' });
 	 */
 	post<R = any, B = any>(path: string, body?: B) {
-		return this.fetch<R, B>(path, 'POST', { body });
+		return this.fetch<R, B>(path, RESTMethod.Post, { body });
 	}
 
 	/**
@@ -134,7 +137,7 @@ export class RESTManager extends EventEmitter {
 	 * @example rest.patch('/channels/abc', { name: 'Chat' });
 	 */
 	patch<R = any, B = any>(path: string, body?: B) {
-		return this.fetch<R, B>(path, 'PATCH', { body });
+		return this.fetch<R, B>(path, RESTMethod.Patch, { body });
 	}
 
 	/**
@@ -145,7 +148,7 @@ export class RESTManager extends EventEmitter {
 	 * @example rest.put('/channels/abc/messages/abc', { content: 'Hello world!' });
 	 */
 	put<R = any, B = any>(path: string, body?: B) {
-		return this.fetch<R, B>(path, 'PUT', { body });
+		return this.fetch<R, B>(path, RESTMethod.Put, { body });
 	}
 
 	/**
@@ -155,7 +158,7 @@ export class RESTManager extends EventEmitter {
 	 * @example rest.delete('/channels/abc');
 	 */
 	delete<R>(path: string) {
-		return this.fetch<R>(path, 'DELETE');
+		return this.fetch<R>(path, RESTMethod.Delete);
 	}
 }
 

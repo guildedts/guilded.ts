@@ -1,4 +1,10 @@
-import { WSEvents } from 'guilded-api-typings';
+import {
+	WebSocketMessageCreateEventData,
+	WebSocketMessageDeleteEventData,
+	WebSocketMessageReactionAddEventData,
+	WebSocketMessageReactionRemoveEventData,
+	WebSocketMessageUpdateEventData,
+} from 'guilded-api-typings';
 import { ChatChannel } from '../../structures/channel/ChatChannel';
 import { Client } from '../../structures/Client';
 import { Message } from '../../structures/message/Message';
@@ -9,7 +15,7 @@ import { MessageReaction } from '../../structures/message/MessageReaction';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['ChatMessageCreated']) {
+export async function created(client: Client, data: WebSocketMessageCreateEventData) {
 	const channel = (await client.channels.fetch(data.message.channelId)) as ChatChannel;
 	const message = new Message(channel, data.message);
 	client.emit('messageCreate', message);
@@ -20,7 +26,7 @@ export async function created(client: Client, data: WSEvents['ChatMessageCreated
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['ChatMessageUpdated']) {
+export async function updated(client: Client, data: WebSocketMessageUpdateEventData) {
 	const channel = (await client.channels.fetch(data.message.channelId)) as ChatChannel;
 	const oldMessage = channel.messages.cache.get(data.message.id);
 	const newMessage = new Message(channel, data.message);
@@ -32,7 +38,7 @@ export async function updated(client: Client, data: WSEvents['ChatMessageUpdated
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function deleted(client: Client, data: WSEvents['ChatMessageDeleted']) {
+export async function deleted(client: Client, data: WebSocketMessageDeleteEventData) {
 	const channel = (await client.channels.fetch(data.message.channelId)) as ChatChannel;
 	const message = channel.messages.cache.get(data.message.id);
 	if (message) message.deletedAt = new Date(data.message.deletedAt);
@@ -46,10 +52,7 @@ export async function deleted(client: Client, data: WSEvents['ChatMessageDeleted
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function reactionCreated(
-	client: Client,
-	data: WSEvents['ChannelMessageReactionCreated'],
-) {
+export async function reactionCreated(client: Client, data: WebSocketMessageReactionAddEventData) {
 	const channel = (await client.channels.fetch(data.reaction.channelId)) as ChatChannel;
 	const message = await channel.messages.fetch(data.reaction.messageId);
 	const reaction = new MessageReaction(message, data.reaction);
@@ -63,7 +66,7 @@ export async function reactionCreated(
  */
 export async function reactionDeleted(
 	client: Client,
-	data: WSEvents['ChannelMessageReactionDeleted'],
+	data: WebSocketMessageReactionRemoveEventData,
 ) {
 	const channel = (await client.channels.fetch(data.reaction.channelId)) as ChatChannel;
 	const message = await channel.messages.fetch(data.reaction.messageId);

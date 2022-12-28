@@ -1,11 +1,11 @@
 import Websocket from 'ws';
 import EventEmitter from 'events';
 import {
-	APIClientUser,
-	WSEvents,
-	WSMessagePayload,
-	WSOpCode,
-	WSReadyPayload,
+	APIBot,
+	WebSocketEvent,
+	WebSocketPayload,
+	WebSocketOpCode,
+	WebSocketReadyData,
 } from 'guilded-api-typings';
 
 const { version } = require('../package.json');
@@ -84,7 +84,7 @@ export class WebsocketManager extends EventEmitter {
 		});
 		this.socket.on('close', this.onSocketDisconnect.bind(this));
 		this.socket.on('message', (raw) => {
-			const data: WSMessagePayload = JSON.parse(raw.toString());
+			const data: WebSocketPayload = JSON.parse(raw.toString());
 			this.emit('raw', data);
 			this.onSocketMessage(data);
 		});
@@ -116,18 +116,18 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/** @ignore */
-	private onSocketMessage({ op, t, d, s }: WSMessagePayload) {
+	private onSocketMessage({ op, t, d, s }: WebSocketPayload) {
 		if (s) this.lastMessageId = s;
 		switch (op) {
-			case WSOpCode.Event:
+			case WebSocketOpCode.Event:
 				this.emit('event', t as any, d);
 				break;
-			case WSOpCode.Ready:
+			case WebSocketOpCode.Ready:
 				this.socket?.emit('ping');
 				this.readyAt = new Date();
-				this.emit('ready', (d as WSReadyPayload).user);
+				this.emit('ready', (d as WebSocketReadyData).user);
 				break;
-			case WSOpCode.Resume:
+			case WebSocketOpCode.Resume:
 				delete this.lastMessageId;
 				break;
 		}
@@ -185,15 +185,13 @@ export interface WebsocketOptions {
 /** The websocket manager events. */
 export interface WSManagerEvents {
 	/** Emitted when the Websocket is connected. */
-	ready: [user: APIClientUser];
+	ready: [user: APIBot];
 	/** Emitted when the Websocket is reconnected. */
 	reconnect: [ws: WebsocketManager];
 	/** Emitted when the Websocket is disconnected. */
 	disconnect: [ws: WebsocketManager];
 	/** Emitted when a message is received. */
-	raw: [data: WSMessagePayload];
+	raw: [data: WebSocketPayload];
 	/** Emitted when data is received from the Websocket API. */
-	event: {
-		[Event in keyof WSEvents]: [event: Event, data: WSEvents[Event]];
-	}[keyof WSEvents];
+	event: [event: WebSocketEvent, data: unknown];
 }

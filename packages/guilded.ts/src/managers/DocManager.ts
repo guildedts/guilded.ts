@@ -1,4 +1,4 @@
-import { APIDocFetchManyOptions } from 'guilded-api-typings';
+import { RESTGetDocsQuery } from 'guilded-api-typings';
 import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { Doc } from '../structures/Doc';
 import { DocChannel } from '../structures/channel/DocChannel';
@@ -92,4 +92,4 @@ export class DocManager extends BaseManager<number, Doc> {
 }
 
 /** The options for fetching docs. */
-export interface DocFetchManyOptions extends FetchManyOptions, APIDocFetchManyOptions {}
+export interface DocFetchManyOptions extends FetchManyOptions, RESTGetDocsQuery {}

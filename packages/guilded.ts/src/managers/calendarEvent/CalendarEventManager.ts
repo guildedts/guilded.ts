@@ -1,8 +1,8 @@
 import { Collection } from '@discordjs/collection';
 import {
-	APICalendarEventEditPayload,
-	APICalendarEventPayload,
-	APICalendarEventFetchManyOptions,
+	RESTPatchCalendarEventJSONBody,
+	RESTPostCalendarEventJSONBody,
+	RESTGetCalendarEventsQuery,
 } from 'guilded-api-typings';
 import { CalendarEvent } from '../../structures/calendarEvent/CalendarEvent';
 import { CalendarChannel } from '../../structures/channel/CalendarChannel';
@@ -65,7 +65,7 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	 * @returns The created calendar event.
 	 * @example calanderEvents.create({ name: 'Event!' });
 	 */
-	async create(payload: APICalendarEventPayload) {
+	async create(payload: RESTPostCalendarEventJSONBody) {
 		const raw = await this.client.api.calendarEvents.create(this.channel.id, payload);
 		return new CalendarEvent(this.channel, raw);
 	}
@@ -77,7 +77,7 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 	 * @returns The edited calendar event.
 	 * @example calanderEvents.edit(calendarEvent, { name: 'Event!' });
 	 */
-	async edit(calendarEvent: number | CalendarEvent, payload: APICalendarEventEditPayload) {
+	async edit(calendarEvent: number | CalendarEvent, payload: RESTPatchCalendarEventJSONBody) {
 		calendarEvent = calendarEvent instanceof CalendarEvent ? calendarEvent.id : calendarEvent;
 		const raw = await this.client.api.calendarEvents.edit(
 			this.channel.id,
@@ -101,4 +101,4 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 /** The options for fetching calendar events. */
 export interface CalendarEventFetchManyOptions
 	extends FetchManyOptions,
-		APICalendarEventFetchManyOptions {}
+		RESTGetCalendarEventsQuery {}

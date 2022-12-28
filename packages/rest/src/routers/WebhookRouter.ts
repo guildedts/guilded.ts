@@ -1,13 +1,13 @@
 import {
-	APIhWebhookFetchManyOptions,
+	RESTGetWebhooksQuery,
 	APIWebhook,
-	APIWebhookEditPayload,
-	APIWebhookMessagePayloadResolvable,
-	APIWebhookPayload,
+	RESTPutWebhookJSONBody,
+	RESTPostWebhookMessageJSONBody,
+	RESTPostWebhookJSONBody,
 	Routes,
 } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
-import fetch from 'node-fetch';
+import { RESTManager } from '..';
 
 /**
  * The webhook router for the Guilded REST API.
@@ -36,10 +36,10 @@ export class WebhookRouter extends BaseRouter {
 	 * @example webhooks.fetchMany('abc', 'abc');
 	 */
 	async fetchMany(serverId: string, channelId: string) {
-		const { webhooks } = await this.rest.get<
-			{ webhooks: APIWebhook[] },
-			APIhWebhookFetchManyOptions
-		>(Routes.webhooks(serverId), { channelId });
+		const { webhooks } = await this.rest.get<{ webhooks: APIWebhook[] }, RESTGetWebhooksQuery>(
+			Routes.webhooks(serverId),
+			{ channelId },
+		);
 		return webhooks;
 	}
 
@@ -50,22 +50,9 @@ export class WebhookRouter extends BaseRouter {
 	 * @param payload The payload of the message.
 	 * @example webhooks.send('abc', 'abc', 'Hello world!');
 	 */
-	async send(
-		webhookId: string,
-		webhookToken: string,
-		payload: APIWebhookMessagePayloadResolvable,
-	) {
-		await fetch(`https://media.guilded.gg${Routes.webhookExecute(webhookId, webhookToken)}`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(
-				typeof payload === 'string'
-					? { content: payload }
-					: Array.isArray(payload)
-					? { embeds: payload }
-					: payload,
-			),
-		});
+	async send(webhookId: string, webhookToken: string, payload: RESTPostWebhookMessageJSONBody) {
+		const rest = new RESTManager({ proxyUrl: 'https://media.guilded.gg' });
+		rest.post(`/${webhookId}/${webhookToken}`, payload);
 	}
 
 	/**
@@ -77,7 +64,7 @@ export class WebhookRouter extends BaseRouter {
 	 * @example webhooks.create('abc', 'abc', 'Webhook');
 	 */
 	async create(serverId: string, channelId: string, name: string) {
-		const { webhook } = await this.rest.post<{ webhook: APIWebhook }, APIWebhookPayload>(
+		const { webhook } = await this.rest.post<{ webhook: APIWebhook }, RESTPostWebhookJSONBody>(
 			Routes.webhooks(serverId),
 			{ channelId, name },
 		);
@@ -94,7 +81,7 @@ export class WebhookRouter extends BaseRouter {
 	 * @example webhooks.edit('abc', 'abc', 'Webhook');
 	 */
 	async edit(serverId: string, webhookId: string, name: string, channelId?: string) {
-		const { webhook } = await this.rest.put<{ webhook: APIWebhook }, APIWebhookEditPayload>(
+		const { webhook } = await this.rest.put<{ webhook: APIWebhook }, RESTPutWebhookJSONBody>(
 			Routes.webhook(serverId, webhookId),
 			{ channelId, name },
 		);

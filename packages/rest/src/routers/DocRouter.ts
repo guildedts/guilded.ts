@@ -1,4 +1,10 @@
-import { APIDoc, APIDocPayload, APIDocFetchManyOptions, Routes } from 'guilded-api-typings';
+import {
+	APIDoc,
+	RESTPostDocJSONBody,
+	RESTGetDocsQuery,
+	Routes,
+	RESTPutDocJSONBody,
+} from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
 /**
@@ -21,9 +27,9 @@ export class DocRouter extends BaseRouter {
 	 * @returns The fetched docs.
 	 * @example docs.fetchMany('abc');
 	 */
-	fetch(channelId: string, options?: APIDocFetchManyOptions): Promise<APIDoc[]>;
+	fetch(channelId: string, options?: RESTGetDocsQuery): Promise<APIDoc[]>;
 	/** @ignore */
-	fetch(channelId: string, docIdOrOptions?: number | APIDocFetchManyOptions) {
+	fetch(channelId: string, docIdOrOptions?: number | RESTGetDocsQuery) {
 		if (typeof docIdOrOptions === 'number') return this.fetchSingle(channelId, docIdOrOptions);
 		return this.fetchMany(channelId, docIdOrOptions);
 	}
@@ -35,8 +41,8 @@ export class DocRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APIDocFetchManyOptions) {
-		const { docs } = await this.rest.get<{ docs: APIDoc[] }, APIDocFetchManyOptions>(
+	private async fetchMany(channelId: string, options?: RESTGetDocsQuery) {
+		const { docs } = await this.rest.get<{ docs: APIDoc[] }, RESTGetDocsQuery>(
 			Routes.docs(channelId),
 			options,
 		);
@@ -52,7 +58,7 @@ export class DocRouter extends BaseRouter {
 	 * @example docs.create('abc', 'My Doc', 'This is my doc.');
 	 */
 	async create(channelId: string, title: string, content: string) {
-		const { doc } = await this.rest.post<{ doc: APIDoc }, APIDocPayload>(
+		const { doc } = await this.rest.post<{ doc: APIDoc }, RESTPostDocJSONBody>(
 			Routes.docs(channelId),
 			{ title, content },
 		);
@@ -69,7 +75,7 @@ export class DocRouter extends BaseRouter {
 	 * @example docs.edit('abc', 123, 'My Doc', 'This is my doc.');
 	 */
 	async edit(channelId: string, docId: number, title: string, content: string) {
-		const { doc } = await this.rest.put<{ doc: APIDoc }, APIDocPayload>(
+		const { doc } = await this.rest.put<{ doc: APIDoc }, RESTPutDocJSONBody>(
 			Routes.doc(channelId, docId),
 			{ title, content },
 		);

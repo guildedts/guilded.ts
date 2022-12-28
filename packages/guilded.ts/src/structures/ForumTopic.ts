@@ -1,6 +1,6 @@
 import {
 	APIForumTopic,
-	APIForumTopicEditPayload,
+	RESTPatchForumTopicJSONBody,
 	APIForumTopicSummary,
 	APIMentions,
 } from 'guilded-api-typings';
@@ -149,7 +149,7 @@ export class ForumTopic extends Base<number> {
 	 * @returns The edited forum topic.
 	 * @example forumTopic.edit({ title: 'New title' });
 	 */
-	edit(payload: APIForumTopicEditPayload) {
+	edit(payload: RESTPatchForumTopicJSONBody) {
 		return this.channel.topics.edit(this, payload) as Promise<this>;
 	}
 
