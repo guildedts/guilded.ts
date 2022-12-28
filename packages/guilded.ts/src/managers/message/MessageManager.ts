@@ -1,10 +1,8 @@
 import {
-	APIMessagePayload,
+	RESTPostMessageJSONBody,
 	APIEmbed,
-	APIMessageFetchManyOptions,
-	APIMessageEditPayload,
-	APIMessageEditPayloadResolvable,
-	APIMessagePayloadResolvable,
+	RESTGetMessagesQuery,
+	RESTPutMessageJSONBody,
 } from 'guilded-api-typings';
 import { Embed } from '@guildedts/builders';
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
@@ -72,7 +70,11 @@ export class MessageManager extends BaseManager<string, Message> {
 	async create(payload: MessagePayloadResolvable) {
 		const raw = await this.client.api.messages.create(
 			this.channel.id,
-			payload as APIMessagePayloadResolvable,
+			(typeof payload === 'string'
+				? { content: payload }
+				: Array.isArray(payload)
+				? { embeds: payload }
+				: payload) as RESTPostMessageJSONBody,
 		);
 		return new Message(this.channel, raw);
 	}
@@ -89,7 +91,11 @@ export class MessageManager extends BaseManager<string, Message> {
 		const raw = await this.client.api.messages.edit(
 			this.channel.id,
 			message,
-			payload as APIMessageEditPayloadResolvable,
+			(typeof payload === 'string'
+				? { content: payload }
+				: Array.isArray(payload)
+				? { embeds: payload }
+				: payload) as RESTPutMessageJSONBody,
 		);
 		return new Message(this.channel, raw);
 	}
@@ -106,16 +112,16 @@ export class MessageManager extends BaseManager<string, Message> {
 }
 
 /** The options for fetching messages. */
-export interface MessageFetchManyOptions extends FetchManyOptions, APIMessageFetchManyOptions {}
+export interface MessageFetchManyOptions extends FetchManyOptions, RESTGetMessagesQuery {}
 
 /** The payload for creating a message. */
-export interface MessagePayload extends Omit<APIMessagePayload, 'embeds'> {
+export interface MessagePayload extends Omit<RESTPostMessageJSONBody, 'embeds'> {
 	/** The embeds of the message. */
 	embeds?: (Embed | APIEmbed)[];
 }
 
 /** The payload for editing a message. */
-export interface MessageEditPayload extends Omit<APIMessageEditPayload, 'embeds'> {
+export interface MessageEditPayload extends Omit<RESTPutMessageJSONBody, 'embeds'> {
 	/** The embeds of the message. */
 	embeds?: (Embed | APIEmbed)[];
 }

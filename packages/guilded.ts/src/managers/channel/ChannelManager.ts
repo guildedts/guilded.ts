@@ -1,4 +1,4 @@
-import { APIChannelEditPayload, APIChannelPayload } from 'guilded-api-typings';
+import { RESTPatchChannelJSONBody, RESTPostChannelJSONBody } from 'guilded-api-typings';
 import { BaseManager, FetchOptions } from '../BaseManager';
 import { Client } from '../../structures/Client';
 import { Channel } from '../../structures/channel/Channel';
@@ -35,7 +35,7 @@ export class ChannelManager extends BaseManager<string, Channel> {
 	 * @returns The created channel.
 	 * @example channels.create({ name: 'Chat', type: 'chat' });
 	 */
-	async create(payload: APIChannelPayload) {
+	async create(payload: RESTPostChannelJSONBody) {
 		const raw = await this.client.api.channels.create(payload);
 		return createChannel(this.client, raw);
 	}
@@ -47,7 +47,7 @@ export class ChannelManager extends BaseManager<string, Channel> {
 	 * @returns The edited channel.
 	 * @example channels.edit(channel, { name: 'Chat' });
 	 */
-	async edit(channel: string | Channel, payload: APIChannelEditPayload) {
+	async edit(channel: string | Channel, payload: RESTPatchChannelJSONBody) {
 		channel = channel instanceof Channel ? channel.id : channel;
 		const raw = await this.client.api.channels.edit(channel, payload);
 		return createChannel(this.client, raw);

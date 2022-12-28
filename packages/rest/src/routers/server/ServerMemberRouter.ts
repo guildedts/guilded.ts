@@ -1,7 +1,7 @@
 import {
 	APIServerMember,
-	APIServerXpEditPayload,
-	APIServerXpPayload,
+	RESTPutServerMemberXpJSONBody,
+	RESTPostServerMemberXpJSONBody,
 	APISocialLink,
 	Routes,
 } from 'guilded-api-typings';
@@ -58,7 +58,7 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @example serverMembers.setNickname('abc', 'abc', 'nickname');
 	 */
 	async setNickname(serverId: string, memberId: string, nickname: string) {
-		await this.rest.put(Routes.serverNickname(serverId, memberId), { nickname });
+		await this.rest.put(Routes.serverMemberNickname(serverId, memberId), { nickname });
 		return nickname;
 	}
 
@@ -69,7 +69,7 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @example serverMembers.removeNickname('abc', 'abc');
 	 */
 	removeNickname(serverId: string, memberId: string) {
-		return this.rest.delete<void>(Routes.serverNickname(serverId, memberId));
+		return this.rest.delete<void>(Routes.serverMemberNickname(serverId, memberId));
 	}
 
 	/**
@@ -91,7 +91,7 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @example serverMembers.awardXp('abc', 'abc', 100);
 	 */
 	async awardXp(serverId: string, memberId: string, amount: number) {
-		const { total } = await this.rest.post<{ total: number }, APIServerXpPayload>(
+		const { total } = await this.rest.post<{ total: number }, RESTPostServerMemberXpJSONBody>(
 			Routes.serverMemberXp(serverId, memberId),
 			{ amount },
 		);
@@ -107,7 +107,7 @@ export class ServerMemberRouter extends BaseRouter {
 	 * @example serverMembers.setXp('abc', 'abc', 100);
 	 */
 	async setXp(serverId: string, memberId: string, amount: number) {
-		const { total } = await this.rest.put<{ total: number }, APIServerXpEditPayload>(
+		const { total } = await this.rest.put<{ total: number }, RESTPutServerMemberXpJSONBody>(
 			Routes.serverMemberXp(serverId, memberId),
 			{ total: amount },
 		);
@@ -124,7 +124,7 @@ export class ServerMemberRouter extends BaseRouter {
 	 */
 	async fetchSocialLink(serverId: string, memberId: string, type: string) {
 		const { socialLink } = await this.rest.get<{ socialLink: APISocialLink }>(
-			Routes.socialLink(serverId, memberId, type),
+			Routes.serverMemberSocialLink(serverId, memberId, type),
 		);
 		return socialLink;
 	}

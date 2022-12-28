@@ -1,4 +1,9 @@
-import { APIListItem, APIListItemPayload, Routes } from 'guilded-api-typings';
+import {
+	APIListItem,
+	RESTPostListItemJSONBody,
+	RESTPutListItemJSONBody,
+	Routes,
+} from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
 /**
@@ -52,10 +57,10 @@ export class ListItemRouter extends BaseRouter {
 	 * @example listItems.create('abc', 'Random item');
 	 */
 	async create(channelId: string, message: string, note?: string) {
-		const { listItem } = await this.rest.post<{ listItem: APIListItem }, APIListItemPayload>(
-			Routes.listItems(channelId),
-			{ message, note: note ? { content: note } : undefined },
-		);
+		const { listItem } = await this.rest.post<
+			{ listItem: APIListItem },
+			RESTPostListItemJSONBody
+		>(Routes.listItems(channelId), { message, note: note ? { content: note } : undefined });
 		return listItem;
 	}
 
@@ -69,10 +74,13 @@ export class ListItemRouter extends BaseRouter {
 	 * @example listItems.edit('abc', 'abc', 'Random item');
 	 */
 	async edit(channelId: string, listItemId: string, message: string, note?: string) {
-		const { listItem } = await this.rest.put<{ listItem: APIListItem }, APIListItemPayload>(
-			Routes.listItem(channelId, listItemId),
-			{ message, note: note ? { content: note } : undefined },
-		);
+		const { listItem } = await this.rest.put<
+			{ listItem: APIListItem },
+			RESTPutListItemJSONBody
+		>(Routes.listItem(channelId, listItemId), {
+			message,
+			note: note ? { content: note } : undefined,
+		});
 		return listItem;
 	}
 

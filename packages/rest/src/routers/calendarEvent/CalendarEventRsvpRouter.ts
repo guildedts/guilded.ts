@@ -1,6 +1,6 @@
 import {
 	APICalendarEventRsvp,
-	APICalendarEventRsvpEditPayload,
+	RESTPutCalendarEventRsvpJSONBody,
 	CalendarEventRsvpStatus,
 	Routes,
 } from 'guilded-api-typings';
@@ -71,7 +71,7 @@ export class CalendarEventRsvpRouter extends BaseRouter {
 	) {
 		const { calendarEventRsvp } = await this.rest.put<
 			{ calendarEventRsvp: APICalendarEventRsvp },
-			APICalendarEventRsvpEditPayload
+			RESTPutCalendarEventRsvpJSONBody
 		>(Routes.calendarEventRsvp(channelId, calendarEventId, userId), { status });
 		return calendarEventRsvp;
 	}

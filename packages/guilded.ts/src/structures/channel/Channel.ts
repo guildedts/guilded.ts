@@ -1,4 +1,4 @@
-import { APIChannel, APIChannelEditPayload, ChannelType } from 'guilded-api-typings';
+import { APIChannel, RESTPatchChannelJSONBody, ChannelType } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Client } from '../Client';
 import { ChannelWebhookManager } from '../../managers/channel/ChannelWebhookManager';
@@ -244,7 +244,7 @@ export class Channel extends Base {
 	 * @returns The edited channel.
 	 * @example channel.edit({ name: 'Chat' });
 	 */
-	edit(payload: APIChannelEditPayload) {
+	edit(payload: RESTPatchChannelJSONBody) {
 		return this.client.channels.edit(this, payload) as Promise<this>;
 	}
 

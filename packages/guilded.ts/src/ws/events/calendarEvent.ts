@@ -1,5 +1,12 @@
 import { Collection } from '@discordjs/collection';
-import { WSEvents } from 'guilded-api-typings';
+import {
+	WebSocketCalendarEventCreateEventData,
+	WebSocketCalendarEventDeleteEventData,
+	WebSocketCalendarEventRsvpDeleteEventData,
+	WebSocketCalendarEventRsvpUpdateEventData,
+	WebSocketCalendarEventRsvpsUpdateEventData,
+	WebSocketCalendarEventUpdateEventData,
+} from 'guilded-api-typings';
 import { CalendarEvent } from '../../structures/calendarEvent/CalendarEvent';
 import { CalendarEventRsvp } from '../../structures/calendarEvent/CalendarEventRsvp';
 import { CalendarChannel } from '../../structures/channel/CalendarChannel';
@@ -10,7 +17,7 @@ import { Client } from '../../structures/Client';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['CalendarEventCreated']) {
+export async function created(client: Client, data: WebSocketCalendarEventCreateEventData) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
 	const calendarEvent = new CalendarEvent(channel, data.calendarEvent);
 	client.emit('calendarEventCreate', calendarEvent);
@@ -21,7 +28,7 @@ export async function created(client: Client, data: WSEvents['CalendarEventCreat
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['CalendarEventUpdated']) {
+export async function updated(client: Client, data: WebSocketCalendarEventUpdateEventData) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
 	const oldCalendarEvent = channel.events.cache.get(data.calendarEvent.id);
 	const newCalendarEvent = new CalendarEvent(channel, data.calendarEvent);
@@ -33,7 +40,7 @@ export async function updated(client: Client, data: WSEvents['CalendarEventUpdat
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function deleted(client: Client, data: WSEvents['CalendarEventDeleted']) {
+export async function deleted(client: Client, data: WebSocketCalendarEventDeleteEventData) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
 	const calendarEvent = new CalendarEvent(channel, data.calendarEvent);
 	if (client.options.disposeCachedCalendarEvents ?? true)
@@ -46,7 +53,7 @@ export async function deleted(client: Client, data: WSEvents['CalendarEventDelet
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function rsvpUpdated(client: Client, data: WSEvents['CalendarEventRsvpUpdated']) {
+export async function rsvpUpdated(client: Client, data: WebSocketCalendarEventRsvpUpdateEventData) {
 	const channel = (await client.channels.fetch(
 		data.calendarEventRsvp.channelId,
 	)) as CalendarChannel;
@@ -61,7 +68,10 @@ export async function rsvpUpdated(client: Client, data: WSEvents['CalendarEventR
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function rsvpsUpdated(client: Client, data: WSEvents['CalendarEventRsvpManyUpdated']) {
+export async function rsvpsUpdated(
+	client: Client,
+	data: WebSocketCalendarEventRsvpsUpdateEventData,
+) {
 	const oldCalendarEventRsvps = new Collection<string, CalendarEventRsvp>();
 	const newCalendarEventRsvps = new Collection<string, CalendarEventRsvp>();
 	for (const rawCalendarEventRsvp of data.calendarEventRsvps) {
@@ -83,7 +93,7 @@ export async function rsvpsUpdated(client: Client, data: WSEvents['CalendarEvent
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function rsvpDeleted(client: Client, data: WSEvents['CalendarEventRsvpDeleted']) {
+export async function rsvpDeleted(client: Client, data: WebSocketCalendarEventRsvpDeleteEventData) {
 	const channel = (await client.channels.fetch(
 		data.calendarEventRsvp.channelId,
 	)) as CalendarChannel;

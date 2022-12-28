@@ -22,14 +22,14 @@ export const createChannel = (client: Client, raw: APIChannel, cache?: boolean):
 const ChannelTypeMap: {
 	[type in ChannelType]: typeof Channel;
 } = {
-	announcements: Channel,
-	media: Channel,
-	scheduling: Channel,
-	chat: ChatChannel,
-	voice: ChatChannel,
-	stream: ChatChannel,
-	docs: DocChannel,
-	forums: ForumChannel,
-	list: ListChannel,
-	calendar: CalendarChannel,
+	[ChannelType.Announcements]: Channel,
+	[ChannelType.Media]: Channel,
+	[ChannelType.Scheduling]: Channel,
+	[ChannelType.Chat]: ChatChannel,
+	[ChannelType.Voice]: ChatChannel,
+	[ChannelType.Stream]: ChatChannel,
+	[ChannelType.Docs]: DocChannel,
+	[ChannelType.Forums]: ForumChannel,
+	[ChannelType.List]: ListChannel,
+	[ChannelType.Calendar]: CalendarChannel,
 };

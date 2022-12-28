@@ -1,4 +1,4 @@
-import { APIServerBan, APIServerBanPayload, Routes } from 'guilded-api-typings';
+import { APIServerBan, RESTPostServerBanJSONBody, Routes } from 'guilded-api-typings';
 import { BaseRouter } from '../BaseRouter';
 
 /**
@@ -54,7 +54,7 @@ export class ServerBanRouter extends BaseRouter {
 	async create(serverId: string, memberId: string, reason?: string) {
 		const { serverMemberBan } = await this.rest.post<
 			{ serverMemberBan: APIServerBan },
-			APIServerBanPayload
+			RESTPostServerBanJSONBody
 		>(Routes.serverBan(serverId, memberId), { reason });
 		return serverMemberBan;
 	}

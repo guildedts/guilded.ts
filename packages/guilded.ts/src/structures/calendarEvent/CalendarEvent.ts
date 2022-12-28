@@ -1,7 +1,7 @@
 import {
 	APICalendarEvent,
 	APICalendarEventCancellation,
-	APICalendarEventEditPayload,
+	RESTPatchCalendarEventJSONBody,
 	APIMentions,
 } from 'guilded-api-typings';
 import { FetchOptions } from '../../managers/BaseManager';
@@ -151,7 +151,7 @@ export class CalendarEvent extends Base<number> {
 	 * @returns The edited calendar event.
 	 * @example event.edit({ name: 'New name' });
 	 */
-	edit(payload: APICalendarEventEditPayload) {
+	edit(payload: RESTPatchCalendarEventJSONBody) {
 		return this.channel.events.edit(this, payload) as Promise<this>;
 	}
 

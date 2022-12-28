@@ -1,10 +1,10 @@
 import {
 	APIForumTopic,
-	APIForumTopicEditPayload,
-	APIForumTopicFetchManyOptions,
+	RESTPatchForumTopicJSONBody,
+	RESTGetForumTopicsQuery,
 	APIForumTopicSummary,
 	Routes,
-	APIForumTopicPayload,
+	RESTPostForumTopicJSONBody,
 } from 'guilded-api-typings';
 import { BaseRouter } from './BaseRouter';
 
@@ -28,12 +28,9 @@ export class ForumTopicRouter extends BaseRouter {
 	 * @returns The fetched forum topics.
 	 * @example docs.fetchMany('abc');
 	 */
-	fetch(
-		channelId: string,
-		options?: APIForumTopicFetchManyOptions,
-	): Promise<APIForumTopicSummary[]>;
+	fetch(channelId: string, options?: RESTGetForumTopicsQuery): Promise<APIForumTopicSummary[]>;
 	/** @ignore */
-	fetch(channelId: string, docIdOrOptions?: number | APIForumTopicFetchManyOptions) {
+	fetch(channelId: string, docIdOrOptions?: number | RESTGetForumTopicsQuery) {
 		if (typeof docIdOrOptions === 'number') return this.fetchSingle(channelId, docIdOrOptions);
 		return this.fetchMany(channelId, docIdOrOptions);
 	}
@@ -47,10 +44,10 @@ export class ForumTopicRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APIForumTopicFetchManyOptions) {
+	private async fetchMany(channelId: string, options?: RESTGetForumTopicsQuery) {
 		const { forumTopics } = await this.rest.get<
 			{ forumTopics: APIForumTopicSummary[] },
-			APIForumTopicFetchManyOptions
+			RESTGetForumTopicsQuery
 		>(Routes.forumTopics(channelId), options);
 		return forumTopics;
 	}
@@ -62,10 +59,10 @@ export class ForumTopicRouter extends BaseRouter {
 	 * @returns The created forum topic.
 	 * @example topics.create('abc', { title: 'My Topic!' });
 	 */
-	async create(channelId: string, payload: APIForumTopicPayload) {
+	async create(channelId: string, payload: RESTPostForumTopicJSONBody) {
 		const { forumTopic } = await this.rest.post<
 			{ forumTopic: APIForumTopic },
-			APIForumTopicPayload
+			RESTPostForumTopicJSONBody
 		>(Routes.forumTopics(channelId), payload);
 		return forumTopic;
 	}
@@ -78,10 +75,10 @@ export class ForumTopicRouter extends BaseRouter {
 	 * @returns The edited forum topic.
 	 * @example topics.edit('abc', 123, { title: 'New Title', content: 'New Content' });
 	 */
-	async edit(channelId: string, forumTopicId: number, payload: APIForumTopicEditPayload) {
+	async edit(channelId: string, forumTopicId: number, payload: RESTPatchForumTopicJSONBody) {
 		const { forumTopic } = await this.rest.put<
 			{ forumTopic: APIForumTopic },
-			APIForumTopicEditPayload
+			RESTPatchForumTopicJSONBody
 		>(Routes.forumTopic(channelId, forumTopicId), payload);
 		return forumTopic;
 	}

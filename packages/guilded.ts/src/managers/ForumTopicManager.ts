@@ -2,9 +2,9 @@ import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
 import { ForumChannel } from '../structures/channel/ForumChannel';
 import { ForumTopic } from '../structures/ForumTopic';
 import {
-	APIForumTopicEditPayload,
-	APIForumTopicFetchManyOptions,
-	APIForumTopicPayload,
+	RESTPatchForumTopicJSONBody,
+	RESTGetForumTopicsQuery,
+	RESTPostForumTopicJSONBody,
 } from 'guilded-api-typings';
 import { Collection } from '@discordjs/collection';
 
@@ -65,7 +65,7 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	 * @returns The created forum topic.
 	 * @example topics.create({ title: 'My Topic' });
 	 */
-	async create(payload: APIForumTopicPayload) {
+	async create(payload: RESTPostForumTopicJSONBody) {
 		const raw = await this.client.api.forumTopics.create(this.channel.id, payload);
 		return new ForumTopic(this.channel, raw);
 	}
@@ -77,7 +77,7 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	 * @returns The edited forum topic.
 	 * @example topics.edit(forumTopic, { title: 'My Topic' });
 	 */
-	async edit(forumTopic: number | ForumTopic, payload: APIForumTopicEditPayload) {
+	async edit(forumTopic: number | ForumTopic, payload: RESTPatchForumTopicJSONBody) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
 		const raw = await this.client.api.forumTopics.edit(this.channel.id, forumTopic, payload);
 		return new ForumTopic(this.channel, raw);
@@ -135,6 +135,4 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 }
 
 /** The options for fetching forum topics. */
-export interface ForumTopicFetchManyOptions
-	extends FetchManyOptions,
-		APIForumTopicFetchManyOptions {}
+export interface ForumTopicFetchManyOptions extends FetchManyOptions, RESTGetForumTopicsQuery {}

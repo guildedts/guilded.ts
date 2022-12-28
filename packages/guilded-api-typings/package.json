@@ -7,7 +7,7 @@
 		"directory": "packages/guilded-api-typings"
 	},
 	"homepage": "https://guildedts.js.org",
-	"main": "dist",
+	"main": "dist/v1",
 	"files": [
 		"CHANGELOG.md",
 		"dist"

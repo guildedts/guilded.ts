@@ -1,8 +1,8 @@
 import {
 	APICalendarEvent,
-	APICalendarEventEditPayload,
-	APICalendarEventPayload,
-	APICalendarEventFetchManyOptions,
+	RESTPatchCalendarEventJSONBody,
+	RESTPostCalendarEventJSONBody,
+	RESTGetCalendarEventsQuery,
 	Routes,
 } from 'guilded-api-typings';
 import { BaseRouter } from '../BaseRouter';
@@ -27,12 +27,9 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @returns The fetched calendar events.
 	 * @example calendarEvents.fetch('abc');
 	 */
-	fetch(
-		channelId: string,
-		options?: APICalendarEventFetchManyOptions,
-	): Promise<APICalendarEvent[]>;
+	fetch(channelId: string, options?: RESTGetCalendarEventsQuery): Promise<APICalendarEvent[]>;
 	/** @ignore */
-	fetch(channelId: string, calendarEventIdOrOptions?: number | APICalendarEventFetchManyOptions) {
+	fetch(channelId: string, calendarEventIdOrOptions?: number | RESTGetCalendarEventsQuery) {
 		if (typeof calendarEventIdOrOptions === 'number')
 			return this.fetchSingle(channelId, calendarEventIdOrOptions);
 		return this.fetchMany(channelId, calendarEventIdOrOptions);
@@ -47,10 +44,10 @@ export class CalendarEventRouter extends BaseRouter {
 	}
 
 	/** @ignore */
-	private async fetchMany(channelId: string, options?: APICalendarEventFetchManyOptions) {
+	private async fetchMany(channelId: string, options?: RESTGetCalendarEventsQuery) {
 		const { calendarEvents } = await this.rest.get<
 			{ calendarEvents: APICalendarEvent[] },
-			APICalendarEventFetchManyOptions
+			RESTGetCalendarEventsQuery
 		>(Routes.calendarEvents(channelId), options);
 		return calendarEvents;
 	}
@@ -62,10 +59,10 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @returns The created calendar event.
 	 * @example calendarEvents.create('abc', { name: 'Event!' });
 	 */
-	async create(channelId: string, payload: APICalendarEventPayload) {
+	async create(channelId: string, payload: RESTPostCalendarEventJSONBody) {
 		const { calendarEvent } = await this.rest.post<
 			{ calendarEvent: APICalendarEvent },
-			APICalendarEventPayload
+			RESTPostCalendarEventJSONBody
 		>(Routes.calendarEvents(channelId), payload);
 		return calendarEvent;
 	}
@@ -78,10 +75,14 @@ export class CalendarEventRouter extends BaseRouter {
 	 * @returns The edited calendar event.
 	 * @example calendarEvents.edit('abc', 123, { name: 'Event!' });
 	 */
-	async edit(channelId: string, calendarEventId: number, payload: APICalendarEventEditPayload) {
+	async edit(
+		channelId: string,
+		calendarEventId: number,
+		payload: RESTPatchCalendarEventJSONBody,
+	) {
 		const { calendarEvent } = await this.rest.patch<
 			{ calendarEvent: APICalendarEvent },
-			APICalendarEventEditPayload
+			RESTPatchCalendarEventJSONBody
 		>(Routes.calendarEvent(channelId, calendarEventId), payload);
 		return calendarEvent;
 	}

@@ -3,7 +3,7 @@ import { Client } from './Client';
 import { GroupMemberManager } from '../managers/group/GroupMemberManager';
 import { FetchOptions } from '../managers/BaseManager';
 import { ServerMember } from './server/ServerMember';
-import { APIChannelPayload } from 'guilded-api-typings';
+import { RESTPostChannelJSONBody } from 'guilded-api-typings';
 
 /**
  * Represents a group on Guilded.
@@ -67,7 +67,7 @@ export class Group extends Base {
 	 * @returns The created channel.
 	 * @example group.createChannel({ name: 'Chat', type: 'chat' });
 	 */
-	createChannel(payload: Omit<APIChannelPayload, 'groupId'>) {
+	createChannel(payload: Omit<RESTPostChannelJSONBody, 'groupId'>) {
 		return this.client.channels.create({ groupId: this.id, ...payload });
 	}
 }

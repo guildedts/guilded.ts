@@ -1,4 +1,4 @@
-import { APIChannel, APIForumTopicPayload } from 'guilded-api-typings';
+import { APIChannel, RESTPostForumTopicJSONBody } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
 import { ForumTopicManager } from '../../managers/ForumTopicManager';
@@ -28,7 +28,7 @@ export class ForumChannel extends Channel {
 	 * @returns The created topic.
 	 * @example channel.post({ title: 'My Topic' });
 	 */
-	post(payload: APIForumTopicPayload) {
+	post(payload: RESTPostForumTopicJSONBody) {
 		return this.topics.create(payload);
 	}
 }

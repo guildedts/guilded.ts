@@ -1,4 +1,4 @@
-import { APIClientUser, APIUser, APIUserSummary, UserType } from 'guilded-api-typings';
+import { APIBot, APIUser, APIUserSummary, UserType } from 'guilded-api-typings';
 import { Base } from './Base';
 import { Client } from './Client';
 
@@ -73,7 +73,7 @@ export class ClientUser extends User {
 	 * @param raw The raw data of the client user.
 	 * @param cache Whether to cache the client user.
 	 */
-	constructor(client: Client, public readonly raw: APIClientUser, cache?: boolean) {
+	constructor(client: Client, public readonly raw: APIBot, cache?: boolean) {
 		super(client, { type: UserType.Bot, ...raw }, cache);
 		this.botId = raw.botId;
 		this.createdBy = raw.createdBy;

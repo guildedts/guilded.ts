@@ -1,4 +1,7 @@
-import { WSEvents } from 'guilded-api-typings';
+import {
+	WebSocketWebhookCreateEventData,
+	WebSocketWebhookUpdateEventData,
+} from 'guilded-api-typings';
 import { Client } from '../../structures/Client';
 import { Webhook } from '../../structures/Webhook';
 
@@ -7,7 +10,7 @@ import { Webhook } from '../../structures/Webhook';
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function created(client: Client, data: WSEvents['ServerWebhookCreated']) {
+export async function created(client: Client, data: WebSocketWebhookCreateEventData) {
 	const channel = await client.channels.fetch(data.webhook.channelId);
 	const webhook = new Webhook(channel, data.webhook);
 	client.emit('webhookCreate', webhook);
@@ -18,7 +21,7 @@ export async function created(client: Client, data: WSEvents['ServerWebhookCreat
  * @param client The client the Websocket belongs to.
  * @param data The data of the event.
  */
-export async function updated(client: Client, data: WSEvents['ServerWebhookUpdated']) {
+export async function updated(client: Client, data: WebSocketWebhookUpdateEventData) {
 	const channel = await client.channels.fetch(data.webhook.channelId);
 	const oldWebhook = channel.webhooks.cache.get(data.webhook.id);
 	const newWebhook = new Webhook(channel, data.webhook);

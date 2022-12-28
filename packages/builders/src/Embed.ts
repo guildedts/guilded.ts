@@ -3,7 +3,8 @@ import {
 	APIEmbedAuthor,
 	APIEmbedField,
 	APIEmbedFooter,
-	APIEmbedMedia,
+	APIEmbedImage,
+	APIEmbedThumbnail,
 } from 'guilded-api-typings';
 import { ColorResolvable, resolveColor } from '@guildedts/util';
 
@@ -28,9 +29,9 @@ export class Embed {
 	/** The timestamp of the embed. */
 	timestamp?: Date;
 	/** The thumbnail of the embed. */
-	thumbnail?: APIEmbedMedia;
+	thumbnail?: APIEmbedThumbnail;
 	/** The image of the embed. */
-	image?: APIEmbedMedia;
+	image?: APIEmbedImage;
 	/** The author of the embed. */
 	author?: APIEmbedAuthor;
 	/** The fields of the embed. */
@@ -137,7 +138,7 @@ export class Embed {
 	 * @example embed.setThumbnail('https://example.com');
 	 */
 	setThumbnail(thumbnailUrl?: string) {
-		this.thumbnail = { url: thumbnailUrl };
+		if (thumbnailUrl) this.thumbnail = { url: thumbnailUrl };
 		return this;
 	}
 
@@ -148,7 +149,7 @@ export class Embed {
 	 * @example embed.setImage('https://example.com');
 	 */
 	setImage(imageUrl?: string) {
-		this.image = { url: imageUrl };
+		if (imageUrl) this.image = { url: imageUrl };
 		return this;
 	}
 

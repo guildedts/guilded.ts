@@ -14,7 +14,7 @@ export class ReactionRouter extends BaseRouter {
 	 * @example reactions.create('abc', 'abc', 123);
 	 */
 	create(channelId: string, contentId: string, emojiId: number) {
-		return this.rest.put<void>(Routes.reaction(channelId, contentId, emojiId));
+		return this.rest.put<void>(Routes.messageReaction(channelId, contentId, emojiId));
 	}
 
 	/**
@@ -25,6 +25,6 @@ export class ReactionRouter extends BaseRouter {
 	 * @example reactions.delete('abc', 'abc', 123);
 	 */
 	delete(channelId: string, contentId: string, emojiId: number) {
-		return this.rest.delete<void>(Routes.reaction(channelId, contentId, emojiId));
+		return this.rest.delete<void>(Routes.messageReaction(channelId, contentId, emojiId));
 	}
 }
