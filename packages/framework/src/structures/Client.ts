@@ -12,7 +12,7 @@ import { readFile } from 'fs/promises';
 import { basename, extname } from 'path';
 
 /**
- * The main hub for interacting with the Guilded API.
+ * The main hub for interacting with the Guilded API
  * @example
  * // Start the client
  * new Client();
@@ -20,36 +20,30 @@ import { basename, extname } from 'path';
  * new Client({ dev: true });
  */
 export class Client extends BaseClient {
-	/** The commands that belong to the client. */
+	/**
+	 * The commands
+	 */
 	readonly commands = new Collection<string, Command>();
-	/** The prefixes per server. */
+	/**
+	 * The prefixes per server
+	 */
 	readonly prefixes = new Collection<string, string>();
-	/** The config for the client. */
+	/**
+	 * The client configuration
+	 */
 	config!: ClientConfig;
 
-	/** The glob pattern for configs. */
-	private readonly configGlob = `**/gtsconfig.{js,ts,json,yml,yaml}`;
-	/** The glob pattern for command directories. */
-	private readonly commandDirGlob = `**/commands`;
-	/** The glob pattern for event directories. */
-	private readonly eventDirGlob = `**/events`;
-	/** The glob pattern for command files. */
-	private readonly commandGlob = `${this.commandDirGlob}/**/*.{js,ts}`;
-	/** The glob pattern for event files. */
-	private readonly eventGlob = `${this.eventDirGlob}/**/*.{js,ts}`;
-	/** The options for glob. */
-	private readonly globOptions: Options = {
-		ignore: ['**/node_modules', '**/*.d.ts'],
-		onlyFiles: false,
-	};
-
-	/** @param options The options for the client. */
+	/**
+	 * @param options The options for the client
+	 */
 	constructor(public readonly options: ClientOptions = {}) {
 		super(options);
 		this.init();
 	}
 
-	/** Initialize the client. */
+	/**
+	 * Initialize the client
+	 */
 	async init() {
 		await this.loadConfig();
 		await this.loadCommands();
@@ -60,11 +54,13 @@ export class Client extends BaseClient {
 		process.on('uncaughtException', console.log);
 	}
 
-	/** Handle dev mode. */
+	/**
+	 * Handle development mode
+	 */
 	private async devMode() {
 		let timeout: NodeJS.Timeout | undefined;
-		const commandDirs = await glob(this.commandDirGlob, this.globOptions);
-		const eventDirs = await glob(this.eventDirGlob, this.globOptions);
+		const commandDirs = await glob('**/commands', { ...GlobOptions, onlyDirectories: true });
+		const eventDirs = await glob('**/events', { ...GlobOptions, onlyDirectories: true });
 		for (const dirs of [commandDirs, eventDirs])
 			for (const dir of dirs)
 				watch(dir, { recursive: true }, () => {
@@ -74,11 +70,13 @@ export class Client extends BaseClient {
 				});
 	}
 
-	/** Load config. */
+	/**
+	 * Load config
+	 */
 	private async loadConfig() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading config...');
-		const path = (await glob(this.configGlob, this.globOptions))[0];
+		const path = (await glob('**/gtsconfig.{js,ts,json,yml,yaml}', GlobOptions))[0];
 		if (!path) {
 			Logger.error('No gtsconfig found');
 			process.exit(1);
@@ -93,12 +91,14 @@ export class Client extends BaseClient {
 		Logger.event(`Loaded config from ${path} in ${Date.now() - startedTimestamp}ms`);
 	}
 
-	/** Load commands. */
+	/**
+	 * Load commands
+	 */
 	private async loadCommands() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading commands...');
 		this.commands.clear();
-		const paths = await glob(this.commandGlob, this.globOptions);
+		const paths = await glob('**/commands/**/*.{js,ts}', GlobOptions);
 		let loadedCommands = 0;
 		for (const path of paths) {
 			const command = await this.createStructure<Command>(path);
@@ -110,12 +110,14 @@ export class Client extends BaseClient {
 		Logger.event(`Loaded ${loadedCommands} commands in ${Date.now() - startedTimestamp}ms`);
 	}
 
-	/** Load events. */
+	/**
+	 * Load events
+	 */
 	private async loadEvents() {
 		const startedTimestamp = Date.now();
 		Logger.wait('Loading events...');
 		this.removeAllListeners();
-		const paths = await glob(this.eventGlob, this.globOptions);
+		const paths = await glob('**/commands/**/*.{js,ts}', GlobOptions);
 		let loadedEvents = 0;
 		for (const path of paths) {
 			const event = await this.createStructure<Event>(path);
@@ -130,10 +132,9 @@ export class Client extends BaseClient {
 	}
 
 	/**
-	 * Import a module.
-	 * @param path The path to the module.
-	 * @returns The module.
-	 * @example client.import('./path/to/module');
+	 * Import a module
+	 * @param path The path to the module
+	 * @returns The module
 	 */
 	private async import(path: string) {
 		path = `${process.cwd()}/${path}`;
@@ -146,10 +147,9 @@ export class Client extends BaseClient {
 	}
 
 	/**
-	 * Create a structure from a file.
-	 * @param path The path to the file.
-	 * @returns The structure.
-	 * @example client.createStructure('./path/to/file');
+	 * Create a structure from a file
+	 * @param path The path to the file
+	 * @returns The structure
 	 */
 	private async createStructure<Structure>(path: string): Promise<Structure | undefined> {
 		const file = await this.import(path);
@@ -161,23 +161,41 @@ export class Client extends BaseClient {
 	}
 }
 
-/** The options for the client. */
+const GlobOptions: Options = {
+	ignore: ['**/node_modules', '**/*.d.ts'],
+};
+
+/**
+ * The options for the client
+ */
 export interface ClientOptions extends BaseClientOptions {
-	/** Whether to run the client in dev mode. */
+	/**
+	 * Whether to run the client in development mode
+	 */
 	dev?: boolean;
 }
 
-/** The config for the client. */
+/**
+ * The config for the client
+ */
 export interface ClientConfig {
-	/** The token for the client. */
+	/**
+	 * The authorization token to use
+	 */
 	token: string;
-	/** The default cooldown for commands. */
+	/**
+	 * The default cooldown for commands
+	 */
 	commandCooldown?: number;
-	/** The default prefix for commands. */
+	/**
+	 * The default prefix for commands
+	 */
 	prefix: string;
 }
 
-/** The schema for the client config. */
+/**
+ * The schema for the client config
+ */
 export const ClientConfigSchema = joi
 	.object<ClientConfig>({
 		token: joi.string().required().description('The token for the client.'),

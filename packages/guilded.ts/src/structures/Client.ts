@@ -28,33 +28,53 @@ import { CalendarEventRsvp } from './calendarEvent/CalendarEventRsvp';
 import { ForumTopic } from './ForumTopic';
 
 /**
- * The main hub for interacting with the Guilded API.
+ * The main hub for interacting with the Guilded API
  * @example
- * const client = new Client();
- * client.once('ready', () => console.log(`Logged in as ${client.user!.name}!`));
- * client.login('token');
+ * const client = new Client({ token: 'your-token' });
+ *
+ * client.once('ready', () => console.log(`Logged in as ${client.user?.name}!`));
+ *
+ * client.login();
  */
 export class Client extends EventEmitter {
-	/** The REST manager for the Guilded API. */
+	/**
+	 * The manager for the Guilded REST API
+	 */
 	readonly rest: RESTManager;
-	/** The Websocket manager for the Guilded API. */
+	/**
+	 * The Websocket manager for the Guilded API
+	 */
 	readonly ws: WebsocketManager;
 
-	/** The manager of channels that belong to the client. */
+	/**
+	 * The manager for channels
+	 */
 	readonly channels: ChannelManager;
-	/** The manager of users that belong to the client. */
+	/**
+	 * The manager for users
+	 */
 	readonly users: UserManager;
-	/** The manager of servers that belong to the client. */
+	/**
+	 * The manager for servers
+	 */
 	readonly servers: ServerManager;
-	/** The manager of groups that belong to the client. */
+	/**
+	 * The manager for groups
+	 */
 	readonly groups: GroupManager;
 
-	/** The auth token for the Guilded API. */
+	/**
+	 * The authorization token to use
+	 */
 	token?: string;
-	/** The user the client is logged in as. */
+	/**
+	 * The user
+	 */
 	user?: ClientUser;
 
-	/** @param options The options for the client. */
+	/**
+	 * @param options The options for the client
+	 */
 	constructor(public options: ClientOptions = {}) {
 		super();
 		this.token = options.token;
@@ -80,36 +100,45 @@ export class Client extends EventEmitter {
 		this.ws.on('event', this.onWSEvent.bind(this));
 	}
 
-	/** The router for the Guilded REST API. */
+	/**
+	 * The router for the Guilded REST API
+	 */
 	get api() {
 		return this.rest.router;
 	}
 
-	/** Whether the client is ready to use. */
+	/**
+	 * Whether the client is ready to use
+	 */
 	get isReady() {
 		return this.ws.isReady;
 	}
 
-	/** The date the client was ready. */
+	/**
+	 * When the client became ready to use
+	 */
 	get readyAt() {
 		return this.ws.readyAt;
 	}
 
-	/** The timestamp the client was ready. */
+	/**
+	 * The timestamp of when the client became ready to use
+	 */
 	get readyTimestamp() {
 		return this.ws.readyTimestamp;
 	}
 
-	/** The time the client has been in the ready state. */
+	/**
+	 * The duration of how long the client has been in the ready state
+	 */
 	get uptime() {
 		return this.ws.uptime;
 	}
 
 	/**
-	 * Login to the Guilded API.
-	 * @param token The auth token for the Guilded API.
-	 * @returns The client.
-	 * @example client.login('token');
+	 * Login to the Guilded API
+	 * @param token The authorization token to use
+	 * @returns The client
 	 */
 	login(token?: string) {
 		this.token = token || this.token;
@@ -119,9 +148,8 @@ export class Client extends EventEmitter {
 	}
 
 	/**
-	 * Disconnect from Guilded.
-	 * @returns The client.
-	 * @example client.disconnect();
+	 * Disconnect from Guilded
+	 * @returns The client
 	 */
 	disconnect() {
 		this.ws.disconnect();
@@ -129,255 +157,442 @@ export class Client extends EventEmitter {
 	}
 
 	/**
-	 * Debug the client.
-	 * @param data The debug data.
-	 * @returns The client.
-	 * @example client.debug('Hello World!');
+	 * Debug the client
+	 * @param data The debug data
+	 * @returns The client
 	 */
 	debug(data?: any) {
 		this.emit('debug', this, data);
 		return this;
 	}
 
-	/** @ignore */
 	private onWSConnect(user: APIBot) {
 		this.user = new ClientUser(this, user);
 		this.emit('ready', this);
 	}
 
-	/** @ignore */
 	private onWSReconnect() {
 		this.emit('reconnect', this);
 	}
 
-	/** @ignore */
 	private onWSDisconnect() {
 		this.emit('disconnect', this);
 	}
 
-	/** @ignore */
 	private onWSEvent(event: WebSocketEvent, data: unknown) {
 		handleWSEvent(this, event, data);
 	}
 }
 
 export interface Client {
-	/** @ignore */
 	on<Event extends keyof ClientEvents>(
 		event: Event,
 		listener: (...args: ClientEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	once<Event extends keyof ClientEvents>(
 		event: Event,
 		listener: (...args: ClientEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	off<Event extends keyof ClientEvents>(
 		event: Event,
 		listener: (...args: ClientEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	emit<Event extends keyof ClientEvents>(event: Event, ...args: ClientEvents[Event]): boolean;
 }
 
-/** The events that belong to the client. */
+/**
+ * The client events
+ */
 export interface ClientEvents {
-	/** Emitted when the client is ready to use. */
+	/**
+	 * Emitted whenever the client is ready to use
+	 */
 	ready: [client: Client];
-	/** Emitted when the client is disconnected from Guilded. */
+	/**
+	 * Emitted whenever the client is disconnected from Guilded
+	 */
 	disconnect: [client: Client];
-	/** Emitted when the client is reconnected to Guilded. */
+	/**
+	 * Emitted whenever the client is reconnected to Guilded
+	 */
 	reconnect: [client: Client];
-	/** Emitted when debug data is received. */
+	/**
+	 * Emitted whenever debug data is received
+	 */
 	debug: [client: Client, data: any];
-	/** Emitted when the bot is added to a server. */
+	/**
+	 * Emitted whenever the bot is added to a server
+	 */
 	serverAdd: [server: Server, addedBy: ServerMember];
-	/** Emitted when the bot is removed from a server. */
+	/**
+	 * Emitted whenever the bot is removed from a server
+	 */
 	serverRemove: [server: Server, removedBy?: ServerMember];
-	/** Emitted when a message is created. */
+	/**
+	 * Emitted whenever a message is created
+	 */
 	messageCreate: [message: Message];
-	/** Emitted when a message is edited. */
+	/**
+	 * Emitted whenever a message is edited
+	 */
 	messageEdit: [newMessage: Message, oldMessage?: Message];
-	/** Emitted when a message is deleted. */
+	/**
+	 * Emitted whenever a message is deleted
+	 */
 	messageDelete: [message: Message | APIMessageSummary];
-	/** Emitted when a member joins a server. */
+	/**
+	 * Emitted whenever a user joins a server
+	 */
 	serverMemberAdd: [serverMember: ServerMember];
-	/** Emitted when a member leaves a server. */
+	/**
+	 * Emitted whenever a user leaves a server
+	 */
 	serverMemberRemove: [data: WebSocketServerMemberRemoveEventData, server: Server];
-	/** Emitted when a member is banned from a server. */
+	/**
+	 * Emitted whenever a user is banned from a server
+	 */
 	serverMemberBan: [serverBan: ServerBan];
-	/** Emitted when a member is unbanned from a server. */
+	/**
+	 * Emitted whenever a user is unbanned from a server
+	 */
 	serverMemberUnban: [serverBan: ServerBan];
-	/** Emitted when a server member is edited. */
+	/**
+	 * Emitted whenever a server member is edited
+	 */
 	serverMemberEdit: [newServerMember: ServerMember, oldServerMember?: ServerMember];
-	/** Emitted when server roles are edited. */
+	/**
+	 * Emitted whenever server roles are edited
+	 */
 	serverRolesEdit: [
 		newServerMembers: Collection<string, ServerMember>,
 		oldServerMembers: Collection<string, ServerMember>,
 	];
-	/** Emitted when a channel is created. */
+	/**
+	 * Emitted whenever a channel is created
+	 */
 	channelCreate: [channel: Channel];
-	/** Emitted when a channel is edited. */
+	/**
+	 * Emitted whenever a channel is edited
+	 */
 	channelEdit: [newChannel: Channel, oldChannel?: Channel];
-	/** Emitted when a channel is deleted. */
+	/**
+	 * Emitted whenever a channel is deleted
+	 */
 	channelDelete: [channel: Channel];
-	/** Emitted when a webhook is created. */
+	/**
+	 * Emitted whenever a webhook is created
+	 */
 	webhookCreate: [webhook: Webhook];
-	/** Emitted when a webhook is edited. */
+	/**
+	 * Emitted when a webhook is edited
+	 */
 	webhookEdit: [newWebhook: Webhook, oldWebhook?: Webhook];
-	/** Emitted when a doc is created. */
+	/**
+	 * Emitted whenever a doc is created
+	 */
 	docCreate: [doc: Doc];
-	/** Emitted when a doc is edited. */
+	/**
+	 * Emitted whenever a doc is edited
+	 */
 	docEdit: [newDoc: Doc, oldDoc?: Doc];
-	/** Emitted when a doc is deleted. */
+	/**
+	 * Emitted whenever a doc is deleted
+	 */
 	docDelete: [doc: Doc];
-	/** Emitted when a calendar event is created. */
+	/**
+	 * Emitted whenever a calendar event is created
+	 */
 	calendarEventCreate: [event: CalendarEvent];
-	/** Emitted when a calendar event is edited. */
+	/**
+	 * Emitted whenever a calendar event is edited
+	 */
 	calendarEventEdit: [newCalendarEvent: CalendarEvent, oldCalendarEvent?: CalendarEvent];
-	/** Emitted when a calendar event is deleted. */
+	/**
+	 * Emitted whenever a calendar event is deleted
+	 */
 	calendarEventDelete: [event: CalendarEvent];
-	/** Emitted when a forum topic is created. */
+	/**
+	 * Emitted whenever a forum topic is created
+	 */
 	forumTopicCreate: [forumTopic: ForumTopic];
-	/** Emitted when a forum topic is edited. */
+	/**
+	 * Emitted whenever a forum topic is edited
+	 */
 	forumTopicEdit: [newForumTopic: ForumTopic, oldForumTopic?: ForumTopic];
-	/** Emitted when a forum topic is deleted. */
+	/**
+	 * Emitted whenever a forum topic is deleted
+	 */
 	forumTopicDelete: [forumTopic: ForumTopic];
-	/** Emitted when a forum topic is pinned. */
+	/**
+	 * Emitted whenever a forum topic is pinned
+	 */
 	forumTopicPin: [forumTopic: ForumTopic];
-	/** Emitted when a forum topic is unpinned. */
+	/**
+	 * Emitted whenever a forum topic is unpinned
+	 */
 	forumTopicUnpin: [forumTopic: ForumTopic];
-	/** Emitted when a forum topic is locked. */
+	/**
+	 * Emitted whenever a forum topic is locked
+	 */
 	forumTopicLock: [forumTopic: ForumTopic];
-	/** Emitted when a forum topic is unlocked. */
+	/**
+	 * Emitted whenever a forum topic is unlocked
+	 */
 	forumTopicUnlock: [forumTopic: ForumTopic];
-	/** Emitted when a calendar event RSVP is edited. */
+	/**
+	 * Emitted whenever a calendar event RSVP is edited
+	 */
 	calendarEventRsvpEdit: [
 		newCalendarEventRsvp: CalendarEventRsvp,
 		oldCalendarEventRsvp?: CalendarEventRsvp,
 	];
-	/** Emitted when calendar event RSVPs are edited. */
+	/**
+	 * Emitted whenever calendar event RSVPs are edited
+	 */
 	calendarEventRsvpsEdit: [
 		newCalendarEventRsvps: Collection<string, CalendarEventRsvp>,
 		oldCalendarEventRsvps: Collection<string, CalendarEventRsvp>,
 	];
-	/** Emitted when a calendar event RSVP is deleted. */
+	/**
+	 * Emitted whenever a calendar event RSVP is deleted
+	 */
 	calendarEventRsvpDelete: [calendarEventRsvp: CalendarEventRsvp];
-	/** Emitted when a list item is created. */
+	/**
+	 * Emitted whenever a list item is created
+	 */
 	listItemCreate: [listItem: ListItem];
-	/** Emitted when a list item is edited. */
+	/**
+	 * Emitted whenever a list item is edited
+	 */
 	listItemEdit: [newListItem: ListItem, oldListItem?: ListItem];
-	/** Emitted when a list item is deleted. */
+	/**
+	 * Emitted whenever a list item is deleted
+	 */
 	listItemDelete: [listItem: ListItem];
-	/** Emitted when a list item is completed. */
+	/**
+	 * Emitted whenever a list item is completed
+	 */
 	listItemComplete: [listItem: ListItem];
-	/** Emitted when a list item is uncompleted. */
+	/**
+	 * Emitted whenever a list item is uncompleted
+	 */
 	listItemUncomplete: [listItem: ListItem];
-	/** Emitted when a message reaction is added. */
+	/**
+	 * Emitted whenever a message reaction is added
+	 */
 	messageReactionAdd: [reaction: MessageReaction];
-	/** Emitted when a message reaction is removed. */
+	/**
+	 * Emitted whenever a message reaction is removed
+	 */
 	messageReactionRemove: [reaction: MessageReaction];
 }
 
-/** The options for the client. */
+/**
+ * The options for the client
+ */
 export interface ClientOptions {
-	/** The auth token for the Guilded API. */
+	/**
+	 * The authorization token to use
+	 */
 	token?: string;
-	/** The max retries for REST API requests. */
+	/**
+	 * The maximum amount of REST API retry attempts
+	 *
+	 * @default 3
+	 */
 	maxRestAPIRetries?: number;
-	/** The retry interval for REST API requests. */
+	/**
+	 * The interval to wait between REST API request retries
+	 *
+	 * @default 30_000
+	 */
 	restAPIRetryInterval?: number;
-	/** Whether to allow Websocket reconnects. */
+	/**
+	 * Whether to allow WebSocket reconnects
+	 *
+	 * @default true
+	 */
 	reconnect?: boolean;
-	/** The maximum number of Websocket reconnect attempts. */
+	/**
+	 * The maximum number of WebSocket reconnect attempts
+	 *
+	 * @default 5
+	 */
 	maxReconnects?: number;
-	/** Whether to cache messages. */
+	/**
+	 * Whether to cache messages
+	 */
 	cacheMessages?: boolean;
-	/** The max cache size for messages. */
+	/**
+	 * The max cache size for messages
+	 */
 	maxMessageCache?: number;
-	/** Whether to dispose cached messages. */
+	/**
+	 * Whether to dispose cached messages
+	 */
 	disposeCachedMessages?: boolean;
-	/** Whether to dispose collected messages. */
+	/**
+	 * Whether to dispose collected messages
+	 */
 	disposeCollectedMessages?: boolean;
-	/** Whether to cache server members. */
+	/**
+	 * Whether to cache server members
+	 */
 	cacheServerMembers?: boolean;
-	/** The max cache size for server members. */
+	/**
+	 * The max cache size for server members
+	 */
 	maxServerMemberCache?: number;
-	/** Whether to dispose cached server members. */
+	/**
+	 * Whether to dispose cached server members
+	 */
 	disposeCachedServerMembers?: boolean;
-	/** Whether to cache server bans. */
+	/**
+	 * Whether to cache server bans
+	 */
 	cacheServerBans?: boolean;
-	/** The max cache size for server bans. */
+	/**
+	 * The max cache size for server bans
+	 */
 	maxServerBanCache?: number;
-	/** Whether to dispose cached server bans. */
+	/**
+	 * Whether to dispose cached server bans
+	 */
 	disposeCachedServerBans?: boolean;
-	/** Whether to cache server roles. */
+	/**
+	 * Whether to cache server roles
+	 */
 	cacheServerRoles?: boolean;
-	/** The max cache size for server roles. */
+	/**
+	 * The max cache size for server roles
+	 */
 	maxServerRoleCache?: number;
-	/** Whether to cache server member roles. */
+	/**
+	 * Whether to cache server member roles
+	 */
 	cacheServerMemberRoles?: boolean;
-	/** The max cache size for server member roles. */
+	/**
+	 * The max cache size for server member roles
+	 */
 	maxServerMemberRoleCache?: number;
-	/** Whether to cache channels. */
+	/**
+	 * Whether to cache channels
+	 */
 	cacheChannels?: boolean;
-	/** The max cache size for channels. */
+	/**
+	 * The max cache size for channels
+	 */
 	maxChannelCache?: number;
-	/** Whether to dispose cached channels. */
+	/**
+	 * Whether to dispose cached channels
+	 */
 	disposeCachedChannels?: boolean;
-	/** Whether to cache servers. */
+	/**
+	 * Whether to cache servers
+	 */
 	cacheServers?: boolean;
-	/** The max cache size for servers. */
+	/**
+	 * The max cache size for servers
+	 */
 	maxServerCache?: number;
-	/** Whether to cache users. */
+	/**
+	 * Whether to cache users
+	 */
 	cacheUsers?: boolean;
-	/** The max cache size for users. */
+	/**
+	 * The max cache size for users
+	 */
 	maxUserCache?: number;
-	/** Whether to cache forum topics. */
+	/**
+	 * Whether to cache forum topics
+	 */
 	cacheForumTopics?: boolean;
-	/** The max cache size for forum topics. */
+	/**
+	 * The max cache size for forum topics
+	 */
 	maxForumTopicCache?: number;
-	/** Whether to dispose cached forum topics. */
+	/**
+	 * Whether to dispose cached forum topics
+	 */
 	disposeCachedForumTopics?: boolean;
-	/** Whether to cache list items. */
+	/**
+	 * Whether to cache list items
+	 */
 	cacheListItems?: boolean;
-	/** The max cache size for list items. */
+	/**
+	 * The max cache size for list items
+	 */
 	maxListItemCache?: number;
-	/** Whether to dispose cached list items. */
+	/**
+	 * Whether to dispose cached list items
+	 */
 	disposeCachedListItems?: boolean;
-	/** Whether to cache docs. */
+	/**
+	 * Whether to cache docs
+	 */
 	cacheDocs?: boolean;
-	/** The max cache size for docs. */
+	/**
+	 * The max cache size for docs
+	 */
 	maxDocCache?: number;
-	/** Whether to dispose cached docs. */
+	/**
+	 * Whether to dispose cached docs
+	 */
 	disposeCachedDocs?: boolean;
-	/** Whether to cache groups. */
+	/**
+	 * Whether to cache groups
+	 */
 	cacheGroups?: boolean;
-	/** The max cache size for groups. */
+	/**
+	 * The max cache size for groups
+	 */
 	maxGroupCache?: number;
-	/** Whether to cache webhooks. */
+	/**
+	 * Whether to cache webhooks
+	 */
 	cacheWebhooks?: boolean;
-	/** The max cache size for webhooks. */
+	/**
+	 * The max cache size for webhooks
+	 */
 	maxWebhookCache?: number;
-	/** Whether to cache calendar events. */
+	/**
+	 * Whether to cache calendar events
+	 */
 	cacheCalendarEvents?: boolean;
-	/** The max cache size for calendar events. */
+	/**
+	 * The max cache size for calendar events
+	 */
 	maxCalendarEventCache?: number;
-	/** Whether to dispose cached calendar events. */
+	/**
+	 * Whether to dispose cached calendar events
+	 */
 	disposeCachedCalendarEvents?: boolean;
-	/** Whether to cache calendar event RSVPs. */
+	/**
+	 * Whether to cache calendar event RSVPs
+	 */
 	cacheCalendarEventRsvps?: boolean;
-	/** The max cache size for calendar event RSVPs. */
+	/**
+	 * The max cache size for calendar event RSVPs
+	 */
 	maxCalendarEventRsvpCache?: number;
-	/** Whether to dispose cached calendar event RSVPs. */
+	/**
+	 * Whether to dispose cached calendar event RSVPs
+	 */
 	disposeCachedCalendarEventRsvps?: boolean;
-	/** Whether to cache message reactions. */
+	/**
+	 * Whether to cache message reactions
+	 */
 	cacheMessageReactions?: boolean;
-	/** The max cache size for message reactions. */
+	/**
+	 * The max cache size for message reactions
+	 */
 	maxMessageReactionCache?: number;
-	/** Whether to dispose cached message reactions. */
+	/**
+	 * Whether to dispose cached message reactions
+	 */
 	disposeCachedMessageReactions?: boolean;
-	/** Whether to dispose collected message reactions. */
+	/**
+	 * Whether to dispose collected message reactions
+	 */
 	disposeCollectedMessageReactions?: boolean;
 }

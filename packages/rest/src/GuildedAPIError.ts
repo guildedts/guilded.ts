@@ -1,16 +1,15 @@
 /**
- * Represents an error that occurred while interacting with the Guilded API.
- * @example new GuildedAPIError('ErrorCode', 'Message', 404, 'GET', '/channels/abc);
+ * Represents an error that occurred while interacting with the Guilded API
  */
 export class GuildedAPIError extends Error {
 	/**
-	 * @param code The code of the error.
-	 * @param message The message of the error.
-	 * @param status The status code of the error.
-	 * @param method The method used to make the request.
-	 * @param path The path used to make the request.
-	 * @param body The body used to make the request.
-	 * @param meta The meta data of the error.
+	 * @param code The code of the error
+	 * @param message The message of the error
+	 * @param status The status code of the error
+	 * @param method The method used to make the request
+	 * @param path The path used to make the request
+	 * @param body The body used to make the request
+	 * @param meta The meta data of the error
 	 */
 	constructor(
 		public readonly code: string,

@@ -5,28 +5,27 @@ import { Collection } from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**
- * The manager of bans that belong to a server.
- * @example new ServerBanManager(server);
+ * The manager for server bans
  */
 export class ServerBanManager extends BaseManager<string, ServerBan> {
-	/** @param server The server the bans belongs to. */
+	/**
+	 * @param server The server
+	 */
 	constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerBanCache);
 	}
 
 	/**
-	 * Fetch a ban from the server, or cache.
-	 * @param ban The ban to fetch.
-	 * @param options The options to fetch the ban with.
-	 * @returns The fetched ban.
-	 * @example bans.fetch(ban);
+	 * Fetch a ban from the server
+	 * @param serverBan The server ban
+	 * @param options The options to fetch the server ban
+	 * @returns The fetched server ban
 	 */
-	fetch(ban: string | ServerBan, options?: FetchOptions): Promise<ServerBan>;
+	fetch(serverBan: string | ServerBan, options?: FetchOptions): Promise<ServerBan>;
 	/**
-	 * Fetch bans from thw server.
-	 * @param options The options to fetch bans with.
-	 * @returns The fetched bans.
-	 * @example bans.fetch();
+	 * Fetch bans from thw server
+	 * @param options The options to fetch server bans
+	 * @returns The fetched server bans
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, ServerBan>>;
 	fetch(arg1?: string | ServerBan | FetchManyOptions, arg2?: FetchOptions) {
@@ -35,16 +34,14 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
-	private async fetchSingle(ban: string | ServerBan, options?: FetchOptions) {
-		ban = ban instanceof ServerBan ? ban.id : ban;
-		const cached = this.cache.get(ban);
+	private async fetchSingle(serverBan: string | ServerBan, options?: FetchOptions) {
+		serverBan = serverBan instanceof ServerBan ? serverBan.id : serverBan;
+		const cached = this.cache.get(serverBan);
 		if (cached && !options?.force) return cached;
-		const raw = await this.client.api.serverBans.fetch(this.server.id, ban);
+		const raw = await this.client.api.serverBans.fetch(this.server.id, serverBan);
 		return new ServerBan(this.server, raw, options?.cache);
 	}
 
-	/** @ignore */
 	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.serverBans.fetch(this.server.id);
 		const bans = new Collection<string, ServerBan>();
@@ -56,25 +53,23 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	}
 
 	/**
-	 * Create a ban in the server.
-	 * @param member The member the ban belongs to.
-	 * @param reason The reason of the ban.
-	 * @returns The created ban.
-	 * @example bans.create(member);
+	 * Create a ban in the server
+	 * @param serverMember The server member
+	 * @param reason The reason for the ban
+	 * @returns The created server ban
 	 */
-	async create(member: string | ServerMember, reason?: string) {
-		member = member instanceof ServerMember ? member.id : member;
-		const raw = await this.client.api.serverBans.create(this.server.id, member, reason);
+	async create(serverMember: string | ServerMember, reason?: string) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		const raw = await this.client.api.serverBans.create(this.server.id, serverMember, reason);
 		return new ServerBan(this.server, raw);
 	}
 
 	/**
-	 * Remove a ban in the server.
-	 * @param ban The ban to remove.
-	 * @example bans.remove(ban);
+	 * Remove a ban from the server
+	 * @param serverBan The server ban
 	 */
-	remove(ban: string | ServerBan) {
-		ban = ban instanceof ServerBan ? ban.id : ban;
-		return this.client.api.serverBans.delete(this.server.id, ban);
+	remove(serverBan: string | ServerBan) {
+		serverBan = serverBan instanceof ServerBan ? serverBan.id : serverBan;
+		return this.client.api.serverBans.delete(this.server.id, serverBan);
 	}
 }

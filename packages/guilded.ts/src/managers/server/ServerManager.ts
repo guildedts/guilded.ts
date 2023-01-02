@@ -3,21 +3,21 @@ import { Client } from '../../structures/Client';
 import { Server } from '../../structures/server/Server';
 
 /**
- * The manager of servers that belong to the client.
- * @example new ServerManager(client);
+ * The manager for servers
  */
 export class ServerManager extends BaseManager<string, Server> {
-	/** @param client The client the servers belong to. */
+	/**
+	 * @param client The client
+	 */
 	constructor(client: Client) {
 		super(client, client.options.maxServerCache);
 	}
 
 	/**
-	 * Fetch a server from Guilded, or cache.
-	 * @param server The server to fetch.
-	 * @param options The options to fetch the server with.
-	 * @returns The fetched server.
-	 * @example servers.fetch(server);
+	 * Fetch a server
+	 * @param server The server
+	 * @param options The options to fetch the server with
+	 * @returns The fetched server
 	 */
 	async fetch(server: string | Server, options?: FetchOptions) {
 		server = server instanceof Server ? server.id : server;

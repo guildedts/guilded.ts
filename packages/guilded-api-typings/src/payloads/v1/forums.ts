@@ -41,7 +41,7 @@ export interface APIForumTopicSummary {
 	/**
 	 * The ID of the user who created the forum topic
 	 *
-	 * Note: If this forum topic has {@link APIForumTopic.createdByWebhookId createdByWebhookId}, this field will still be populated, but can be ignored
+	 * Note: If this forum topic has {@link createdByWebhookId}, this field will still be populated, but can be ignored
 	 */
 	createdBy: string;
 	/**

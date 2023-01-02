@@ -2,33 +2,42 @@ import { inlineCode } from 'guilded.ts';
 import { Command } from '../Command';
 
 /**
- * Represents a command argument.
+ * Represents a command argument
  * @example
  * class MyArgument extends Argument {
- *     name = 'my-argument';
+ *     name = 'content';
  * }
  */
 export abstract class Argument {
-	/** The name of the argument. */
+	/**
+	 * The name of the argument
+	 */
 	abstract name: string;
-	/** The description of the argument. */
+	/**
+	 * The description of the argument
+	 */
 	description?: string;
-	/** Whether the argument is required. */
+	/**
+	 * Whether the argument is required
+	 */
 	required = true;
 
-	/** @param command The command the argument belongs to. */
+	/**
+	 * @param command The command
+	 */
 	constructor(public readonly command: Command) {}
 
-	/** The usage of the argument. */
+	/**
+	 * The usage of the argument
+	 */
 	get usage() {
 		return this.required ? `<${this.name}>` : `[${this.name}]`;
 	}
 
 	/**
-	 * Validates the argument.
-	 * @param value The value of the argument.
-	 * @returns The validated value, or error.
-	 * @example argument.validate('hello'); // 'hello'
+	 * Validates the argument
+	 * @param value The value of the argument
+	 * @returns The validated value
 	 */
 	async validate(value: string): Promise<unknown> {
 		if (!value && this.required)

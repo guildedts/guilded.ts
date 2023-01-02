@@ -6,28 +6,27 @@ import { APIEmbed, RESTPostWebhookMessageJSONBody } from 'guilded-api-typings';
 import { Embed } from '@guildedts/builders';
 
 /**
- * The manager of webhooks that belong to a channel.
- * @example new ChannelWebhookManager(channel);
+ * The manager for webhooks
  */
 export class ChannelWebhookManager extends BaseManager<string, Webhook> {
-	/** @param channel The channel the webhooks belong to. */
+	/**
+	 * @param channel The channel
+	 */
 	constructor(public readonly channel: Channel) {
 		super(channel.client, channel.client.options.maxWebhookCache);
 	}
 
 	/**
-	 * Fetch a webhook from the channel, or cache.
-	 * @param webhook The webhoook to fetch.
-	 * @param options The options to fetch the webhook with.
-	 * @returns The fetched webhook.
-	 * @example webhooks.fetch(webhook);
+	 * Fetch a webhook from the channel
+	 * @param webhook The webhoook
+	 * @param options The options to fetch the webhook with
+	 * @returns The fetched webhook
 	 */
 	fetch(webhook: string | Webhook, options?: FetchOptions): Promise<Webhook>;
 	/**
-	 * Fetch multiple webhooks from the channel.
-	 * @param options The options to fetch webhooks with.
-	 * @returns The fetched webhooks.
-	 * @example webhooks.fetch();
+	 * Fetch webhooks from the channel
+	 * @param options The options to fetch webhooks with
+	 * @returns The fetched webhooks
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, Webhook>>;
 	fetch(arg1?: string | Webhook | FetchManyOptions, arg2?: FetchOptions) {
@@ -36,7 +35,6 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
 	private async fetchSingle(webhook: string | Webhook, options?: FetchOptions) {
 		webhook = webhook instanceof Webhook ? webhook.id : webhook;
 		const cached = this.cache.get(webhook);
@@ -45,7 +43,6 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 		return new Webhook(this.channel, raw, options?.cache);
 	}
 
-	/** @ignore */
 	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.webhooks.fetchMany(
 			this.channel.serverId,
@@ -60,10 +57,9 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	}
 
 	/**
-	 * Create a webhook in the channel.
-	 * @param name The name of the webhook.
-	 * @returns The created webhook.
-	 * @example webhooks.create('My Webhook');
+	 * Create a webhook in the channel
+	 * @param name The name of the webhook
+	 * @returns The created webhook
 	 */
 	async create(name: string) {
 		const raw = await this.client.api.webhooks.create(
@@ -75,12 +71,11 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	}
 
 	/**
-	 * Edit a webhook in the channel.
-	 * @param webhook The webhook to edit.
-	 * @param name The name of the webhook.
-	 * @param channelId The ID of the channel to move the webhook to.
-	 * @returns The edited webhook.
-	 * @example webhooks.edit(webhook, 'My Webhook');
+	 * Edit a webhook in the channel
+	 * @param webhook The webhook
+	 * @param name The name of the webhook
+	 * @param channelId The ID of the channel
+	 * @returns The edited webhook
 	 */
 	async edit(webhook: string | Webhook, name: string, channelId?: string) {
 		webhook = webhook instanceof Webhook ? webhook.id : webhook;
@@ -94,9 +89,8 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	}
 
 	/**
-	 * Delete a webhook in the channel.
-	 * @param webhook The webhook to delete.
-	 * @example webhooks.delete(webhook);
+	 * Delete a webhook from the channel
+	 * @param webhook The webhook
 	 */
 	delete(webhook: string | Webhook) {
 		webhook = webhook instanceof Webhook ? webhook.id : webhook;
@@ -104,11 +98,17 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	}
 }
 
-/** The payload for creating a webhook message. */
+/**
+ * The payload for creating a webhook message
+ */
 export interface WebhookMessagePayload extends Omit<RESTPostWebhookMessageJSONBody, 'embeds'> {
-	/** The embeds of the message. */
+	/**
+	 * The embeds of the message
+	 */
 	embeds?: (Embed | APIEmbed)[];
 }
 
-/** The resolvable payload for creating a webhook message. */
+/**
+ * The resolvable payload for creating a webhook message
+ */
 export type WebhookMessagePayloadResolvable = string | (Embed | APIEmbed)[] | WebhookMessagePayload;

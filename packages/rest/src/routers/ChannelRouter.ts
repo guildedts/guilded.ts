@@ -7,15 +7,13 @@ import {
 import { BaseRouter } from './BaseRouter';
 
 /**
- * The channel router for the Guilded REST API.
- * @example new ChannelRouter(rest);
+ * The channel router for the Guilded REST API
  */
 export class ChannelRouter extends BaseRouter {
 	/**
-	 * Fetch a channel from Guilded.
-	 * @param channelId The ID of the channel to fetch.
-	 * @returns The fetched channel.
-	 * @example channels.fetch('abc');
+	 * Fetch a channel from Guilded
+	 * @param channelId The ID of the channel
+	 * @returns The fetched channel
 	 */
 	async fetch(channelId: string) {
 		const { channel } = await this.rest.get<{ channel: APIChannel }>(Routes.channel(channelId));
@@ -23,10 +21,9 @@ export class ChannelRouter extends BaseRouter {
 	}
 
 	/**
-	 * Create a channel on Guilded.
-	 * @param payload The payload of the channel.
-	 * @returns The created channel.
-	 * @example channels.create({ name: 'Chat', type: 'chat' });
+	 * Create a channel on Guilded
+	 * @param payload The payload of the channel
+	 * @returns The created channel
 	 */
 	async create(payload: RESTPostChannelJSONBody) {
 		const { channel } = await this.rest.post<{ channel: APIChannel }, RESTPostChannelJSONBody>(
@@ -37,11 +34,10 @@ export class ChannelRouter extends BaseRouter {
 	}
 
 	/**
-	 * Edit a channel on Guilded.
-	 * @param channelId The ID of the channel to edit.
-	 * @param payload The payload of the channel.
-	 * @returns The edited channel.
-	 * @example channels.edit('abc', { name: 'Chat' });
+	 * Edit a channel on Guilded
+	 * @param channelId The ID of the channel
+	 * @param payload The payload of the channel
+	 * @returns The edited channel
 	 */
 	async edit(channelId: string, payload: RESTPatchChannelJSONBody) {
 		const { channel } = await this.rest.patch<
@@ -52,9 +48,8 @@ export class ChannelRouter extends BaseRouter {
 	}
 
 	/**
-	 * Delete a channel from Guilded.
-	 * @param channelId The ID of the channel to delete.
-	 * @example channels.delete('abc');
+	 * Delete a channel from Guilded
+	 * @param channelId The ID of the channel
 	 */
 	delete(channelId: string) {
 		return this.rest.delete<void>(Routes.channel(channelId));

@@ -10,9 +10,9 @@ import { ServerBan } from '../../structures/server/ServerBan';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**
- * Handle the ServerMemberJoined event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerMemberJoined` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function joined(client: Client, data: WebSocketServerMemberAddEventData) {
 	const server = await client.servers.fetch(data.serverId);
@@ -21,9 +21,9 @@ export async function joined(client: Client, data: WebSocketServerMemberAddEvent
 }
 
 /**
- * Handle the ServerMemberRemoved event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerMemberRemoved` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function removed(client: Client, data: WebSocketServerMemberRemoveEventData) {
 	const server = await client.servers.fetch(data.serverId);
@@ -32,9 +32,9 @@ export async function removed(client: Client, data: WebSocketServerMemberRemoveE
 }
 
 /**
- * Handle the ServerMemberBanned event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerMemberBanned` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function banned(client: Client, data: WebSocketServerBanAddEventData) {
 	const server = await client.servers.fetch(data.serverId);
@@ -43,9 +43,9 @@ export async function banned(client: Client, data: WebSocketServerBanAddEventDat
 }
 
 /**
- * Handle the ServerMemberUnbanned event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerMemberUnbanned` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function unbanned(client: Client, data: WebSocketServerBanRemoveEventData) {
 	const server = await client.servers.fetch(data.serverId);
@@ -55,9 +55,9 @@ export async function unbanned(client: Client, data: WebSocketServerBanRemoveEve
 }
 
 /**
- * Handle the ServerMemberUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerMemberUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function updated(client: Client, data: WebSocketServerMemberUpdateEventData) {
 	const server = await client.servers.fetch(data.serverId);

@@ -3,28 +3,27 @@ import { MessageReaction } from '../../structures/message/MessageReaction';
 import { BaseManager } from '../BaseManager';
 
 /**
- * The manager of reactions that belong to a message.
- * @example new MessageReactionManager(message);
+ * The manager for message reactions
  */
 export class MessageReactionManager extends BaseManager<number, MessageReaction> {
-	/** @param message The message the reactions belong to. */
+	/**
+	 * @param message The message
+	 */
 	constructor(public readonly message: Message) {
 		super(message.client, message.client.options.maxMessageReactionCache);
 	}
 
 	/**
-	 * Add a reaction to the message.
-	 * @param emojiId The ID of the emoji to react with.
-	 * @example reactions.add(123);
+	 * Add a reaction to the message
+	 * @param emojiId The ID of the emoji
 	 */
 	add(emojiId: number) {
 		return this.client.api.reactions.create(this.message.channel.id, this.message.id, emojiId);
 	}
 
 	/**
-	 * Remove a reaction from message.
-	 * @param emojiId The ID of the emoji to remove.
-	 * @example reactions.remove(123);
+	 * Remove a reaction from message
+	 * @param emojiId The ID of the emoji
 	 */
 	remove(emojiId: number) {
 		return this.client.api.reactions.delete(this.message.channel.id, this.message.id, emojiId);

@@ -4,23 +4,30 @@ import { Base } from '../Base';
 import { Message } from './Message';
 
 /**
- * Represents a message reaction on Guilded.
- * @example new MessageReaction(message, rawReaction);
+ * Represents a message reaction on Guilded
  */
 export class MessageReaction extends Base<number> {
-	/** The ID of the channel the message belongs to. */
+	/**
+	 * The ID of the channel
+	 */
 	readonly channelId: string;
-	/** The ID of the message. */
+	/**
+	 * The ID of the message
+	 */
 	readonly messageId: string;
-	/** The ID of the user that created the reaction. */
+	/**
+	 * The ID of the user that created the reaction
+	 */
 	readonly createdBy: string;
-	/** The emote of the reaction. */
+	/**
+	 * The emote
+	 */
 	readonly emote: APIEmote;
 
 	/**
-	 * @param message The message the reaction belongs to.
-	 * @param raw The raw data of the reaction.
-	 * @param cache Whether to cache the reaction.
+	 * @param message The message
+	 * @param raw The data of the message reaction
+	 * @param cache Whether to cache the message reaction
 	 */
 	constructor(
 		public readonly message: Message,
@@ -35,46 +42,54 @@ export class MessageReaction extends Base<number> {
 		if (cache) message.reactions.cache.set(this.id, this);
 	}
 
-	/** Whether the reaction is cached. */
+	/**
+	 * Whether the message reaction is cached
+	 */
 	get isCached() {
 		return this.message.reactions.cache.has(this.id);
 	}
 
-	/** The channel the message belongs to. */
+	/**
+	 * The channel
+	 */
 	get channel() {
 		return this.message.channel;
 	}
 
-	/** The ID of the server the message belongs to. */
+	/**
+	 * The ID of the server
+	 */
 	get serverId() {
 		return this.message.serverId;
 	}
 
-	/** The server the message belongs to. */
+	/**
+	 * The server
+	 */
 	get server() {
 		return this.message.server;
 	}
 
-	/** The server member that created the reaction. */
+	/**
+	 * The server member that created the reaction
+	 */
 	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
 	/**
-	 * Fetch the server the message belongs to.
-	 * @param options The options to fetch the server with.
-	 * @returns The fetched server.
-	 * @example reaction.fetchServer();
+	 * Fetch the server
+	 * @param options The options to fetch the server with
+	 * @returns The fetched server
 	 */
 	fetchServer(options?: FetchOptions) {
 		return this.message.fetchServer(options);
 	}
 
 	/**
-	 * Fetch the server member that created the reaction.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example reaction.fetchAuthor();
+	 * Fetch the server member that created the reaction
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
@@ -82,8 +97,7 @@ export class MessageReaction extends Base<number> {
 	}
 
 	/**
-	 * Remove the reaction from the message.
-	 * @example reaction.remove();
+	 * Remove the reaction from the message
 	 */
 	remove() {
 		return this.message.reactions.remove(this.id);

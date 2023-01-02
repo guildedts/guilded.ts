@@ -4,28 +4,27 @@ import { ServerMember } from '../../structures/server/ServerMember';
 import { Collection } from '@discordjs/collection';
 
 /**
- * The manager of members that belong to a server.
- * @example new ServerMemberManager(server);
+ * The manager for server members
  */
 export class ServerMemberManager extends BaseManager<string, ServerMember> {
-	/** @param server The server the members belongs to. */
+	/**
+	 * @param server The server
+	 */
 	constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerMemberCache);
 	}
 
 	/**
-	 * Fetch a member from the server, or cache.
-	 * @param member The member to fetch.
-	 * @param options The options to fetch the member with.
-	 * @returns The fetched member.
-	 * @example members.fetch(member);
+	 * Fetch a member from the server
+	 * @param serverMember The server member
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
-	fetch(member: string | ServerMember, options?: FetchOptions): Promise<ServerMember>;
+	fetch(serverMember: string | ServerMember, options?: FetchOptions): Promise<ServerMember>;
 	/**
-	 * Fetch members from the server.
-	 * @param options The options to fetch members with.
-	 * @returns The fetched members.
-	 * @example members.fetch();
+	 * Fetch members from the server
+	 * @param options The options to fetch server members with
+	 * @returns The fetched server members
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, ServerMember>>;
 	fetch(arg1?: string | ServerMember | FetchManyOptions, arg2?: FetchOptions) {
@@ -34,7 +33,6 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
 	private async fetchSingle(member: string | ServerMember, options?: FetchOptions) {
 		member = member instanceof ServerMember ? member.id : member;
 		const cached = this.cache.get(member);
@@ -43,7 +41,6 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 		return new ServerMember(this.server, raw, options?.cache);
 	}
 
-	/** @ignore */
 	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.serverMembers.fetch(this.server.id);
 		const members = new Collection<string, ServerMember>();
@@ -55,91 +52,83 @@ export class ServerMemberManager extends BaseManager<string, ServerMember> {
 	}
 
 	/**
-	 * Fetch a social link from a member in the server.
-	 * @param member The member to fetch the social link from.
-	 * @param type The type of social link to fetch.
-	 * @returns The fetched social link.
-	 * @example members.fetchSocialLink(member, 'youtube');
+	 * Fetch a server member social link in the server
+	 * @param serverMember The server member
+	 * @param type The type of social link
+	 * @returns The fetched server member social link
 	 */
-	fetchSocialLink(member: string | ServerMember, type: string) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.serverMembers.fetchSocialLink(this.server.id, member, type);
+	fetchSocialLink(serverMember: string | ServerMember, type: string) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.serverMembers.fetchSocialLink(this.server.id, serverMember, type);
 	}
 
 	/**
-	 * Set the nickname of a member in the server.
-	 * @param member The member to edit.
-	 * @param nickname The nickname of the member.
-	 * @returns The nickname of the member.
-	 * @example members.setNickname(member, 'new nickname');
+	 * Set the nickname of a member in the server
+	 * @param serverMember The server member
+	 * @param nickname The nickname of the server member
+	 * @returns The nickname of the server member
 	 */
-	setNickname(member: string | ServerMember, nickname: string) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.serverMembers.setNickname(this.server.id, member, nickname);
+	setNickname(serverMember: string | ServerMember, nickname: string) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.serverMembers.setNickname(this.server.id, serverMember, nickname);
 	}
 
 	/**
-	 * Remove the nickname of a member in the server.
-	 * @param member The member to edit.
-	 * @example members.removeNickname(member);
+	 * Remove the nickname of a member in the server
+	 * @param serverMember The server member
 	 */
-	removeNickname(member: string | ServerMember) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.serverMembers.removeNickname(this.server.id, member);
+	removeNickname(serverMember: string | ServerMember) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.serverMembers.removeNickname(this.server.id, serverMember);
 	}
 
 	/**
-	 * Kick a member from the server.
-	 * @param member The member to kick.
-	 * @example members.kick(member);
+	 * Kick a member from the server
+	 * @param serverMember The server member
 	 */
-	kick(member: string | ServerMember) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.serverMembers.kick(this.server.id, member);
+	kick(serverMember: string | ServerMember) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.serverMembers.kick(this.server.id, serverMember);
 	}
 
 	/**
-	 * Ban a member from the server.
-	 * @param member The member to ban.
-	 * @param reason The reason of the ban.
-	 * @returns The created ban.
-	 * @example members.ban(member);
+	 * Ban a member from the server
+	 * @param serverMember The server member
+	 * @param reason The reason for the server ban
+	 * @returns The created server ban
 	 */
-	ban(member: string | ServerMember, reason?: string) {
-		return this.server.bans.create(member, reason);
+	ban(serverMember: string | ServerMember, reason?: string) {
+		return this.server.bans.create(serverMember, reason);
 	}
 
 	/**
-	 * Unban a member from the server.
-	 * @param member The member to unban.
-	 * @example members.unban(member);
+	 * Unban a member from the server
+	 * @param serverMember The server member
 	 */
-	unban(member: string | ServerMember) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.server.bans.remove(member);
+	unban(serverMember: string | ServerMember) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.server.bans.remove(serverMember);
 	}
 
 	/**
-	 * Award XP to a member in the server.
-	 * @param member The member to award XP to.
-	 * @param amount The amount of XP to award to the member.
-	 * @returns The total amount of XP the server member has.
-	 * @example members.awardXp(member, 100);
+	 * Award XP to a member in the server
+	 * @param serverMember The server member
+	 * @param amount The amount of XP to award to the server member
+	 * @returns The total amount of XP the server member has
 	 */
-	awardXp(member: string | ServerMember, amount: number) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.serverMembers.awardXp(this.server.id, member, amount);
+	awardXp(serverMember: string | ServerMember, amount: number) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.serverMembers.awardXp(this.server.id, serverMember, amount);
 	}
 
 	/**
-	 * Set XP of a member in the server.
-	 * @param member The member to set XP for.
-	 * @param amount The total XP of the server member.
-	 * @returns The total amount of XP the server member has.
-	 * @example members.setXp(member, 100);
+	 * Set XP of a member in the server
+	 * @param serverMember The server member
+	 * @param amount The total XP of the server member
+	 * @returns The total amount of XP the server member has
 	 */
-	setXp(member: string | ServerMember, amount: number) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.serverMembers.setXp(this.server.id, member, amount);
+	setXp(serverMember: string | ServerMember, amount: number) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.serverMembers.setXp(this.server.id, serverMember, amount);
 	}
 }

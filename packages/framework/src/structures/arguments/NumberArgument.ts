@@ -2,26 +2,30 @@ import { inlineCode } from 'guilded.ts';
 import { Argument } from './Argument';
 
 /**
- * Represents a number command argument.
- * @example
- * class MyArgument extends NumberArgument {
- *     name = 'my-argument';
- * }
+ * Represents a number command argument
  */
 export abstract class NumberArgument extends Argument {
-	/** The default value of the argument. */
+	/**
+	 * The default value of the argument
+	 */
 	default?: number;
-	/** The choices of the argument. */
+	/**
+	 * The choices of the argument
+	 */
 	choices: number[] = [];
-	/** The max value of the argument. */
+	/**
+	 * The max value of the argument
+	 */
 	max?: number;
-	/** The min value of the argument. */
+	/**
+	 * The min value of the argument
+	 */
 	min?: number;
 
 	/**
-	 * Validates the number argument.
-	 * @param value The value of the argument.
-	 * @returns The validated value, or error.
+	 * Validates the number argument
+	 * @param value The value of the argument
+	 * @returns The validated value
 	 * @example numberArgument.validate('1'); // 1
 	 */
 	async validate(value: string): Promise<number> {

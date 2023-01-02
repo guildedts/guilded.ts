@@ -3,32 +3,31 @@ import { Group } from '../../structures/Group';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**
- * The manager of members that belong to a group.
- * @example new GroupMemberManager(group);
+ * The manager for group members
  */
 export class GroupMemberManager extends BaseManager {
-	/** @param group The group the members belong to. */
+	/**
+	 * @param group The group
+	 */
 	constructor(public readonly group: Group) {
 		super(group.client);
 	}
 
 	/**
-	 * Add a member to the group.
-	 * @param member The member to add.
-	 * @example members.add(member);
+	 * Add a member to the group
+	 * @param serverMember The server member
 	 */
-	add(member: string | ServerMember) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.groups.addMember(this.group.id, member);
+	add(serverMember: string | ServerMember) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.groups.addMember(this.group.id, serverMember);
 	}
 
 	/**
-	 * Remove a member from the group.
-	 * @param member The member to remove.
-	 * @example members.remove(member);
+	 * Remove a member from the group
+	 * @param serverMember The server member
 	 */
-	remove(member: string | ServerMember) {
-		member = member instanceof ServerMember ? member.id : member;
-		return this.client.api.groups.removeMember(this.group.id, member);
+	remove(serverMember: string | ServerMember) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		return this.client.api.groups.removeMember(this.group.id, serverMember);
 	}
 }

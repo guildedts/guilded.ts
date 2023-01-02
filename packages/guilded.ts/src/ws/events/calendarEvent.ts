@@ -13,9 +13,9 @@ import { CalendarChannel } from '../../structures/channel/CalendarChannel';
 import { Client } from '../../structures/Client';
 
 /**
- * Handle the CalendarEventCreated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `CalendarEventCreated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function created(client: Client, data: WebSocketCalendarEventCreateEventData) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
@@ -24,9 +24,9 @@ export async function created(client: Client, data: WebSocketCalendarEventCreate
 }
 
 /**
- * Handle the CalendarEventUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `CalendarEventUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function updated(client: Client, data: WebSocketCalendarEventUpdateEventData) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
@@ -36,9 +36,9 @@ export async function updated(client: Client, data: WebSocketCalendarEventUpdate
 }
 
 /**
- * Handle the CalendarEventDeleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `CalendarEventDeleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function deleted(client: Client, data: WebSocketCalendarEventDeleteEventData) {
 	const channel = (await client.channels.fetch(data.calendarEvent.channelId)) as CalendarChannel;
@@ -49,9 +49,9 @@ export async function deleted(client: Client, data: WebSocketCalendarEventDelete
 }
 
 /**
- * Handle the CalendarEventRsvpUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `CalendarEventRsvpUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function rsvpUpdated(client: Client, data: WebSocketCalendarEventRsvpUpdateEventData) {
 	const channel = (await client.channels.fetch(
@@ -64,9 +64,9 @@ export async function rsvpUpdated(client: Client, data: WebSocketCalendarEventRs
 }
 
 /**
- * Handle the CalendarEventRsvpManyUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `CalendarEventRsvpManyUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function rsvpsUpdated(
 	client: Client,
@@ -89,9 +89,9 @@ export async function rsvpsUpdated(
 }
 
 /**
- * Handle the CalendarEventRsvpDeleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `CalendarEventRsvpDeleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function rsvpDeleted(client: Client, data: WebSocketCalendarEventRsvpDeleteEventData) {
 	const channel = (await client.channels.fetch(

@@ -8,9 +8,9 @@ import { Doc } from '../../structures/Doc';
 import { DocChannel } from '../../structures/channel/DocChannel';
 
 /**
- * Handle the DocCreated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `DocCreated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function created(client: Client, data: WebSocketDocCreateEventData) {
 	const channel = (await client.channels.fetch(data.doc.channelId)) as DocChannel;
@@ -19,9 +19,9 @@ export async function created(client: Client, data: WebSocketDocCreateEventData)
 }
 
 /**
- * Handle the DocUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `DocUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function updated(client: Client, data: WebSocketDocUpdateEventData) {
 	const channel = (await client.channels.fetch(data.doc.channelId)) as DocChannel;
@@ -31,9 +31,9 @@ export async function updated(client: Client, data: WebSocketDocUpdateEventData)
 }
 
 /**
- * Handle the DocDeleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `DocDeleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function deleted(client: Client, data: WebSocketDocDeleteEventData) {
 	const channel = (await client.channels.fetch(data.doc.channelId)) as DocChannel;

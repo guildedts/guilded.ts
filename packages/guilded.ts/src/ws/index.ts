@@ -10,7 +10,9 @@ import * as server from './events/server';
 import * as serverMember from './events/serverMember';
 import * as webhook from './events/webhook';
 
-/** A map of all WebSocket events with their respective handlers. */
+/**
+ * A map of all WebSocket events with their respective handlers
+ */
 const WSEventHandler: {
 	[event in WebSocketEvent]?: (client: Client, data: any) => void | Promise<void>;
 } = {
@@ -56,10 +58,10 @@ const WSEventHandler: {
 };
 
 /**
- * Handle a Websocket event.
- * @param client The client the Websocket belongs to.
- * @param event The name of the event.
- * @param data The data of the event.
+ * Handle a WebSocket event
+ * @param client The client
+ * @param event The name of the event
+ * @param data The data of the event
  */
 export function handleWSEvent(client: Client, event: WebSocketEvent, data: unknown) {
 	return WSEventHandler[event]?.(client, data as any);

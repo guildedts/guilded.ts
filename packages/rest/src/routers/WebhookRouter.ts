@@ -10,16 +10,14 @@ import { BaseRouter } from './BaseRouter';
 import { RESTManager } from '..';
 
 /**
- * The webhook router for the Guilded REST API.
- * @example new WebhookRouter(rest);
+ * The webhook router for the Guilded REST API
  */
 export class WebhookRouter extends BaseRouter {
 	/**
-	 * Fetch a webhook from Guilded.
-	 * @param serverId The ID of the server the webhook belongs to.
-	 * @param webhookId The ID of the webhook to fetch.
-	 * @returns The fetched webhook.
-	 * @example webhooks.fetchSingle('abc', 'abc');
+	 * Fetch a webhook from Guilded
+	 * @param serverId The ID of the server
+	 * @param webhookId The ID of the webhook
+	 * @returns The fetched webhook
 	 */
 	async fetchSingle(serverId: string, webhookId: string) {
 		const { webhook } = await this.rest.get<{ webhook: APIWebhook }>(
@@ -29,11 +27,10 @@ export class WebhookRouter extends BaseRouter {
 	}
 
 	/**
-	 * Fetch webhooks from Guilded.
-	 * @param serverId The ID of the server the webhooks belong to.
-	 * @param channelId The ID of the channel to fetch webhooks from.
-	 * @returns The fetched webhooks.
-	 * @example webhooks.fetchMany('abc', 'abc');
+	 * Fetch webhooks from Guilded
+	 * @param serverId The ID of the server
+	 * @param channelId The ID of the channel
+	 * @returns The fetched webhooks
 	 */
 	async fetchMany(serverId: string, channelId: string) {
 		const { webhooks } = await this.rest.get<{ webhooks: APIWebhook[] }, RESTGetWebhooksQuery>(
@@ -44,11 +41,10 @@ export class WebhookRouter extends BaseRouter {
 	}
 
 	/**
-	 * Create a webhook message on Guilded.
-	 * @param webhookId The ID of the webhook.
-	 * @param webhookToken The token of the webhook.
-	 * @param payload The payload of the message.
-	 * @example webhooks.send('abc', 'abc', 'Hello world!');
+	 * Create a webhook message on Guilded
+	 * @param webhookId The ID of the webhook
+	 * @param webhookToken The token of the webhook
+	 * @param payload The payload of the message
 	 */
 	async send(webhookId: string, webhookToken: string, payload: RESTPostWebhookMessageJSONBody) {
 		const rest = new RESTManager({ proxyUrl: 'https://media.guilded.gg' });
@@ -56,12 +52,11 @@ export class WebhookRouter extends BaseRouter {
 	}
 
 	/**
-	 * Create a webhook on Guilded.
-	 * @param serverId The ID of the server the webhook belongs to.
-	 * @param channelId The ID of the channel the webhook belongs to.
-	 * @param name The name of the webhook.
-	 * @returns The created webhook.
-	 * @example webhooks.create('abc', 'abc', 'Webhook');
+	 * Create a webhook on Guilded
+	 * @param serverId The ID of the server
+	 * @param channelId The ID of the channel
+	 * @param name The name of the webhook
+	 * @returns The created webhook
 	 */
 	async create(serverId: string, channelId: string, name: string) {
 		const { webhook } = await this.rest.post<{ webhook: APIWebhook }, RESTPostWebhookJSONBody>(
@@ -72,13 +67,12 @@ export class WebhookRouter extends BaseRouter {
 	}
 
 	/**
-	 * Edit a webhook on Guilded.
-	 * @param serverId The ID of the server the webhook belongs to.
-	 * @param webhookId The ID of the webhook to edit.
-	 * @param name The name of the webhook.
-	 * @param channelId The ID of the channel the webhook belongs to.
-	 * @returns The edited webhook.
-	 * @example webhooks.edit('abc', 'abc', 'Webhook');
+	 * Edit a webhook on Guilded
+	 * @param serverId The ID of the server
+	 * @param webhookId The ID of the webhook
+	 * @param name The name of the webhook
+	 * @param channelId The ID of the channel
+	 * @returns The edited webhook
 	 */
 	async edit(serverId: string, webhookId: string, name: string, channelId?: string) {
 		const { webhook } = await this.rest.put<{ webhook: APIWebhook }, RESTPutWebhookJSONBody>(
@@ -89,10 +83,9 @@ export class WebhookRouter extends BaseRouter {
 	}
 
 	/**
-	 * Delete a webhook from Guilded.
-	 * @param serverId The ID of the server the webhook belongs to.
-	 * @param webhookId The ID of the webhook to delete.
-	 * @example webhooks.delete('abc', 'abc');
+	 * Delete a webhook from Guilded
+	 * @param serverId The ID of the server
+	 * @param webhookId The ID of the webhook
 	 */
 	delete(serverId: string, webhookId: string) {
 		return this.rest.delete<void>(Routes.webhook(serverId, webhookId));

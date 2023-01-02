@@ -6,9 +6,9 @@ import { Client } from '../../structures/Client';
 import { Webhook } from '../../structures/Webhook';
 
 /**
- * Handle the ServerWebhookCreated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerWebhookCreated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function created(client: Client, data: WebSocketWebhookCreateEventData) {
 	const channel = await client.channels.fetch(data.webhook.channelId);
@@ -17,9 +17,9 @@ export async function created(client: Client, data: WebSocketWebhookCreateEventD
 }
 
 /**
- * Handle the ServerWebhookUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerWebhookUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function updated(client: Client, data: WebSocketWebhookUpdateEventData) {
 	const channel = await client.channels.fetch(data.webhook.channelId);

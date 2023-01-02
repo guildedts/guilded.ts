@@ -1,36 +1,38 @@
 import chalk from 'chalk';
 
-/** Represents a logger for the client. */
-export class Logger {
+/**
+ * A custom logger
+ */
+export const Logger = {
 	/**
-	 * Log ready message.
-	 * @example Logger.ready('Ready!');
+	 * Log a ready message
+	 * @param message The message
 	 */
-	static ready(text: string) {
-		console.log(`${chalk.green('ready')} - ${text}`);
-	}
+	ready(message: string) {
+		console.log(`${chalk.green('ready')} - ${message}`);
+	},
 
 	/**
-	 * Log wait message.
-	 * @example Logger.wait('Loading...');
+	 * Log a wait message
+	 * @param message The message
 	 */
-	static wait(text: string) {
-		console.log(`${chalk.blue('wait')}  - ${text}`);
-	}
+	wait(message: string) {
+		console.log(`${chalk.blue('wait')}  - ${message}`);
+	},
 
 	/**
-	 * Log event message.
-	 * @example Logger.event('Done!');
+	 * Log an event message
+	 * @param message The message
 	 */
-	static event(text: string) {
-		console.log(`${chalk.yellow('event')} - ${text}`);
-	}
+	event(message: string) {
+		console.log(`${chalk.yellow('event')} - ${message}`);
+	},
 
 	/**
-	 * Log error message.
-	 * @example Logger.error('Error!');
+	 * Log an error message
+	 * @param message The message
 	 */
-	static error(text: string) {
-		console.log(`${chalk.red('error')} - ${text}`);
-	}
-}
+	error(message: string) {
+		console.log(`${chalk.red('error')} - ${message}`);
+	},
+};

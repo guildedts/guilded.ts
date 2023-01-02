@@ -5,23 +5,36 @@ import { Channel } from './channel/Channel';
 import { WebhookMessagePayloadResolvable } from '../managers/channel/ChannelWebhookManager';
 
 /**
- * Represents a webhook on Guilded.
- * @example new Webhook(channel, rawWebhook);
+ * Represents a webhook on Guilded
  */
 export class Webhook extends Base {
-	/** The name of the webhook. */
+	/**
+	 * The name of the webhook (`1`-`128` characters)
+	 */
 	readonly name: string;
-	/** The ID of the server the webhook belongs to. */
+	/**
+	 * The ID of the server
+	 */
 	readonly serverId: string;
-	/** The ID of the channel the webhook belongs to. */
+	/**
+	 * The ID of the channel
+	 */
 	readonly channelId: string;
-	/** The date the webhook was created. */
+	/**
+	 * When the webhook was created
+	 */
 	readonly createdAt: Date;
-	/** The ID of the user that created the webhook. */
+	/**
+	 * The ID of the user that created the webhook
+	 */
 	readonly createdBy: string;
-	/** The date the webhook was deleted. */
+	/**
+	 * When the webhook was deleted, if relevant
+	 */
 	readonly deletedAt?: Date;
-	/** The token of the webhook. */
+	/**
+	 * The token of the webhook
+	 */
 	readonly token?: string;
 
 	/**
@@ -45,61 +58,70 @@ export class Webhook extends Base {
 		if (cache) channel.webhooks.cache.set(this.id, this);
 	}
 
-	/** Whether the webhook is cached. */
+	/**
+	 * Whether the webhook is cached
+	 */
 	get isCached() {
 		return this.channel.webhooks.cache.has(this.id);
 	}
 
-	/** The server the webhook belongs to. */
+	/**
+	 * The server
+	 */
 	get server() {
 		return this.channel.server;
 	}
 
-	/** The timestamp the webhook was created. */
+	/**
+	 * The timestamp of when the webhook was created
+	 */
 	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The server member that created the webhook. */
+	/**
+	 * The server member that created the webhook
+	 */
 	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The ID of the user that created the webhook. */
+	/**
+	 * The ID of the user that created the webhook
+	 */
 	get authorId() {
 		return this.createdBy;
 	}
 
-	/** The timestamp the webhook was deleted. */
+	/**
+	 * The timestamp of when the webhook was deleted, if relevant
+	 */
 	get deletedTimestamp() {
 		return this.deletedAt?.getTime();
 	}
 
 	/**
-	 * Fetch the webhook.
-	 * @param options The options to fetch the webhook with.
-	 * @returns The fetched webhook.
-	 * @example webhook.fetch();
+	 * Fetch the webhook
+	 * @param options The options to fetch the webhook with
+	 * @returns The fetched webhook
 	 */
 	fetch(options?: FetchOptions) {
 		return this.channel.webhooks.fetch(this, options) as Promise<this>;
 	}
 
 	/**
-	 * Fetch the server the webhook belongs to.
-	 * @param options The options to fetch the server with.
-	 * @returns The fetched server.
-	 * @example webhook.fetchServer();
+	 * Fetch the server
+	 * @param options The options to fetch the server with
+	 * @returns The fetched server
 	 */
 	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
 	/**
-	 * Fetch the server member that created the webhook.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example webhook.fetchAuthor();
+	 * Fetch the server member that created the webhook
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
@@ -107,9 +129,8 @@ export class Webhook extends Base {
 	}
 
 	/**
-	 * Send a message with the webhook.
-	 * @param payload The payload of the message.
-	 * @example webhook.send('Hello world!');
+	 * Send a message with the webhook
+	 * @param payload The payload of the message
 	 */
 	send(payload: WebhookMessagePayloadResolvable) {
 		return this.client.api.webhooks.send(
@@ -124,20 +145,18 @@ export class Webhook extends Base {
 	}
 
 	/**
-	 * Edit the webhook.
-	 * @param name The name of the webhook.
-	 * @param channelId The ID of the channel the webhook belongs to.
-	 * @returns The edited webhook.
-	 * @example webhook.edit('New name');
+	 * Edit the webhook
+	 * @param name The name of the webhook
+	 * @param channelId The ID of the channel
+	 * @returns The edited webhook
 	 */
 	edit(name: string, channelId?: string) {
 		return this.channel.webhooks.edit(this, name, channelId);
 	}
 
 	/**
-	 * Delete the webhook.
-	 * @returns The deleted webhook.
-	 * @example webhook.delete();
+	 * Delete the webhook
+	 * @returns The deleted webhook
 	 */
 	async delete() {
 		await this.channel.webhooks.delete(this);
