@@ -38,7 +38,7 @@ export interface APIListItemSummary {
 	/**
 	 * The ID of the user that created the list item
 	 *
-	 * Note: If this list item has {@link APIListItemSummary.createdByWebhookId createdByWebhookId}, this field will still be populated, but can be ignored
+	 * Note: If this list item has {@link createdByWebhookId}, this field will still be populated, but can be ignored
 	 */
 	createdBy: string;
 	/**

@@ -10,9 +10,9 @@ import { ListItem } from '../../structures/listItem/ListItem';
 import { ListChannel } from '../../structures/channel/ListChannel';
 
 /**
- * Handle the ListItemCreated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ListItemCreated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function created(client: Client, data: WebSocketListItemCreateEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
@@ -21,9 +21,9 @@ export async function created(client: Client, data: WebSocketListItemCreateEvent
 }
 
 /**
- * Handle the ListItemUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ListItemUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function updated(client: Client, data: WebSocketListItemUpdateEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
@@ -33,9 +33,9 @@ export async function updated(client: Client, data: WebSocketListItemUpdateEvent
 }
 
 /**
- * Handle the ListItemDeleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ListItemDeleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function deleted(client: Client, data: WebSocketListItemDeleteEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
@@ -45,9 +45,9 @@ export async function deleted(client: Client, data: WebSocketListItemDeleteEvent
 }
 
 /**
- * Handle the ListItemCompleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ListItemCompleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function completed(client: Client, data: WebSocketListItemCompleteEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;
@@ -56,9 +56,9 @@ export async function completed(client: Client, data: WebSocketListItemCompleteE
 }
 
 /**
- * Handle the ListItemUncompleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ListItemUncompleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function uncompleted(client: Client, data: WebSocketListItemUncompleteEventData) {
 	const channel = (await client.channels.fetch(data.listItem.channelId)) as ListChannel;

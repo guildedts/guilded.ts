@@ -2,14 +2,13 @@ import { Base } from '../Base';
 import { Server } from './Server';
 
 /**
- * Represents a server role on Guilded.
- * @example new ServerRole(server, rawRole);
+ * Represents a server role on Guilded
  */
 export class ServerRole extends Base<number> {
 	/**
-	 * @param server The server the role belongs to.
-	 * @param raw The raw data of the role.
-	 * @param cache Whether to cache the server role.
+	 * @param server The server
+	 * @param raw The data of the server role
+	 * @param cache Whether to cache the server role
 	 */
 	constructor(
 		public readonly server: Server,
@@ -20,15 +19,16 @@ export class ServerRole extends Base<number> {
 		if (cache) server.roles.cache.set(this.id, this);
 	}
 
-	/** Whether the role is cached. */
+	/**
+	 * Whether the server role is cached
+	 */
 	get isCached() {
 		return this.server.roles.cache.has(this.id);
 	}
 
 	/**
-	 * Award XP to the role.
-	 * @param amount The amount of XP to award to the role.
-	 * @example role.awardXp(100);
+	 * Award XP to the role
+	 * @param amount The amount of XP to award
 	 */
 	awardXp(amount: number) {
 		return this.server.roles.awardXp(this, amount);

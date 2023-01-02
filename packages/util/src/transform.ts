@@ -5,15 +5,15 @@ import camelCase from 'lodash.camelcase';
  * Resolve a color from a string, number, RGB array or color preset.
  * Inspired by discord.js'
  * {@link https://github.com/discordjs/discord.js/blob/main/packages/discord.js/src/util/Util.js#L476 color resolver}.
- * @param color The color to resolve.
- * @returns The resolved color.
+ * @param color The color to resolve
+ * @returns The resolved color
  * @example
- * // Resolve the color with a hex color.
+ * // Resolve the color with a hex color
  * resolveColor(0xFFFFFF);
  * resolveColor('#FFFFFF');
- * // Resolve the color with a color preset.
+ * // Resolve the color with a color preset
  * resolveColor('White');
- * // Resolve the color with RGB values.
+ * // Resolve the color with RGB values
  * resolveColor([255, 255, 255]);
  */
 export function resolveColor(color: ColorResolvable) {
@@ -24,7 +24,9 @@ export function resolveColor(color: ColorResolvable) {
 	return color as number;
 }
 
-/** The color resolvable type. */
+/**
+ * The color resolvable type
+ */
 export type ColorResolvable =
 	| `#${string}`
 	| keyof typeof Color
@@ -32,7 +34,9 @@ export type ColorResolvable =
 	| number
 	| [red: number, green: number, blue: number];
 
-/** A set of color presets. */
+/**
+ * A set of color presets
+ */
 export enum Color {
 	Default = 0x000000,
 	White = 0xffffff,
@@ -68,9 +72,9 @@ export enum Color {
 }
 
 /**
- * Covert object keys to snake_case.
- * @param target The target object.
- * @returns The snake_case result.
+ * Covert object keys to snake_case
+ * @param target The target object
+ * @returns The snake_case result
  * @example toSnakeCase({ helloWorld: 'Hello World!' }); // { hello_world: 'Hello World!' }
  */
 export function toSnakeCase(target: unknown) {
@@ -83,9 +87,9 @@ export function toSnakeCase(target: unknown) {
 }
 
 /**
- * Covert object keys to camelCase.
- * @param target The target object.
- * @returns The camelCase result.
+ * Covert object keys to camelCase
+ * @param target The target object
+ * @returns The camelCase result
  * @example toCamelCase({ hello_world: 'Hello World!' }); // { helloWorld: 'Hello World!' }
  */
 export function toCamelCase(target: unknown) {

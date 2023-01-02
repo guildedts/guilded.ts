@@ -5,28 +5,27 @@ import { Collection } from '@discordjs/collection';
 import { Server } from '../structures/server/Server';
 
 /**
- * The manager of users that belong to the client.
- * @example new UserManager(client);
+ * The manager for users
  */
 export class UserManager extends BaseManager<string, User> {
-	/** @param client The client the users belong to. */
+	/**
+	 * @param client The client
+	 */
 	constructor(client: Client) {
 		super(client, client.options.maxUserCache);
 	}
 
 	/**
-	 * Fetch a user from a server, or cache.
-	 * @param server The server the user belongs to.
-	 * @param user The user to fetch.
-	 * @returns The fetched user.
-	 * @example users.fetch(server, user);
+	 * Fetch a user from a server
+	 * @param server The server
+	 * @param user The user
+	 * @returns The fetched user
 	 */
 	fetch(server: string | Server, user: string | User): Promise<User>;
 	/**
-	 * Fetch users from a server.
-	 * @param server The server the users belong to.
-	 * @returns The fetched users.
-	 * @Example users.fetch(server);
+	 * Fetch users from a server
+	 * @param server The server
+	 * @returns The fetched users
 	 */
 	fetch(server: string | Server): Promise<Collection<string, User>>;
 	fetch(arg1: string | Server, arg2?: string | User) {
@@ -34,7 +33,6 @@ export class UserManager extends BaseManager<string, User> {
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
 	private async fetchSingle(server: string | Server, user: string | User) {
 		user = user instanceof User ? user.id : user;
 		const cached = this.cache.get(user);
@@ -44,7 +42,6 @@ export class UserManager extends BaseManager<string, User> {
 		return member.user;
 	}
 
-	/** @ignore */
 	private async fetchMany(server: string | Server) {
 		server = server instanceof Server ? server : await this.client.servers.fetch(server);
 		const members = await server.members.fetch();

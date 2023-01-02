@@ -7,17 +7,15 @@ import {
 import { BaseRouter } from '../BaseRouter';
 
 /**
- * The calendar event RSVP router for the Guilded REST API.
- * @example new CalendarEventRsvpRouter(rest);
+ * The calendar event RSVP router for the Guilded REST API
  */
 export class CalendarEventRsvpRouter extends BaseRouter {
 	/**
-	 * Fetch a calendar event RSVP from Guilded.
-	 * @param channelId The ID of the channel the calendar event RSVP belongs to.
-	 * @param calendarEventId The ID of the calendar event the RSVP belongs to.
-	 * @param userId The ID of the user the RSVP belongs to.
-	 * @returns The fetched calendar event RSVP.
-	 * @example calendarEvents.fetch('abc', 123, 'abc');
+	 * Fetch a calendar event RSVP from Guilded
+	 * @param channelId The ID of the channel
+	 * @param calendarEventId The ID of the calendar event
+	 * @param userId The ID of the user
+	 * @returns The fetched calendar event RSVP
 	 */
 	fetch(
 		channelId: string,
@@ -25,20 +23,17 @@ export class CalendarEventRsvpRouter extends BaseRouter {
 		userId: string,
 	): Promise<APICalendarEventRsvp>;
 	/**
-	 * Fetch calendar event RSVPs from Guilded.
-	 * @param channelId The ID of the channel the calendar event RSVPs belong to.
-	 * @param calendarEventId The ID of the calendar event the RSVPs belong to.
-	 * @returns The fetched calendar event RSVPs.
-	 * @example calendarEvents.fetch('abc', 123);
+	 * Fetch calendar event RSVPs from Guilded
+	 * @param channelId The ID of the channel
+	 * @param calendarEventId The ID of the calendar event
+	 * @returns The fetched calendar event RSVPs
 	 */
 	fetch(channelId: string, calendarEventId: number): Promise<APICalendarEventRsvp[]>;
-	/** @ignore */
 	fetch(channelId: string, calendarEventId: number, userId?: string) {
 		if (userId) return this.fetchSingle(channelId, calendarEventId, userId);
 		return this.fetchMany(channelId, calendarEventId);
 	}
 
-	/** @ignore */
 	private async fetchSingle(channelId: string, calendarEventId: number, userId: string) {
 		const { calendarEventRsvp } = await this.rest.get<{
 			calendarEventRsvp: APICalendarEventRsvp;
@@ -46,7 +41,6 @@ export class CalendarEventRsvpRouter extends BaseRouter {
 		return calendarEventRsvp;
 	}
 
-	/** @ignore */
 	private async fetchMany(channelId: string, calendarEventId: number) {
 		const { calendarEventRsvps } = await this.rest.get<{
 			calendarEventRsvps: APICalendarEventRsvp[];
@@ -55,13 +49,12 @@ export class CalendarEventRsvpRouter extends BaseRouter {
 	}
 
 	/**
-	 * Edit a calendar event RSVP on Guilded.
-	 * @param channelId The ID of the channel the calendar event RSVP belongs to.
-	 * @param calendarEventId The ID of the calendar event the RSVP belongs to.
-	 * @param userId The ID of the user the RSVP belongs to.
-	 * @param status The status of the RSVP.
-	 * @returns The edited calendar event RSVP.
-	 * @example calendarEventRsvps.edit('abc', 123, 'abc', 'going');
+	 * Edit a calendar event RSVP on Guilded
+	 * @param channelId The ID of the channel
+	 * @param calendarEventId The ID of the calendar event
+	 * @param userId The ID of the user
+	 * @param status The status of the RSVP
+	 * @returns The edited calendar event RSVP
 	 */
 	async edit(
 		channelId: string,
@@ -77,11 +70,10 @@ export class CalendarEventRsvpRouter extends BaseRouter {
 	}
 
 	/**
-	 * Delete a calendar event RSVP from Guilded.
-	 * @param channelId The ID of the channel the calendar event RSVP belongs to.
-	 * @param calendarEventId The ID of the calendar event the RSVP belongs to.
-	 * @param userId The ID of the user the RSVP belongs to.
-	 * @example calendarEventRsvps.delete('abc', 123, 'abc');
+	 * Delete a calendar event RSVP from Guilded
+	 * @param channelId The ID of the channel
+	 * @param calendarEventId The ID of the calendar event
+	 * @param userId The ID of the user
 	 */
 	delete(channelId: string, calendarEventId: number, userId: string) {
 		return this.rest.delete<void>(Routes.calendarEventRsvp(channelId, calendarEventId, userId));

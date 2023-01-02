@@ -9,33 +9,28 @@ import {
 import { BaseRouter } from './BaseRouter';
 
 /**
- * The forum topic router for the Guilded REST API.
- * @example new ForumTopicRouter(rest);
+ * The forum topic router for the Guilded REST API
  */
 export class ForumTopicRouter extends BaseRouter {
 	/**
-	 * Fetch a forum topic from Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to fetch.
-	 * @returns The fetched forum topic.
-	 * @example docs.fetch('abc', 123);
+	 * Fetch a forum topic from Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
+	 * @returns The fetched forum topic
 	 */
 	fetch(channelId: string, forumTopicId: number): Promise<APIForumTopic>;
 	/**
-	 * Fetch forum topics from Guilded.
-	 * @param channelId The ID of the channel the forum topics belong to.
-	 * @param options The options to fetch forum topics with.
-	 * @returns The fetched forum topics.
-	 * @example docs.fetchMany('abc');
+	 * Fetch forum topics from Guilded
+	 * @param channelId The ID of the channel
+	 * @param options The options to fetch forum topics with
+	 * @returns The fetched forum topics
 	 */
 	fetch(channelId: string, options?: RESTGetForumTopicsQuery): Promise<APIForumTopicSummary[]>;
-	/** @ignore */
 	fetch(channelId: string, docIdOrOptions?: number | RESTGetForumTopicsQuery) {
 		if (typeof docIdOrOptions === 'number') return this.fetchSingle(channelId, docIdOrOptions);
 		return this.fetchMany(channelId, docIdOrOptions);
 	}
 
-	/** @ignore */
 	private async fetchSingle(channelId: string, forumTopicId: number) {
 		const { forumTopic } = await this.rest.get<{ forumTopic: APIForumTopic }>(
 			Routes.forumTopic(channelId, forumTopicId),
@@ -43,7 +38,6 @@ export class ForumTopicRouter extends BaseRouter {
 		return forumTopic;
 	}
 
-	/** @ignore */
 	private async fetchMany(channelId: string, options?: RESTGetForumTopicsQuery) {
 		const { forumTopics } = await this.rest.get<
 			{ forumTopics: APIForumTopicSummary[] },
@@ -53,11 +47,10 @@ export class ForumTopicRouter extends BaseRouter {
 	}
 
 	/**
-	 * Create a forum topic on Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param payload The payload of the forum topic.
-	 * @returns The created forum topic.
-	 * @example topics.create('abc', { title: 'My Topic!' });
+	 * Create a forum topic on Guilded
+	 * @param channelId The ID of the channel
+	 * @param payload The payload of the forum topic
+	 * @returns The created forum topic
 	 */
 	async create(channelId: string, payload: RESTPostForumTopicJSONBody) {
 		const { forumTopic } = await this.rest.post<
@@ -68,12 +61,11 @@ export class ForumTopicRouter extends BaseRouter {
 	}
 
 	/**
-	 * Edit a forum topic on Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to edit.
-	 * @param payload The payload of the forum topic.
-	 * @returns The edited forum topic.
-	 * @example topics.edit('abc', 123, { title: 'New Title', content: 'New Content' });
+	 * Edit a forum topic on Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
+	 * @param payload The payload of the forum topic
+	 * @returns The edited forum topic
 	 */
 	async edit(channelId: string, forumTopicId: number, payload: RESTPatchForumTopicJSONBody) {
 		const { forumTopic } = await this.rest.put<
@@ -84,50 +76,45 @@ export class ForumTopicRouter extends BaseRouter {
 	}
 
 	/**
-	 * Delete a forum topic from Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to delete.
-	 * @example topics.delete('abc', 123);
+	 * Delete a forum topic from Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
 	 */
 	delete(channelId: string, forumTopicId: number) {
 		return this.rest.delete<void>(Routes.forumTopic(channelId, forumTopicId));
 	}
 
 	/**
-	 * Pin a forum topic on Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to pin.
-	 * @example topics.pin('abc', 123);
+	 * Pin a forum topic on Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
 	 */
 	pin(channelId: string, forumTopicId: number) {
 		return this.rest.put<void>(Routes.forumTopicPin(channelId, forumTopicId));
 	}
 
 	/**
-	 * Unpin a forum topic on Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to unpin.
-	 * @example topics.unpin('abc', 123);
+	 * Unpin a forum topic on Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
 	 */
 	unpin(channelId: string, forumTopicId: number) {
 		return this.rest.delete<void>(Routes.forumTopicPin(channelId, forumTopicId));
 	}
 
 	/**
-	 * Lock a forum topic on Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to lock.
-	 * @example topics.lock('abc', 123);
+	 * Lock a forum topic on Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
 	 */
 	lock(channelId: string, forumTopicId: number) {
 		return this.rest.put<void>(Routes.forumTopicLock(channelId, forumTopicId));
 	}
 
 	/**
-	 * Unlock a forum topic on Guilded.
-	 * @param channelId The ID of the channel the forum topic belongs to.
-	 * @param forumTopicId The ID of the forum topic to unlock.
-	 * @example topics.unlock('abc', 123);
+	 * Unlock a forum topic on Guilded
+	 * @param channelId The ID of the channel
+	 * @param forumTopicId The ID of the forum topic
 	 */
 	unlock(channelId: string, forumTopicId: number) {
 		return this.rest.delete<void>(Routes.forumTopicLock(channelId, forumTopicId));

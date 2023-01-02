@@ -4,26 +4,37 @@ import { Base } from '../Base';
 import { ListItem } from './ListItem';
 
 /**
- * Represents a list item note on Guilded.
- * @example new ListItemNote(item, rawListItemNote);
+ * Represents a list item note on Guilded
  */
 export class ListItemNote extends Base {
-	/** The date the list item note was created. */
+	/**
+	 * When the list item note was created
+	 */
 	readonly createdAt: Date;
-	/** The ID of the user that created the list item note. */
+	/**
+	 * The ID of the user that created the list item note
+	 */
 	readonly createdBy: string;
-	/** The date the list item note was edited. */
+	/**
+	 * Whem the list item note was edited, if relevant
+	 */
 	readonly editedAt?: Date;
-	/** The ID of the user that edited the list item note. */
+	/**
+	 * The ID of the user that edited the list item note, if relevant
+	 */
 	readonly editedBy?: string;
-	/** The mentions of the list item note. */
+	/**
+	 * The mentions of the list item note
+	 */
 	readonly mentions?: APIMentions;
-	/** The content of the list item note. */
+	/**
+	 * The content of the list item note
+	 */
 	readonly content?: string;
 
 	/**
-	 * @param item The list item the note belongs to.
-	 * @param raw The raw data of the list item note.
+	 * @param item The list item
+	 * @param raw The data of the list item note
 	 */
 	constructor(
 		public readonly item: ListItem,
@@ -37,31 +48,38 @@ export class ListItemNote extends Base {
 		this.editedBy = raw.updatedBy;
 	}
 
-	/** The timestamp the list item note was created. */
+	/**
+	 * The timestamp of when the list item note was created
+	 */
 	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The server member that created the list item note. */
+	/**
+	 * The server member that created the list item note
+	 */
 	get author() {
 		return this.item.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The timestamp the list item note was edited. */
+	/**
+	 * The timestamp of when the list item note was edited, if relevant
+	 */
 	get editedTimestamp() {
 		return this.editedAt ? this.editedAt.getTime() : undefined;
 	}
 
-	/** The server member that edited the list item note. */
+	/**
+	 * The server member that edited the list item note, if relevant
+	 */
 	get editor() {
 		return this.editedBy ? this.item.server?.members.cache.get(this.editedBy) : undefined;
 	}
 
 	/**
-	 * Fetch the server member that created the list item note.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example note.fetchAuthor();
+	 * Fetch the server member that created the list item note
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.item.fetchServer();
@@ -69,10 +87,9 @@ export class ListItemNote extends Base {
 	}
 
 	/**
-	 * Fetch the server member that edited the list item note.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example note.fetchEditor();
+	 * Fetch the server member that edited the list item note
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchEditor(options?: FetchOptions) {
 		const server = await this.item.fetchServer();

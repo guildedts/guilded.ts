@@ -4,20 +4,20 @@ import { ServerMemberRole } from '../../structures/server/ServerMemberRole';
 import { ServerRole } from '../../structures/server/ServerRole';
 
 /**
- * The manager of roles that belong to a server member.
- * @example new ServerMemberRoleManager(member);
+ * The manager for server member roles
  */
 export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRole> {
-	/** @param member The server member the roles belong to. */
+	/**
+	 * @param member The server member
+	 */
 	constructor(public readonly member: ServerMember) {
 		super(member.client, member.client.options.maxServerMemberRoleCache);
 	}
 
 	/**
-	 * Fetch roles that belong to the member.
-	 * @param options The options to fetch the roles with.
-	 * @returns The fetched roles that belong to the member.
-	 * @example roles.fetch();
+	 * Fetch roles that belong to the server member
+	 * @param options The options to fetch the server member roles with
+	 * @returns The fetched server member roles
 	 */
 	fetch(options?: ServerMemberRoleFetchManyOptions) {
 		return this.member.server.roles.fetch(this.member, {
@@ -27,28 +27,30 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 	}
 
 	/**
-	 * Assign a role to the member.
-	 * @param role The role to add to the member.
-	 * @returns The role that was added to the member.
-	 * @example roles.assign(role);
+	 * Assign a role to the server member
+	 * @param role The role
+	 * @returns The added server member role
 	 */
 	assign(role: number | ServerRole) {
 		return this.member.server.roles.assign(this.member, role);
 	}
 
 	/**
-	 * Unassign a role from the member.
-	 * @param role The role to remove from the member.
-	 * @returns The role that was removed from the member.
-	 * @example roles.unassign(role);
+	 * Unassign a role from the server member
+	 * @param role The role
+	 * @returns The removed server member role
 	 */
 	unassign(role: number | ServerRole) {
 		return this.member.server.roles.unassign(this.member, role);
 	}
 }
 
-/** The options for fetching server member roles. */
+/**
+ * The options for fetching server member roles
+ */
 export interface ServerMemberRoleFetchManyOptions extends FetchManyOptions {
-	/** Whether to cache the fetched server roles. */
+	/**
+	 * Whether to cache the fetched server roles
+	 */
 	cacheServerRoles?: boolean;
 }

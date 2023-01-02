@@ -2,26 +2,26 @@ import { Client } from '../structures/Client';
 import { CacheCollection } from '../structures/CacheCollection';
 
 /**
- * The manager of a Guilded data model.
- * @example new BaseManager(client);
+ * The manager for a Guilded data model
  */
 export class BaseManager<K = void, V = void> {
-	/** This cache of the manager. */
+	/**
+	 * This cache of the manager
+	 */
 	readonly cache: CacheCollection<K, V>;
 
 	/**
-	 * @param client The client the manager belongs to.
-	 * @param maxCache The maximum cache size of the manager.
+	 * @param client The client
+	 * @param maxCache The maximum cache size
 	 */
 	constructor(public readonly client: Client, maxCache = Infinity) {
 		this.cache = new CacheCollection(maxCache);
 	}
 
 	/**
-	 * Set the maximum cache size of the manager.
-	 * @param maxSize The maximum size of the cache.
-	 * @returns The manager.
-	 * @example manager.setMaxCache(100);
+	 * Set the maximum cache size
+	 * @param maxSize The maximum size of the cache
+	 * @returns The manager
 	 */
 	setMaxCache(maxSize: number) {
 		this.cache.setMaxSize(maxSize);
@@ -29,14 +29,24 @@ export class BaseManager<K = void, V = void> {
 	}
 }
 
-/** The options for fetching data from Guilded. */
+/**
+ * The options for fetching data from Guilded
+ */
 export interface FetchOptions extends FetchManyOptions {
-	/** The whether to force fetch the data. */
+	/**
+	 * Whether to skip cache checking
+	 *
+	 * @default false
+	 */
 	force?: boolean;
 }
 
-/** The options for fetching multiple data from Guilded. */
+/**
+ * The options for fetching multiple data from Guilded
+ */
 export interface FetchManyOptions {
-	/** The whether to cache the fetched data. */
+	/**
+	 * Whether to cache the fetched data
+	 */
 	cache?: boolean;
 }

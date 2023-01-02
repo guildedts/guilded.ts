@@ -7,20 +7,29 @@ import EventEmitter from 'events';
 const { version } = require('../package.json');
 
 /**
- * The REST manager for the Guilded API.
- * @example new RESTManager({ version: 1, token: 'token' });
+ * The manager for the Guilded REST API
  */
 export class RESTManager extends EventEmitter {
-	/** The auth token for the REST API. */
+	/**
+	 * The authorization token to use in requests
+	 */
 	token?: string;
-	/** The version of the REST API. */
+	/**
+	 * The version of the REST API to use
+	 */
 	readonly version?: number;
-	/** The proxy url of the REST API. */
+	/**
+	 * The base URL to use in requests
+	 */
 	readonly proxyUrl?: string;
-	/** The router for the REST API. */
+	/**
+	 * The router for the REST API
+	 */
 	readonly router: Router;
 
-	/** @param options The options for the REST manager. */
+	/**
+	 * @param options The options for the REST manager
+	 */
 	constructor(public readonly options: RESTOptions) {
 		super();
 		this.token = options.token;
@@ -29,16 +38,17 @@ export class RESTManager extends EventEmitter {
 		this.router = new Router(this);
 	}
 
-	/** The base URL for the REST API. */
+	/**
+	 * The base URL to use in requests
+	 */
 	get baseURL() {
 		return this.proxyUrl ? this.proxyUrl : `https://www.guilded.gg/api/v${this.version}/`;
 	}
 
 	/**
-	 * Set the auth token for the REST API.
-	 * @param token The auth token.
-	 * @returns The REST manager.
-	 * @example rest.setToken('token');
+	 * Set the authorization token to use in requests
+	 * @param token The authorization token to use in requests
+	 * @returns The REST manager
 	 */
 	setToken(token?: string) {
 		this.token = token;
@@ -46,13 +56,12 @@ export class RESTManager extends EventEmitter {
 	}
 
 	/**
-	 * Make a request to the REST API.
-	 * @param path The path to the resource.
-	 * @param method The HTTP method.
-	 * @param options The options for the request.
-	 * @param retries The number of retries.
-	 * @returns The response from the REST API.
-	 * @example rest.request('/channels/abc', 'GET');
+	 * Make a request to the REST API
+	 * @param path The path to the resource
+	 * @param method The HTTP method to use
+	 * @param options The options for the request
+	 * @param retries The number of retries
+	 * @returns The response body from the REST API
 	 */
 	async fetch<R = any, B = any, P extends Record<string, any> = Record<string, any>>(
 		path: string,
@@ -89,9 +98,8 @@ export class RESTManager extends EventEmitter {
 			retries <= (this.options?.maxRetries ?? 3)
 		) {
 			const retryAfter =
-				Number(response.headers.get('Retry-After')) ??
-				this.options.retryInterval ??
-				30000 / 1000;
+				(Number(response.headers.get('Retry-After')) || this.options.retryInterval) ??
+				30_000 / 1000;
 			await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
 			return this.fetch<R, B, P>(path, method, options, retries++);
 		}
@@ -108,54 +116,49 @@ export class RESTManager extends EventEmitter {
 	}
 
 	/**
-	 * Make a GET request to the REST API.
-	 * @param path The path to the resource.
-	 * @param params The query parameters for the request.
-	 * @returns The response from the REST API.
-	 * @example rest.get('/channels/abc');
+	 * Make a `GET` request to the REST API
+	 * @param path The path to the resource
+	 * @param options The options for the request
+	 * @returns The response body from the REST API
 	 */
 	get<R = any, P extends Record<string, any> = Record<string, any>>(path: string, params?: P) {
 		return this.fetch<R, any, P>(path, RESTMethod.Get, { params });
 	}
 
 	/**
-	 * Make a POST request to the REST API.
-	 * @param path The path to the resource.
-	 * @param body The body for the request.
-	 * @returns The response from the REST API.
-	 * @example rest.post('/channels', { name: 'Chat', type: 'chat' });
+	 * Make a `POST` request to the REST API
+	 * @param path The path to the resource
+	 * @param body The body of the request
+	 * @returns The response body from the REST API
 	 */
 	post<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, RESTMethod.Post, { body });
 	}
 
 	/**
-	 * Make a PATCH request to the REST API.
-	 * @param path The path to the resource.
-	 * @param body The body for the request.
-	 * @returns The response from the REST API.
-	 * @example rest.patch('/channels/abc', { name: 'Chat' });
+	 * Make a `PATCH` request to the REST API
+	 * @param path The path to the resource
+	 * @param body The body of the request
+	 * @returns The response body from the REST API
 	 */
 	patch<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, RESTMethod.Patch, { body });
 	}
 
 	/**
-	 * Make a PUT request to the REST API.
-	 * @param path The path to the resource.
-	 * @param body The body for the request.
-	 * @returns The response from the REST API.
-	 * @example rest.put('/channels/abc/messages/abc', { content: 'Hello world!' });
+	 * Make a `PUT` request to the REST API
+	 * @param path The path to the resource
+	 * @param body The body of the request
+	 * @returns The response body from the REST API
 	 */
 	put<R = any, B = any>(path: string, body?: B) {
 		return this.fetch<R, B>(path, RESTMethod.Put, { body });
 	}
 
 	/**
-	 * Make a DELETE request to the REST API.
-	 * @param path The path for the resource.
-	 * @returns The response from the REST API.
-	 * @example rest.delete('/channels/abc');
+	 * Make a `DELETE` request to the REST API
+	 * @param path The path for the resource
+	 * @returns The response body from the REST API
 	 */
 	delete<R>(path: string) {
 		return this.fetch<R>(path, RESTMethod.Delete);
@@ -163,52 +166,78 @@ export class RESTManager extends EventEmitter {
 }
 
 export interface RESTManager {
-	/** @ignore */
 	on<Event extends keyof RESTManagerEvents>(
 		event: Event,
 		listener: (...args: RESTManagerEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	once<Event extends keyof RESTManagerEvents>(
 		event: Event,
 		listener: (...args: RESTManagerEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	off<Event extends keyof RESTManagerEvents>(
 		event: Event,
 		listener: (...args: RESTManagerEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	emit<Event extends keyof RESTManagerEvents>(
 		event: Event,
 		...args: RESTManagerEvents[Event]
 	): boolean;
 }
 
-/** The REST manager events. */
+/**
+ * The REST manager events
+ */
 export interface RESTManagerEvents {
-	/** Emitted when data is received. */
-	raw: [data: any, response: Response];
+	/**
+	 * Emitted whenever data is received
+	 */
+	raw: [data: unknown, response: Response];
 }
 
-/** The options for the REST manager. */
+/**
+ * The options for the REST manager
+ */
 export interface RESTOptions {
-	/** The auth token for the REST API. */
+	/**
+	 * The authorization token to use in requests
+	 */
 	token?: string;
-	/** The version of the REST API. */
+	/**
+	 * The version of the REST API to use
+	 *
+	 * @default 1
+	 */
 	version?: number;
-	/** The proxy URL of the REST API. */
+	/**
+	 * The base URL to use in requests
+	 */
 	proxyUrl?: string;
-	/** The interval to wait between retries. */
+	/**
+	 * The interval to wait between request retries
+	 *
+	 * @default 30_000
+	 */
 	retryInterval?: number;
-	/** The maximum number of retry attempts. */
+	/**
+	 * The maximum amount of retry attempts
+	 *
+	 * @default 3
+	 */
 	maxRetries?: number;
 }
 
-/** The options for making a request to the REST API. */
+/**
+ * The options for making a request to the REST API
+ */
 export interface FetchOptions<B = any, P extends Record<string, any> = Record<string, any>> {
-	/** The query parameters of the request. */
+	/**
+	 * The query parameters for the request
+	 *
+	 * @default {}
+	 */
 	params?: P;
-	/** The body of the request. */
+	/**
+	 * The body of the request
+	 */
 	body?: B;
 }

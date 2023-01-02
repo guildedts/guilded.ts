@@ -4,17 +4,18 @@ import { Channel } from './Channel';
 import { ForumTopicManager } from '../../managers/ForumTopicManager';
 
 /**
- * Represents a forum channel on Guilded.
- * @example new ForumChannel(client, rawChannel);
+ * Represents a forum channel on Guilded
  */
 export class ForumChannel extends Channel {
-	/** The manager of topics that belong to the forum channel. */
+	/**
+	 * The manager for topics
+	 */
 	readonly topics: ForumTopicManager;
 
 	/**
-	 * @param client The client the forum channel belongs to.
-	 * @param raw The raw data of the forum channel.
-	 * @param cache Whether to cache the forum channel.
+	 * @param client The client
+	 * @param raw The data of the forum channel
+	 * @param cache Whether to cache the forum channel
 	 */
 	constructor(client: Client, raw: APIChannel, cache?: boolean) {
 		super(client, raw, cache);
@@ -22,11 +23,10 @@ export class ForumChannel extends Channel {
 	}
 
 	/**
-	 * Create a topic in the forum channel.
-	 * @param title The title of the topic.
-	 * @param content The content of the topic.
-	 * @returns The created topic.
-	 * @example channel.post({ title: 'My Topic' });
+	 * Create a forum topic in the channel
+	 * @param title The title of the forum topic
+	 * @param content The content of the forum topic
+	 * @returns The created forum topic
 	 */
 	post(payload: RESTPostForumTopicJSONBody) {
 		return this.topics.create(payload);

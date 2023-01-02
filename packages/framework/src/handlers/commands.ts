@@ -1,14 +1,15 @@
 import { Embed, inlineCode, Message, userMention } from 'guilded.ts';
 import { Event } from '../structures/Event';
 
-/** The handler for commands. */
+/**
+ * The handler for commands
+ */
 export default class CommandHandler extends Event<'messageCreate'> {
 	name = 'messageCreate' as const;
 
 	/**
-	 * The handler for the messageCreate event.
-	 * @param message The message that was created.
-	 * @example commandHandler.execute(message);
+	 * The handler for the messageCreate event
+	 * @param message The message that was created
 	 */
 	async execute(message: Message) {
 		const prefix = this.getPrefix(message.serverId);
@@ -36,10 +37,9 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	}
 
 	/**
-	 * Get the command with the given name.
-	 * @param name The name of the command.
-	 * @returns The command.
-	 * @example commandHandler.getCommand('ping');
+	 * Get the command with the given name
+	 * @param name The name of the command
+	 * @returns The command
 	 */
 	getCommand(name: string) {
 		return this.client.commands.find(
@@ -48,10 +48,9 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	}
 
 	/**
-	 * Get the prefix of the message.
-	 * @param serverId The ID of the server the message belongs to.
-	 * @returns The prefix.
-	 * @example commandHandler.getPrefix(serverId);
+	 * Get the prefix of the message
+	 * @param serverId The ID of the server
+	 * @returns The prefix
 	 */
 	getPrefix(serverId?: string) {
 		return serverId
@@ -60,21 +59,19 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	}
 
 	/**
-	 * Parse the content of the message.
-	 * @param prefix The prefix of the message content.
-	 * @param content The content of the message.
-	 * @returns The command name and arguments.
-	 * @example commandHandler.parseContent('!echo hello'); // ['echo', 'hello']
+	 * Parse the content of the message
+	 * @param prefix The prefix
+	 * @param content The content of the message
+	 * @returns The command name and arguments
 	 */
 	parseContent(prefix: string, content: string) {
 		return content.slice(prefix.length).split(/\s+/);
 	}
 
 	/**
-	 * Send a error message to the user.
-	 * @param message The message that triggered the command.
-	 * @param error The error message.
-	 * @example commandHandler.sendError(message, 'Invalid arguments');
+	 * Send a error message to the user
+	 * @param message The message
+	 * @param error The error message
 	 */
 	sendError(message: Message, error: string) {
 		message.delete();

@@ -1,5 +1,5 @@
 /**
- * A conditional type.
+ * A conditional type
  * @example
  * type NotNull = If<true, string>; // string
  * type Null = If<false, string>; // null

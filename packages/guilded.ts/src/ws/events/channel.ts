@@ -7,9 +7,9 @@ import { Client } from '../../structures/Client';
 import { createChannel } from '../../util';
 
 /**
- * Handle the ServerChannelCreated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerChannelCreated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export function created(client: Client, data: WebSocketChannelCreateEventData) {
 	const channel = createChannel(client, data.channel);
@@ -17,9 +17,9 @@ export function created(client: Client, data: WebSocketChannelCreateEventData) {
 }
 
 /**
- * Handle the ServerChannelUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerChannelUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export function updated(client: Client, data: WebSocketChannelUpdateEventData) {
 	const oldChannel = client.channels.cache.get(data.channel.id);
@@ -28,9 +28,9 @@ export function updated(client: Client, data: WebSocketChannelUpdateEventData) {
 }
 
 /**
- * Handle the ServerChannelDeleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerChannelDeleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export function deleted(client: Client, data: WebSocketChannelDeleteEventData) {
 	const channel = createChannel(client, data.channel);

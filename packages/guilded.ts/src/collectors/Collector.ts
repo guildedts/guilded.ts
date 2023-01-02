@@ -4,22 +4,29 @@ import { Base } from '../structures/Base';
 import { Client } from '../structures/Client';
 
 /**
- * The collector of a data model.
- * @example new Collector(client);
+ * The collector of a data model
  */
 export class Collector<Model extends Base<any>> extends EventEmitter {
-	/** The collected data. */
+	/**
+	 * The collected data
+	 */
 	readonly collected: Collection<Model['id'], Model>;
-	/** The date the collector was created. */
+	/**
+	 * When the collector was created
+	 */
 	readonly createdAt: Date;
-	/** The date the collector was ended. */
+	/**
+	 * When the collector ended
+	 */
 	endedAt?: Date;
-	/** The idle timeout for the collector. */
+	/**
+	 * The idle timeout for the collector
+	 */
 	private idleTimeout?: NodeJS.Timeout;
 
 	/**
-	 * @param client The client the collector belongs to.
-	 * @param options The options of the collector.
+	 * @param client The client
+	 * @param options The options for the collector
 	 */
 	constructor(
 		public readonly client: Client,
@@ -32,22 +39,30 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 		if (options.idle) this.idleTimeout = setTimeout(this.end.bind(this), options.idle);
 	}
 
-	/** The timestamp the collector was created. */
+	/**
+	 * The timestamp of when the collector was created
+	 */
 	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** Whether the collector has ended. */
+	/**
+	 * Whether the collector has ended
+	 */
 	get isEnded() {
 		return !!this.endedAt;
 	}
 
-	/** The timestamp the collector was ended. */
+	/**
+	 * The timestamp of when the collector was ended
+	 */
 	get endedTimestamp() {
 		return this.endedAt?.getTime();
 	}
 
-	/** The time the collector has been running. */
+	/**
+	 * The duration of how long the collector has been running
+	 */
 	get uptime() {
 		return this.isEnded
 			? this.endedAt!.getTime() - this.createdAt.getTime()
@@ -55,8 +70,7 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	}
 
 	/**
-	 * End the collector.
-	 * @example collector.end();
+	 * End the collector
 	 */
 	end() {
 		if (this.isEnded) return;
@@ -65,10 +79,9 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	}
 
 	/**
-	 * Collect a item.
-	 * @param item The item to collect.
-	 * @returns The collected item.
-	 * @example collector.collect(item);
+	 * Collect an item
+	 * @param item The item
+	 * @returns The collected item
 	 */
 	async collect(item: Model) {
 		const filter = this.options.filter ? await this.options.filter(item) : true;
@@ -84,10 +97,9 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	}
 
 	/**
-	 * Dispose a collected item.
-	 * @param itemId The ID of the item to dispose.
-	 * @returns The disposed item.
-	 * @example collector.dispose('abc');
+	 * Dispose a collected item
+	 * @param itemId The ID of the item
+	 * @returns The disposed item, if cached
 	 */
 	dispose(itemId: Model['id']) {
 		const item = this.collected.get(itemId);
@@ -99,17 +111,14 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 }
 
 export interface Collector<Model extends Base<any>> {
-	/** @ignore */
 	on<Event extends keyof CollectorEvents<Model>>(
 		event: Event,
 		listener: (...args: CollectorEvents<Model>[Event]) => any,
 	): this;
-	/** @ignore */
 	once<Event extends keyof CollectorEvents<Model>>(
 		event: Event,
 		listener: (...args: CollectorEvents<Model>[Event]) => any,
 	): this;
-	/** @ignore */
 	off<Event extends keyof CollectorEvents<Model>>(
 		event: Event,
 		listener: (...args: CollectorEvents<Model>[Event]) => any,
@@ -120,29 +129,56 @@ export interface Collector<Model extends Base<any>> {
 	): boolean;
 }
 
-/** The collector events. */
+/**
+ * The collector events
+ */
 export interface CollectorEvents<Model extends Base<any>> {
-	/** Emitted when data is collected. */
+	/**
+	 * Emitted whenever data is collected
+	 */
 	collect: [item: Model];
-	/** Emitted when a collected item is disposed. */
+	/**
+	 * Emitted whenever a collected item is disposed
+	 */
 	dispose: [item: Model];
-	/** Emitted when the collector is finished collecting data. */
+	/**
+	 * Emitted whenever the collector is finished collecting data
+	 */
 	end: [collected: Collection<Model['id'], Model>];
 }
 
-/** The options for the collector. */
+/**
+ * The options for the collector
+ */
 export interface CollectorOptions<Model extends Base<any>> {
-	/** The filter to apply to the collector. */
-	filter?: CollectorFilter<Model>;
-	/** The time in milliseconds to wait before ending the collector. */
+	/**
+	 * The filter to apply to the collector
+	 *
+	 * @default () => true
+	 */
+	filter?: (item: Model) => boolean | Promise<boolean>;
+	/**
+	 * The time in milliseconds to wait before ending the collector
+	 *
+	 * @default Infinity
+	 */
 	time?: number;
-	/** The time in milliseconds to wait before ending the collector due to it being idle. */
+	/**
+	 * The time in milliseconds to wait before ending the collector due to it being idle
+	 *
+	 * @default Infinity
+	 */
 	idle?: number;
-	/** The max amount of items to collect. */
+	/**
+	 * The max amount of items to collect
+	 *
+	 * @default Infinity
+	 */
 	max?: number;
-	/** Whether to dispose data when it is deleted. */
+	/**
+	 * Whether to dispose data when it is deleted
+	 *
+	 * @default true
+	 */
 	dispose?: boolean;
 }
-
-/** The filter to apply to the collector. */
-export type CollectorFilter<Model extends Base> = (item: Model) => boolean | Promise<boolean>;

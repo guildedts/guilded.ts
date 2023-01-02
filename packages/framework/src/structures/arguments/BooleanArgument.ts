@@ -2,20 +2,18 @@ import { inlineCode } from 'guilded.ts';
 import { Argument } from './Argument';
 
 /**
- * Represents a boolean command argument.
- * @example
- * class MyArgument extends BooleanArgument {
- *     name = 'my-argument';
- * }
+ * Represents a boolean command argument
  */
 export abstract class BooleanArgument extends Argument {
-	/** The default value of the argument. */
+	/**
+	 * The default value of the argument
+	 */
 	default?: boolean;
 
 	/**
-	 * Validates the boolean argument.
-	 * @param value The value of the argument.
-	 * @returns The validated value, or error.
+	 * Validates the boolean argument
+	 * @param value The value of the argument
+	 * @returns The validated value
 	 * @example booleanArgument.validate('true'); // true
 	 */
 	async validate(value: string): Promise<boolean> {

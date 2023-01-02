@@ -4,33 +4,50 @@ import { Base } from '../Base';
 import { CalendarEvent } from './CalendarEvent';
 
 /**
- * Represents a calendar event RSVP on Guilded.
- * @example new CalendarEventRsvp(calendarEvent, rawCalendarEventRsvp);
+ * Represents a calendar event RSVP on Guilded
  */
 export class CalendarEventRsvp extends Base {
-	/** The ID of the calendar event the RSVP belongs to. */
+	/**
+	 * The ID of the calendar event (min value: 1)
+	 */
 	readonly calendarEventId: number;
-	/** The ID of the channel the calendar event RSVP belongs to. */
+	/**
+	 * The ID of the channel
+	 */
 	readonly channelId: string;
-	/** The ID of the server the calendar event RSVP belongs to. */
+	/**
+	 * The ID of the server
+	 */
 	readonly serverId: string;
-	/** The ID of the user the calendar event RSVP belongs to. */
+	/**
+	 * The ID of the user
+	 */
 	readonly userId: string;
-	/** The status of the calendar event RSVP. */
+	/**
+	 * The status of the calendar event RSVP
+	 */
 	readonly status: CalendarEventRsvpStatus;
-	/** The ID of the user that created the calendar event RSVP. */
+	/**
+	 * The ID of the user that created the calendar event RSVP
+	 */
 	readonly createdBy: string;
-	/** The date the calendar event RSVP was created. */
+	/**
+	 * When the calendar event RSVP was created
+	 */
 	readonly createdAt: Date;
-	/** The ID of the user that edited the calendar event RSVP. */
+	/**
+	 * The ID of the user that edited the calendar event RSVP
+	 */
 	readonly editedBy?: string;
-	/** The date the calendar event RSVP was edited. */
+	/**
+	 * When the calendar event RSVP was edited, if relevant
+	 */
 	readonly editedAt?: Date;
 
 	/**
-	 * @param calendarEvent The calendar event the RSVP belongs to.
-	 * @param raw The raw data of the calendar event RSVP.
-	 * @param cache Whether to cache the calendar event RSVP.
+	 * @param calendarEvent The calendar event
+	 * @param raw The data of the calendar event RSVP
+	 * @param cache Whether to cache the calendar event RSVP
 	 */
 	constructor(
 		public readonly calendarEvent: CalendarEvent,
@@ -50,85 +67,99 @@ export class CalendarEventRsvp extends Base {
 		if (cache) calendarEvent.rsvps.cache.set(this.id, this);
 	}
 
-	/** Whether the calendar event RSVP is cached. */
+	/**
+	 * Whether the calendar event RSVP is cached
+	 */
 	get isCached() {
 		return this.calendarEvent.rsvps.cache.has(this.id);
 	}
 
-	/** The channel the calendar event RSVP belongs to. */
+	/**
+	 * The channel
+	 */
 	get channel() {
 		return this.calendarEvent.channel;
 	}
 
-	/** The server the calendar event RSVP belongs to. */
+	/**
+	 * The server
+	 */
 	get server() {
 		return this.calendarEvent.server;
 	}
 
-	/** The user the calendar event RSVP belongs to. */
+	/**
+	 * The user
+	 */
 	get user() {
 		return this.client.users.cache.get(this.userId);
 	}
 
-	/** The server member that created the calendar event RSVP. */
+	/**
+	 * The server member that created the calendar event RSVP
+	 */
 	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The ID of the user that created the calendar event RSVP. */
+	/**
+	 * The ID of the user that created the calendar event RSVP
+	 */
 	get authorId() {
 		return this.createdBy;
 	}
 
-	/** The timestamp the calendar event RSVP was created. */
+	/**
+	 * The timestamp of when the calendar event RSVP was created
+	 */
 	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The server member that edited the calendar event RSVP. */
+	/**
+	 * The server member that edited the calendar event RSVP
+	 */
 	get editor() {
 		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
 	}
 
-	/** The timestamp the calendar event RSVP was edited. */
+	/**
+	 * The timestamp of when the calendar event RSVP was edited
+	 */
 	get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}
 
 	/**
-	 * Fetch the calendar event RSVP.
-	 * @param options The options to fetch the calendar event RSVP with.
-	 * @returns The fetched calendar event RSVP.
-	 * @example calendarEventRsvp.fetch();
+	 * Fetch the calendar event RSVP
+	 * @param options The options to fetch the calendar event RSVP with
+	 * @returns The fetched calendar event RSVP
 	 */
 	fetch(options?: FetchOptions) {
 		return this.calendarEvent.rsvps.fetch(this.id, options);
 	}
 
 	/**
-	 * Fetch the server the calendar event RSVP belongs to.
-	 * @param options The options to fetch the server with.
-	 * @returns The fetched server.
-	 * @example calendarEventRsvp.fetchServer();
+	 * Fetch the server
+	 * @param options The options to fetch the server with
+	 * @returns The fetched server
 	 */
 	fetchServer(options?: FetchOptions) {
 		return this.calendarEvent.fetchServer(options);
 	}
 
 	/**
-	 * Fetch the user the calendar event RSVP belongs to.
-	 * @returns The fetched user.
-	 * @example calendarEventRsvp.fetchUser();
+	 * Fetch the user
+	 * @returns The fetched user
 	 */
 	fetchUser() {
 		return this.client.users.fetch(this.serverId, this.userId);
 	}
 
 	/**
-	 * Fetch the server member that created the calendar event RSVP.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example calendarEventRsvp.fetchAuthor();
+	 * Fetch the server member that created the calendar event RSVP
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
@@ -136,10 +167,9 @@ export class CalendarEventRsvp extends Base {
 	}
 
 	/**
-	 * Fetch the server member that edited the calendar event RSVP.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example calendarEventRsvp.fetchEditor();
+	 * Fetch the server member that edited the calendar event RSVP
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchEditor(options?: FetchOptions) {
 		const server = await this.fetchServer();
@@ -147,19 +177,17 @@ export class CalendarEventRsvp extends Base {
 	}
 
 	/**
-	 * Edit the calendar event RSVP.
-	 * @param status The status of the calendar event RSVP.
-	 * @returns The edited calendar event RSVP.
-	 * @example calendarEventRsvp.edit('going');
+	 * Edit the calendar event RSVP
+	 * @param status The status of the calendar event RSVP
+	 * @returns The edited calendar event RSVP
 	 */
 	edit(status: CalendarEventRsvpStatus) {
 		return this.calendarEvent.rsvps.edit(this, status) as Promise<this>;
 	}
 
 	/**
-	 * Delete the calendar event RSVP.
-	 * @returns The deleted calendar event RSVP.
-	 * @example calendarEventRsvp.delete();
+	 * Delete the calendar event RSVP
+	 * @returns The deleted calendar event RSVP
 	 */
 	async delete() {
 		await this.calendarEvent.rsvps.delete(this);

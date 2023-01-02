@@ -4,28 +4,27 @@ import { ListItem } from '../structures/listItem/ListItem';
 import { Collection } from '@discordjs/collection';
 
 /**
- * The manager of items that belong to a list channel.
- * @example new ListItemManager(channel);
+ * The manager for list items
  */
 export class ListItemManager extends BaseManager<string, ListItem> {
-	/** @param channel The list channel the items belong to. */
+	/**
+	 * @param channel The list channel
+	 */
 	constructor(public readonly channel: ListChannel) {
 		super(channel.client, channel.client.options.maxListItemCache);
 	}
 
 	/**
-	 * Fetch a item from the list channel, or cache.
-	 * @param listItem The item to fetch.
-	 * @param options The options to fetch the item with.
-	 * @returns The fetched item.
-	 * @example items.fetch(item);
+	 * Fetch a list item from the channel
+	 * @param listItem The list item
+	 * @param options The options to fetch the list item with
+	 * @returns The fetched list item
 	 */
 	fetch(listItem: string | ListItem, options?: FetchOptions): Promise<ListItem>;
 	/**
-	 * Fetch items from the channel.
-	 * @param options The options to fetch items with.
-	 * @returns The fetched items.
-	 * @example items.fetch();
+	 * Fetch list items from the channel
+	 * @param options The options to fetch the list items with
+	 * @returns The fetched list items
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, ListItem>>;
 	fetch(arg1?: string | ListItem | FetchManyOptions, arg2?: FetchOptions) {
@@ -34,7 +33,6 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
 	private async fetchSingle(listItem: string | ListItem, options?: FetchOptions) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
 		const cached = this.cache.get(listItem);
@@ -43,7 +41,6 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 		return new ListItem(this.channel, raw, options?.cache);
 	}
 
-	/** @ignore */
 	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.listItems.fetch(this.channel.id);
 		const items = new Collection<string, ListItem>();
@@ -55,11 +52,10 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	}
 
 	/**
-	 * Add a item to the list channel.
-	 * @param message The message of the item.
-	 * @param note The note of the item.
-	 * @returns The added item.
-	 * @example items.add('Hello World!');
+	 * Add a list item to the channel
+	 * @param message The message of the list item
+	 * @param note The note of the list item
+	 * @returns The added list item
 	 */
 	async add(message: string, note?: string) {
 		const raw = await this.client.api.listItems.create(this.channel.id, message, note);
@@ -67,12 +63,11 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	}
 
 	/**
-	 * Edit a item in the list channel.
-	 * @param listItem The item to edit.
-	 * @param message The message of the item.
-	 * @param note The note of the item.
-	 * @returns The edited item.
-	 * @example items.edit(item, 'Hello World!');
+	 * Edit a list item in the channel
+	 * @param listItem The list item
+	 * @param message The message of the list item
+	 * @param note The note of the list item
+	 * @returns The edited list item
 	 */
 	async edit(listItem: string | ListItem, message: string, note?: string) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
@@ -81,9 +76,8 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	}
 
 	/**
-	 * Remove a item in the list channel.
-	 * @param listItem The item to remove.
-	 * @example items.remove(item);
+	 * Remove a list item from the channel
+	 * @param listItem The list item
 	 */
 	remove(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
@@ -91,9 +85,8 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	}
 
 	/**
-	 * Complete a item in the list channel.
-	 * @param listItem The item to complete.
-	 * @example items.complete(item);
+	 * Complete a list item in the channel
+	 * @param listItem The list item
 	 */
 	complete(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
@@ -101,9 +94,8 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	}
 
 	/**
-	 * Uncomplete a item in the list channel.
-	 * @param listItem The item to uncomplete.
-	 * @example items.uncomplete(item);
+	 * Uncomplete a list item in the channel
+	 * @param listItem The list item
 	 */
 	uncomplete(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;

@@ -2,40 +2,34 @@ import { APIServerBan, RESTPostServerBanJSONBody, Routes } from 'guilded-api-typ
 import { BaseRouter } from '../BaseRouter';
 
 /**
- * The server ban router for the Guilded REST API.
- * @example new ServerBanRouter(rest);
+ * The server ban router for the Guilded REST API
  */
 export class ServerBanRouter extends BaseRouter {
 	/**
-	 * Fetch a server ban from Guilded.
-	 * @param serverId The ID of the server the ban belong to.
-	 * @param banId The ID of the server ban to fetch.
-	 * @returns The fetched server ban.
-	 * @example serverBans.fetch('abc', 'abc');
+	 * Fetch a server ban from Guilded
+	 * @param serverId The ID of the server
+	 * @param userId The ID of the user
+	 * @returns The fetched server ban
 	 */
-	fetch(serverId: string, banId: string): Promise<APIServerBan>;
+	fetch(serverId: string, userId: string): Promise<APIServerBan>;
 	/**
-	 * Fetch server bans from Guilded.
-	 * @param serverId The ID of the server the bans belong to.
-	 * @returns The fetched server bans.
-	 * @example serverBans.fetch('abc');
+	 * Fetch server bans from Guilded
+	 * @param serverId The ID of the server
+	 * @returns The fetched server bans
 	 */
 	fetch(serverId: string): Promise<APIServerBan[]>;
-	/** @ignore */
-	fetch(serverId: string, banId?: string) {
-		if (banId) return this.fetchSingle(serverId, banId);
+	fetch(serverId: string, userId?: string) {
+		if (userId) return this.fetchSingle(serverId, userId);
 		return this.fetchMany(serverId);
 	}
 
-	/** @ignore */
-	private async fetchSingle(serverId: string, banId: string) {
+	private async fetchSingle(serverId: string, userId: string) {
 		const { serverMemberBan } = await this.rest.get<{ serverMemberBan: APIServerBan }>(
-			Routes.serverBan(serverId, banId),
+			Routes.serverBan(serverId, userId),
 		);
 		return serverMemberBan;
 	}
 
-	/** @ignore */
 	private async fetchMany(serverId: string) {
 		const { serverMemberBans } = await this.rest.get<{ serverMemberBans: APIServerBan[] }>(
 			Routes.serverBans(serverId),
@@ -44,28 +38,26 @@ export class ServerBanRouter extends BaseRouter {
 	}
 
 	/**
-	 * Create a server ban on Guilded.
-	 * @param serverId The ID of the server the member belongs to.
-	 * @param memberId The ID of the server member to ban.
-	 * @param reason The reason of the server ban.
-	 * @returns The created server ban.
-	 * @example serverBans.create('abc', 'abc', 'Spamming');
+	 * Create a server ban on Guilded
+	 * @param serverId The ID of the server
+	 * @param userId The ID of the user
+	 * @param reason The reason of the server ban
+	 * @returns The created server ban
 	 */
-	async create(serverId: string, memberId: string, reason?: string) {
+	async create(serverId: string, userId: string, reason?: string) {
 		const { serverMemberBan } = await this.rest.post<
 			{ serverMemberBan: APIServerBan },
 			RESTPostServerBanJSONBody
-		>(Routes.serverBan(serverId, memberId), { reason });
+		>(Routes.serverBan(serverId, userId), { reason });
 		return serverMemberBan;
 	}
 
 	/**
-	 * Delete a server ban from Guilded.
-	 * @param serverId The ID of the server the member belongs to.
-	 * @param memberId The ID of the server member to unban.
-	 * @example serverBans.delete('abc', 'abc');
+	 * Delete a server ban from Guilded
+	 * @param serverId The ID of the server
+	 * @param userId The ID of the user
 	 */
-	delete(serverId: string, memberId: string) {
-		return this.rest.delete<void>(Routes.serverBan(serverId, memberId));
+	delete(serverId: string, userId: string) {
+		return this.rest.delete<void>(Routes.serverBan(serverId, userId));
 	}
 }

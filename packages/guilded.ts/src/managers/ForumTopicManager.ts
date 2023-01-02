@@ -9,28 +9,27 @@ import {
 import { Collection } from '@discordjs/collection';
 
 /**
- * The manager of topics that belong to a forum channel.
- * @example new ForumTopicManager(channel);
+ * The manager for forum topics
  */
 export class ForumTopicManager extends BaseManager<number, ForumTopic> {
-	/** @param channel The forum channel the topics belong to. */
+	/**
+	 * @param channel The forum channel
+	 */
 	constructor(public readonly channel: ForumChannel) {
 		super(channel.client, channel.client.options.maxForumTopicCache);
 	}
 
 	/**
-	 * Fetch a forum topic from the channel, or cache.
-	 * @param forumTopic The forum topic to fetch.
-	 * @param options The options to fetch the forum topic with.
-	 * @returns The fetched forum topic.
-	 * @example topics.fetch(forumTopic);
+	 * Fetch a forum topic from the channel
+	 * @param forumTopic The forum topic
+	 * @param options The options to fetch the forum topic with
+	 * @returns The fetched forum topic
 	 */
 	fetch(forumTopic: number | ForumTopic, options?: FetchOptions): Promise<ForumTopic>;
 	/**
-	 * Fetch forum topics from the channel.
-	 * @param options The options to fetch the forum topics with.
-	 * @returns The fetched forum topics.
-	 * @example topics.fetch();
+	 * Fetch forum topics from the channel
+	 * @param options The options to fetch the forum topics with
+	 * @returns The fetched forum topics
 	 */
 	fetch(options?: ForumTopicFetchManyOptions): Promise<Collection<number, ForumTopic>>;
 	fetch(arg1?: number | ForumTopic | ForumTopicFetchManyOptions, arg2?: FetchOptions) {
@@ -39,7 +38,6 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
 	private async fetchSingle(forumTopic: number | ForumTopic, options?: FetchOptions) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
 		const cached = this.cache.get(forumTopic);
@@ -48,7 +46,6 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 		return new ForumTopic(this.channel, raw, options?.cache);
 	}
 
-	/** @ignore */
 	private async fetchMany(options?: ForumTopicFetchManyOptions) {
 		const raw = await this.client.api.forumTopics.fetch(this.channel.id, options);
 		const forumTopics = new Collection<number, ForumTopic>();
@@ -60,10 +57,9 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Create a topic in the forum channel.
-	 * @param payload The payload of the forum topic.
-	 * @returns The created forum topic.
-	 * @example topics.create({ title: 'My Topic' });
+	 * Create a forum topic in the channel
+	 * @param payload The payload of the forum topic
+	 * @returns The created forum topic
 	 */
 	async create(payload: RESTPostForumTopicJSONBody) {
 		const raw = await this.client.api.forumTopics.create(this.channel.id, payload);
@@ -71,11 +67,10 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Edit a forum topic in the channel.
-	 * @param forumTopic The forum topic to edit.
-	 * @param payload The payload of the forum topic.
-	 * @returns The edited forum topic.
-	 * @example topics.edit(forumTopic, { title: 'My Topic' });
+	 * Edit a forum topic in the channel
+	 * @param forumTopic The forum topic
+	 * @param payload The payload of the forum topic
+	 * @returns The edited forum topic
 	 */
 	async edit(forumTopic: number | ForumTopic, payload: RESTPatchForumTopicJSONBody) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
@@ -84,9 +79,8 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Delete a forum topic from the channel.
-	 * @param forumTopic The forum topic to delete.
-	 * @example topics.delete(forumTopic);
+	 * Delete a forum topic from the channel
+	 * @param forumTopic The forum topic
 	 */
 	delete(forumTopic: number | ForumTopic) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
@@ -94,9 +88,8 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Pin a forum topic in the channel.
-	 * @param forumTopic The forum topic to pin.
-	 * @example topics.pin(forumTopic);
+	 * Pin a forum topic in the channel
+	 * @param forumTopic The forum topic
 	 */
 	pin(forumTopic: number | ForumTopic) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
@@ -104,9 +97,8 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Unpin a forum topic from the channel.
-	 * @param forumTopic The forum topic to unpin.
-	 * @example topics.unpin(forumTopic);
+	 * Unpin a forum topic from the channel
+	 * @param forumTopic The forum topic
 	 */
 	unpin(forumTopic: number | ForumTopic) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
@@ -114,9 +106,8 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Lock a forum topic in the channel.
-	 * @param forumTopic The forum topic to lock.
-	 * @example topics.lock(forumTopic);
+	 * Lock a forum topic in the channel
+	 * @param forumTopic The forum topic
 	 */
 	lock(forumTopic: number | ForumTopic) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
@@ -124,9 +115,8 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 
 	/**
-	 * Unlock a forum topic in the channel.
-	 * @param forumTopic The forum topic to unlock.
-	 * @example topics.unlock(forumTopic);
+	 * Unlock a forum topic in the channel
+	 * @param forumTopic The forum topic
 	 */
 	unlock(forumTopic: number | ForumTopic) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
@@ -134,5 +124,7 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 	}
 }
 
-/** The options for fetching forum topics. */
+/**
+ * The options for fetching forum topics
+ */
 export interface ForumTopicFetchManyOptions extends FetchManyOptions, RESTGetForumTopicsQuery {}

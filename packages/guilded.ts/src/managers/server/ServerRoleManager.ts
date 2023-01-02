@@ -6,27 +6,27 @@ import { Collection } from '@discordjs/collection';
 import { ServerMember } from '../../structures/server/ServerMember';
 
 /**
- * A manager of roles that belong to a server.
- * @example new ServerRoleManager(server);
+ * A manager for server roles
  */
 export class ServerRoleManager extends BaseManager<number, ServerRole> {
-	/** @param server The server the roles belong to. */
+	/**
+	 * @param server The server
+	 */
 	constructor(public readonly server: Server) {
 		super(server.client, server.client.options.maxServerRoleCache);
 	}
 
 	/**
-	 * Fetch roles that belong to a member.
-	 * @param member The member the roles belong to.
-	 * @param options The options to fetch the roles with.
-	 * @returns The fetched roles that belong to the member.
-	 * @example roles.fetch(member);
+	 * Fetch roles that belong to a server member
+	 * @param serverMember The server member
+	 * @param options The options to fetch the server roles with
+	 * @returns The fetched server member roles
 	 */
-	async fetch(member: string | ServerMember, options?: ServerRoleFetchManyOptions) {
-		member = member instanceof ServerMember ? member.id : member;
-		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, member);
+	async fetch(serverMember: string | ServerMember, options?: ServerRoleFetchManyOptions) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, serverMember);
 		const roles = new Collection<number, ServerRole>();
-		const cachedMember = this.server.members.cache.get(member);
+		const cachedMember = this.server.members.cache.get(serverMember);
 		for (const roleId of raw) {
 			const role = new ServerRole(this.server, { id: roleId }, options?.cache);
 			if (cachedMember)
@@ -37,38 +37,35 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	}
 
 	/**
-	 * Assign a role to a member.
-	 * @param member The member the role belongs to.
-	 * @param role The role to add to the member.
-	 * @returns The role that was added to the member.
-	 * @example roles.assign(member, role);
+	 * Assign a role to a server member
+	 * @param serverMember The server member
+	 * @param role The role
+	 * @returns The added server member role
 	 */
-	async assign(member: string | ServerMember, role: number | ServerRole) {
-		member = member instanceof ServerMember ? member.id : member;
+	async assign(serverMember: string | ServerMember, role: number | ServerRole) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
 		role = role instanceof ServerRole ? role.id : role;
-		await this.client.api.serverMembers.addRole(this.server.id, member, role);
+		await this.client.api.serverMembers.addRole(this.server.id, serverMember, role);
 		return new ServerRole(this.server, { id: role });
 	}
 
 	/**
-	 * Unassign a role from a member.
-	 * @param member The member the role belongs to.
-	 * @param role The role to remove from the member.
-	 * @returns The role that was removed from the member.
-	 * @example roles.unassign(member, role);
+	 * Unassign a role from a server member
+	 * @param serverMember The server member
+	 * @param role The role
+	 * @returns The removed server member role
 	 */
-	async unassign(member: string | ServerMember, role: number | ServerRole) {
-		member = member instanceof ServerMember ? member.id : member;
+	async unassign(serverMember: string | ServerMember, role: number | ServerRole) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
 		role = role instanceof ServerRole ? role.id : role;
-		await this.client.api.serverMembers.removeRole(this.server.id, member, role);
+		await this.client.api.serverMembers.removeRole(this.server.id, serverMember, role);
 		return new ServerRole(this.server, { id: role });
 	}
 
 	/**
-	 * Award XP to a role.
-	 * @param role The role to award XP to.
-	 * @param amount The amount of XP to award to the role.
-	 * @example roles.awardXp(role, 100);
+	 * Award XP to a server role
+	 * @param role The role
+	 * @param amount The amount of XP to award to the server role
 	 */
 	awardXp(role: number | ServerRole, amount: number) {
 		role = role instanceof ServerRole ? role.id : role;
@@ -76,8 +73,12 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	}
 }
 
-/** The options for fetching server roles. */
+/**
+ * The options for fetching server roles
+ */
 export interface ServerRoleFetchManyOptions extends FetchManyOptions {
-	/** Whether to cache the fetched member roles. */
+	/**
+	 * Whether to cache the fetched server member roles
+	 */
 	cacheMemberRoles?: boolean;
 }

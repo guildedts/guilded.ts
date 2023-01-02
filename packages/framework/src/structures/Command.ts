@@ -4,41 +4,54 @@ import { ArgumentConstructor } from './arguments/Argument';
 import { Client } from './Client';
 
 /**
- * Represents a command.
+ * Represents a command
  * @example
  * class Ping extends Command {
  *     name = 'ping';
  *
- *     execute(message) {
+ *     execute(message: Message) {
  *         message.reply('Pong!');
  *     }
  * }
  */
 export abstract class Command {
-	/** The name of the command. */
+	/**
+	 * The name of the command
+	 */
 	name!: string;
-	/** The aliases of the command. */
+	/**
+	 * The aliases of the command
+	 */
 	aliases: string[] = [];
-	/** The description of the command. */
+	/**
+	 * The description of the command
+	 */
 	description?: string;
-	/** The options of the command. */
+	/**
+	 * The arguments of the command
+	 */
 	arguments: ArgumentConstructor[] = [];
-	/** The cooldown of the command. */
+	/**
+	 * The cooldown of the command
+	 */
 	cooldown!: number;
 
-	/** The cooldowns of the command. */
+	/**
+	 * The cooldowns of the command
+	 */
 	readonly cooldowns = new Collection<string, number>();
 
-	/** @param client The client the command belongs to. */
+	/**
+	 * @param client The client
+	 */
 	constructor(public readonly client: Client) {
 		this.cooldown = this.cooldown ?? client.config.commandCooldown;
 	}
 
 	/**
-	 * Get the usage of the command.
-	 * @param serverId The ID of the server the command is used in.
-	 * @returns The usage of the command.
-	 * @example command.getUsage();
+	 * Get the usage of the command
+	 * @param serverId The ID of the server
+	 * @returns The usage of the command
 	 */
 	getUsage(serverId?: string) {
 		const prefix = serverId
@@ -50,22 +63,17 @@ export abstract class Command {
 	}
 
 	/**
-	 * The execute method of the command.
-	 * @param message The message that triggered the command.
-	 * @param args The arguments of the command.
-	 * @example
-	 * execute(message, { content }) {
-	 *     message.reply(content);
-	 * }
+	 * The execute method of the command
+	 * @param message The message that triggered the command
+	 * @param args The arguments
 	 */
 	abstract execute(message: Message, args: Record<string, unknown>): unknown;
 
 	/**
-	 * Validate the command.
-	 * @param message The message that triggered the command.
-	 * @param args The arguments of the command.
-	 * @returns The validated arguments.
-	 * @example command.validate(message, ['hello', 'world']); // { content: 'hello world' }
+	 * Validate the command
+	 * @param message The message that triggered the command
+	 * @param args The arguments
+	 * @returns The validated arguments
 	 */
 	async validate(message: Message, args: string[]): Promise<Record<string, unknown>> {
 		const cooldown = this.cooldowns.get(message.createdBy);
@@ -80,10 +88,9 @@ export abstract class Command {
 	}
 
 	/**
-	 * Validate the command arguments.
-	 * @param args The arguments to validate.
-	 * @returns The validated arguments.
-	 * @example command.validateArguments(['hello', 'world']); // { content: 'hello world' }
+	 * Validate the command arguments
+	 * @param args The arguments to validate
+	 * @returns The validated arguments
 	 */
 	async validateArguments(args: string[]) {
 		const mappedArgs: Record<string, unknown> = {};
@@ -97,14 +104,15 @@ export abstract class Command {
 	}
 
 	/**
-	 * Set a cooldown for a user.
-	 * @param userId The ID of the user to set the cooldown for.
-	 * @example command.setCooldown('abc');
+	 * Set a cooldown for a user
+	 * @param userId The ID of the user
 	 */
 	public setCooldown(userId: string) {
 		if (this.cooldown > 0) this.cooldowns.set(userId, Date.now() + this.cooldown);
 	}
 }
 
-/** The constructor for a command. */
+/**
+ * The constructor for a command
+ */
 export type CommandConstructor = new (client: Client) => Command;

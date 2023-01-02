@@ -2,35 +2,39 @@ import { ClientEvents } from 'guilded.ts';
 import { Client } from './Client';
 
 /**
- * The builder for a event.
+ * Represents an event
  * @example
- * class Ready extends Event {
- *     name = 'ready';
+ * class Ready extends Event<'ready'> {
+ *     name = 'ready' as const;
  *
- *     execute() {
- *         console.log('Ready!');
+ *     execute(client: Client) {
+ *         console.log(`Logged in as ${client.user?.name}!`);
  *     }
  * }
  */
 export abstract class Event<Event extends keyof ClientEvents = keyof ClientEvents> {
-	/** The name of the event. */
-	name!: keyof ClientEvents;
-	/** Whether the event should run once. */
+	/**
+	 * The name of the event
+	 */
+	name!: Event;
+	/**
+	 * Whether the event should only run once
+	 */
 	once?: boolean;
 
-	/** @param client The client the event belongs to. */
+	/**
+	 * @param client The client
+	 */
 	constructor(public readonly client: Client) {}
 
 	/**
-	 * The execute method of the event.
-	 * @param args The arguments of the event.
-	 * @example
-	 * execute() {
-	 *     console.log('Ready!');
-	 * }
+	 * The execute method of the event
+	 * @param args The arguments of the event
 	 */
-	abstract execute(...args: ClientEvents[keyof ClientEvents]): unknown;
+	abstract execute(...args: ClientEvents[Event]): unknown;
 }
 
-/** The constructor for a event. */
+/**
+ * The constructor for an event
+ */
 export type EventConstructor = new (client: Client) => Event;

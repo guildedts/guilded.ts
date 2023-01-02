@@ -5,31 +5,30 @@ import { CalendarEventRsvp } from '../../structures/calendarEvent/CalendarEventR
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 
 /**
- * The manager of RSVPs that belong to a calendar event.
- * @example new CalendarEventRsvpManager(calendarEvent);
+ * The manager for calendar event RSVPs
  */
 export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventRsvp> {
-	/** @param calendarEvent The calendar event the RSVPs belong to. */
+	/**
+	 * @param calendarEvent The calendar event
+	 */
 	constructor(public readonly calendarEvent: CalendarEvent) {
 		super(calendarEvent.client, calendarEvent.client.options.maxCalendarEventRsvpCache);
 	}
 
 	/**
-	 * Fetch a RSVP from the calendar event, or cache.
-	 * @param calendarEventRsvp The calendar event RSVP to fetch.
-	 * @param options The options to fetch the calendar event RSVP with.
-	 * @returns The fetched calendar event RSVP.
-	 * @example calanderEventRsvps.fetch(calendarEventRsvp);
+	 * Fetch a RSVP from the calendar event
+	 * @param calendarEventRsvp The calendar event RSVP
+	 * @param options The options to fetch the calendar event RSVP with
+	 * @returns The fetched calendar event RSVP
 	 */
 	fetch(
 		calendarEventRsvp: string | CalendarEventRsvp,
 		options?: FetchOptions,
 	): Promise<CalendarEventRsvp>;
 	/**
-	 * Fetch RSVPs from the calendar event.
-	 * @param options The options to fetch calendar event RSVPs with.
-	 * @returns The fetched calendar event RSVPs.
-	 * @example calanderEventRsvps.fetch();
+	 * Fetch RSVPs from the calendar event
+	 * @param options The options to fetch calendar event RSVPs with
+	 * @returns The fetched calendar event RSVPs
 	 */
 	fetch(options?: FetchManyOptions): Promise<Collection<string, CalendarEventRsvp>>;
 	fetch(arg1?: string | CalendarEventRsvp | FetchManyOptions, arg2?: FetchOptions) {
@@ -38,7 +37,6 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 		return this.fetchMany(arg1);
 	}
 
-	/** @ignore */
 	private async fetchSingle(
 		calendarEventRsvp: string | CalendarEventRsvp,
 		options?: FetchOptions,
@@ -57,7 +55,6 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 		return new CalendarEventRsvp(this.calendarEvent, raw, options?.cache);
 	}
 
-	/** @ignore */
 	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.calendarEventRsvps.fetch(
 			this.calendarEvent.channelId,
@@ -76,11 +73,10 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 	}
 
 	/**
-	 * Edit a RSVP in the calendar event.
-	 * @param calendarEventRsvp The calendar event RSVP to edit.
-	 * @param status The status of the RSVP.
-	 * @returns The edited calendar event RSVP.
-	 * @example calanderEventRsvps.edit(calendarEventRsvp, 'going');
+	 * Edit a RSVP in the calendar event
+	 * @param calendarEventRsvp The calendar event RSVP
+	 * @param status The status of the calendar event RSVP
+	 * @returns The edited calendar event RSVP
 	 */
 	async edit(calendarEventRsvp: string | CalendarEventRsvp, status: CalendarEventRsvpStatus) {
 		calendarEventRsvp =
@@ -97,9 +93,8 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 	}
 
 	/**
-	 * Delete a RSVP from the calendar event.
-	 * @param calendarEventRsvp The calendar event RSVP to delete.
-	 * @example calanderEventRsvps.delete(calendarEventRsvp);
+	 * Delete a RSVP from the calendar event
+	 * @param calendarEventRsvp The calendar event RSVP
 	 */
 	delete(calendarEventRsvp: string | CalendarEventRsvp) {
 		calendarEventRsvp =

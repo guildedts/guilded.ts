@@ -43,7 +43,7 @@ export interface APIMessage extends Omit<APIMessageSummary, 'deletedAt'> {
 	/**
 	 * The ID of the user who created the message
 	 *
-	 * Note: If this message has {@link APIMessage.createdByWebhookId createdByWebhookId}, this field will still be populated, but can be ignored
+	 * Note: If this message has {@link createdByWebhookId}, this field will still be populated, but can be ignored
 	 */
 	createdBy: string;
 	/**

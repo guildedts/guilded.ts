@@ -9,9 +9,9 @@ import { ServerMember } from '../../structures/server/ServerMember';
 import { Server } from '../../structures/server/Server';
 
 /**
- * Handle the ServerRolesUpdated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `ServerRolesUpdated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function rolesUpdated(client: Client, data: WebSocketServerRolesUpdateEventData) {
 	const server = await client.servers.fetch(data.serverId);
@@ -28,9 +28,9 @@ export async function rolesUpdated(client: Client, data: WebSocketServerRolesUpd
 }
 
 /**
- * Handle the BotServerMembershipCreated event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `BotServerMembershipCreated` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function botAdded(client: Client, data: WebSocketServerAddEventData) {
 	const server = new Server(client, data.server);
@@ -39,9 +39,9 @@ export async function botAdded(client: Client, data: WebSocketServerAddEventData
 }
 
 /**
- * Handle the BotServerMembershipDeleted event.
- * @param client The client the Websocket belongs to.
- * @param data The data of the event.
+ * Handle the `BotServerMembershipDeleted` event
+ * @param client The client
+ * @param data The data of the event
  */
 export async function botRemoved(client: Client, data: WebSocketServerRemoveEventData) {
 	const server = new Server(client, data.server);

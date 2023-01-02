@@ -9,35 +9,58 @@ import { Base } from './Base';
 import { ForumChannel } from './channel/ForumChannel';
 
 /**
- * Represents a topic on Guilded.
- * @example new ForumTopic(channel, rawForumTopic);
+ * Represents a forum topic on Guilded
  */
 export class ForumTopic extends Base<number> {
-	/** The ID of the server the forum topic belongs to. */
+	/**
+	 * The ID of the server
+	 */
 	readonly serverId: string;
-	/** The ID of the channel the forum topic belongs to. */
+	/**
+	 * The ID of the channel
+	 */
 	readonly channelId: string;
-	/** The title of the forum topic. */
+	/**
+	 * The title of the forum topic (`1`-`500` characters)
+	 */
 	readonly title: string;
-	/** The date the forum topic was created. */
+	/**
+	 * When the forum topic was created
+	 */
 	readonly createdAt: Date;
-	/** The ID of the user that created the forum topic. */
+	/**
+	 * The ID of the user who created the forum topic
+	 *
+	 * **Note:** If this forum topic has {@link createdByWebhookId}, this field will still be populated, but can be ignored
+	 */
 	readonly createdBy: string;
-	/** The ID of the webhook that created the forum topic. */
+	/**
+	 * The ID of the webhook that created the forum topic, if it was created by a webhook
+	 */
 	readonly createdByWebhookId?: string;
-	/** The date the forum topic was edited. */
+	/**
+	 * When the forum topic was updated, if relevant
+	 */
 	readonly editedAt?: Date;
-	/** The date the forum topic was bumped. */
+	/**
+	 * When the forum topic was bumped, if relevant
+	 *
+	 * This is updated whenever there is any activity within the forum topic
+	 */
 	readonly bumpedAt?: Date;
-	/** The content of the forum topic. */
+	/**
+	 * The content of the forum topic
+	 */
 	readonly content?: string;
-	/** The mentions of the forum topic. */
+	/**
+	 * The mentions of the forum topic
+	 */
 	readonly mentions?: APIMentions;
 
 	/**
-	 * @param channel The forum channel the topic belongs to.
-	 * @param raw The raw data of the forum topic.
-	 * @param cache Whether to cache the forum topic.
+	 * @param channel The forum channel
+	 * @param raw The data of the forum topic
+	 * @param cache Whether to cache the forum topic
 	 */
 	constructor(
 		public readonly channel: ForumChannel,
@@ -58,73 +81,88 @@ export class ForumTopic extends Base<number> {
 		if (cache) channel.topics.cache.set(this.id, this);
 	}
 
-	/** Whether the forum topic is cached. */
+	/**
+	 * Whether the forum topic is cached
+	 */
 	get isCached() {
 		return this.channel.topics.cache.has(this.id);
 	}
 
-	/** The server the forum topic belongs to. */
+	/**
+	 * The server
+	 */
 	get server() {
 		return this.channel.server;
 	}
 
-	/** The timestamp the forum topic was created. */
+	/**
+	 * The timestamp of when the forum topic was created
+	 */
 	get createdTimestamp() {
 		return this.createdAt.getTime();
 	}
 
-	/** The server member that created the forum topic. */
+	/**
+	 * The server member that created the forum topic
+	 */
 	get author() {
 		return this.server?.members.cache.get(this.createdBy);
 	}
 
-	/** The webhook that created the forun topic. */
+	/**
+	 * The webhook that created the forum topic, if it was created by a webhook
+	 */
 	get webhook() {
 		return this.createdByWebhookId
 			? this.channel.webhooks.cache.get(this.createdByWebhookId)
 			: undefined;
 	}
 
-	/** The ID of the user that created the forum topic. */
+	/**
+	 * The ID of the user that created the forum topic
+	 */
 	get authorId() {
 		return this.createdByWebhookId || this.createdBy;
 	}
 
-	/** The timestamp the forum topic was edited. */
+	/**
+	 * The timestamp of when the forum topic was edited, if relevant
+	 */
 	get editedTimestamp() {
 		return this.editedAt?.getTime();
 	}
 
-	/** The timestamp the forum topic was bumped. */
+	/**
+	 * The timestamp of when the forum topic was bumped, if relevant
+	 *
+	 * This is updated whenever there is any activity within the forum topic
+	 */
 	get bumpedTimestamp() {
 		return this.bumpedAt?.getTime();
 	}
 
 	/**
-	 * Fetch the forum topic.
-	 * @param options The options to fetch the forum topic with.
-	 * @returns The fetched forum topic.
-	 * @example forumTopic.fetch();
+	 * Fetch the forum topic
+	 * @param options The options to fetch the forum topic with
+	 * @returns The fetched forum topic
 	 */
 	fetch(options?: FetchOptions) {
 		return this.channel.topics.fetch(this, options);
 	}
 
 	/**
-	 * Fetch the server the forum topic belongs to.
-	 * @param options The options to fetch the server with.
-	 * @returns The fetched server.
-	 * @example forumTopic.fetchServer();
+	 * Fetch the server
+	 * @param options The options to fetch the server with
+	 * @returns The fetched server
 	 */
 	fetchServer(options?: FetchOptions) {
 		return this.channel.fetchServer(options);
 	}
 
 	/**
-	 * Fetch the server member that created the forum topic.
-	 * @param options The options to fetch the server member with.
-	 * @returns The fetched server member.
-	 * @example forumTopic.fetchAuthor();
+	 * Fetch the server member that created the forum topic
+	 * @param options The options to fetch the server member with
+	 * @returns The fetched server member
 	 */
 	async fetchAuthor(options?: FetchOptions) {
 		const server = await this.fetchServer();
@@ -132,10 +170,9 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Fetch the webhook that created the forum topic.
-	 * @param options The options to fetch the webhook with.
-	 * @returns The fetched webhook.
-	 * @example forumTopic.fetchWebhook();
+	 * Fetch the webhook that created the forum topic
+	 * @param options The options to fetch the webhook with
+	 * @returns The fetched webhook
 	 */
 	fetchWebhook(options?: FetchOptions) {
 		return this.createdByWebhookId
@@ -144,19 +181,17 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Edit the forum topic.
-	 * @param payload The payload of the forum topic.
-	 * @returns The edited forum topic.
-	 * @example forumTopic.edit({ title: 'New title' });
+	 * Edit the forum topic
+	 * @param payload The payload of the forum topic
+	 * @returns The edited forum topic
 	 */
 	edit(payload: RESTPatchForumTopicJSONBody) {
 		return this.channel.topics.edit(this, payload) as Promise<this>;
 	}
 
 	/**
-	 * Delete the forum topic.
-	 * @returns The deleted forum topic.
-	 * @example forumTopic.delete();
+	 * Delete the forum topic
+	 * @returns The deleted forum topic
 	 */
 	async delete() {
 		await this.channel.topics.delete(this);
@@ -164,9 +199,8 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Pin the forum topic.
-	 * @returns The pinned forum topic.
-	 * @example forumTopic.pin();
+	 * Pin the forum topic
+	 * @returns The pinned forum topic
 	 */
 	async pin() {
 		await this.channel.topics.pin(this);
@@ -174,9 +208,8 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Unpin the forum topic.
-	 * @returns The unpinned forum topic.
-	 * @example forumTopic.unpin();
+	 * Unpin the forum topic
+	 * @returns The unpinned forum topic
 	 */
 	async unpin() {
 		await this.channel.topics.unpin(this);
@@ -184,9 +217,8 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Lock the forum topic.
-	 * @returns The locked forum topic.
-	 * @example forumTopic.lock();
+	 * Lock the forum topic
+	 * @returns The locked forum topic
 	 */
 	async lock() {
 		await this.channel.topics.lock(this);
@@ -194,9 +226,8 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Unlock the forum topic.
-	 * @returns The unlocked forum topic.
-	 * @example forumTopic.unlock();
+	 * Unlock the forum topic
+	 * @returns The unlocked forum topic
 	 */
 	async unlock() {
 		await this.channel.topics.unlock(this);

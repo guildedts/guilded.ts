@@ -11,30 +11,55 @@ import {
 const { version } = require('../package.json');
 
 /**
- * The Websocket manager for the Guilded API.
- * @example new WebsocketManager({ version: 1, token: 'token' });
+ * The Websocket manager for the Guilded API
+ * @example
+ * const ws = new WebsocketManager({ version: 1, token: 'token' });
+ *
+ * ws.on('ready', (user) => console.log(`Connected as ${user.name}!`));
+ *
+ * ws.connect();
  */
 export class WebsocketManager extends EventEmitter {
-	/** The auth token for the websocket. */
+	/**
+	 * The authorization token to use for the WebSocket
+	 */
 	token?: string;
-	/** The version of the Websocket API. */
+	/**
+	 * The version of the WebSocket API to use
+	 */
 	readonly version?: number;
-	/** The proxy URL of the Websocket API. */
+	/**
+	 * The URL to use for the WebSocket
+	 */
 	readonly proxyUrl?: string;
-	/** The websocket. */
+	/**
+	 * The WebSocket
+	 */
 	socket?: Websocket;
-	/** The date the websocket is ready. */
+	/**
+	 * When the WebSocket became ready
+	 */
 	readyAt?: Date;
-	/** The ping of the websocket connection. */
+	/**
+	 * The ping of the WebSocket connection
+	 */
 	ping?: number;
-	/** The date the websocket was pinged. */
+	/**
+	 * When the WebSocket was pinged
+	 */
 	pingedAt?: Date;
-	/** The anount of times the websocket has been reconnected. */
+	/**
+	 * The number of times the WebSocket reconnected
+	 */
 	reconnects = 0;
-	/** The last message ID. */
+	/**
+	 * The ID of the last WebSocket message
+	 */
 	lastMessageId?: string;
 
-	/** @param options The options for the Websocket manager. */
+	/**
+	 * @param options The options for the WebSocket manager
+	 */
 	constructor(public readonly options: WebsocketOptions) {
 		super();
 		this.token = options.token;
@@ -42,36 +67,45 @@ export class WebsocketManager extends EventEmitter {
 		if (!this.proxyUrl) this.version = options.version;
 	}
 
-	/** Whether the websocket is ready. */
+	/**
+	 * Whether the WebSocket is ready
+	 */
 	get isReady() {
 		return !!this.readyAt;
 	}
 
-	/** The timestamp of when the websocket is ready. */
+	/**
+	 * The timestamp of when the WebSocket became ready
+	 */
 	get readyTimestamp() {
 		return this.readyAt?.getTime();
 	}
 
-	/** The timestamp the websocket was pinged. */
+	/**
+	 * The timestamp of when the WebSocket was pinged
+	 */
 	get pingedTimestamp() {
 		return this.pingedAt?.getTime();
 	}
 
-	/** How long the websocket has been connected. */
+	/**
+	 * The duration of how long the WebSocket has been connected
+	 */
 	get uptime() {
 		return this.isReady ? Date.now() - this.readyTimestamp! : undefined;
 	}
 
-	/** The URL of the Websocket. */
+	/**
+	 * The URL to use for the WebSocket
+	 */
 	get url() {
 		return this.proxyUrl ? this.proxyUrl : `wss://www.guilded.gg/websocket/v${this.version}`;
 	}
 
 	/**
-	 * Connect to the Websocket API.
-	 * @param token The auth token.
-	 * @returns The Websocket manager.
-	 * @example ws.connect('token');
+	 * Connect to the WebSocket API
+	 * @param token The authorization token to use for the WebSocket
+	 * @returns The WebSocket manager
 	 */
 	connect(token: string = this.token!) {
 		this.token = token;
@@ -94,9 +128,8 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/**
-	 * Disconnect from the Websocket API.
-	 * @returns The websocket manager.
-	 * @example ws.disconnect();
+	 * Disconnect from the Websocket API
+	 * @returns The WebSocket manager
 	 */
 	disconnect() {
 		if (!this.socket || !this.socket.OPEN) throw new Error('Websocket is not connected.');
@@ -104,7 +137,9 @@ export class WebsocketManager extends EventEmitter {
 		return this;
 	}
 
-	/** @ignore */
+	/**
+	 * Handle disconnect
+	 */
 	private onSocketDisconnect() {
 		this.socket = undefined;
 		this.readyAt = undefined;
@@ -115,17 +150,20 @@ export class WebsocketManager extends EventEmitter {
 		this.emit('reconnect', this);
 	}
 
-	/** @ignore */
-	private onSocketMessage({ op, t, d, s }: WebSocketPayload) {
-		if (s) this.lastMessageId = s;
-		switch (op) {
+	/**
+	 * Handle recieved data
+	 * @param data The data
+	 */
+	private onSocketMessage(data: WebSocketPayload) {
+		if (data.s) this.lastMessageId = data.s;
+		switch (data.op) {
 			case WebSocketOpCode.Event:
-				this.emit('event', t as any, d);
+				this.emit('event', data.t as any, data.d);
 				break;
 			case WebSocketOpCode.Ready:
 				this.socket?.emit('ping');
 				this.readyAt = new Date();
-				this.emit('ready', (d as WebSocketReadyData).user);
+				this.emit('ready', (data.d as WebSocketReadyData).user);
 				break;
 			case WebSocketOpCode.Resume:
 				delete this.lastMessageId;
@@ -133,65 +171,93 @@ export class WebsocketManager extends EventEmitter {
 		}
 	}
 
-	/** @ignore */
+	/**
+	 * Handle ping
+	 */
 	private onSocketPing() {
 		this.pingedAt = new Date();
 		this.socket!.ping();
 	}
 
-	/** @ignore */
+	/**
+	 * Handle pong
+	 */
 	private onSocketPong() {
 		this.ping = Date.now() - this.pingedTimestamp!;
 	}
 }
 
 export interface WebsocketManager {
-	/** @ignore */
 	on<Event extends keyof WSManagerEvents>(
 		event: Event,
 		listener: (...args: WSManagerEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	once<Event extends keyof WSManagerEvents>(
 		event: Event,
 		listener: (...args: WSManagerEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	off<Event extends keyof WSManagerEvents>(
 		event: Event,
 		listener: (...args: WSManagerEvents[Event]) => any,
 	): this;
-	/** @ignore */
 	emit<Event extends keyof WSManagerEvents>(
 		event: Event,
 		...args: WSManagerEvents[Event]
 	): boolean;
 }
 
-/** The options for the Websocket manager. */
+/**
+ * The options for the Websocket manager
+ */
 export interface WebsocketOptions {
-	/** The auth token for the Websocket API. */
+	/**
+	 * The authorization token to use for the WebSocket
+	 */
 	token?: string;
-	/** The version of the Websocket API. */
+	/**
+	 * The version of the WebSocket API to use
+	 *
+	 * @default 1
+	 */
 	version?: number;
-	/** The proxy URL of the Websocket API. */
+	/**
+	 * The URL to use for the WebSocket
+	 */
 	proxyUrl?: string;
-	/** The maximum number of reconnect attempts. */
+	/**
+	 * The maximum number of reconnect attempts
+	 *
+	 * @default 5
+	 */
 	maxReconnects?: number;
-	/** Whether to allow reconnects. */
+	/**
+	 * Whether to allow reconnects
+	 *
+	 * @default true
+	 */
 	reconnect?: boolean;
 }
 
 /** The websocket manager events. */
 export interface WSManagerEvents {
-	/** Emitted when the Websocket is connected. */
+	/**
+	 * Emitted whenever the Websocket is ready
+	 */
 	ready: [user: APIBot];
-	/** Emitted when the Websocket is reconnected. */
+	/**
+	 * Emitted whenever the Websocket is reconnected
+	 */
 	reconnect: [ws: WebsocketManager];
-	/** Emitted when the Websocket is disconnected. */
+	/**
+	 * Emitted whenever the Websocket is disconnected
+	 */
 	disconnect: [ws: WebsocketManager];
-	/** Emitted when a message is received. */
+	/**
+	 * Emitted whenever a message is received
+	 */
 	raw: [data: WebSocketPayload];
-	/** Emitted when data is received from the Websocket API. */
+	/**
+	 * Emitted whenever an event is received
+	 */
 	event: [event: WebSocketEvent, data: unknown];
 }

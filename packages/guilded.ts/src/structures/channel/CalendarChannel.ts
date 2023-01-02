@@ -4,17 +4,18 @@ import { Client } from '../Client';
 import { Channel } from './Channel';
 
 /**
- * Represents a calendar channel on Guilded.
- * @example new CalendarChannel(client, rawChannel);
+ * Represents a calendar channel on Guilded
  */
 export class CalendarChannel extends Channel {
-	/** The manager of events that belong to the calendar channel. */
+	/**
+	 * The manager for calendar events
+	 */
 	readonly events: CalendarEventManager;
 
 	/**
-	 * @param client The client the calendar channel belongs to.
-	 * @param raw The raw data of the calendar channel.
-	 * @param cache Whether to cache the calendar channel.
+	 * @param client The client
+	 * @param raw The data of the calendar channel
+	 * @param cache Whether to cache the calendar channel
 	 */
 	constructor(client: Client, raw: APIChannel, cache?: boolean) {
 		super(client, raw, cache);
@@ -22,10 +23,9 @@ export class CalendarChannel extends Channel {
 	}
 
 	/**
-	 * Creates a event in the calendar channel.
-	 * @param payload The payload of the calendar event.
-	 * @returns The created calendar event.
-	 * @example channel.createEvent({ name: 'Event!' });
+	 * Create a calendar event in the channel
+	 * @param payload The payload of the calendar event
+	 * @returns The created calendar event
 	 */
 	createEvent(payload: RESTPostCalendarEventJSONBody) {
 		return this.events.create(payload);
