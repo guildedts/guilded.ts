@@ -4,7 +4,7 @@ import {
 	RESTGetMessagesQuery,
 	RESTPutMessageJSONBody,
 } from 'guilded-api-typings';
-import { Embed } from '@guildedts/builders';
+import { EmbedBuilder } from '@guildedts/builders';
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { Message } from '../../structures/message/Message';
 import { ChatChannel } from '../../structures/channel/ChatChannel';
@@ -117,7 +117,7 @@ export interface MessagePayload extends Omit<RESTPostMessageJSONBody, 'embeds'> 
 	/**
 	 * The embeds of the message
 	 */
-	embeds?: (Embed | APIEmbed)[];
+	embeds?: (EmbedBuilder | APIEmbed)[];
 }
 
 /**
@@ -127,15 +127,18 @@ export interface MessageEditPayload extends Omit<RESTPutMessageJSONBody, 'embeds
 	/**
 	 * The embeds of the message
 	 */
-	embeds?: (Embed | APIEmbed)[];
+	embeds?: (EmbedBuilder | APIEmbed)[];
 }
 
 /**
  * The resolvable payload for creating a message
  */
-export type MessagePayloadResolvable = string | (Embed | APIEmbed)[] | MessagePayload;
+export type MessagePayloadResolvable = string | (EmbedBuilder | APIEmbed)[] | MessagePayload;
 
 /**
  * The resolvable payload for editing a message
  */
-export type MessageEditPayloadResolvable = string | (Embed | APIEmbed)[] | MessageEditPayload;
+export type MessageEditPayloadResolvable =
+	| string
+	| (EmbedBuilder | APIEmbed)[]
+	| MessageEditPayload;

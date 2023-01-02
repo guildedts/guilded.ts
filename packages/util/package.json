@@ -29,13 +29,5 @@
 		"build": "pnpm clear && tsc",
 		"clear": "rimraf dist",
 		"lint": "eslint src"
-	},
-	"dependencies": {
-		"lodash.camelcase": "^4.3.0",
-		"lodash.snakecase": "^4.1.1"
-	},
-	"devDependencies": {
-		"@types/lodash.camelcase": "^4.3.7",
-		"@types/lodash.snakecase": "^4.1.7"
 	}
 }

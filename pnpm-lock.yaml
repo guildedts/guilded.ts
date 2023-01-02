@@ -128,17 +128,7 @@ importers:
             node-fetch: 2.6.7
 
     packages/util:
-        specifiers:
-            '@types/lodash.camelcase': ^4.3.7
-            '@types/lodash.snakecase': ^4.1.7
-            lodash.camelcase: ^4.3.0
-            lodash.snakecase: ^4.1.1
-        dependencies:
-            lodash.camelcase: 4.3.0
-            lodash.snakecase: 4.1.1
-        devDependencies:
-            '@types/lodash.camelcase': 4.3.7
-            '@types/lodash.snakecase': 4.1.7
+        specifiers: {}
 
     packages/ws:
         specifiers:
@@ -1158,31 +1148,6 @@ packages:
         resolution:
             {
                 integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==,
-            }
-        dev: true
-
-    /@types/lodash.camelcase/4.3.7:
-        resolution:
-            {
-                integrity: sha512-Nfi6jpo9vuEOSIJP+mpbTezKyEt75DQlbwjiDvs/JctWkbnHDoyQo5lWqdvgNiJmVUjcmkfvlrvSEgJYvurOKg==,
-            }
-        dependencies:
-            '@types/lodash': 4.14.186
-        dev: true
-
-    /@types/lodash.snakecase/4.1.7:
-        resolution:
-            {
-                integrity: sha512-nv9M+JJokFyfZ9QmaWVXZu2DfT40K0GictZaA8SwXczp3oCzMkjp7PtvUBQyvdoG9SnlCpoRXZDIVwQRzJbd9A==,
-            }
-        dependencies:
-            '@types/lodash': 4.14.186
-        dev: true
-
-    /@types/lodash/4.14.186:
-        resolution:
-            {
-                integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==,
             }
         dev: true
 
@@ -4344,26 +4309,12 @@ packages:
             p-locate: 5.0.0
         dev: true
 
-    /lodash.camelcase/4.3.0:
-        resolution:
-            {
-                integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==,
-            }
-        dev: false
-
     /lodash.merge/4.6.2:
         resolution:
             {
                 integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==,
             }
         dev: true
-
-    /lodash.snakecase/4.1.1:
-        resolution:
-            {
-                integrity: sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==,
-            }
-        dev: false
 
     /lodash.startcase/4.4.0:
         resolution:

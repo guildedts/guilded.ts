@@ -3,7 +3,7 @@ import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
 import { Collection } from '@discordjs/collection';
 import { APIEmbed, RESTPostWebhookMessageJSONBody } from 'guilded-api-typings';
-import { Embed } from '@guildedts/builders';
+import { EmbedBuilder } from '@guildedts/builders';
 
 /**
  * The manager for webhooks
@@ -105,10 +105,13 @@ export interface WebhookMessagePayload extends Omit<RESTPostWebhookMessageJSONBo
 	/**
 	 * The embeds of the message
 	 */
-	embeds?: (Embed | APIEmbed)[];
+	embeds?: (EmbedBuilder | APIEmbed)[];
 }
 
 /**
  * The resolvable payload for creating a webhook message
  */
-export type WebhookMessagePayloadResolvable = string | (Embed | APIEmbed)[] | WebhookMessagePayload;
+export type WebhookMessagePayloadResolvable =
+	| string
+	| (EmbedBuilder | APIEmbed)[]
+	| WebhookMessagePayload;

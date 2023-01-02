@@ -1,4 +1,4 @@
-import { Embed, inlineCode, Message, userMention } from 'guilded.ts';
+import { Color, EmbedBuilder, inlineCode, Message, userMention } from 'guilded.ts';
 import { Event } from '../structures/Event';
 
 /**
@@ -77,11 +77,11 @@ export default class CommandHandler extends Event<'messageCreate'> {
 		message.delete();
 		message.channel.send({
 			embeds: [
-				new Embed()
-					.setColor('Red')
+				new EmbedBuilder()
+					.setColor(Color.Red)
 					.setTitle(userMention(message.createdBy))
 					.setDescription(error)
-					.setFooter(message.content),
+					.setFooter({ text: message.content! }),
 			],
 			isPrivate: true,
 		});
