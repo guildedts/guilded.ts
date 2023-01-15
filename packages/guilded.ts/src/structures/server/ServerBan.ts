@@ -12,56 +12,62 @@ export class ServerBan extends Base {
 	 * The user
 	 */
 	readonly user: User;
-	/**
-	 * The reason of the server ban
-	 */
-	readonly reason?: string;
-	/**
-	 * The ID of the user that created the server ban
-	 */
-	readonly createdBy: string;
-	/**
-	 * When the server ban was created
-	 */
-	readonly createdAt: Date;
 
 	/**
 	 * @param server The server
-	 * @param raw The data of the server ban
+	 * @param data The data of the server ban
 	 * @param cache Whether to cache the server ban
 	 */
 	constructor(
 		public readonly server: Server,
-		public readonly raw: APIServerBan,
+		public readonly data: APIServerBan,
 		cache = server.client.options.cacheServerBans ?? true,
 	) {
-		super(server.client, raw.user.id);
-		this.user = new User(server.client, raw.user);
-		this.reason = raw.reason;
-		this.createdBy = raw.createdBy;
-		this.createdAt = new Date(raw.createdAt);
-		if (cache) server.bans.cache.set(this.id, this);
+		super(server.client);
+		this.user = new User(this.client, data.user);
+		if (cache) server.bans.cache.set(this.user.id, this);
 	}
 
 	/**
 	 * Whether the server ban is cached
 	 */
 	get isCached() {
-		return this.server.bans.cache.has(this.id);
+		return this.server.bans.cache.has(this.user.id);
+	}
+
+	/**
+	 * The reason of the server ban
+	 */
+	get reason() {
+		return this.data.reason ?? null;
+	}
+
+	/**
+	 * The ID of the user that created the server ban
+	 */
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
 	 * The user that created the server ban
 	 */
-	get author() {
-		return this.client.users.cache.get(this.createdBy);
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The timestamp of when the server ban was created
+	 * Whether the client user created the server ban
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
+	}
+
+	/**
+	 * When the server ban was created
+	 */
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
@@ -74,20 +80,19 @@ export class ServerBan extends Base {
 	}
 
 	/**
-	 * Fetch the server member that created the server ban
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that created the server ban
+	 * @returns The fetched user
 	 */
-	fetchAuthor(options?: FetchOptions) {
-		return this.server.members.fetch(this.createdBy, options);
+	fetchCreator() {
+		return this.client.users.fetch(this.server.id, this.creatorId);
 	}
 
 	/**
-	 * Remove the server ban from the server
-	 * @returns The server ban
+	 * Unban the user from the server
+	 * @returns The unbanned user
 	 */
 	async remove() {
 		await this.server.bans.remove(this);
-		return this;
+		return this.user;
 	}
 }

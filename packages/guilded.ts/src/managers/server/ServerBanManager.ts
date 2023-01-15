@@ -35,7 +35,7 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	}
 
 	private async fetchSingle(serverBan: string | ServerBan, options?: FetchOptions) {
-		serverBan = serverBan instanceof ServerBan ? serverBan.id : serverBan;
+		serverBan = serverBan instanceof ServerBan ? serverBan.user.id : serverBan;
 		const cached = this.cache.get(serverBan);
 		if (cached && !options?.force) return cached;
 		const raw = await this.client.api.serverBans.fetch(this.server.id, serverBan);
@@ -59,7 +59,7 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 * @returns The created server ban
 	 */
 	async create(serverMember: string | ServerMember, reason?: string) {
-		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		serverMember = serverMember instanceof ServerMember ? serverMember.user.id : serverMember;
 		const raw = await this.client.api.serverBans.create(this.server.id, serverMember, reason);
 		return new ServerBan(this.server, raw);
 	}
@@ -69,7 +69,7 @@ export class ServerBanManager extends BaseManager<string, ServerBan> {
 	 * @param serverBan The server ban
 	 */
 	remove(serverBan: string | ServerBan) {
-		serverBan = serverBan instanceof ServerBan ? serverBan.id : serverBan;
+		serverBan = serverBan instanceof ServerBan ? serverBan.user.id : serverBan;
 		return this.client.api.serverBans.delete(this.server.id, serverBan);
 	}
 }

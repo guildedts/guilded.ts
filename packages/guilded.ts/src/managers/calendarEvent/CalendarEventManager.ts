@@ -58,26 +58,26 @@ export class CalendarEventManager extends BaseManager<number, CalendarEvent> {
 
 	/**
 	 * Create a calendar event in the channel
-	 * @param payload The payload of the calendar event
+	 * @param options The options to create the calendar event with
 	 * @returns The created calendar event
 	 */
-	async create(payload: RESTPostCalendarEventJSONBody) {
-		const raw = await this.client.api.calendarEvents.create(this.channel.id, payload);
+	async create(options: RESTPostCalendarEventJSONBody) {
+		const raw = await this.client.api.calendarEvents.create(this.channel.id, options);
 		return new CalendarEvent(this.channel, raw);
 	}
 
 	/**
-	 * Edit a calendar event in the channel
+	 * Update a calendar event in the channel
 	 * @param calendarEvent The calendar event
-	 * @param payload The payload of the calendar event
-	 * @returns The edited calendar event
+	 * @param options The options to update the calendar event with
+	 * @returns The updated calendar event
 	 */
-	async edit(calendarEvent: number | CalendarEvent, payload: RESTPatchCalendarEventJSONBody) {
+	async update(calendarEvent: number | CalendarEvent, options: RESTPatchCalendarEventJSONBody) {
 		calendarEvent = calendarEvent instanceof CalendarEvent ? calendarEvent.id : calendarEvent;
 		const raw = await this.client.api.calendarEvents.edit(
 			this.channel.id,
 			calendarEvent,
-			payload,
+			options,
 		);
 		return new CalendarEvent(this.channel, raw);
 	}

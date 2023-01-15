@@ -11,57 +11,6 @@ import { FetchOptions } from '../../managers/BaseManager';
  */
 export class Server extends Base {
 	/**
-	 * The ID of the user that created the server
-	 */
-	readonly ownerId: string;
-	/**
-	 * The type of server designated from the server's settings page
-	 */
-	readonly type?: ServerType;
-	/**
-	 * The name of the server
-	 */
-	readonly name: string;
-	/**
-	 * The URL of the server
-	 *
-	 * For example, a value of "Guilded-Official" means the server can be accessible from https://www.guilded.gg/Guilded-Official
-	 */
-	readonly url?: string;
-	/**
-	 * The description of the server
-	 */
-	readonly about?: string;
-	/**
-	 * The avatar of the server
-	 */
-	readonly avatar?: string;
-	/**
-	 * The banner of the server
-	 */
-	readonly banner?: string;
-	/**
-	 * The timezone of the server
-	 */
-	readonly timezone?: string;
-	/**
-	 * Whether the server is verified
-	 *
-	 * @default false
-	 */
-	readonly isVerified?: boolean;
-	/**
-	 * The ID of the default channel in the server
-	 *
-	 * Useful for welcome messages
-	 */
-	readonly defaultChannelId?: string;
-	/**
-	 * When the server was created
-	 */
-	readonly createdAt: Date;
-
-	/**
 	 * The manager for members
 	 */
 	readonly members: ServerMemberManager;
@@ -76,26 +25,15 @@ export class Server extends Base {
 
 	/**
 	 * @param client The client
-	 * @param raw The data of the server
+	 * @param data The data of the server
 	 * @param cache Whether to cache the server
 	 */
 	constructor(
 		client: Client,
-		public readonly raw: APIServer,
+		public readonly data: APIServer,
 		cache = client.options.cacheServers ?? true,
 	) {
-		super(client, raw.id);
-		this.ownerId = raw.ownerId;
-		this.type = raw.type;
-		this.name = raw.name;
-		this.url = raw.url;
-		this.about = raw.about;
-		this.avatar = raw.avatar;
-		this.banner = raw.banner;
-		this.timezone = raw.timezone;
-		this.isVerified = raw.isVerified;
-		this.defaultChannelId = raw.defaultChannelId;
-		this.createdAt = new Date(raw.createdAt);
+		super(client);
 		this.members = new ServerMemberManager(this);
 		this.bans = new ServerBanManager(this);
 		this.roles = new ServerRoleManager(this);
@@ -110,75 +48,116 @@ export class Server extends Base {
 	}
 
 	/**
+	 * The ID of the server
+	 */
+	get id() {
+		return this.data.id;
+	}
+
+	/**
+	 * The ID of the user that created the server
+	 */
+	get ownerId() {
+		return this.data.ownerId;
+	}
+
+	/**
 	 * The server member that created the server
 	 */
 	get owner() {
-		return this.members.cache.get(this.ownerId);
+		return this.members.cache.get(this.ownerId) ?? null;
 	}
 
 	/**
-	 * Whether the server is a team server
+	 * Whether the client user created the server
 	 */
-	get isTeam() {
-		return this.type === ServerType.Team;
-	}
-
-	/** Whether the server is a organization server. */
-	get isOrganization() {
-		return this.type === ServerType.Organization;
+	get isOwner() {
+		return this.ownerId === this.client.user?.id;
 	}
 
 	/**
-	 * Whether the server is a community server
+	 * The type of server designated from the server's settings page
 	 */
-	get isCommunity() {
-		return this.type === ServerType.Community;
+	get type() {
+		return this.data.type ?? null;
 	}
 
 	/**
-	 * Whether the server is a clan server
+	 * The name of the server
 	 */
-	get isClan() {
-		return this.type === ServerType.Clan;
+	get name() {
+		return this.data.name;
 	}
 
 	/**
-	 * Whether the server is a guild server
+	 * The vanity URL of the server
+	 *
+	 * For example, a value of "Guilded-Official" means the server can be accessible from https://www.guilded.gg/Guilded-Official
 	 */
-	get isGuild() {
-		return this.type === ServerType.Guild;
+	get vanityUrl() {
+		return this.data.url ?? null;
 	}
 
 	/**
-	 * Whether the server is a friends server
+	 * The description of the server
 	 */
-	get isFriends() {
-		return this.type === ServerType.Friends;
+	get description() {
+		return this.data.about ?? null;
 	}
 
 	/**
-	 * Whether the server is a streaming server
+	 * The avatar of the server
 	 */
-	get isStreaming() {
-		return this.type === ServerType.Streaming;
+	get avatar() {
+		return this.data.avatar ?? null;
 	}
 
 	/**
-	 * Whether the server is another type
+	 * The banner of the server
 	 */
-	get isOther() {
-		return this.type === ServerType.Other;
+	get banner() {
+		return this.data.banner ?? null;
 	}
 
 	/**
-	 * The default channel in the server
+	 * The timezone of the server
+	 */
+	get timezone() {
+		return this.data.timezone ?? null;
+	}
+
+	/**
+	 * Whether the server is verified
+	 */
+	get isVerified() {
+		return this.data.isVerified ?? false;
+	}
+
+	/**
+	 * The ID of the default channel of the server
+	 *
+	 * Useful for welcome messages
+	 */
+	get defaultChannelId() {
+		return this.data.defaultChannelId ?? null;
+	}
+
+	/**
+	 * The default channel of the server
 	 *
 	 * Useful for welcome messages
 	 */
 	get defaultChannel() {
 		return this.defaultChannelId
-			? this.client.channels.cache.get(this.defaultChannelId)
-			: undefined;
+			? this.client.channels.cache.get(this.defaultChannelId) ?? null
+			: null;
+	}
+
+	/**
+	 * When the server was created
+	 */
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
@@ -191,32 +170,31 @@ export class Server extends Base {
 	}
 
 	/**
-	 * Fetch the server member that created the server
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that created the server
+	 * @returns The fetched user
 	 */
-	fetchOwner(options?: FetchOptions) {
-		return this.members.fetch(this.ownerId, options);
+	fetchOwner() {
+		return this.client.users.fetch(this.id, this.ownerId);
 	}
 
 	/**
-	 * Fetch the default channel in the server
+	 * Fetch the default channel of the server
 	 * @param options The options to fetch the channel with
-	 * @returns The fetched channel
+	 * @returns The fetched channel, if present
 	 */
-	fetchDefaultChannel(options?: FetchOptions) {
+	async fetchDefaultChannel(options?: FetchOptions) {
 		return this.defaultChannelId
 			? this.client.channels.fetch(this.defaultChannelId, options)
-			: undefined;
+			: null;
 	}
 
 	/**
 	 * Create a channel in the server
-	 * @param payload The payload of the channel
+	 * @param options The options to create the channel with
 	 * @returns The created channel
 	 */
-	createChannel(payload: Omit<RESTPostChannelJSONBody, 'serverId'>) {
-		return this.client.channels.create({ serverId: this.id, ...payload });
+	createChannel(options: Omit<RESTPostChannelJSONBody, 'serverId'>) {
+		return this.client.channels.create({ serverId: this.id, ...options });
 	}
 
 	/**
@@ -224,7 +202,7 @@ export class Server extends Base {
 	 * @returns The server
 	 */
 	async leave() {
-		await this.members.kick(this.client.user!.id);
+		await this.members.kick('@me');
 		return this;
 	}
 }

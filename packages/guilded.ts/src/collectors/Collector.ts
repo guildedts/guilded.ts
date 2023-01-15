@@ -6,44 +6,32 @@ import { Client } from '../structures/Client';
 /**
  * The collector of a data model
  */
-export class Collector<Model extends Base<any>> extends EventEmitter {
+export class Collector<K extends string | number, V extends Base> extends EventEmitter {
 	/**
 	 * The collected data
 	 */
-	readonly collected: Collection<Model['id'], Model>;
+	readonly collected = new Collection<K, V>();
 	/**
 	 * When the collector was created
 	 */
-	readonly createdAt: Date;
+	readonly createdAt = new Date();
 	/**
 	 * When the collector ended
 	 */
-	endedAt?: Date;
+	endedAt: Date | null = null;
 	/**
 	 * The idle timeout for the collector
 	 */
-	private idleTimeout?: NodeJS.Timeout;
+	private idleTimeout: NodeJS.Timeout | null = null;
 
 	/**
 	 * @param client The client
 	 * @param options The options for the collector
 	 */
-	constructor(
-		public readonly client: Client,
-		public readonly options: CollectorOptions<Model> = {},
-	) {
+	constructor(public readonly client: Client, public readonly options: CollectorOptions<V> = {}) {
 		super();
-		this.createdAt = new Date();
-		this.collected = new Collection();
 		if (options.time) setTimeout(this.end.bind(this), options.time);
 		if (options.idle) this.idleTimeout = setTimeout(this.end.bind(this), options.idle);
-	}
-
-	/**
-	 * The timestamp of when the collector was created
-	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
 	}
 
 	/**
@@ -51,13 +39,6 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 	 */
 	get isEnded() {
 		return !!this.endedAt;
-	}
-
-	/**
-	 * The timestamp of when the collector was ended
-	 */
-	get endedTimestamp() {
-		return this.endedAt?.getTime();
 	}
 
 	/**
@@ -80,83 +61,84 @@ export class Collector<Model extends Base<any>> extends EventEmitter {
 
 	/**
 	 * Collect an item
-	 * @param item The item
+	 * @param key The key of the entry
+	 * @param value The value of the entry
 	 * @returns The collected item
 	 */
-	async collect(item: Model) {
-		const filter = this.options.filter ? await this.options.filter(item) : true;
+	async collect(key: K, value: V) {
+		const filter = this.options.filter ? await this.options.filter(value) : true;
 		if (this.isEnded || !filter) return;
-		this.collected.set(item.id, item);
-		this.emit('collect', item);
+		this.collected.set(key, value);
+		this.emit('collect', value);
 		if (this.idleTimeout) {
 			clearTimeout(this.idleTimeout);
 			this.idleTimeout = setTimeout(this.end.bind(this), this.options.idle);
 		}
 		if (this.collected.size >= (this.options.max ?? Infinity)) this.end();
-		return item;
+		return value;
 	}
 
 	/**
 	 * Dispose a collected item
-	 * @param itemId The ID of the item
-	 * @returns The disposed item, if cached
+	 * @param key The key of the entry
+	 * @returns The disposed item, if collected
 	 */
-	dispose(itemId: Model['id']) {
-		const item = this.collected.get(itemId);
+	dispose(key: K) {
+		const item = this.collected.get(key);
 		if (this.options.dispose === false || this.isEnded || !item) return;
-		this.collected.delete(itemId);
+		this.collected.delete(key);
 		this.emit('dispose', item);
 		return item;
 	}
 }
 
-export interface Collector<Model extends Base<any>> {
-	on<Event extends keyof CollectorEvents<Model>>(
+export interface Collector<K extends string | number, V extends Base> {
+	on<Event extends keyof CollectorEvents<K, V>>(
 		event: Event,
-		listener: (...args: CollectorEvents<Model>[Event]) => any,
+		listener: (...args: CollectorEvents<K, V>[Event]) => any,
 	): this;
-	once<Event extends keyof CollectorEvents<Model>>(
+	once<Event extends keyof CollectorEvents<K, V>>(
 		event: Event,
-		listener: (...args: CollectorEvents<Model>[Event]) => any,
+		listener: (...args: CollectorEvents<K, V>[Event]) => any,
 	): this;
-	off<Event extends keyof CollectorEvents<Model>>(
+	off<Event extends keyof CollectorEvents<K, V>>(
 		event: Event,
-		listener: (...args: CollectorEvents<Model>[Event]) => any,
+		listener: (...args: CollectorEvents<K, V>[Event]) => any,
 	): this;
-	emit<Event extends keyof CollectorEvents<Model>>(
+	emit<Event extends keyof CollectorEvents<K, V>>(
 		event: Event,
-		...args: CollectorEvents<Model>[Event]
+		...args: CollectorEvents<K, V>[Event]
 	): boolean;
 }
 
 /**
  * The collector events
  */
-export interface CollectorEvents<Model extends Base<any>> {
+export interface CollectorEvents<K extends string | number, V extends Base> {
 	/**
 	 * Emitted whenever data is collected
 	 */
-	collect: [item: Model];
+	collect: [item: V];
 	/**
 	 * Emitted whenever a collected item is disposed
 	 */
-	dispose: [item: Model];
+	dispose: [item: V];
 	/**
 	 * Emitted whenever the collector is finished collecting data
 	 */
-	end: [collected: Collection<Model['id'], Model>];
+	end: [collected: Collection<K, V>];
 }
 
 /**
  * The options for the collector
  */
-export interface CollectorOptions<Model extends Base<any>> {
+export interface CollectorOptions<V extends Base> {
 	/**
 	 * The filter to apply to the collector
 	 *
 	 * @default () => true
 	 */
-	filter?: (item: Model) => boolean | Promise<boolean>;
+	filter?: (item: V) => boolean | Promise<boolean>;
 	/**
 	 * The time in milliseconds to wait before ending the collector
 	 *

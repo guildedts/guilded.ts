@@ -1,9 +1,4 @@
-import {
-	APICalendarEvent,
-	APICalendarEventCancellation,
-	RESTPatchCalendarEventJSONBody,
-	APIMentions,
-} from 'guilded-api-typings';
+import { APICalendarEvent, RESTPatchCalendarEventJSONBody } from 'guilded-api-typings';
 import { FetchOptions } from '../../managers/BaseManager';
 import { CalendarEventRsvpManager } from '../../managers/calendarEvent/CalendarEventRsvpManager';
 import { Base } from '../Base';
@@ -12,70 +7,7 @@ import { CalendarChannel } from '../channel/CalendarChannel';
 /**
  * Represents a calendar event on Guilded
  */
-export class CalendarEvent extends Base<number> {
-	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * The name of the calendar event (`1`-`60` characters)
-	 */
-	readonly name: string;
-	/**
-	 * The description of the calendar event (`1`-`8000` characters)
-	 */
-	readonly description?: string;
-	/**
-	 * The location of the calendar event (`1`-`8000` characters)
-	 */
-	readonly location?: string;
-	/**
-	 * The URL of the calendar event
-	 */
-	readonly url?: string;
-	/**
-	 * The color of the calendar event (range: `0x0`-`0xffffff`)
-	 */
-	readonly color?: number;
-	/**
-	 * The number of RSVPs allowed before waitlisting (min value: `1`)
-	 */
-	readonly rsvpLimit?: number;
-	/**
-	 * When the calendar event starts
-	 */
-	readonly startsAt: Date;
-	/**
-	 * The duration of the calendar event **in minutes** (min value: `1`)
-	 */
-	readonly duration?: number;
-	/**
-	 * Whether the calendar event is private
-	 *
-	 * @default false
-	 */
-	readonly isPrivate?: boolean;
-	/**
-	 * The mentions of the calendar event
-	 */
-	readonly mentions?: APIMentions;
-	/**
-	 * When the calendar event was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that created the calendar event
-	 */
-	readonly createdBy: string;
-	/**
-	 * The cancellation of the calendar event
-	 */
-	readonly cancellation?: APICalendarEventCancellation;
-
+export class CalendarEvent extends Base {
 	/**
 	 * The manager for RSVPs
 	 */
@@ -83,31 +15,16 @@ export class CalendarEvent extends Base<number> {
 
 	/**
 	 * @param channel The calendar channel
-	 * @param raw The data of the calendar event
+	 * @param data The data of the calendar event
 	 * @param cache Whether to cache the calendar event
 	 */
 	constructor(
 		public readonly channel: CalendarChannel,
-		public readonly raw: APICalendarEvent,
+		public readonly data: APICalendarEvent,
 		cache = channel.client.options.cacheCalendarEvents ?? true,
 	) {
-		super(channel.client, raw.id);
+		super(channel.client);
 		this.rsvps = new CalendarEventRsvpManager(this);
-		this.serverId = raw.serverId;
-		this.channelId = raw.channelId;
-		this.name = raw.name;
-		this.description = raw.description;
-		this.location = raw.location;
-		this.url = raw.url;
-		this.color = raw.color;
-		this.rsvpLimit = raw.rsvpLimit;
-		this.startsAt = new Date(raw.startsAt);
-		this.duration = raw.duration;
-		this.isPrivate = raw.isPrivate;
-		this.mentions = raw.mentions;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.cancellation = raw.cancellation;
 		if (cache) channel.events.cache.set(this.id, this);
 	}
 
@@ -119,14 +36,70 @@ export class CalendarEvent extends Base<number> {
 	}
 
 	/**
-	 * The server
+	 * The ID of the calendar event (min value: `1`)
 	 */
-	get server() {
-		return this.channel.server;
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * The time left until the calendar event starts
+	 * The name of the calendar event (`1`-`60` characters)
+	 */
+	get name() {
+		return this.data.name;
+	}
+
+	/**
+	 * The description of the calendar event (`1`-`8000` characters)
+	 */
+	get description() {
+		return this.data.description ?? null;
+	}
+
+	/**
+	 * The location of the calendar event (`1`-`8000` characters)
+	 */
+	get location() {
+		return this.data.location ?? null;
+	}
+
+	/**
+	 * The URL of the calendar event
+	 */
+	get url() {
+		return this.data.url ?? null;
+	}
+
+	/**
+	 * The color of the calendar event (range: `0x0`-`0xffffff`)
+	 */
+	get color() {
+		return this.data.color ?? null;
+	}
+
+	/**
+	 * The number of RSVPs allowed before waitlisting (min value: `1`)
+	 */
+	get rsvpLimit() {
+		return this.data.rsvpLimit ?? Infinity;
+	}
+
+	/**
+	 * When the calendar event starts
+	 */
+	get startsAt() {
+		return new Date(this.data.startsAt);
+	}
+
+	/**
+	 * The duration of the calendar event in ms (min value: `1000`)
+	 */
+	get duration() {
+		return this.data.duration ? this.data.duration * 1000 : null;
+	}
+
+	/**
+	 * The time left in ms until the calendar event starts
 	 */
 	get startsIn() {
 		const startsIn = this.startsAt.getTime() - Date.now();
@@ -141,24 +114,59 @@ export class CalendarEvent extends Base<number> {
 	}
 
 	/**
-	 * The timestamp of when the calendar event was created
+	 * Whether the calendar event is private
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get isPrivate() {
+		return this.data.isPrivate ?? false;
 	}
 
 	/**
-	 * The server member that created the calendar event
+	 * The mentions of the calendar event
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
+	get mentions() {
+		return this.data.mentions ?? {};
+	}
+
+	/**
+	 * When the calendar event was created
+	 */
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
 	 * The ID of the user that created the calendar event
 	 */
-	get authorId() {
-		return this.createdBy;
+	get creatorId() {
+		return this.data.createdBy;
+	}
+
+	/**
+	 * The user that created the calendar event
+	 */
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
+	}
+
+	/**
+	 * Whether the client user created the calendar event
+	 */
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
+	}
+
+	/**
+	 * The cancellation of the calendar event
+	 */
+	get cancellation() {
+		return this.data.cancellation ?? null;
+	}
+
+	/**
+	 * Whether the calendar event is canceled
+	 */
+	get isCanceled() {
+		return !!this.cancellation;
 	}
 
 	/**
@@ -171,31 +179,20 @@ export class CalendarEvent extends Base<number> {
 	}
 
 	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
+	 * Fetch the user that created the calendar event
+	 * @returns The fetched user
 	 */
-	fetchServer(options?: FetchOptions) {
-		return this.channel.fetchServer(options);
+	fetchCreator() {
+		return this.client.users.fetch(this.channel.serverId, this.creatorId);
 	}
 
 	/**
-	 * Fetch the server member that created the calendar event
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Update the calendar event
+	 * @param options The options to update the calendar event with
+	 * @returns The updated calendar event
 	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
-	}
-
-	/**
-	 * Edit the calendar event
-	 * @param payload The payload of the calendar event
-	 * @returns The edited calendar event
-	 */
-	edit(payload: RESTPatchCalendarEventJSONBody) {
-		return this.channel.events.edit(this, payload) as Promise<this>;
+	update(options: RESTPatchCalendarEventJSONBody) {
+		return this.channel.events.update(this, options) as Promise<this>;
 	}
 
 	/**

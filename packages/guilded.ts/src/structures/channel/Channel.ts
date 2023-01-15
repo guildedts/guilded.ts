@@ -1,7 +1,6 @@
 import { APIChannel, RESTPatchChannelJSONBody, ChannelType } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Client } from '../Client';
-import { ChannelWebhookManager } from '../../managers/channel/ChannelWebhookManager';
 import { FetchOptions } from '../../managers/BaseManager';
 
 /**
@@ -9,96 +8,16 @@ import { FetchOptions } from '../../managers/BaseManager';
  */
 export class Channel extends Base {
 	/**
-	 * The type of channel
-	 *
-	 * This will determine what methods and managers are available
-	 *
-	 * For example: if `chat`, then you're able to use the `send` method
-	 */
-	readonly type: ChannelType;
-	/**
-	 * The name of the channel (`1`-`100` characters)
-	 */
-	readonly name: string;
-	/**
-	 * The topic of the channel (`1`-`512` characters)
-	 */
-	readonly topic?: string;
-	/**
-	 * When the channel was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that created the channel
-	 */
-	readonly createdBy: string;
-	/**
-	 * When the channel was edited, if relevant
-	 */
-	readonly editedAt?: Date;
-	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the parent channel or thread, if present
-	 *
-	 * Only relevant for server channels
-	 */
-	readonly parantId?: string;
-	/**
-	 * The ID of the category, only relevant for server channels
-	 */
-	readonly categoryId?: number;
-	/**
-	 * The ID of the group
-	 */
-	readonly groupId: string;
-	/**
-	 * Whether the channel can be accessed from users who are not a member of the server
-	 *
-	 * @default false
-	 */
-	readonly isPublic?: boolean;
-	/**
-	 * The ID of the user that archived the channel
-	 */
-	readonly archivedBy?: string;
-	/**
-	 * When the channel was archived, if relevant
-	 */
-	readonly archivedAt?: Date;
-
-	/**
-	 * The manager for webhooks
-	 */
-	readonly webhooks: ChannelWebhookManager;
-
-	/**
 	 * @param client The client
-	 * @param raw The data of the channel
+	 * @param data The data of the channel
 	 * @param cache Whether to cache the channel
 	 */
 	constructor(
 		client: Client,
-		public readonly raw: APIChannel,
+		public readonly data: APIChannel,
 		cache = client.options.cacheChannels ?? true,
 	) {
-		super(client, raw.id);
-		this.webhooks = new ChannelWebhookManager(this);
-		this.type = raw.type;
-		this.name = raw.name;
-		this.topic = raw.topic;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		this.serverId = raw.serverId;
-		this.parantId = raw.parentId;
-		this.categoryId = raw.categoryId;
-		this.groupId = raw.groupId;
-		this.isPublic = raw.isPublic;
-		this.archivedBy = raw.archivedBy;
-		this.archivedAt = raw.archivedAt ? new Date(raw.archivedAt) : undefined;
+		super(client);
 		if (cache) client.channels.cache.set(this.id, this);
 	}
 
@@ -110,31 +29,100 @@ export class Channel extends Base {
 	}
 
 	/**
-	 * The timestamp of when the channel was created
+	 * The ID of the channel
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * The server member that created the channel
+	 * The type of channel
+	 *
+	 * This will determine what managers are available
+	 *
+	 * For example: if `chat`, then you're able to use the `messages` manager
+	 */
+	get type() {
+		return this.data.type;
+	}
+
+	/**
+	 * The name of the channel (`1`-`100` characters)
+	 */
+	get name() {
+		return this.data.name;
+	}
+
+	/**
+	 * The topic of the channel (`1`-`512` characters)
+	 */
+	get topic() {
+		return this.data.topic ?? null;
+	}
+
+	/**
+	 * When the channel was created
+	 */
+	get createdAt() {
+		return new Date(this.data.createdAt);
+	}
+
+	/**
+	 * The ID of the user that created the channel
+	 */
+	get creatorId() {
+		return this.data.createdBy;
+	}
+
+	/**
+	 * The user that created the channel
 	 */
 	get creator() {
-		return this.server?.members.cache.get(this.createdBy);
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The timestamp of whem the channel was edited
+	 * Whether the client user created the channel
 	 */
-	get editedTimestamp() {
-		return this.editedAt?.getTime();
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
+	}
+
+	/**
+	 * When the channel was updated, if relevant
+	 */
+	get updatedAt() {
+		return this.data.updatedAt ? new Date(this.updatedAt) : null;
+	}
+
+	/**
+	 * Whether the channel is updated
+	 */
+	get isUpdated() {
+		return !!this.updatedAt;
+	}
+
+	/**
+	 * The ID of the server
+	 */
+	get serverId() {
+		return this.data.serverId;
 	}
 
 	/**
 	 * The server
 	 */
 	get server() {
-		return this.client.servers.cache.get(this.serverId);
+		return this.client.servers.cache.get(this.serverId) ?? null;
+	}
+
+	/**
+	 * The ID of the parent channel or thread, if present
+	 *
+	 * Only relevant for server channels
+	 */
+	get parentId() {
+		return this.data.parentId ?? null;
 	}
 
 	/**
@@ -143,7 +131,28 @@ export class Channel extends Base {
 	 * Only relevant for server channels
 	 */
 	get parent() {
-		return this.parantId ? this.client.channels.cache.get(this.parantId) : undefined;
+		return this.parentId ? this.client.channels.cache.get(this.parentId) ?? null : null;
+	}
+
+	/**
+	 * Whether the channel is a thread
+	 */
+	get isThread() {
+		return !!this.parentId;
+	}
+
+	/**
+	 * The ID of the category, only relevant for server channels
+	 */
+	get categoryId() {
+		return this.data.categoryId ?? null;
+	}
+
+	/**
+	 * The ID of the group
+	 */
+	get groupId() {
+		return this.data.groupId;
 	}
 
 	/**
@@ -154,105 +163,59 @@ export class Channel extends Base {
 	}
 
 	/**
-	 * The server member that archived the channel
+	 * Whether the channel can be accessed from users who are not a member of the server
 	 */
-	get archiver() {
-		return this.archivedBy ? this.server?.members.cache.get(this.archivedBy) : undefined;
+	get isPublic() {
+		return this.data.isPublic ?? false;
 	}
 
 	/**
-	 * The timestamp of when the channel was archived
+	 * The ID of the user that archived the channel
 	 */
-	get archivedTimestamp() {
-		return this.archivedAt ? this.archivedAt.getTime() : undefined;
+	get archiverId() {
+		return this.data.archivedBy ?? null;
+	}
+
+	/**
+	 * The user that archived the channel
+	 */
+	get archiver() {
+		return this.archiverId ? this.client.users.cache.get(this.archiverId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user archived the channel
+	 */
+	get isArchiver() {
+		return this.archiverId === this.client.user?.id;
+	}
+
+	/**
+	 * When the channel was archived, if relevant
+	 */
+	get archivedAt() {
+		return this.data.archivedAt ? new Date(this.data.archivedAt) : null;
 	}
 
 	/**
 	 * Whether the channel is archived
 	 */
 	get isArchived() {
-		return !!this.archivedBy;
-	}
-
-	/**
-	 * Whether the channel is an announcement channel
-	 */
-	get isAnnouncement() {
-		return this.type === ChannelType.Announcements;
-	}
-
-	/**
-	 * Whther the channel is a chat channel
-	 */
-	get isChat() {
-		return this.type === ChannelType.Chat;
+		return !!this.archiverId;
 	}
 
 	/**
 	 * Whether the channel is chat based
 	 */
 	get isChatBased() {
-		return (
-			this.type === ChannelType.Chat ||
-			this.type === ChannelType.Stream ||
-			this.type === ChannelType.Voice
-		);
+		return [ChannelType.Chat, ChannelType.Stream, ChannelType.Voice].includes(this.type);
 	}
 
 	/**
-	 * Whther the channel is a calendar channel
+	 * Whether the channel is voice based
 	 */
-	get isCalendar() {
-		return this.type === ChannelType.Calendar;
-	}
-
-	/**
-	 * Whther the channel is a forum channel
-	 */
-	get isForum() {
-		return this.type === ChannelType.Forums;
-	}
-
-	/**
-	 * Whther the channel is a media channel
-	 */
-	get isMedia() {
-		return this.type === ChannelType.Media;
-	}
-
-	/**
-	 * Whther the channel is a doc channel
-	 */
-	get isDoc() {
-		return this.type === ChannelType.Docs;
-	}
-
-	/**
-	 * Whther the channel is a voice channel
-	 */
-	get isVoice() {
-		return this.type === ChannelType.Voice;
-	}
-
-	/**
-	 * Whther the channel is a list channel
-	 */
-	get isList() {
-		return this.type === ChannelType.List;
-	}
-
-	/**
-	 * Whther the channel is a schedule channel
-	 */
-	get isSchedule() {
-		return this.type === ChannelType.Scheduling;
-	}
-
-	/**
-	 * Whther the channel is a stream channel
-	 */
-	get isStream() {
-		return this.type === ChannelType.Stream;
+	get isVoiceBased() {
+		return [ChannelType.Voice, ChannelType.Stream].includes(this.type);
 	}
 
 	/**
@@ -265,13 +228,11 @@ export class Channel extends Base {
 	}
 
 	/**
-	 * Fetch the server member that created the channel
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that created the channel
+	 * @returns The fetched user
 	 */
-	async fetchCreator(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	fetchCreator() {
+		return this.client.users.fetch(this.serverId, this.creatorId);
 	}
 
 	/**
@@ -288,54 +249,25 @@ export class Channel extends Base {
 	 * @param options The options to fetch the channel with
 	 * @returns The fetched channel
 	 */
-	fetchParent(options?: FetchOptions) {
-		return this.parantId ? this.client.channels.fetch(this.parantId, options) : undefined;
+	async fetchParent(options?: FetchOptions) {
+		return this.parentId ? this.client.channels.fetch(this.parentId, options) : null;
 	}
 
 	/**
-	 * Fetch the server member that archived the channel
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that archived the channel
+	 * @returns The fetched user
 	 */
-	async fetchArchiver(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return this.archivedBy ? server.members.fetch(this.archivedBy, options) : undefined;
+	async fetchArchiver() {
+		return this.archiverId ? this.client.users.fetch(this.serverId, this.archiverId) : null;
 	}
 
 	/**
-	 * Edit the channel
-	 * @param payload The payload of the channel
-	 * @returns The edited channel
+	 * Update the channel
+	 * @param options The options to update the channel with
+	 * @returns The updated channel
 	 */
-	edit(payload: RESTPatchChannelJSONBody) {
-		return this.client.channels.edit(this, payload) as Promise<this>;
-	}
-
-	/**
-	 * Set the name of the channel
-	 * @param name The name of the channel
-	 * @returns The edited channel
-	 */
-	setName(name: string) {
-		return this.edit({ name });
-	}
-
-	/**
-	 * Set the topic of the channel
-	 * @param topic The topic of the channel
-	 * @returns The edited channel
-	 */
-	setTopic(topic: string) {
-		return this.edit({ topic });
-	}
-
-	/**
-	 * Set whether the channel is public
-	 * @param isPublic Whether the channel is public
-	 * @returns The edited channel
-	 */
-	setPublic(isPublic: boolean) {
-		return this.edit({ isPublic });
+	update(options: RESTPatchChannelJSONBody) {
+		return this.client.channels.update(this, options) as Promise<this>;
 	}
 
 	/**

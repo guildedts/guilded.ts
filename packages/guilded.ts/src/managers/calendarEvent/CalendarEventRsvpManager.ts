@@ -43,12 +43,12 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 	) {
 		calendarEventRsvp =
 			calendarEventRsvp instanceof CalendarEventRsvp
-				? calendarEventRsvp.id
+				? calendarEventRsvp.userId
 				: calendarEventRsvp;
 		const cached = this.cache.get(calendarEventRsvp);
 		if (cached && !options?.force) return cached;
 		const raw = await this.client.api.calendarEventRsvps.fetch(
-			this.calendarEvent.channelId,
+			this.calendarEvent.channel.id,
 			this.calendarEvent.id,
 			calendarEventRsvp,
 		);
@@ -57,7 +57,7 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 
 	private async fetchMany(options?: FetchManyOptions) {
 		const raw = await this.client.api.calendarEventRsvps.fetch(
-			this.calendarEvent.channelId,
+			this.calendarEvent.channel.id,
 			this.calendarEvent.id,
 		);
 		const calendarEventRsvps = new Collection<string, CalendarEventRsvp>();
@@ -67,24 +67,24 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 				data,
 				options?.cache,
 			);
-			calendarEventRsvps.set(calendarEventRsvp.id, calendarEventRsvp);
+			calendarEventRsvps.set(calendarEventRsvp.userId, calendarEventRsvp);
 		}
 		return calendarEventRsvps;
 	}
 
 	/**
-	 * Edit a RSVP in the calendar event
+	 * Update a RSVP in the calendar event
 	 * @param calendarEventRsvp The calendar event RSVP
 	 * @param status The status of the calendar event RSVP
-	 * @returns The edited calendar event RSVP
+	 * @returns The updated calendar event RSVP
 	 */
-	async edit(calendarEventRsvp: string | CalendarEventRsvp, status: CalendarEventRsvpStatus) {
+	async update(calendarEventRsvp: string | CalendarEventRsvp, status: CalendarEventRsvpStatus) {
 		calendarEventRsvp =
 			calendarEventRsvp instanceof CalendarEventRsvp
-				? calendarEventRsvp.id
+				? calendarEventRsvp.userId
 				: calendarEventRsvp;
 		const raw = await this.client.api.calendarEventRsvps.edit(
-			this.calendarEvent.channelId,
+			this.calendarEvent.channel.id,
 			this.calendarEvent.id,
 			calendarEventRsvp,
 			status,
@@ -99,10 +99,10 @@ export class CalendarEventRsvpManager extends BaseManager<string, CalendarEventR
 	delete(calendarEventRsvp: string | CalendarEventRsvp) {
 		calendarEventRsvp =
 			calendarEventRsvp instanceof CalendarEventRsvp
-				? calendarEventRsvp.id
+				? calendarEventRsvp.userId
 				: calendarEventRsvp;
 		return this.client.api.calendarEventRsvps.delete(
-			this.calendarEvent.channelId,
+			this.calendarEvent.channel.id,
 			this.calendarEvent.id,
 			calendarEventRsvp,
 		);

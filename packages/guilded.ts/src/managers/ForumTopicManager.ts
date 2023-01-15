@@ -58,23 +58,23 @@ export class ForumTopicManager extends BaseManager<number, ForumTopic> {
 
 	/**
 	 * Create a forum topic in the channel
-	 * @param payload The payload of the forum topic
+	 * @param options The options to create the forum topic with
 	 * @returns The created forum topic
 	 */
-	async create(payload: RESTPostForumTopicJSONBody) {
-		const raw = await this.client.api.forumTopics.create(this.channel.id, payload);
+	async create(options: RESTPostForumTopicJSONBody) {
+		const raw = await this.client.api.forumTopics.create(this.channel.id, options);
 		return new ForumTopic(this.channel, raw);
 	}
 
 	/**
-	 * Edit a forum topic in the channel
+	 * Update a forum topic in the channel
 	 * @param forumTopic The forum topic
-	 * @param payload The payload of the forum topic
-	 * @returns The edited forum topic
+	 * @param options The options to update the forum topic with
+	 * @returns The updated forum topic
 	 */
-	async edit(forumTopic: number | ForumTopic, payload: RESTPatchForumTopicJSONBody) {
+	async update(forumTopic: number | ForumTopic, options: RESTPatchForumTopicJSONBody) {
 		forumTopic = forumTopic instanceof ForumTopic ? forumTopic.id : forumTopic;
-		const raw = await this.client.api.forumTopics.edit(this.channel.id, forumTopic, payload);
+		const raw = await this.client.api.forumTopics.edit(this.channel.id, forumTopic, options);
 		return new ForumTopic(this.channel, raw);
 	}
 

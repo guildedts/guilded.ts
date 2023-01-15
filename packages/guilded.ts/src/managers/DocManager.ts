@@ -63,11 +63,11 @@ export class DocManager extends BaseManager<number, Doc> {
 	}
 
 	/**
-	 * Edit a doc in the channel
+	 * Update a doc in the channel
 	 * @param doc The doc
 	 * @param title The title of the doc
 	 * @param content The content of the doc
-	 * @returns The edited doc
+	 * @returns The updated doc
 	 */
 	async edit(doc: number | Doc, title: string, content: string) {
 		doc = doc instanceof Doc ? doc.id : doc;

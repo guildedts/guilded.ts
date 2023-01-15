@@ -16,7 +16,7 @@ export abstract class Argument {
 	/**
 	 * The description of the argument
 	 */
-	description?: string;
+	description: string | null = null;
 	/**
 	 * Whether the argument is required
 	 */

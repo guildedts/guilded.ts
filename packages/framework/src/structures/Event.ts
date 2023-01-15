@@ -20,7 +20,7 @@ export abstract class Event<Event extends keyof ClientEvents = keyof ClientEvent
 	/**
 	 * Whether the event should only run once
 	 */
-	once?: boolean;
+	once = false;
 
 	/**
 	 * @param client The client

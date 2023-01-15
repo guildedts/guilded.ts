@@ -23,7 +23,7 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	 * @returns The fetched server member roles
 	 */
 	async fetch(serverMember: string | ServerMember, options?: ServerRoleFetchManyOptions) {
-		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		serverMember = serverMember instanceof ServerMember ? serverMember.user.id : serverMember;
 		const raw = await this.client.api.serverMembers.fetchRoles(this.server.id, serverMember);
 		const roles = new Collection<number, ServerRole>();
 		const cachedMember = this.server.members.cache.get(serverMember);
@@ -37,37 +37,37 @@ export class ServerRoleManager extends BaseManager<number, ServerRole> {
 	}
 
 	/**
-	 * Assign a role to a server member
+	 * Add a role to a server member
 	 * @param serverMember The server member
 	 * @param role The role
 	 * @returns The added server member role
 	 */
-	async assign(serverMember: string | ServerMember, role: number | ServerRole) {
-		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+	async add(serverMember: string | ServerMember, role: number | ServerRole) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.user.id : serverMember;
 		role = role instanceof ServerRole ? role.id : role;
 		await this.client.api.serverMembers.addRole(this.server.id, serverMember, role);
 		return new ServerRole(this.server, { id: role });
 	}
 
 	/**
-	 * Unassign a role from a server member
+	 * Remove a role from a server member
 	 * @param serverMember The server member
 	 * @param role The role
 	 * @returns The removed server member role
 	 */
-	async unassign(serverMember: string | ServerMember, role: number | ServerRole) {
-		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+	async remove(serverMember: string | ServerMember, role: number | ServerRole) {
+		serverMember = serverMember instanceof ServerMember ? serverMember.user.id : serverMember;
 		role = role instanceof ServerRole ? role.id : role;
 		await this.client.api.serverMembers.removeRole(this.server.id, serverMember, role);
 		return new ServerRole(this.server, { id: role });
 	}
 
 	/**
-	 * Award XP to a server role
+	 * Add XP to a server role
 	 * @param role The role
-	 * @param amount The amount of XP to award to the server role
+	 * @param amount The amount of XP to add to the server role
 	 */
-	awardXp(role: number | ServerRole, amount: number) {
+	addXp(role: number | ServerRole, amount: number) {
 		role = role instanceof ServerRole ? role.id : role;
 		return this.client.api.serverRoles.awardXp(this.server.id, role, amount);
 	}

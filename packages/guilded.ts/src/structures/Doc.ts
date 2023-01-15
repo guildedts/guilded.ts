@@ -1,4 +1,4 @@
-import { APIDoc, APIMentions } from 'guilded-api-typings';
+import { APIDoc } from 'guilded-api-typings';
 import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { DocChannel } from './channel/DocChannel';
@@ -6,64 +6,18 @@ import { DocChannel } from './channel/DocChannel';
 /**
  * Represents a doc on Guilded
  */
-export class Doc extends Base<number> {
-	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * The title of the doc (min characters: 1)
-	 */
-	readonly title: string;
-	/**
-	 * The content of the doc
-	 */
-	readonly content: string;
-	/**
-	 * The mentions of the doc
-	 */
-	readonly mentions?: APIMentions;
-	/**
-	 * When the doc was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that created the doc
-	 */
-	readonly createdBy: string;
-	/**
-	 * When the doc was edited, if relevant
-	 */
-	readonly editedAt?: Date;
-	/**
-	 * The ID of the user that edited the doc, if relevant
-	 */
-	readonly editedBy?: string;
-
+export class Doc extends Base {
 	/**
 	 * @param channel The doc channel
-	 * @param raw The data of the doc
+	 * @param data The data of the doc
 	 * @param cache Whether to cache the doc
 	 */
 	constructor(
 		public readonly channel: DocChannel,
-		public readonly raw: APIDoc,
+		public readonly data: APIDoc,
 		cache = channel.client.options.cacheDocs ?? true,
 	) {
-		super(channel.client, raw.id);
-		this.serverId = raw.serverId;
-		this.channelId = raw.channelId;
-		this.title = raw.title;
-		this.content = raw.content;
-		this.mentions = raw.mentions;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		this.editedBy = raw.updatedBy;
+		super(channel.client);
 		if (cache) channel.docs.cache.set(this.id, this);
 	}
 
@@ -75,45 +29,94 @@ export class Doc extends Base<number> {
 	}
 
 	/**
-	 * The server
+	 * The ID of the doc
 	 */
-	get server() {
-		return this.channel.server;
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * The timestamp of when the doc was created
+	 * The title of the doc (min characters: `1`)
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get title() {
+		return this.data.title;
 	}
 
 	/**
-	 * The server member that created the doc
+	 * The content of the doc
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
+	get content() {
+		return this.data.content;
+	}
+
+	/**
+	 * The mentions of the doc
+	 */
+	get mentions() {
+		return this.data.mentions ?? {};
+	}
+
+	/**
+	 * When the doc was created
+	 */
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
 	 * The ID of the user that created the doc
 	 */
-	get authorId() {
-		return this.createdBy;
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
-	 * The timestamp of when the doc was edited, if relevant
+	 * The user that created the doc
 	 */
-	get editedTimestamp() {
-		return this.editedAt?.getTime();
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The server member that edited the doc, if relevant
+	 * Whether the client user created the doc
 	 */
-	get editor() {
-		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
+	}
+
+	/**
+	 * When the doc was updated, if relevant
+	 */
+	get updatedAt() {
+		return this.data.updatedAt ? new Date(this.data.updatedAt) : null;
+	}
+
+	/**
+	 * Whether the doc is updated
+	 */
+	get isUpdated() {
+		return !!this.updatedAt;
+	}
+
+	/**
+	 * The ID of the user that updated the doc, if relevant
+	 */
+	get updaterId() {
+		return this.data.updatedBy ?? null;
+	}
+
+	/**
+	 * The user that updated the doc, if relevant
+	 */
+	get updater() {
+		return this.updaterId ? this.client.users.cache.get(this.updaterId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user updated the doc
+	 */
+	get isUpdater() {
+		return this.updaterId === this.client.user?.id;
 	}
 
 	/**
@@ -126,41 +129,30 @@ export class Doc extends Base<number> {
 	}
 
 	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
+	 * Fetch the user that created the doc
+	 * @returns The fetched user
 	 */
-	fetchServer(options?: FetchOptions) {
-		return this.channel.fetchServer(options);
+	fetchCreator() {
+		return this.client.users.fetch(this.channel.serverId, this.creatorId);
 	}
 
 	/**
-	 * Fetch the server member that created the doc
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that updated the doc
+	 * @returns The fetched user, if relevant
 	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	async fetchUpdater() {
+		return this.updaterId
+			? this.client.users.fetch(this.channel.serverId, this.updaterId)
+			: null;
 	}
 
 	/**
-	 * Fetch the server member that edited the doc
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
-	 */
-	async fetchEditor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
-	}
-
-	/**
-	 * Edit the doc
+	 * Update the doc
 	 * @param title The title of the doc
 	 * @param content The content of the doc
-	 * @returns The edited doc
+	 * @returns The updated doc
 	 */
-	edit(title: string, content: string) {
+	update(title: string, content: string) {
 		return this.channel.docs.edit(this, title, content) as Promise<this>;
 	}
 

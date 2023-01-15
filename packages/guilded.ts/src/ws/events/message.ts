@@ -72,6 +72,6 @@ export async function reactionDeleted(
 	const message = await channel.messages.fetch(data.reaction.messageId);
 	const reaction = new MessageReaction(message, data.reaction);
 	if (client.options.disposeCachedMessageReactions ?? true)
-		message.reactions.cache.delete(reaction.id);
+		message.reactions.cache.delete(reaction.emote.id);
 	client.emit('messageReactionRemove', reaction);
 }

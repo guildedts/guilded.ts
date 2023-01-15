@@ -20,7 +20,7 @@ export async function rolesUpdated(client: Client, data: WebSocketServerRolesUpd
 	for (const { roleIds, userId } of data.memberRoleIds) {
 		const oldMember = server.members.cache.get(userId);
 		const newMember = await server.members.fetch(userId);
-		newMember.roleIds = roleIds || [];
+		newMember.data.roleIds = roleIds || [];
 		if (oldMember) oldMembers.set(userId, oldMember);
 		newMembers.set(userId, newMember);
 	}

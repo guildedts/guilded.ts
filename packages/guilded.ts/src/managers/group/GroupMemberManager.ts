@@ -18,7 +18,7 @@ export class GroupMemberManager extends BaseManager {
 	 * @param serverMember The server member
 	 */
 	add(serverMember: string | ServerMember) {
-		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		serverMember = serverMember instanceof ServerMember ? serverMember.user.id : serverMember;
 		return this.client.api.groups.addMember(this.group.id, serverMember);
 	}
 
@@ -27,7 +27,7 @@ export class GroupMemberManager extends BaseManager {
 	 * @param serverMember The server member
 	 */
 	remove(serverMember: string | ServerMember) {
-		serverMember = serverMember instanceof ServerMember ? serverMember.id : serverMember;
+		serverMember = serverMember instanceof ServerMember ? serverMember.user.id : serverMember;
 		return this.client.api.groups.removeMember(this.group.id, serverMember);
 	}
 }

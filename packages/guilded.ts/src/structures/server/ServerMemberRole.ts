@@ -7,15 +7,15 @@ import { ServerRole } from './ServerRole';
 export class ServerMemberRole extends ServerRole {
 	/**
 	 * @param member The server member
-	 * @param raw The data of the server member role
+	 * @param data The data of the server member role
 	 * @param cache Whether to cache the server member role
 	 */
 	constructor(
 		public readonly member: ServerMember,
-		raw: { id: number },
+		data: { id: number },
 		cache = member.client.options.cacheServerMemberRoles ?? true,
 	) {
-		super(member.server, raw);
+		super(member.server, data);
 		if (cache) member.roles.cache.set(this.id, this);
 	}
 
@@ -31,6 +31,6 @@ export class ServerMemberRole extends ServerRole {
 	 * @returns The removed server role
 	 */
 	remove() {
-		return this.member.roles.unassign(this);
+		return this.member.roles.remove(this);
 	}
 }

@@ -17,8 +17,8 @@ export class GuildedAPIError extends Error {
 		public readonly status: number,
 		public readonly method: string,
 		public readonly path: string,
-		public readonly body?: any,
-		public readonly meta?: any,
+		public readonly body: unknown = null,
+		public readonly meta: unknown = null,
 	) {
 		super(message);
 		this.name = `GuildedAPIError [${code}:${status}]`;

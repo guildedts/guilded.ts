@@ -2,7 +2,6 @@ import {
 	APIForumTopic,
 	RESTPatchForumTopicJSONBody,
 	APIForumTopicSummary,
-	APIMentions,
 } from 'guilded-api-typings';
 import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
@@ -11,73 +10,18 @@ import { ForumChannel } from './channel/ForumChannel';
 /**
  * Represents a forum topic on Guilded
  */
-export class ForumTopic extends Base<number> {
-	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * The title of the forum topic (`1`-`500` characters)
-	 */
-	readonly title: string;
-	/**
-	 * When the forum topic was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user who created the forum topic
-	 *
-	 * **Note:** If this forum topic has {@link createdByWebhookId}, this field will still be populated, but can be ignored
-	 */
-	readonly createdBy: string;
-	/**
-	 * The ID of the webhook that created the forum topic, if it was created by a webhook
-	 */
-	readonly createdByWebhookId?: string;
-	/**
-	 * When the forum topic was updated, if relevant
-	 */
-	readonly editedAt?: Date;
-	/**
-	 * When the forum topic was bumped, if relevant
-	 *
-	 * This is updated whenever there is any activity within the forum topic
-	 */
-	readonly bumpedAt?: Date;
-	/**
-	 * The content of the forum topic
-	 */
-	readonly content?: string;
-	/**
-	 * The mentions of the forum topic
-	 */
-	readonly mentions?: APIMentions;
-
+export class ForumTopic extends Base {
 	/**
 	 * @param channel The forum channel
-	 * @param raw The data of the forum topic
+	 * @param data The data of the forum topic
 	 * @param cache Whether to cache the forum topic
 	 */
 	constructor(
 		public readonly channel: ForumChannel,
-		public readonly raw: APIForumTopic | APIForumTopicSummary,
+		public readonly data: APIForumTopic | APIForumTopicSummary,
 		cache = channel.client.options.cacheForumTopics ?? true,
 	) {
-		super(channel.client, raw.id);
-		this.serverId = raw.serverId;
-		this.channelId = raw.channelId;
-		this.title = raw.title;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.createdByWebhookId = raw.createdByWebhookId;
-		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		this.bumpedAt = raw.bumpedAt ? new Date(raw.bumpedAt) : undefined;
-		this.content = 'content' in raw ? raw.content : undefined;
-		this.mentions = 'mentions' in raw ? raw.mentions : undefined;
+		super(channel.client);
 		if (cache) channel.topics.cache.set(this.id, this);
 	}
 
@@ -89,56 +33,89 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * The server
+	 * The ID of the forum topic
 	 */
-	get server() {
-		return this.channel.server;
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * The timestamp of when the forum topic was created
+	 * The title of the forum topic (`1`-`500` characters)
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get title() {
+		return this.data.title;
 	}
 
 	/**
-	 * The server member that created the forum topic
+	 * When the forum topic was created
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
-	}
-
-	/**
-	 * The webhook that created the forum topic, if it was created by a webhook
-	 */
-	get webhook() {
-		return this.createdByWebhookId
-			? this.channel.webhooks.cache.get(this.createdByWebhookId)
-			: undefined;
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
 	 * The ID of the user that created the forum topic
 	 */
-	get authorId() {
-		return this.createdByWebhookId || this.createdBy;
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
-	 * The timestamp of when the forum topic was edited, if relevant
+	 * The user that created the forum topic
 	 */
-	get editedTimestamp() {
-		return this.editedAt?.getTime();
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The timestamp of when the forum topic was bumped, if relevant
+	 * Whether the client user created the forum topic
+	 */
+	get isCreator() {
+		return this.creatorId == this.client.user?.id;
+	}
+
+	/**
+	 * When the forum topic was updated, if relevant
+	 */
+	get updatedAt() {
+		return this.data.updatedAt ? new Date(this.data.updatedAt) : null;
+	}
+
+	/**
+	 * When the forum topic was bumped, if relevant
 	 *
 	 * This is updated whenever there is any activity within the forum topic
 	 */
-	get bumpedTimestamp() {
-		return this.bumpedAt?.getTime();
+	get bumpedAt() {
+		return this.data.bumpedAt ? new Date(this.data.bumpedAt) : null;
+	}
+
+	/**
+	 * Whether the forum topic is pinned
+	 */
+	get isPinned() {
+		return this.data.isPinned ?? false;
+	}
+
+	/**
+	 * Whether the forum topic is locked
+	 */
+	get isLocked() {
+		return this.data.isLocked ?? false;
+	}
+
+	/**
+	 * The content of the forum topic
+	 */
+	get content() {
+		return 'content' in this.data ? this.data.content : null;
+	}
+
+	/**
+	 * The mentions of the forum topic
+	 */
+	get mentions() {
+		return 'mentions' in this.data ? this.data.mentions ?? {} : {};
 	}
 
 	/**
@@ -151,42 +128,20 @@ export class ForumTopic extends Base<number> {
 	}
 
 	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
+	 * Fetch the user that created the forum topic
+	 * @returns The fetched user
 	 */
-	fetchServer(options?: FetchOptions) {
-		return this.channel.fetchServer(options);
+	async fetchCreator() {
+		return this.client.users.fetch(this.channel.serverId, this.creatorId);
 	}
 
 	/**
-	 * Fetch the server member that created the forum topic
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Update the forum topic
+	 * @param options The options to update the forum topic with
+	 * @returns The updated forum topic
 	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
-	}
-
-	/**
-	 * Fetch the webhook that created the forum topic
-	 * @param options The options to fetch the webhook with
-	 * @returns The fetched webhook
-	 */
-	fetchWebhook(options?: FetchOptions) {
-		return this.createdByWebhookId
-			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
-			: undefined;
-	}
-
-	/**
-	 * Edit the forum topic
-	 * @param payload The payload of the forum topic
-	 * @returns The edited forum topic
-	 */
-	edit(payload: RESTPatchForumTopicJSONBody) {
-		return this.channel.topics.edit(this, payload) as Promise<this>;
+	update(options: RESTPatchForumTopicJSONBody) {
+		return this.channel.topics.update(this, options) as Promise<this>;
 	}
 
 	/**

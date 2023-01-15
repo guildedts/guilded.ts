@@ -1,4 +1,4 @@
-import { Color, EmbedBuilder, inlineCode, Message, userMention } from 'guilded.ts';
+import { Color, EmbedBuilder, inlineCode, Message, userMention, UserType } from 'guilded.ts';
 import { Event } from '../structures/Event';
 
 /**
@@ -12,8 +12,13 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	 * @param message The message that was created
 	 */
 	async execute(message: Message) {
-		const prefix = this.getPrefix(message.serverId);
-		if (message.createdBy === this.client.user?.id || !message.content?.startsWith(prefix))
+		const creator = await message.fetchCreator();
+		const prefix = this.getPrefix(message.channel.serverId);
+		if (
+			message.isCreator ||
+			creator?.type === UserType.Bot ||
+			!message.content?.startsWith(prefix)
+		)
 			return;
 		const [commandName, ...args] = this.parseContent(prefix, message.content);
 		const command = this.getCommand(commandName);
@@ -33,7 +38,7 @@ export default class CommandHandler extends Event<'messageCreate'> {
 			err = `An error occurred while executing the command: ${inlineCode(error.message)}`;
 		}
 		if (err) return this.sendError(message, err);
-		command.setCooldown(message.createdBy);
+		command.setCooldown(message.creatorId!);
 	}
 
 	/**
@@ -75,11 +80,11 @@ export default class CommandHandler extends Event<'messageCreate'> {
 	 */
 	sendError(message: Message, error: string) {
 		message.delete();
-		message.channel.send({
+		message.channel.messages.create({
 			embeds: [
 				new EmbedBuilder()
 					.setColor(Color.Red)
-					.setTitle(userMention(message.createdBy))
+					.setTitle(userMention(message.creatorId!))
 					.setDescription(error)
 					.setFooter({ text: message.content! }),
 			],

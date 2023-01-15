@@ -8,19 +8,19 @@ export abstract class StringArgument extends Argument {
 	/**
 	 * The default value of the argument
 	 */
-	default?: string;
+	default: string | null = null;
 	/**
 	 * The choices of the argument
 	 */
 	choices: string[] = [];
 	/**
-	 * The max size of the argument
+	 * The max length of the argument
 	 */
-	max?: number;
+	max = Infinity;
 	/**
-	 * The min size of the argument
+	 * The min length of the argument
 	 */
-	min?: number;
+	min = -Infinity;
 
 	/**
 	 * Validates the string argument
@@ -36,11 +36,11 @@ export abstract class StringArgument extends Argument {
 					.map((choice) => inlineCode(choice))
 					.join(', ')}`,
 			);
-		else if (this.max && value.length > this.max)
+		else if (value.length > this.max)
 			throw new Error(`${inlineCode(this.name)} must be shorter than ${this.max} characters`);
-		else if (this.min && value.length < this.min)
+		else if (value.length < this.min)
 			throw new Error(`${inlineCode(this.name)} must be longer than ${this.min} characters`);
-		else if (this.default && !value) return this.default;
+		else if (this.default !== null && !value) return this.default;
 		else return value;
 	}
 }

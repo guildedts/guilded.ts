@@ -1,5 +1,4 @@
-import { APIMentions, APIListItemNote, APIListItemNoteSummary } from 'guilded-api-typings';
-import { FetchOptions } from '../../managers/BaseManager';
+import { APIListItemNote, APIListItemNoteSummary } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { ListItem } from './ListItem';
 
@@ -8,91 +7,108 @@ import { ListItem } from './ListItem';
  */
 export class ListItemNote extends Base {
 	/**
-	 * When the list item note was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that created the list item note
-	 */
-	readonly createdBy: string;
-	/**
-	 * Whem the list item note was edited, if relevant
-	 */
-	readonly editedAt?: Date;
-	/**
-	 * The ID of the user that edited the list item note, if relevant
-	 */
-	readonly editedBy?: string;
-	/**
-	 * The mentions of the list item note
-	 */
-	readonly mentions?: APIMentions;
-	/**
-	 * The content of the list item note
-	 */
-	readonly content?: string;
-
-	/**
 	 * @param item The list item
-	 * @param raw The data of the list item note
+	 * @param data The data of the list item note
 	 */
 	constructor(
 		public readonly item: ListItem,
-		public readonly raw: APIListItemNote | APIListItemNoteSummary,
+		public readonly data: APIListItemNote | APIListItemNoteSummary,
 	) {
-		super(item.client, item.id);
-		this.content = 'content' in raw ? raw.content : undefined;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		this.editedBy = raw.updatedBy;
+		super(item.client);
 	}
 
 	/**
-	 * The timestamp of when the list item note was created
+	 * When the list item note was created
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
-	 * The server member that created the list item note
+	 * The ID of the user that created the list item note
 	 */
-	get author() {
-		return this.item.server?.members.cache.get(this.createdBy);
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
-	 * The timestamp of when the list item note was edited, if relevant
+	 * The user that created the list item note
 	 */
-	get editedTimestamp() {
-		return this.editedAt ? this.editedAt.getTime() : undefined;
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The server member that edited the list item note, if relevant
+	 * Whether the client user created the list item note
 	 */
-	get editor() {
-		return this.editedBy ? this.item.server?.members.cache.get(this.editedBy) : undefined;
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
 	}
 
 	/**
-	 * Fetch the server member that created the list item note
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * When the list item note was updated, if relevant
 	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.item.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	get updatedAt() {
+		return this.data.updatedAt ? new Date(this.data.updatedAt) : null;
 	}
 
 	/**
-	 * Fetch the server member that edited the list item note
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * The ID of the user that updated the list item note, if relevant
 	 */
-	async fetchEditor(options?: FetchOptions) {
-		const server = await this.item.fetchServer();
-		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
+	get updaterId() {
+		return this.data.updatedBy ?? null;
+	}
+
+	/**
+	 * The user that updated the list item note, if relevant
+	 */
+	get updater() {
+		return this.updaterId ? this.client.users.cache.get(this.updaterId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user updated the list item note
+	 */
+	get isUpdater() {
+		return this.updaterId === this.client.user?.id;
+	}
+
+	/**
+	 * Whether the list item note is updated
+	 */
+	get isUpdated() {
+		return !!this.updatedAt;
+	}
+
+	/**
+	 * The mentions of the list item note
+	 */
+	get mentions() {
+		return 'mentions' in this.data ? this.data.mentions ?? {} : {};
+	}
+
+	/**
+	 * The content of the list item note
+	 */
+	get content() {
+		return 'content' in this.data ? this.data.content : null;
+	}
+
+	/**
+	 * Fetch the user that created the list item note
+	 * @returns The fetched user
+	 */
+	fetchCreator() {
+		return this.client.users.fetch(this.item.channel.serverId, this.creatorId);
+	}
+
+	/**
+	 * Fetch the user that updated the list item note
+	 * @returns The fetched user, if relevant
+	 */
+	async fetchUpdater() {
+		return this.updaterId
+			? this.client.users.fetch(this.item.channel.serverId, this.updaterId)
+			: null;
 	}
 }

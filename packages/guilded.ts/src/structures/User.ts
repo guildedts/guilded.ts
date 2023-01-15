@@ -7,44 +7,16 @@ import { Client } from './Client';
  */
 export class User extends Base {
 	/**
-	 * The type of user
-	 *
-	 * @default UserType.User
-	 */
-	readonly type?: UserType;
-	/**
-	 * The name of the user
-	 */
-	readonly name: string;
-	/**
-	 * The avatar of the user
-	 */
-	readonly avatar?: string;
-	/**
-	 * The banner of the user
-	 */
-	readonly banner?: string;
-	/**
-	 * When the user was created
-	 */
-	readonly createdAt?: Date;
-
-	/**
 	 * @param client The client
-	 * @param raw The data of the user
+	 * @param data The data of the user
 	 * @param cache Whether to cache the user
 	 */
 	constructor(
 		client: Client,
-		public readonly raw: APIUser | APIUserSummary,
+		public readonly data: APIUser | APIUserSummary,
 		cache = client.options.cacheUsers ?? true,
 	) {
-		super(client, raw.id);
-		this.type = raw.type;
-		this.name = raw.name;
-		this.avatar = raw.avatar;
-		this.banner = 'banner' in raw ? raw.banner : undefined;
-		this.createdAt = 'createdAt' in raw ? new Date(raw.createdAt) : undefined;
+		super(client);
 		if (cache) client.users.cache.set(this.id, this);
 	}
 
@@ -56,24 +28,45 @@ export class User extends Base {
 	}
 
 	/**
-	 * The timestamp of when the user was created
+	 * The ID of the user
 	 */
-	get createdTimestamp() {
-		return this.createdAt?.getTime();
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * Whether the user is a bot
+	 * The type of user
 	 */
-	get isBot() {
-		return this.type === UserType.Bot;
+	get type() {
+		return this.data.type ?? UserType.User;
 	}
 
 	/**
-	 * Whether the user is a human
+	 * The name of the user
 	 */
-	get isUser() {
-		return !this.type || this.type === UserType.User;
+	get name() {
+		return this.data.name;
+	}
+
+	/**
+	 * The avatar of the user
+	 */
+	get avatar() {
+		return this.data.avatar ?? null;
+	}
+
+	/**
+	 * The banner of the user
+	 */
+	get banner() {
+		return 'banner' in this.data ? this.data.banner ?? null : null;
+	}
+
+	/**
+	 * When the user was created
+	 */
+	get createdAt() {
+		return 'createdAt' in this.data ? new Date(this.data.createdAt) : null;
 	}
 }
 
@@ -82,23 +75,33 @@ export class User extends Base {
  */
 export class ClientUser extends User {
 	/**
-	 * The bot ID of the client user
-	 */
-	readonly botId: string;
-	/**
-	 * The ID of the user that created the client user
-	 */
-	readonly createdBy: string;
-
-	/**
 	 * @param client The client
-	 * @param raw The data of the client user
+	 * @param data The data of the bot
 	 * @param cache Whether to cache the client user
 	 */
-	constructor(client: Client, public readonly raw: APIBot, cache?: boolean) {
-		super(client, { type: UserType.Bot, ...raw }, cache);
-		this.botId = raw.botId;
-		this.createdBy = raw.createdBy;
+	constructor(client: Client, public readonly data: APIBot, cache?: boolean) {
+		super(client, { type: UserType.Bot, ...data }, cache);
+	}
+
+	/**
+	 * The ID of the bot
+	 */
+	get botId() {
+		return this.data.botId;
+	}
+
+	/**
+	 * The ID of the user that created the bot
+	 */
+	get creatorId() {
+		return this.data.createdBy;
+	}
+
+	/**
+	 * The user that created the bot
+	 */
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 }
 

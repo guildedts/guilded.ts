@@ -26,7 +26,7 @@ export abstract class Command {
 	/**
 	 * The description of the command
 	 */
-	description?: string;
+	description: string | null = null;
 	/**
 	 * The arguments of the command
 	 */
@@ -76,7 +76,7 @@ export abstract class Command {
 	 * @returns The validated arguments
 	 */
 	async validate(message: Message, args: string[]): Promise<Record<string, unknown>> {
-		const cooldown = this.cooldowns.get(message.createdBy);
+		const cooldown = this.cooldowns.get(message.creatorId!);
 		const now = Date.now();
 		if (cooldown && now < cooldown)
 			throw new Error(

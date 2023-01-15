@@ -82,8 +82,8 @@ export async function rsvpsUpdated(
 		const oldCalendarEventRsvp = calendarEvent.rsvps.cache.get(rawCalendarEventRsvp.userId);
 		const newCalendarEventRsvp = new CalendarEventRsvp(calendarEvent, rawCalendarEventRsvp);
 		if (oldCalendarEventRsvp)
-			oldCalendarEventRsvps.set(oldCalendarEventRsvp.id, oldCalendarEventRsvp);
-		newCalendarEventRsvps.set(newCalendarEventRsvp.id, newCalendarEventRsvp);
+			oldCalendarEventRsvps.set(oldCalendarEventRsvp.userId, oldCalendarEventRsvp);
+		newCalendarEventRsvps.set(newCalendarEventRsvp.userId, newCalendarEventRsvp);
 	}
 	client.emit('calendarEventRsvpsEdit', newCalendarEventRsvps, oldCalendarEventRsvps);
 }
@@ -100,6 +100,6 @@ export async function rsvpDeleted(client: Client, data: WebSocketCalendarEventRs
 	const calendarEvent = await channel.events.fetch(data.calendarEventRsvp.calendarEventId);
 	const calendarEventRsvp = new CalendarEventRsvp(calendarEvent, data.calendarEventRsvp);
 	if (client.options.disposeCachedCalendarEventRsvps ?? true)
-		calendarEvent.rsvps.cache.delete(calendarEventRsvp.id);
+		calendarEvent.rsvps.cache.delete(calendarEventRsvp.userId);
 	client.emit('calendarEventRsvpDelete', calendarEventRsvp);
 }

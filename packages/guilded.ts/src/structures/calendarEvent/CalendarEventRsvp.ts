@@ -8,126 +8,108 @@ import { CalendarEvent } from './CalendarEvent';
  */
 export class CalendarEventRsvp extends Base {
 	/**
-	 * The ID of the calendar event (min value: 1)
-	 */
-	readonly calendarEventId: number;
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the user
-	 */
-	readonly userId: string;
-	/**
-	 * The status of the calendar event RSVP
-	 */
-	readonly status: CalendarEventRsvpStatus;
-	/**
-	 * The ID of the user that created the calendar event RSVP
-	 */
-	readonly createdBy: string;
-	/**
-	 * When the calendar event RSVP was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that edited the calendar event RSVP
-	 */
-	readonly editedBy?: string;
-	/**
-	 * When the calendar event RSVP was edited, if relevant
-	 */
-	readonly editedAt?: Date;
-
-	/**
-	 * @param calendarEvent The calendar event
-	 * @param raw The data of the calendar event RSVP
+	 * @param event The calendar event
+	 * @param data The data of the calendar event RSVP
 	 * @param cache Whether to cache the calendar event RSVP
 	 */
 	constructor(
-		public readonly calendarEvent: CalendarEvent,
-		public readonly raw: APICalendarEventRsvp,
-		cache = calendarEvent.client.options.cacheCalendarEventRsvps ?? true,
+		public readonly event: CalendarEvent,
+		public readonly data: APICalendarEventRsvp,
+		cache = event.client.options.cacheCalendarEventRsvps ?? true,
 	) {
-		super(calendarEvent.client, raw.userId);
-		this.calendarEventId = raw.calendarEventId;
-		this.channelId = raw.channelId;
-		this.serverId = raw.serverId;
-		this.userId = raw.userId;
-		this.status = raw.status;
-		this.createdBy = raw.createdBy;
-		this.createdAt = new Date(raw.createdAt);
-		this.editedBy = raw.updatedBy;
-		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		if (cache) calendarEvent.rsvps.cache.set(this.id, this);
+		super(event.client);
+		if (cache) event.rsvps.cache.set(this.userId, this);
 	}
 
 	/**
 	 * Whether the calendar event RSVP is cached
 	 */
 	get isCached() {
-		return this.calendarEvent.rsvps.cache.has(this.id);
+		return this.event.rsvps.cache.has(this.userId);
 	}
 
 	/**
-	 * The channel
+	 * The ID of the user
 	 */
-	get channel() {
-		return this.calendarEvent.channel;
-	}
-
-	/**
-	 * The server
-	 */
-	get server() {
-		return this.calendarEvent.server;
+	get userId() {
+		return this.data.userId;
 	}
 
 	/**
 	 * The user
 	 */
 	get user() {
-		return this.client.users.cache.get(this.userId);
+		return this.client.users.cache.get(this.userId) ?? null;
 	}
 
 	/**
-	 * The server member that created the calendar event RSVP
+	 * The status of the calendar event RSVP
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
+	get status() {
+		return this.data.status;
 	}
 
 	/**
 	 * The ID of the user that created the calendar event RSVP
 	 */
-	get authorId() {
-		return this.createdBy;
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
-	 * The timestamp of when the calendar event RSVP was created
+	 * The user that created the calendar event RSVP
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The server member that edited the calendar event RSVP
+	 * Whether the client user created the calendar event RSVP
 	 */
-	get editor() {
-		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
 	}
 
 	/**
-	 * The timestamp of when the calendar event RSVP was edited
+	 * When the calendar event RSVP was created
 	 */
-	get editedTimestamp() {
-		return this.editedAt?.getTime();
+	get createdAt() {
+		return new Date(this.data.createdAt);
+	}
+
+	/**
+	 * The ID of the user that updated the calendar event RSVP, if relevant
+	 */
+	get updaterId() {
+		return this.data.updatedBy ?? null;
+	}
+
+	/**
+	 * The user that updated the calendar event RSVP
+	 */
+	get updater() {
+		return this.updaterId ? this.client.users.cache.get(this.updaterId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user updated the calendar event RSVP
+	 */
+	get isUpdater() {
+		return this.updaterId === this.client.user?.id;
+	}
+
+	/**
+	 * When the calendar event RSVP was updated, if relevant
+	 */
+	get updatedAt() {
+		return this.data.updatedAt ? new Date(this.data.updatedAt) : null;
+	}
+
+	/**
+	 * Whether the calendar event RSVP is updated
+	 */
+	get isUpdated() {
+		return !!this.updatedAt;
 	}
 
 	/**
@@ -136,16 +118,7 @@ export class CalendarEventRsvp extends Base {
 	 * @returns The fetched calendar event RSVP
 	 */
 	fetch(options?: FetchOptions) {
-		return this.calendarEvent.rsvps.fetch(this.id, options);
-	}
-
-	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
-	 */
-	fetchServer(options?: FetchOptions) {
-		return this.calendarEvent.fetchServer(options);
+		return this.event.rsvps.fetch(this.userId, options);
 	}
 
 	/**
@@ -153,36 +126,34 @@ export class CalendarEventRsvp extends Base {
 	 * @returns The fetched user
 	 */
 	fetchUser() {
-		return this.client.users.fetch(this.serverId, this.userId);
+		return this.client.users.fetch(this.event.channel.serverId, this.userId);
 	}
 
 	/**
-	 * Fetch the server member that created the calendar event RSVP
-	 * @param options The options to fetch the server member with
+	 * Fetch the user that created the calendar event RSVP
+	 * @returns The fetched user
+	 */
+	fetchCreator() {
+		return this.client.users.fetch(this.event.channel.serverId, this.creatorId);
+	}
+
+	/**
+	 * Fetch the user that updated the calendar event RSVP
 	 * @returns The fetched server member
 	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	async fetchUpdater() {
+		return this.updaterId
+			? this.client.users.fetch(this.event.channel.serverId, this.updaterId)
+			: null;
 	}
 
 	/**
-	 * Fetch the server member that edited the calendar event RSVP
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
-	 */
-	async fetchEditor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
-	}
-
-	/**
-	 * Edit the calendar event RSVP
+	 * Update the calendar event RSVP
 	 * @param status The status of the calendar event RSVP
-	 * @returns The edited calendar event RSVP
+	 * @returns The updated calendar event RSVP
 	 */
-	edit(status: CalendarEventRsvpStatus) {
-		return this.calendarEvent.rsvps.edit(this, status) as Promise<this>;
+	update(status: CalendarEventRsvpStatus) {
+		return this.event.rsvps.update(this, status) as Promise<this>;
 	}
 
 	/**
@@ -190,7 +161,7 @@ export class CalendarEventRsvp extends Base {
 	 * @returns The deleted calendar event RSVP
 	 */
 	async delete() {
-		await this.calendarEvent.rsvps.delete(this);
+		await this.event.rsvps.delete(this);
 		return this;
 	}
 }

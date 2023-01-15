@@ -13,8 +13,9 @@ export default class extends Command {
 	];
 
 	async execute(message: Message, { amount }: { amount: number }) {
-		const member = await message.fetchAuthor();
+		const server = await message.channel.fetchServer();
+		const member = await server.members.fetch(message.creatorId!);
 		await member.setXp(amount);
-		message.reply(`Set your XP to ${amount}.`);
+		message.reply({ content: `Set your XP to ${amount}.` });
 	}
 }
