@@ -15,24 +15,6 @@ export class ServerMember extends Base {
 	 */
 	readonly user: User;
 	/**
-	 * The IDs of roles the server member has
-	 */
-	roleIds: number[];
-	/**
-	 * The nickname of the server member
-	 */
-	nickname?: string;
-	/**
-	 * When the member joined the server
-	 */
-	readonly joinedAt?: Date;
-	/**
-	 * Whether the member is the owner of the server
-	 *
-	 * @default false
-	 */
-	readonly isOwner?: boolean;
-	/**
 	 * The social links of the server member
 	 */
 	readonly socialLinks = new Collection<string, APISocialLink>();
@@ -44,36 +26,55 @@ export class ServerMember extends Base {
 
 	/**
 	 * @param server The server
-	 * @param raw The data of the server member
+	 * @param data The data of the server member
 	 * @param cache Whether to cache the server member
 	 */
 	constructor(
 		public readonly server: Server,
-		public readonly raw: APIServerMember | APIServerMemberSummary,
+		public readonly data: APIServerMember | APIServerMemberSummary,
 		cache = server.client.options.cacheServerMembers ?? true,
 	) {
-		super(server.client, raw.user.id);
+		super(server.client);
 		this.roles = new ServerMemberRoleManager(this);
-		this.user = new User(this.client, raw.user);
-		this.roleIds = raw.roleIds;
-		this.nickname = 'nickname' in raw ? raw.nickname : undefined;
-		this.joinedAt = 'joinedAt' in raw ? new Date(raw.joinedAt) : undefined;
-		this.isOwner = 'isOwner' in raw ? raw.isOwner : undefined;
-		if (cache) server.members.cache.set(this.id, this);
+		this.user = new User(this.client, data.user);
+		if (cache) server.members.cache.set(this.user.id, this);
 	}
 
 	/**
 	 * Whether the server member is cached
 	 */
 	get isCached() {
-		return this.server.members.cache.has(this.id);
+		return this.server.members.cache.has(this.user.id);
 	}
 
 	/**
-	 * The timestamp of when the member joined the server
+	 * The IDs of roles the server member has
 	 */
-	get joinedTimestamp() {
-		return this.joinedAt?.getTime();
+	get roleIds() {
+		return this.data.roleIds;
+	}
+
+	/**
+	 * The nickname of the server member
+	 */
+	get nickname() {
+		return 'nickname' in this.data ? this.data.nickname ?? null : null;
+	}
+
+	/**
+	 * When the member joined the server
+	 */
+	get joinedAt() {
+		return 'joinedAt' in this.data ? new Date(this.data.joinedAt) : null;
+	}
+
+	/**
+	 * Whether the member is the owner of the server
+	 */
+	get isOwner() {
+		return 'isOwner' in this.data
+			? this.data.isOwner ?? false
+			: this.user.id === this.server.ownerId;
 	}
 
 	/**
@@ -87,20 +88,12 @@ export class ServerMember extends Base {
 
 	/**
 	 * Set the nickname of the server member
-	 * @param nickname The nickname of the server member
-	 * @returns The edited server member
+	 * @param nickname The nickname of the server member, or `null` to remove the nickname
+	 * @returns The updated server member
 	 */
-	async setNickname(nickname: string) {
+	async setNickname(nickname: string | null) {
 		await this.server.members.setNickname(this, nickname);
-		return this;
-	}
-
-	/**
-	 * Remove the nickname of the server member
-	 * @returns The edited server member
-	 */
-	async removeNickname() {
-		await this.server.members.removeNickname(this);
+		if (nickname) (this.data as APIServerMember).nickname = nickname;
 		return this;
 	}
 
@@ -119,25 +112,16 @@ export class ServerMember extends Base {
 	 * @returns The created server ban
 	 */
 	ban(reason?: string) {
-		return this.server.members.ban(this, reason);
+		return this.server.bans.create(this, reason);
 	}
 
 	/**
-	 * Unban the server member
-	 * @returns The unbanned server member
-	 */
-	async unban() {
-		await this.server.members.unban(this);
-		return this;
-	}
-
-	/**
-	 * Award XP to the server member
-	 * @param amount The amount of XP to award
+	 * Add XP to the server member
+	 * @param amount The amount of XP to add
 	 * @returns The total amount of XP the server member has
 	 */
-	awardXp(amount: number) {
-		return this.server.members.awardXp(this, amount);
+	addXp(amount: number) {
+		return this.server.members.addXp(this, amount);
 	}
 
 	/**

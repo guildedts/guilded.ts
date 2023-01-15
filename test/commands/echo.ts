@@ -11,6 +11,6 @@ export default class extends Command {
 	];
 
 	execute(message: Message, { content }: { content: string }) {
-		message.reply(content);
+		message.reply({ content });
 	}
 }

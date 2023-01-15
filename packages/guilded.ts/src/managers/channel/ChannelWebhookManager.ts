@@ -1,9 +1,10 @@
 import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
-import { Channel } from '../../structures/channel/Channel';
 import { Webhook } from '../../structures/Webhook';
 import { Collection } from '@discordjs/collection';
 import { APIEmbed, RESTPostWebhookMessageJSONBody } from 'guilded-api-typings';
 import { EmbedBuilder } from '@guildedts/builders';
+import { ChatChannel } from '../../structures/channel/ChatChannel';
+import { ListChannel } from '../../structures/channel/ListChannel';
 
 /**
  * The manager for webhooks
@@ -12,7 +13,7 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	/**
 	 * @param channel The channel
 	 */
-	constructor(public readonly channel: Channel) {
+	constructor(public readonly channel: ChatChannel | ListChannel) {
 		super(channel.client, channel.client.options.maxWebhookCache);
 	}
 
@@ -71,13 +72,13 @@ export class ChannelWebhookManager extends BaseManager<string, Webhook> {
 	}
 
 	/**
-	 * Edit a webhook in the channel
+	 * Update a webhook in the channel
 	 * @param webhook The webhook
 	 * @param name The name of the webhook
 	 * @param channelId The ID of the channel
-	 * @returns The edited webhook
+	 * @returns The updated webhook
 	 */
-	async edit(webhook: string | Webhook, name: string, channelId?: string) {
+	async update(webhook: string | Webhook, name: string, channelId?: string) {
 		webhook = webhook instanceof Webhook ? webhook.id : webhook;
 		const raw = await this.client.api.webhooks.edit(
 			this.channel.serverId,

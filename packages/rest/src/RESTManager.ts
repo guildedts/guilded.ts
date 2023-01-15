@@ -11,18 +11,6 @@ const { version } = require('../package.json');
  */
 export class RESTManager extends EventEmitter {
 	/**
-	 * The authorization token to use in requests
-	 */
-	token?: string;
-	/**
-	 * The version of the REST API to use
-	 */
-	readonly version?: number;
-	/**
-	 * The base URL to use in requests
-	 */
-	readonly proxyUrl?: string;
-	/**
 	 * The router for the REST API
 	 */
 	readonly router: Router;
@@ -32,17 +20,26 @@ export class RESTManager extends EventEmitter {
 	 */
 	constructor(public readonly options: RESTOptions) {
 		super();
-		this.token = options.token;
-		this.proxyUrl = options.proxyUrl;
-		if (!this.proxyUrl) this.version = options.version;
 		this.router = new Router(this);
 	}
 
 	/**
+	 * The authorization token to use in requests
+	 */
+	get token() {
+		return this.options.token ?? null;
+	}
+	/**
+	 * The version of the REST API to use
+	 */
+	get version() {
+		return !this.options.proxyUrl ? this.options.version ?? null : null;
+	}
+	/**
 	 * The base URL to use in requests
 	 */
 	get baseURL() {
-		return this.proxyUrl ? this.proxyUrl : `https://www.guilded.gg/api/v${this.version}/`;
+		return this.options.proxyUrl ?? `https://www.guilded.gg/api/v${this.version}/`;
 	}
 
 	/**
@@ -50,8 +47,8 @@ export class RESTManager extends EventEmitter {
 	 * @param token The authorization token to use in requests
 	 * @returns The REST manager
 	 */
-	setToken(token?: string) {
-		this.token = token;
+	setToken(token: string) {
+		this.options.token = token;
 		return this;
 	}
 

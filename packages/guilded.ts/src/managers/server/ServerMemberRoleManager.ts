@@ -27,21 +27,21 @@ export class ServerMemberRoleManager extends BaseManager<number, ServerMemberRol
 	}
 
 	/**
-	 * Assign a role to the server member
+	 * Add a role to the server member
 	 * @param role The role
 	 * @returns The added server member role
 	 */
-	assign(role: number | ServerRole) {
-		return this.member.server.roles.assign(this.member, role);
+	add(role: number | ServerRole) {
+		return this.member.server.roles.add(this.member, role);
 	}
 
 	/**
-	 * Unassign a role from the server member
+	 * Remove a role from the server member
 	 * @param role The role
 	 * @returns The removed server member role
 	 */
-	unassign(role: number | ServerRole) {
-		return this.member.server.roles.unassign(this.member, role);
+	remove(role: number | ServerRole) {
+		return this.member.server.roles.remove(this.member, role);
 	}
 }
 

@@ -1,4 +1,4 @@
-import { APIListItem, APIListItemSummary, APIMentions } from 'guilded-api-typings';
+import { APIListItem, APIListItemSummary } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { ListItemNote } from './ListItemNote';
 import { ListChannel } from '../channel/ListChannel';
@@ -9,84 +9,22 @@ import { FetchOptions } from '../../managers/BaseManager';
  */
 export class ListItem extends Base {
 	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * The message of the list item
-	 */
-	readonly message: string;
-	/**
-	 * The mentions of the list item
-	 */
-	readonly mentions?: APIMentions;
-	/**
-	 * When the list item was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that created the list item
-	 *
-	 * **Note:** If this list item has {@link createdByWebhookId}, this field will still be populated, but can be ignored
-	 */
-	readonly createdBy: string;
-	/**
-	 * The ID of the webhook that created the list item, if it was created by a webhook
-	 */
-	readonly createdByWebhookId?: string;
-	/**
-	 * When the list item was edited, if relevant
-	 */
-	readonly editedAt?: Date;
-	/**
-	 * The ID of the user that edited the list item, if relevant
-	 */
-	readonly editedBy?: string;
-	/**
-	 * The ID of the parent list item, if the list item is nested
-	 */
-	readonly parentId?: string;
-	/**
-	 * When the list item was completed, if relevant
-	 */
-	readonly completedAt?: Date;
-	/**
-	 * The ID of the user that completed the list item
-	 */
-	readonly completedBy?: string;
-	/**
 	 * The note of the list item
 	 */
-	readonly note?: ListItemNote;
+	readonly note: ListItemNote | null;
 
 	/**
 	 * @param channel The list channel
-	 * @param raw The data of the list item
+	 * @param data The data of the list item
 	 * @param cache Whether to cache the list item
 	 */
 	public constructor(
 		public readonly channel: ListChannel,
-		public readonly raw: APIListItem | APIListItemSummary,
+		public readonly data: APIListItem | APIListItemSummary,
 		cache = channel.client.options.cacheListItems ?? true,
 	) {
-		super(channel.client, raw.id);
-		this.serverId = raw.serverId;
-		this.channelId = raw.channelId;
-		this.message = raw.message;
-		this.mentions = raw.mentions;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.createdByWebhookId = raw.createdByWebhookId;
-		this.editedAt = raw.updatedAt ? new Date(raw.updatedAt) : undefined;
-		this.editedBy = raw.updatedBy;
-		this.parentId = raw.parentListItemId;
-		this.completedAt = raw.completedAt ? new Date(raw.completedAt) : undefined;
-		this.completedBy = raw.completedBy;
-		this.note = raw.note ? new ListItemNote(this, raw.note) : undefined;
+		super(channel.client);
+		this.note = data.note ? new ListItemNote(this, data.note) : null;
 		if (cache) channel.items.cache.set(this.id, this);
 	}
 
@@ -98,75 +36,150 @@ export class ListItem extends Base {
 	}
 
 	/**
-	 * The server
+	 * The ID of the list item
 	 */
-	get server() {
-		return this.channel.server;
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * The timestamp of when the list item was created
+	 * The content of the list item
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get content() {
+		return this.data.message;
 	}
 
 	/**
-	 * The server member that created the list item
+	 * The mentions of the list item
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
+	get mentions() {
+		return this.data.mentions ?? {};
+	}
+
+	/**
+	 * When the list item was created
+	 */
+	get createdAt() {
+		return new Date(this.data.createdAt);
+	}
+
+	/**
+	 * The ID of the user that created the list item, if it was created by a user
+	 */
+	get creatorId() {
+		return !this.webhookId ? this.data.createdBy : null;
+	}
+
+	/**
+	 * The user that created the list item, if it was created by a user
+	 */
+	get creator() {
+		return this.creatorId ? this.client.users.cache.get(this.creatorId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user created the list item
+	 */
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
+	}
+
+	/**
+	 * The ID of the webhook that created the list item, if it was created by a webhook
+	 */
+	get webhookId() {
+		return this.data.createdByWebhookId ?? null;
 	}
 
 	/**
 	 * The webhook that created the list item, if it was created by a webhook
 	 */
 	get webhook() {
-		return this.createdByWebhookId
-			? this.channel.webhooks.cache.get(this.createdByWebhookId)
-			: undefined;
+		return this.webhookId ? this.channel.webhooks.cache.get(this.webhookId) ?? null : null;
 	}
 
 	/**
-	 * The ID of the user that created the list item
+	 * When the list item was updated, if relevant
 	 */
-	get authorId() {
-		return this.createdByWebhookId || this.createdBy;
+	get updatedAt() {
+		return this.data.updatedAt ? new Date(this.data.updatedAt) : null;
 	}
 
 	/**
-	 * The timestamp of when the list item was edited, if relevant
+	 * The ID of the user that updated the list item, if relevant
 	 */
-	get editedTimestamp() {
-		return this.editedAt?.getTime();
+	get updaterId() {
+		return this.data.updatedBy ?? null;
 	}
 
 	/**
-	 * The server member that edited the list item, if relevant
+	 * The user that updated the list item, if relevant
 	 */
-	get editor() {
-		return this.editedBy ? this.server?.members.cache.get(this.editedBy) : undefined;
+	get updater() {
+		return this.updaterId ? this.client.users.cache.get(this.updaterId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user updated the list item
+	 */
+	get isUpdater() {
+		return this.updaterId === this.client.user?.id;
+	}
+
+	/**
+	 * Whether the list item is updated
+	 */
+	get isUpdated() {
+		return !!this.updatedAt;
+	}
+
+	/**
+	 * The ID of the parent list item, if the list item is nested
+	 */
+	get parentId() {
+		return this.data.parentListItemId ?? null;
 	}
 
 	/**
 	 * The parent list item, if the list item is nested
 	 */
 	get parent() {
-		return this.parentId ? this.channel.items.cache.get(this.parentId) : undefined;
+		return this.parentId ? this.channel.items.cache.get(this.parentId) ?? null : null;
 	}
 
 	/**
-	 * The timestamp of when the list item was completed, if relevant
+	 * Whether the list item is nested
 	 */
-	get completedTimestamp() {
-		return this.completedAt?.getTime();
+	get isNested() {
+		return !!this.parentId;
 	}
 
 	/**
-	 * The server member that completed the list item, if relevant
+	 * When the list item was completed, if relevant
+	 */
+	get completedAt() {
+		return this.data.completedAt ? new Date(this.data.completedAt) : null;
+	}
+
+	/**
+	 * The ID of the user that completed the list item, if relevant
+	 */
+	get completerId() {
+		return this.data.completedBy ?? null;
+	}
+
+	/**
+	 * The user that completed the list item, if relevant
 	 */
 	get completer() {
-		return this.completedBy ? this.server?.members.cache.get(this.completedBy) : undefined;
+		return this.completerId ? this.client.users.cache.get(this.completerId) ?? null : null;
+	}
+
+	/**
+	 * Whether the client user completed the list item
+	 */
+	get isCompleter() {
+		return this.completerId === this.client.user?.id;
 	}
 
 	/**
@@ -174,13 +187,6 @@ export class ListItem extends Base {
 	 */
 	get isCompleted() {
 		return !!this.completedAt;
-	}
-
-	/**
-	 * Whether the list item is editable
-	 */
-	get isEditable() {
-		return this.createdBy === this.client.user?.id;
 	}
 
 	/**
@@ -193,80 +199,69 @@ export class ListItem extends Base {
 	}
 
 	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
+	 * Fetch the user that created the list item
+	 * @returns The fetched user, if created by one
 	 */
-	fetchServer(options?: FetchOptions) {
-		return this.channel.fetchServer(options);
-	}
-
-	/**
-	 * Fetch the server member that created the list item
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
-	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	async fetchCreator() {
+		return this.creatorId
+			? this.client.users.fetch(this.channel.serverId, this.creatorId)
+			: null;
 	}
 
 	/**
 	 * Fetch the webhook that created the list item
 	 * @param options The options to fetch the webhook with
-	 * @returns The fetched webhook
+	 * @returns The fetched webhook, if created by one
 	 */
-	fetchWebhook(options?: FetchOptions) {
-		return this.createdByWebhookId
-			? this.channel.webhooks.fetch(this.createdByWebhookId, options)
-			: undefined;
+	async fetchWebhook(options?: FetchOptions) {
+		return this.webhookId ? this.channel.webhooks.fetch(this.webhookId, options) : null;
 	}
 
 	/**
-	 * Fetch the server member that edited the list item
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that updated the list item
+	 * @returns The fetched user, if relevant
 	 */
-	async fetchEditor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return this.editedBy ? server.members.fetch(this.editedBy, options) : undefined;
+	async fetchUpdater() {
+		return this.updaterId
+			? this.client.users.fetch(this.channel.serverId, this.updaterId) ?? null
+			: null;
 	}
 
 	/**
 	 * Fetch the parent list item
 	 * @param options The options to fetch the list item with
-	 * @returns The fetched list item
+	 * @returns The fetched list item, if relevant
 	 */
 	async fetchParent(options?: FetchOptions) {
-		return this.parentId ? this.channel.items.fetch(this.parentId, options) : undefined;
+		return this.parentId ? this.channel.items.fetch(this.parentId, options) : null;
 	}
 
 	/**
-	 * Fetch the server member that completed the list item
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
+	 * Fetch the user that completed the list item
+	 * @returns The fetched user, if relevant
 	 */
-	async fetchCompleter(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return this.completedBy ? server.members.fetch(this.completedBy, options) : undefined;
+	async fetchCompleter() {
+		return this.completerId
+			? this.client.users.fetch(this.channel.serverId, this.completerId)
+			: null;
 	}
 
 	/**
-	 * Edit the list item
-	 * @param message The message of the list item
+	 * Update the list item
+	 * @param content The content of the list item
 	 * @param note The note of the list item
-	 * @returns The edited list item
+	 * @returns The updated list item
 	 */
-	edit(message: string, note?: string) {
-		return this.channel.items.edit(this, message, note) as Promise<this>;
+	update(content: string, note?: string) {
+		return this.channel.items.update(this, content, note) as Promise<this>;
 	}
 
 	/**
-	 * Remove the list item
-	 * @returns The removed list item
+	 * Delete the list item
+	 * @returns The deleted list item
 	 */
-	async remove() {
-		await this.channel.items.remove(this);
+	async delete() {
+		await this.channel.items.delete(this);
 		return this;
 	}
 

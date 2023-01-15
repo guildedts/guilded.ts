@@ -8,7 +8,7 @@ export abstract class NumberArgument extends Argument {
 	/**
 	 * The default value of the argument
 	 */
-	default?: number;
+	default: number | null = null;
 	/**
 	 * The choices of the argument
 	 */
@@ -16,11 +16,11 @@ export abstract class NumberArgument extends Argument {
 	/**
 	 * The max value of the argument
 	 */
-	max?: number;
+	max = Infinity;
 	/**
 	 * The min value of the argument
 	 */
-	min?: number;
+	min = -Infinity;
 
 	/**
 	 * Validates the number argument
@@ -37,11 +37,11 @@ export abstract class NumberArgument extends Argument {
 					.map((choice) => inlineCode(`${choice}`))
 					.join(', ')}.`,
 			);
-		else if (this.max && Number(value) > this.max)
+		else if (Number(value) > this.max)
 			throw new Error(`${inlineCode(this.name)} must be less than ${this.max}.`);
-		else if (this.min && Number(value) < this.min)
+		else if (Number(value) < this.min)
 			throw new Error(`${inlineCode(this.name)} must be greater than ${this.min}.`);
-		else if (this.default && !value) return this.default;
+		else if (this.default !== null && !value) return this.default;
 		else return Number(value);
 	}
 }

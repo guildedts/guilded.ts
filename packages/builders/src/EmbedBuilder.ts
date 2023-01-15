@@ -10,11 +10,9 @@ import { ColorResolvable, resolveColor } from '@guildedts/util';
  */
 export class EmbedBuilder {
 	/**
-	 * @param data The data of the embed
+	 * The data of the embed
 	 */
-	constructor(public readonly data: APIEmbed = {}) {
-		if (data.timestamp) data.timestamp = new Date(data.timestamp).toISOString();
-	}
+	readonly data: APIEmbed = {};
 
 	/**
 	 * Set the title of the embed

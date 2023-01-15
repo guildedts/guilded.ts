@@ -1,4 +1,5 @@
 import {
+	APIServerMember,
 	WebSocketServerBanAddEventData,
 	WebSocketServerBanRemoveEventData,
 	WebSocketServerMemberAddEventData,
@@ -50,7 +51,7 @@ export async function banned(client: Client, data: WebSocketServerBanAddEventDat
 export async function unbanned(client: Client, data: WebSocketServerBanRemoveEventData) {
 	const server = await client.servers.fetch(data.serverId);
 	const ban = new ServerBan(server, data.serverMemberBan);
-	if (client.options.disposeCachedServerBans ?? true) server.bans.cache.delete(ban.id);
+	if (client.options.disposeCachedServerBans ?? true) server.bans.cache.delete(ban.user.id);
 	client.emit('serverMemberUnban', ban);
 }
 
@@ -63,6 +64,6 @@ export async function updated(client: Client, data: WebSocketServerMemberUpdateE
 	const server = await client.servers.fetch(data.serverId);
 	const oldMember = server.members.cache.get(data.userInfo.id);
 	const newMember = await server.members.fetch(data.userInfo.id);
-	newMember.nickname = data.userInfo.nickname;
+	(newMember.data as APIServerMember).nickname = data.userInfo.nickname;
 	client.emit('serverMemberEdit', newMember, oldMember);
 }

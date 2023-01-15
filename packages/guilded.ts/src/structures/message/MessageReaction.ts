@@ -1,105 +1,72 @@
-import { APIEmote, APIMessageReaction } from 'guilded-api-typings';
-import { FetchOptions } from '../../managers/BaseManager';
+import { APIMessageReaction } from 'guilded-api-typings';
 import { Base } from '../Base';
 import { Message } from './Message';
 
 /**
  * Represents a message reaction on Guilded
  */
-export class MessageReaction extends Base<number> {
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * The ID of the message
-	 */
-	readonly messageId: string;
-	/**
-	 * The ID of the user that created the reaction
-	 */
-	readonly createdBy: string;
-	/**
-	 * The emote
-	 */
-	readonly emote: APIEmote;
-
+export class MessageReaction extends Base {
 	/**
 	 * @param message The message
-	 * @param raw The data of the message reaction
+	 * @param data The data of the message reaction
 	 * @param cache Whether to cache the message reaction
 	 */
 	constructor(
 		public readonly message: Message,
-		public readonly raw: APIMessageReaction,
-		cache = message.channel.client.options.cacheMessageReactions ?? true,
+		public readonly data: APIMessageReaction,
+		cache = message.client.options.cacheMessageReactions ?? true,
 	) {
-		super(message.client, raw.emote.id);
-		this.channelId = raw.channelId;
-		this.messageId = raw.messageId;
-		this.createdBy = raw.createdBy;
-		this.emote = raw.emote;
-		if (cache) message.reactions.cache.set(this.id, this);
+		super(message.client);
+		if (cache) message.reactions.cache.set(this.emote.id, this);
 	}
 
 	/**
 	 * Whether the message reaction is cached
 	 */
 	get isCached() {
-		return this.message.reactions.cache.has(this.id);
+		return this.message.reactions.cache.has(this.emote.id);
 	}
 
 	/**
-	 * The channel
+	 * The ID of the user that created the message reaction
 	 */
-	get channel() {
-		return this.message.channel;
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
-	 * The ID of the server
+	 * The user that created the message reaction
 	 */
-	get serverId() {
-		return this.message.serverId;
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
 	}
 
 	/**
-	 * The server
+	 * Whether the client user created the message reaction
 	 */
-	get server() {
-		return this.message.server;
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
 	}
 
 	/**
-	 * The server member that created the reaction
+	 * The emote
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
+	get emote() {
+		return this.data.emote;
 	}
 
 	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
+	 * Fetch the user that created the message reaction
+	 * @returns The fetched user
 	 */
-	fetchServer(options?: FetchOptions) {
-		return this.message.fetchServer(options);
-	}
-
-	/**
-	 * Fetch the server member that created the reaction
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
-	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	async fetchCreator() {
+		return this.client.users.fetch(this.message.channel.serverId, this.creatorId);
 	}
 
 	/**
 	 * Remove the reaction from the message
 	 */
 	remove() {
-		return this.message.reactions.remove(this.id);
+		return this.message.reactions.remove(this.emote.id);
 	}
 }

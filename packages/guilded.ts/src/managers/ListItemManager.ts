@@ -52,34 +52,34 @@ export class ListItemManager extends BaseManager<string, ListItem> {
 	}
 
 	/**
-	 * Add a list item to the channel
-	 * @param message The message of the list item
+	 * Create a list item to the channel
+	 * @param content The content of the list item
 	 * @param note The note of the list item
-	 * @returns The added list item
+	 * @returns The created list item
 	 */
-	async add(message: string, note?: string) {
-		const raw = await this.client.api.listItems.create(this.channel.id, message, note);
+	async create(content: string, note?: string) {
+		const raw = await this.client.api.listItems.create(this.channel.id, content, note);
 		return new ListItem(this.channel, raw);
 	}
 
 	/**
-	 * Edit a list item in the channel
+	 * Update a list item in the channel
 	 * @param listItem The list item
-	 * @param message The message of the list item
+	 * @param content The content of the list item
 	 * @param note The note of the list item
-	 * @returns The edited list item
+	 * @returns The updated list item
 	 */
-	async edit(listItem: string | ListItem, message: string, note?: string) {
+	async update(listItem: string | ListItem, content: string, note?: string) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
-		const raw = await this.client.api.listItems.edit(this.channel.id, listItem, message, note);
+		const raw = await this.client.api.listItems.edit(this.channel.id, listItem, content, note);
 		return new ListItem(this.channel, raw);
 	}
 
 	/**
-	 * Remove a list item from the channel
+	 * Delete a list item from the channel
 	 * @param listItem The list item
 	 */
-	remove(listItem: string | ListItem) {
+	delete(listItem: string | ListItem) {
 		listItem = listItem instanceof ListItem ? listItem.id : listItem;
 		return this.client.api.listItems.delete(this.channel.id, listItem);
 	}

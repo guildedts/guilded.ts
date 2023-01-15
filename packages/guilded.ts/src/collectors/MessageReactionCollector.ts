@@ -1,17 +1,20 @@
-import { Message } from '../structures/message/Message';
+import { MessageReactionManager } from '../managers/message/MessageReactionManager';
 import { MessageReaction } from '../structures/message/MessageReaction';
 import { Collector, CollectorOptions } from './Collector';
 
 /**
  * The collector for message reactions
  */
-export class MessageReactionCollector extends Collector<MessageReaction> {
+export class MessageReactionCollector extends Collector<number, MessageReaction> {
 	/**
-	 * @param message The message
+	 * @param reactions The manager for message reactions
 	 * @param options The options for the reaction collector
 	 */
-	constructor(public readonly message: Message, options?: CollectorOptions<MessageReaction>) {
-		super(message.client, options);
+	constructor(
+		public readonly reactions: MessageReactionManager,
+		options?: CollectorOptions<MessageReaction>,
+	) {
+		super(reactions.client, options);
 		this.options.dispose =
 			options?.dispose ?? this.client.options.disposeCollectedMessageReactions;
 		this.client.on('messageReactionAdd', this.collectReaction.bind(this));
@@ -19,11 +22,11 @@ export class MessageReactionCollector extends Collector<MessageReaction> {
 	}
 
 	private collectReaction(reaction: MessageReaction) {
-		if (reaction.messageId !== this.message.id) return;
-		this.collect(reaction);
+		if (reaction.message.id !== this.reactions.message.id) return;
+		this.collect(reaction.emote.id, reaction);
 	}
 
 	private disposeReaction(reaction: MessageReaction) {
-		this.dispose(reaction.id);
+		this.dispose(reaction.emote.id);
 	}
 }

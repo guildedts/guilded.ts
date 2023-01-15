@@ -2,7 +2,6 @@ import { Base } from './Base';
 import { Client } from './Client';
 import { GroupMemberManager } from '../managers/group/GroupMemberManager';
 import { FetchOptions } from '../managers/BaseManager';
-import { ServerMember } from './server/ServerMember';
 import { RESTPostChannelJSONBody } from 'guilded-api-typings';
 
 /**
@@ -16,15 +15,15 @@ export class Group extends Base {
 
 	/**
 	 * @param client The client
-	 * @param raw The data of the group
+	 * @param data The data of the group
 	 * @param cache Whether to cache the group
 	 */
 	constructor(
 		client: Client,
-		public readonly raw: { id: string },
+		public readonly data: { id: string },
 		cache = client.options.cacheGroups ?? true,
 	) {
-		super(client, raw.id);
+		super(client);
 		this.members = new GroupMemberManager(this);
 		if (cache) client.groups.cache.set(this.id, this);
 	}
@@ -37,6 +36,13 @@ export class Group extends Base {
 	}
 
 	/**
+	 * The ID of the group
+	 */
+	get id() {
+		return this.data.id;
+	}
+
+	/**
 	 * Fetch the group
 	 * @param options The options to fetch the group with
 	 * @returns The fetched group
@@ -46,27 +52,11 @@ export class Group extends Base {
 	}
 
 	/**
-	 * Add a member to the group
-	 * @param serverMember The server member
-	 */
-	addMember(serverMember: string | ServerMember) {
-		return this.members.add(serverMember);
-	}
-
-	/**
-	 * Remove a member from the group
-	 * @param serverMember The server member
-	 */
-	removeMember(serverMember: string | ServerMember) {
-		return this.members.remove(serverMember);
-	}
-
-	/**
 	 * Create a channel in the group
-	 * @param payload The payload of the channel
+	 * @param options The options to create the channel with
 	 * @returns The created channel
 	 */
-	createChannel(payload: Omit<RESTPostChannelJSONBody, 'groupId'>) {
-		return this.client.channels.create({ groupId: this.id, ...payload });
+	createChannel(options: Omit<RESTPostChannelJSONBody, 'groupId'>) {
+		return this.client.channels.create({ groupId: this.id, ...options });
 	}
 }

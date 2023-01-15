@@ -1,60 +1,25 @@
 import { APIWebhook, RESTPostWebhookMessageJSONBody } from 'guilded-api-typings';
 import { Base } from './Base';
 import { FetchOptions } from '../managers/BaseManager';
-import { Channel } from './channel/Channel';
 import { WebhookMessagePayloadResolvable } from '../managers/channel/ChannelWebhookManager';
+import { ChatChannel } from './channel/ChatChannel';
+import { ListChannel } from './channel/ListChannel';
 
 /**
  * Represents a webhook on Guilded
  */
 export class Webhook extends Base {
 	/**
-	 * The name of the webhook (`1`-`128` characters)
-	 */
-	readonly name: string;
-	/**
-	 * The ID of the server
-	 */
-	readonly serverId: string;
-	/**
-	 * The ID of the channel
-	 */
-	readonly channelId: string;
-	/**
-	 * When the webhook was created
-	 */
-	readonly createdAt: Date;
-	/**
-	 * The ID of the user that created the webhook
-	 */
-	readonly createdBy: string;
-	/**
-	 * When the webhook was deleted, if relevant
-	 */
-	readonly deletedAt?: Date;
-	/**
-	 * The token of the webhook
-	 */
-	readonly token?: string;
-
-	/**
 	 * @param channel The channel the webhook belongs to.
-	 * @param raw The raw data of the webhook.
+	 * @param data The raw data of the webhook.
 	 * @param cache Whether to cache the webhook.
 	 */
 	constructor(
-		public readonly channel: Channel,
-		public readonly raw: APIWebhook,
+		public readonly channel: ChatChannel | ListChannel,
+		public readonly data: APIWebhook,
 		cache = channel.client.options.cacheWebhooks ?? true,
 	) {
-		super(channel.client, raw.id);
-		this.name = raw.name;
-		this.serverId = raw.serverId;
-		this.channelId = raw.channelId;
-		this.createdAt = new Date(raw.createdAt);
-		this.createdBy = raw.createdBy;
-		this.deletedAt = raw.deletedAt ? new Date(raw.deletedAt) : undefined;
-		this.token = raw.token;
+		super(channel.client);
 		if (cache) channel.webhooks.cache.set(this.id, this);
 	}
 
@@ -66,38 +31,59 @@ export class Webhook extends Base {
 	}
 
 	/**
-	 * The server
+	 * The ID of the webhook
 	 */
-	get server() {
-		return this.channel.server;
+	get id() {
+		return this.data.id;
 	}
 
 	/**
-	 * The timestamp of when the webhook was created
+	 * The name of the webhook (`1`-`128` characters)
 	 */
-	get createdTimestamp() {
-		return this.createdAt.getTime();
+	get name() {
+		return this.data.name;
 	}
 
 	/**
-	 * The server member that created the webhook
+	 * When the webhook was created
 	 */
-	get author() {
-		return this.server?.members.cache.get(this.createdBy);
+	get createdAt() {
+		return new Date(this.data.createdAt);
 	}
 
 	/**
 	 * The ID of the user that created the webhook
 	 */
-	get authorId() {
-		return this.createdBy;
+	get creatorId() {
+		return this.data.createdBy;
 	}
 
 	/**
-	 * The timestamp of when the webhook was deleted, if relevant
+	 * The user that created the webhook
 	 */
-	get deletedTimestamp() {
-		return this.deletedAt?.getTime();
+	get creator() {
+		return this.client.users.cache.get(this.creatorId) ?? null;
+	}
+
+	/**
+	 * Whether the client user created the webhook
+	 */
+	get isCreator() {
+		return this.creatorId === this.client.user?.id;
+	}
+
+	/**
+	 * When the webhook was deleted, if relevant
+	 */
+	get deletedAt() {
+		return this.data.deletedAt ? new Date(this.data.deletedAt) : null;
+	}
+
+	/**
+	 * The token of the webhook
+	 */
+	get token() {
+		return this.data.token ?? null;
 	}
 
 	/**
@@ -110,48 +96,37 @@ export class Webhook extends Base {
 	}
 
 	/**
-	 * Fetch the server
-	 * @param options The options to fetch the server with
-	 * @returns The fetched server
+	 * Fetch the user that created the webhook
+	 * @returns The fetched user
 	 */
-	fetchServer(options?: FetchOptions) {
-		return this.channel.fetchServer(options);
-	}
-
-	/**
-	 * Fetch the server member that created the webhook
-	 * @param options The options to fetch the server member with
-	 * @returns The fetched server member
-	 */
-	async fetchAuthor(options?: FetchOptions) {
-		const server = await this.fetchServer();
-		return server.members.fetch(this.createdBy, options);
+	async fetchCreator() {
+		return this.client.users.fetch(this.channel.serverId, this.creatorId);
 	}
 
 	/**
 	 * Send a message with the webhook
-	 * @param payload The payload of the message
+	 * @param options The options to create the message with
 	 */
-	send(payload: WebhookMessagePayloadResolvable) {
+	send(options: WebhookMessagePayloadResolvable) {
 		return this.client.api.webhooks.send(
 			this.id,
 			this.token!,
-			(typeof payload === 'string'
-				? { content: payload }
-				: Array.isArray(payload)
-				? { embeds: payload }
-				: payload) as RESTPostWebhookMessageJSONBody,
+			(typeof options === 'string'
+				? { content: options }
+				: Array.isArray(options)
+				? { embeds: options }
+				: options) as RESTPostWebhookMessageJSONBody,
 		);
 	}
 
 	/**
-	 * Edit the webhook
+	 * Update the webhook
 	 * @param name The name of the webhook
 	 * @param channelId The ID of the channel
-	 * @returns The edited webhook
+	 * @returns The updated webhook
 	 */
-	edit(name: string, channelId?: string) {
-		return this.channel.webhooks.edit(this, name, channelId);
+	update(name: string, channelId?: string) {
+		return this.channel.webhooks.update(this, name, channelId);
 	}
 
 	/**

@@ -31,23 +31,23 @@ export class ChannelManager extends BaseManager<string, Channel> {
 
 	/**
 	 * Create a channel
-	 * @param payload The payload of the channel
+	 * @param options The options to create the channel with
 	 * @returns The created channel
 	 */
-	async create(payload: RESTPostChannelJSONBody) {
-		const raw = await this.client.api.channels.create(payload);
+	async create(options: RESTPostChannelJSONBody) {
+		const raw = await this.client.api.channels.create(options);
 		return createChannel(this.client, raw);
 	}
 
 	/**
-	 * Edit a channel
+	 * Update a channel
 	 * @param channel The channel
-	 * @param payload The payload of the channel
-	 * @returns The edited channel
+	 * @param options The options to update the channel with
+	 * @returns The updated channel
 	 */
-	async edit(channel: string | Channel, payload: RESTPatchChannelJSONBody) {
+	async update(channel: string | Channel, options: RESTPatchChannelJSONBody) {
 		channel = channel instanceof Channel ? channel.id : channel;
-		const raw = await this.client.api.channels.edit(channel, payload);
+		const raw = await this.client.api.channels.edit(channel, options);
 		return createChannel(this.client, raw);
 	}
 

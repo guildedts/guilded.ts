@@ -1,4 +1,4 @@
-import Websocket from 'ws';
+import WebSocket from 'ws';
 import EventEmitter from 'events';
 import {
 	APIBot,
@@ -21,33 +21,21 @@ const { version } = require('../package.json');
  */
 export class WebsocketManager extends EventEmitter {
 	/**
-	 * The authorization token to use for the WebSocket
-	 */
-	token?: string;
-	/**
-	 * The version of the WebSocket API to use
-	 */
-	readonly version?: number;
-	/**
-	 * The URL to use for the WebSocket
-	 */
-	readonly proxyUrl?: string;
-	/**
 	 * The WebSocket
 	 */
-	socket?: Websocket;
+	socket: WebSocket | null = null;
 	/**
 	 * When the WebSocket became ready
 	 */
-	readyAt?: Date;
+	readyAt: Date | null = null;
 	/**
 	 * The ping of the WebSocket connection
 	 */
-	ping?: number;
+	ping: number | null = null;
 	/**
-	 * When the WebSocket was pinged
+	 * When the websocket was pinged
 	 */
-	pingedAt?: Date;
+	pingedAt: Date | null = null;
 	/**
 	 * The number of times the WebSocket reconnected
 	 */
@@ -55,16 +43,32 @@ export class WebsocketManager extends EventEmitter {
 	/**
 	 * The ID of the last WebSocket message
 	 */
-	lastMessageId?: string;
+	lastMessageId: string | null = null;
 
 	/**
 	 * @param options The options for the WebSocket manager
 	 */
 	constructor(public readonly options: WebsocketOptions) {
 		super();
-		this.token = options.token;
-		this.proxyUrl = options.proxyUrl;
-		if (!this.proxyUrl) this.version = options.version;
+	}
+
+	/**
+	 * The authorization token to use for the WebSocket
+	 */
+	get token() {
+		return this.options.token ?? null;
+	}
+	/**
+	 * The version of the WebSocket API to use
+	 */
+	get version() {
+		return !this.options.proxyUrl ? this.options.version ?? null : null;
+	}
+	/**
+	 * The URL to use for the WebSocket
+	 */
+	get url() {
+		return this.options.proxyUrl ?? `wss://www.guilded.gg/websocket/v${this.version}`;
 	}
 
 	/**
@@ -75,31 +79,10 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/**
-	 * The timestamp of when the WebSocket became ready
-	 */
-	get readyTimestamp() {
-		return this.readyAt?.getTime();
-	}
-
-	/**
-	 * The timestamp of when the WebSocket was pinged
-	 */
-	get pingedTimestamp() {
-		return this.pingedAt?.getTime();
-	}
-
-	/**
 	 * The duration of how long the WebSocket has been connected
 	 */
 	get uptime() {
-		return this.isReady ? Date.now() - this.readyTimestamp! : undefined;
-	}
-
-	/**
-	 * The URL to use for the WebSocket
-	 */
-	get url() {
-		return this.proxyUrl ? this.proxyUrl : `wss://www.guilded.gg/websocket/v${this.version}`;
+		return Date.now() - (this.readyAt?.getTime() ?? Date.now());
 	}
 
 	/**
@@ -108,8 +91,8 @@ export class WebsocketManager extends EventEmitter {
 	 * @returns The WebSocket manager
 	 */
 	connect(token: string = this.token!) {
-		this.token = token;
-		this.socket = new Websocket(this.url, {
+		this.options.token = token;
+		this.socket = new WebSocket(this.url, {
 			headers: {
 				Authorization: `Bearer ${this.token}`,
 				'User-Agent': `@guildedts/ws@${version} Node.JS@${process.versions.node}`,
@@ -141,8 +124,8 @@ export class WebsocketManager extends EventEmitter {
 	 * Handle disconnect
 	 */
 	private onSocketDisconnect() {
-		this.socket = undefined;
-		this.readyAt = undefined;
+		this.socket = null;
+		this.readyAt = null;
 		if (!this.options.reconnect || this.reconnects >= (this.options.maxReconnects ?? Infinity))
 			return this.emit('disconnect', this);
 		this.reconnects++;
@@ -166,7 +149,7 @@ export class WebsocketManager extends EventEmitter {
 				this.emit('ready', (data.d as WebSocketReadyData).user);
 				break;
 			case WebSocketOpCode.Resume:
-				delete this.lastMessageId;
+				this.lastMessageId = null;
 				break;
 		}
 	}
@@ -176,14 +159,14 @@ export class WebsocketManager extends EventEmitter {
 	 */
 	private onSocketPing() {
 		this.pingedAt = new Date();
-		this.socket!.ping();
+		this.socket?.ping();
 	}
 
 	/**
 	 * Handle pong
 	 */
 	private onSocketPong() {
-		this.ping = Date.now() - this.pingedTimestamp!;
+		if (this.pingedAt) this.ping = Date.now() - this.pingedAt.getTime();
 	}
 }
 

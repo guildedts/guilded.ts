@@ -1,4 +1,4 @@
-export * from './Embed';
+export * from './EmbedBuilder';
 export * from '@guildedts/util';
 
 /**

@@ -64,10 +64,6 @@ export class Client extends EventEmitter {
 	readonly groups: GroupManager;
 
 	/**
-	 * The authorization token to use
-	 */
-	token?: string;
-	/**
 	 * The user
 	 */
 	user?: ClientUser;
@@ -77,9 +73,8 @@ export class Client extends EventEmitter {
 	 */
 	constructor(public options: ClientOptions = {}) {
 		super();
-		this.token = options.token;
 		this.rest = new RESTManager({
-			token: this.token,
+			token: options.token,
 			version: 1,
 			maxRetries: options.maxRestAPIRetries,
 			retryInterval: options.restAPIRetryInterval,
@@ -108,6 +103,13 @@ export class Client extends EventEmitter {
 	}
 
 	/**
+	 * The authorization token to use
+	 */
+	get token() {
+		return this.options.token ?? null;
+	}
+
+	/**
 	 * Whether the client is ready to use
 	 */
 	get isReady() {
@@ -119,13 +121,6 @@ export class Client extends EventEmitter {
 	 */
 	get readyAt() {
 		return this.ws.readyAt;
-	}
-
-	/**
-	 * The timestamp of when the client became ready to use
-	 */
-	get readyTimestamp() {
-		return this.ws.readyTimestamp;
 	}
 
 	/**
@@ -141,9 +136,9 @@ export class Client extends EventEmitter {
 	 * @returns The client
 	 */
 	login(token?: string) {
-		this.token = token || this.token;
-		this.rest.setToken(this.token);
-		this.ws.connect(this.token);
+		this.options.token = token || this.token!;
+		this.rest.setToken(this.token!);
+		this.ws.connect(this.token!);
 		return new Promise<this>((resolve) => this.once('ready', () => resolve(this)));
 	}
 

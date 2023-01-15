@@ -8,19 +8,9 @@ export class CacheCollection<K, V> extends Collection<K, V> {
 	 * @param maxSize The max size of the cache
 	 * @param entries The initial entries of the cache
 	 */
-	constructor(public maxSize?: number, entries: Iterable<[K, V]> | null = []) {
+	constructor(public maxSize: number = Infinity, entries?: Iterable<readonly [K, V]> | null) {
 		super(entries);
 		if (maxSize && maxSize <= 1) throw new Error('Max cache size must be greater than 1.');
-	}
-
-	/**
-	 * Set the max size of the cache
-	 * @param maxSize The max size of the cache
-	 * @returns The cache collection
-	 */
-	setMaxSize(maxSize?: number) {
-		this.maxSize = maxSize;
-		return this;
 	}
 
 	/**

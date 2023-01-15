@@ -14,18 +14,8 @@ export class BaseManager<K = void, V = void> {
 	 * @param client The client
 	 * @param maxCache The maximum cache size
 	 */
-	constructor(public readonly client: Client, maxCache = Infinity) {
-		this.cache = new CacheCollection(maxCache);
-	}
-
-	/**
-	 * Set the maximum cache size
-	 * @param maxSize The maximum size of the cache
-	 * @returns The manager
-	 */
-	setMaxCache(maxSize: number) {
-		this.cache.setMaxSize(maxSize);
-		return this;
+	constructor(public readonly client: Client, maxCache = Infinity, entries?: [K, V][]) {
+		this.cache = new CacheCollection(maxCache, entries);
 	}
 }
 
