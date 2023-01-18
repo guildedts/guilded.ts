@@ -89,7 +89,7 @@ importers:
     specifiers:
       '@discordjs/collection': ^1.2.0
       chalk: ^4.1.2
-      commander: ^9.4.1
+      commander: ^10.0.0
       fast-glob: ^3.2.12
       guilded.ts: workspace:^
       joi: ^17.6.4
@@ -97,7 +97,7 @@ importers:
     dependencies:
       '@discordjs/collection': 1.2.0
       chalk: 4.1.2
-      commander: 9.4.1
+      commander: 10.0.0
       fast-glob: 3.2.12
       guilded.ts: link:../guilded.ts
       joi: 17.6.4
@@ -1592,9 +1592,15 @@ packages:
       delayed-stream: 1.0.0
     dev: true
 
+  /commander/10.0.0:
+    resolution: {integrity: sha512-zS5PnTI22FIRM6ylNW8G4Ap0IEOyk62fhLSD0+uHRT9McRCLGpkVNvao4bjimpK/GShynyQkFFxHhwMcETmduA==}
+    engines: {node: '>=14'}
+    dev: false
+
   /commander/9.4.1:
     resolution: {integrity: sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==}
     engines: {node: ^12.20.0 || >=14}
+    dev: true
 
   /compare-func/2.0.0:
     resolution: {integrity: sha512-zHig5N+tPWARooBnb0Zx1MFcdfpyJrfTJ3Y5L+IFvUm8rM74hHz66z0gw0x4tijh5CorKkKUCnW82R2vmpeCRA==}

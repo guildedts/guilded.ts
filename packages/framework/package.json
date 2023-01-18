@@ -36,7 +36,7 @@
 	"dependencies": {
 		"@discordjs/collection": "^1.2.0",
 		"chalk": "^4.1.2",
-		"commander": "^9.4.1",
+		"commander": "^10.0.0",
 		"fast-glob": "^3.2.12",
 		"guilded.ts": "workspace:^",
 		"joi": "^17.6.4",
