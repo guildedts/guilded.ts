@@ -20,7 +20,7 @@ importers:
       husky: ^8.0.1
       lint-staged: ^13.0.3
       prettier: ^2.7.1
-      rimraf: ^3.0.2
+      rimraf: ^4.0.0
       ts-node: ^10.9.1
       typedoc: ^0.23.18
       typedoc-plugin-missing-exports: ^1.0.0
@@ -43,7 +43,7 @@ importers:
       husky: 8.0.1
       lint-staged: 13.0.3
       prettier: 2.7.1
-      rimraf: 3.0.2
+      rimraf: 4.1.2
       ts-node: 10.9.1_cbe7ovvae6zqfnmtgctpgpys54
       typedoc: 0.23.20_typescript@4.8.4
       typedoc-plugin-missing-exports: 1.0.0_typedoc@0.23.20
@@ -4155,6 +4155,12 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rimraf/4.1.2:
+    resolution: {integrity: sha512-BlIbgFryTbw3Dz6hyoWFhKk+unCcHMSkZGrTFVAx2WmttdBSonsdtRlwiuTbDqTKr+UlXIUqJVS4QT5tUzGENQ==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /run-parallel/1.2.0:
