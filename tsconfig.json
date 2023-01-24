@@ -10,6 +10,5 @@
 		"esModuleInterop": true,
 		"resolveJsonModule": true,
 		"noImplicitAny": false
-	},
-	"include": ["packages/*/src", "scripts/*"]
+	}
 }

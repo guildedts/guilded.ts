@@ -29,8 +29,7 @@
 	],
 	"license": "Apache-2.0",
 	"scripts": {
-		"build": "pnpm clear && tsc",
-		"clear": "rimraf dist",
+		"build": "tsup src/index.ts src/bin.ts",
 		"lint": "eslint src"
 	},
 	"dependencies": {

@@ -11,20 +11,17 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"test": "ts-node test",
-		"build": "pnpm -r build",
-		"lint": "pnpm -r lint && eslint scripts",
-		"lint:fix": "pnpm -r lint --fix && eslint scripts --fix",
-		"docs": "rimraf docs && typedoc",
-		"prepare": "husky install && pnpm build",
-		"clear": "pnpm -r clear",
+		"build": "turbo run build",
+		"lint": "turbo run lint && eslint scripts",
+		"lint:fix": "turbo run lint -- --fix && eslint scripts --fix",
+		"docs": "typedoc",
+		"prepare": "husky install",
 		"version": "ts-node scripts/version",
-		"version:dev": "pnpm run version --dev",
-		"publish": "pnpm build && ts-node scripts/publish",
-		"publish:dev": "pnpm run publish --dev"
+		"publish": "pnpm build && ts-node scripts/publish"
 	},
 	"dependencies": {
-		"guilded.ts": "workspace:^",
-		"@guildedts/framework": "workspace:^"
+		"@guildedts/framework": "workspace:^",
+		"guilded.ts": "workspace:^"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.25.0",
@@ -41,8 +38,9 @@
 		"husky": "^8.0.1",
 		"lint-staged": "^13.0.3",
 		"prettier": "^2.7.1",
-		"rimraf": "^3.0.2",
 		"ts-node": "^10.9.1",
+		"tsup": "^6.5.0",
+		"turbo": "^1.7.0",
 		"typedoc": "^0.23.18",
 		"typedoc-plugin-missing-exports": "^1.0.0",
 		"typescript": "^4.8.4"

@@ -20,7 +20,7 @@ jobs:
             - name: Install PNPM
               uses: pnpm/action-setup@v2
             - name: Install Dependencies
-              run: pnpm i --ignore-scripts
+              run: pnpm i
             - name: Create Release Pull Request or Publish to NPM
               id: changesets
               uses: changesets/action@v1
@@ -47,13 +47,13 @@ jobs:
             - name: Install PNPM
               uses: pnpm/action-setup@v2
             - name: Install Dependencies
-              run: pnpm i --ignore-scripts
+              run: pnpm i
             - name: Version Packages
-              run: pnpm run version:dev
+              run: pnpm run version --dev
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Publish to NPM
-              run: pnpm run publish:dev
+              run: pnpm run publish --dev
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     docs:
@@ -72,6 +72,8 @@ jobs:
               uses: pnpm/action-setup@v2
             - name: Install Dependencies
               run: pnpm i
+            - name: Build packages and apps
+              run: pnpm build
             - name: Generate Documentation
               run: pnpm run docs
             - name: Commit Changes

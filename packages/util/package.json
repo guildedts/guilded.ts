@@ -26,8 +26,7 @@
 	],
 	"license": "Apache-2.0",
 	"scripts": {
-		"build": "pnpm clear && tsc",
-		"clear": "rimraf dist",
+		"build": "tsup src/index.ts",
 		"lint": "eslint src"
 	}
 }

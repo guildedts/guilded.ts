@@ -16,8 +16,8 @@ jobs:
             - name: Install PNPM
               uses: pnpm/action-setup@v2
             - name: Install Dependencies
-              run: pnpm i --ignore-scripts
+              run: pnpm i
             - name: Lint Packages
-              run: pnpm run lint
-            - name: Commit Lint
+              run: pnpm lint
+            - name: Lint commit message
               run: pnpm commitlint -f HEAD~1 -V
