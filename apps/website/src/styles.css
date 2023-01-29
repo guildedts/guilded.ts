@@ -50,6 +50,6 @@
 	}
 
 	code {
-		@apply text-guilded-white bg-guilded-grey-dark rounded-md py-3 px-4;
+		@apply text-guilded-white bg-guilded-grey-dark rounded-md p-1;
 	}
 }

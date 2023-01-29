@@ -12,9 +12,8 @@ export default function Page() {
 			<div className="space-y-3">
 				<h1 className="text-4xl">About</h1>
 				<p className="text-guilded-white text-lg">
-					Guilded.TS is a feature rich, fast and efficient Guilded API wrapper. Its goal
-					is to make it possible to use the Guilded API with ease. It is also highly
-					inspired by{' '}
+					Guilded.TS is a feature rich, fast and efficient Guilded API wrapper. Its main
+					goal is to be simple and easy to use. It is also inspired by{' '}
 					<ExternalLink href="https://discord.js.org">discord.js</ExternalLink> to make it
 					possible for users familier with it to create Guilded bots with as much ease as
 					possible.
