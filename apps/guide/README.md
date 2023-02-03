@@ -20,7 +20,7 @@
 
 # About
 
-The official Guilded.TS website that can be viewed [here](https://guildedts.js.org).
+The official Guilded.TS guide that can be viewed [here](https://guildedts.js.org/guide).
 
 # Links
 

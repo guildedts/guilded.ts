@@ -1,0 +1,58 @@
+html.dark {
+	--c-brand: #f5c400;
+	--c-bg: #373943;
+	--c-bg-light: #32343d;
+	--c-bg-lighter: #292b32;
+	--c-bg-navbar: #1e2025;
+	--c-bg-sidebar: var(--c-bg-lighter);
+	--c-text: #ececee;
+	--c-text-lighter: var(--c-text);
+	--c-text-quote: var(--c-brand);
+	--c-tip: green;
+	--c-danger: red;
+	--c-danger-bg: var(--c-bg-light);
+	--c-danger-title: var(--c-text);
+	--c-danger-text: var(--c-text);
+	--c-warning: orange;
+	--c-warning-bg: var(--c-bg-light);
+	--c-warning-title: var(--c-text);
+	--c-warning-text: var(--c-text);
+	--code-bg-color: var(--c-bg-lighter);
+	--content-width: 1;
+	--sidebar-width: 250px;
+	--c-ts: #3178c6;
+}
+
+div[class*='language-']::before {
+	background: var(--c-ts);
+	color: white;
+	padding: 0 5px;
+	text-transform: uppercase;
+	border-radius: 2px;
+}
+
+.toggle-color-mode-button {
+	display: none;
+}
+
+.custom-container {
+	border-radius: 6px;
+}
+
+.search-box input {
+	--search-input-width: 250px;
+	border-radius: 6px !important;
+}
+
+.code-group__nav-tab {
+	padding: 10px;
+}
+
+.code-group__nav-tab-active {
+	border-bottom: var(--c-ts) 5px solid;
+}
+
+.custom-container.warning a,
+.custom-container.danger a {
+	color: var(--c-brand);
+}
