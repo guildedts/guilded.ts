@@ -1,9 +1,11 @@
 node_modules
 dist
 docs
-gtsconfig.*
+config.json
 pnpm-publish-summary.json
 changeset-status.json
 .next
 next-env.d.ts
 .turbo
+.cache
+.temp

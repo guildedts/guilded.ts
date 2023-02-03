@@ -1,0 +1,26 @@
+{
+	"name": "@guildedts/guide",
+	"version": "0.0.0",
+	"description": "A Guide for creating a Guilded.TS bot.",
+	"private": true,
+	"repository": {
+		"url": "guildedts/guilded.ts",
+		"directory": "apps/guide"
+	},
+	"homepage": "https://guide.guildedts.js.org",
+	"contributors": [
+		"Danielius | Gamertike (https://gamertike.com)"
+	],
+	"license": "Apache-2.0",
+	"scripts": {
+		"dev": "vuepress dev src",
+		"build": "vuepress build src",
+		"lint": "eslint src"
+	},
+	"dependencies": {
+		"@vuepress/client": "2.0.0-beta.53",
+		"@vuepress/plugin-search": "2.0.0-beta.53",
+		"vue": "^3.2.45",
+		"vuepress-vite": "2.0.0-beta.53"
+	}
+}
