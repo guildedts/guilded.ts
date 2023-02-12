@@ -6,10 +6,10 @@ export default function Page() {
 	return (
 		<div className="space-y-5">
 			<div className="text-center">
-				<Image src="/banner.png" alt="Guilded.TS" width={1280} height={410} />
+				<Image src="/banner.png" alt="Guilded.TS" width={1200} height={300} />
 				<Command>npm install guilded.ts</Command>
 			</div>
-			<div className="space-y-3">
+			<div>
 				<h1 className="text-4xl">About</h1>
 				<p className="text-guilded-white text-lg">
 					Guilded.TS is a feature rich, fast and efficient Guilded API wrapper. Its main
