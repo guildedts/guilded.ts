@@ -1,15 +1,10 @@
-'use client';
-
 import Link from 'next/link';
 import { HiOutlineExternalLink } from 'react-icons/hi';
 
 export default function ExternalLink({
 	children,
 	href,
-}: {
-	children: React.ReactNode;
-	href: string;
-}) {
+}: React.PropsWithChildren<{ href: string }>) {
 	return (
 		<Link
 			href={href}

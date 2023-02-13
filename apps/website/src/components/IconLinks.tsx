@@ -13,11 +13,12 @@ export default function IconLinks() {
 				<a
 					key={index}
 					href={href}
+					title={name}
 					target="_blank"
 					rel="noreferrer"
 					className="text-white hover:scale-110 transition ease-in-out"
 				>
-					<Icon title={name} />
+					<Icon />
 				</a>
 			))}
 		</div>

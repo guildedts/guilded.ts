@@ -2,7 +2,7 @@ import 'styles.css';
 import Footer from 'components/Footer';
 import Navbar from 'components/Navbar';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: React.PropsWithChildren) {
 	return (
 		<html lang="en">
 			<body>

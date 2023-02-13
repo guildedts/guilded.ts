@@ -1,16 +1,13 @@
-'use client';
-
 import { HiOutlineExternalLink } from 'react-icons/hi';
 
 export default function NavExternalLink({
 	children,
 	href,
 	onClick,
-}: {
-	children: React.ReactNode;
+}: React.PropsWithChildren<{
 	href: string;
 	onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-}) {
+}>) {
 	return (
 		<a
 			href={href}

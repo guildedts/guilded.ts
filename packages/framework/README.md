@@ -1,6 +1,6 @@
 <div align="center">
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/banner.png" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS"/>
     </a>
     <div>
         <A href="https://guildedts.js.org/support">

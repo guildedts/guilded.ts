@@ -1,16 +1,13 @@
-'use client';
-
 import Link from 'next/link';
 
 export default function NavLink({
 	children,
 	href,
 	onClick,
-}: {
-	children: React.ReactNode;
+}: React.PropsWithChildren<{
 	href: string;
-	onClick?: React.MouseEventHandler<HTMLDivElement>;
-}) {
+	onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+}>) {
 	return (
 		<Link
 			href={href}

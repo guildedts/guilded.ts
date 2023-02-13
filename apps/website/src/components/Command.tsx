@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from 'react-icons/hi';
 
 export default function Command({ children }: { children: string }) {

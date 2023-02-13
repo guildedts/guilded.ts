@@ -2,9 +2,7 @@
 module.exports = {
 	reactStrictMode: true,
 	swcMinify: true,
-	experimental: {
-		appDir: true,
-	},
+	experimental: { appDir: true },
 	async redirects() {
 		return [
 			{
