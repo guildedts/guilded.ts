@@ -1,5 +1,18 @@
 # @guildedts/framework
 
+## 0.2.15
+
+### Patch Changes
+
+-   e019292: refactor(builders): embed builder
+-   33dc16c: refactor: properties and methods
+-   dd4a1e9: refactor: tsdocs
+-   Updated dependencies [e019292]
+-   Updated dependencies [33dc16c]
+-   Updated dependencies [9a2544a]
+-   Updated dependencies [dd4a1e9]
+    -   guilded.ts@0.21.0
+
 ## 0.2.14
 
 ### Patch Changes

@@ -1,5 +1,25 @@
 # guilded.ts
 
+## 0.21.0
+
+### Minor Changes
+
+-   33dc16c: refactor: properties and methods
+
+### Patch Changes
+
+-   e019292: refactor(builders): embed builder
+-   9a2544a: refactor: guilded-api-typings
+-   dd4a1e9: refactor: tsdocs
+-   Updated dependencies [e019292]
+-   Updated dependencies [33dc16c]
+-   Updated dependencies [9a2544a]
+-   Updated dependencies [dd4a1e9]
+    -   @guildedts/builders@0.3.0
+    -   @guildedts/rest@0.15.0
+    -   @guildedts/ws@0.6.0
+    -   guilded-api-typings@0.14.0
+
 ## 0.20.2
 
 ### Patch Changes
