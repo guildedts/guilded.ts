@@ -25,7 +25,14 @@ export default function Page() {
 		<BaseLayout>
 			<div className="space-y-10">
 				<div className="text-center">
-					<Image src={banner} alt="Guilded.TS" width={1200} height={300} priority />
+					<Image
+						src={banner}
+						alt="Guilded.TS"
+						width={1200}
+						height={300}
+						priority
+						draggable={false}
+					/>
 					<Command>npm install guilded.ts</Command>
 				</div>
 				<div className="space-y-5">
