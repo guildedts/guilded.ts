@@ -2,7 +2,6 @@
 module.exports = {
 	reactStrictMode: true,
 	swcMinify: true,
-	experimental: { appDir: true },
 	async redirects() {
 		return [
 			{
@@ -23,6 +22,11 @@ module.exports = {
 			{
 				source: '/support',
 				destination: 'https://guilded.gg/guildedts',
+				permanent: false,
+			},
+			{
+				source: '/npm',
+				destination: 'https://npmjs.com/package/guilded.ts',
 				permanent: false,
 			},
 		];

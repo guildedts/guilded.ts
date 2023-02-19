@@ -1,9 +1,8 @@
-'use client';
-
 import { useState } from 'react';
+import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
+
 import NavLink from 'components/NavLink';
 import NavExternalLink from 'components/NavExternalLink';
-import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 import IconLinks from './IconLinks';
 
 const Links: Record<string, string> = {
@@ -18,7 +17,7 @@ export default function Navbar() {
 	const [isOpened, setIsOpened] = useState(false);
 
 	return (
-		<header className="sticky bg-guilded-grey-darkest p-3 shadow-xl border-b-4 border-guilded-gilded">
+		<header className="sticky bg-guilded-grey-dark p-3 shadow-xl border-t-4 border-guilded-gilded border-b border-b-border">
 			<nav className="hidden max-w-7xl mx-auto justify-between md:flex">
 				<div className="flex space-x-3">
 					{Object.entries(Links).map(([name, href], index) => (
@@ -34,8 +33,8 @@ export default function Navbar() {
 				</div>
 				<IconLinks />
 			</nav>
-			<nav className="max-w-xl mx-auto block space-y-3 md:hidden">
-				<div className="flex justify-between">
+			<nav className="max-w-3xl mx-auto block space-y-3 md:hidden">
+				<div className="flex justify-between h-10">
 					<button onClick={() => setIsOpened(!isOpened)} className="align-middle">
 						{isOpened ? (
 							<HiOutlineX className="h-6 w-6" />
