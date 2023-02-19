@@ -73,7 +73,8 @@
 		@apply text-lg;
 	}
 
-	code, pre {
+	code,
+	pre {
 		@apply text-guilded-white bg-guilded-grey-dark rounded-md !important;
 	}
 }

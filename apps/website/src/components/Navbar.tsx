@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
 

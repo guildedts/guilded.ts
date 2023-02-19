@@ -1,9 +1,7 @@
-'use client';
-
 import { useState } from 'react';
 import { HiOutlineClipboardCopy, HiOutlineClipboardCheck } from 'react-icons/hi';
 
-import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import SyntaxHighlighter from 'react-syntax-highlighter/dist/cjs/prism-light';
 import ts from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 

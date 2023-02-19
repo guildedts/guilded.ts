@@ -1,8 +1,7 @@
-import 'styles.css';
 import Footer from 'components/Footer';
 import Navbar from 'components/Navbar';
 
-export default function BaseLayout({ children }: React.PropsWithChildren) {
+export default function Layout({ children }: React.PropsWithChildren) {
 	return (
 		<div className="flex flex-col h-screen">
 			<Navbar />
