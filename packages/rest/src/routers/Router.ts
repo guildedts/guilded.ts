@@ -14,6 +14,7 @@ import { MessageRouter } from './MessageRouter';
 import { ReactionRouter } from './ReactionRouter';
 import { WebhookRouter } from './WebhookRouter';
 import { RESTManager } from '../RESTManager';
+import { ForumTopicCommentRouter } from './ForumTopicCommentRouter';
 
 /**
  * The router for the Guilded REST API
@@ -39,6 +40,10 @@ export class Router extends BaseRouter {
 	 * The forum topic router for the Guilded REST API
 	 */
 	readonly forumTopics: ForumTopicRouter;
+	/**
+	 * The forum topic comments router for the Guilded REST API
+	 */
+	readonly forumTopicComments: ForumTopicCommentRouter;
 	/**
 	 * The list item router for the Guilded REST API
 	 */
@@ -86,6 +91,7 @@ export class Router extends BaseRouter {
 		this.serverMembers = new ServerMemberRouter(rest);
 		this.serverBans = new ServerBanRouter(rest);
 		this.forumTopics = new ForumTopicRouter(rest);
+		this.forumTopicComments = new ForumTopicCommentRouter(rest);
 		this.listItems = new ListItemRouter(rest);
 		this.docs = new DocRouter(rest);
 		this.reactions = new ReactionRouter(rest);
