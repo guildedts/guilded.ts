@@ -6,21 +6,11 @@ import {
 import { FetchOptions } from '../managers/BaseManager';
 import { Base } from './Base';
 import { ForumChannel } from './channel/ForumChannel';
-import { ForumComment } from './ForumComment';
-import {
-	ForumTopicCommentManager,
-	ForumTopicCommentFetchManyOptions,
-} from '../managers/ForumTopicCommentManager';
 
 /**
  * Represents a forum topic on Guilded
  */
 export class ForumTopic extends Base {
-	/**
-	 * The manager for comments
-	 */
-	readonly comments: ForumTopicCommentManager;
-
 	/**
 	 * @param channel The forum channel
 	 * @param data The data of the forum topic
@@ -32,7 +22,6 @@ export class ForumTopic extends Base {
 		cache = channel.client.options.cacheForumTopics ?? true,
 	) {
 		super(channel.client);
-		this.comments = new ForumTopicCommentManager(this.channel, this.data);
 		if (cache) channel.topics.cache.set(this.id, this);
 	}
 
@@ -127,27 +116,6 @@ export class ForumTopic extends Base {
 	 */
 	get mentions() {
 		return 'mentions' in this.data ? this.data.mentions ?? {} : {};
-	}
-
-	/**
-	 * Fetch a comment of the forum topic
-	 * @param forumTopicComment The comment of the forum topic
-	 * @param options The options to fetch the comment of the forum topic with
-	 * @returns The fetched forum topic comment
-	 */
-	fetchComment(forumTopicComment: number | ForumComment, options?: FetchOptions) {
-		forumTopicComment =
-			forumTopicComment instanceof ForumComment ? forumTopicComment.id : forumTopicComment;
-		return this.comments.fetch(forumTopicComment, options);
-	}
-
-	/**
-	 * Fetch the comments of the forum topic
-	 * @param options The options to fetch the comments of the forum topic with
-	 * @returns The fetched forum topic comment
-	 */
-	fetchComments(options?: ForumTopicCommentFetchManyOptions) {
-		return this.comments.fetch(options);
 	}
 
 	/**

@@ -10,7 +10,6 @@ export * from './routers/BaseRouter';
 export * from './routers/ChannelRouter';
 export * from './routers/DocRouter';
 export * from './routers/ForumTopicRouter';
-export * from './routers/ForumTopicCommentRouter';
 export * from './routers/GroupRouter';
 export * from './routers/ListItemRouter';
 export * from './routers/MessageRouter';

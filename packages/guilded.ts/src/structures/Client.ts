@@ -26,7 +26,6 @@ import { Channel } from './channel/Channel';
 import { Collection } from '@discordjs/collection';
 import { CalendarEventRsvp } from './calendarEvent/CalendarEventRsvp';
 import { ForumTopic } from './ForumTopic';
-import { ForumComment } from './ForumComment';
 
 /**
  * The main hub for interacting with the Guilded API
@@ -336,26 +335,6 @@ export interface ClientEvents {
 	 */
 	forumTopicUnlock: [forumTopic: ForumTopic];
 	/**
-	 * Emitted whenever a forum topic comment is created
-	 */
-	forumTopicCommentCreate: [forumComment: ForumComment];
-	/**
-	 * Emitted whenever a forum topic comment is edited
-	 */
-	forumTopicCommentEdit: [newForumComment: ForumComment, oldForumComment?: ForumComment];
-	/**
-	 * Emitted whenever a forum topic comment is deleted
-	 */
-	forumTopicCommentDelete: [forumComment: ForumComment];
-	/**
-	 * Emitted whenever a forum topic comment reaction is added
-	 */
-	forumTopicCommentReactionAdd: [forumComment: ForumComment];
-	/**
-	 * Emitted whenever a forum topic comment reaction is removed
-	 */
-	forumTopicCommentReactionRemove: [forumComment: ForumComment];
-	/**
 	 * Emitted whenever a calendar event RSVP is edited
 	 */
 	calendarEventRsvpEdit: [
@@ -531,18 +510,6 @@ export interface ClientOptions {
 	 * Whether to dispose cached forum topics
 	 */
 	disposeCachedForumTopics?: boolean;
-	/**
-	 * Whether to cache forum topic comments
-	 */
-	cacheForumTopicComments?: boolean;
-	/**
-	 * The max cache size for forum topics
-	 */
-	maxForumTopicCommentCache?: number;
-	/**
-	 * Whether to dispose cached forum topics
-	 */
-	disposeCachedForumTopicComments?: boolean;
 	/**
 	 * Whether to cache list items
 	 */
