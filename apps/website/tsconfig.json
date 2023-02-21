@@ -12,6 +12,6 @@
 		"baseUrl": "src",
 		"plugins": [{ "name": "next" }]
 	},
-	"include": ["src", ".next/types/**/*.ts"],
+	"include": ["src", ".next/types/**/*.ts", "index.d.ts"],
 	"exclude": ["node_modules"]
 }

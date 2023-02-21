@@ -13,15 +13,20 @@ export default function Command({ children }: { children: string }) {
 	}
 
 	return (
-		<code className="text-lg space-x-3 inline-flex w-fit shadow-lg py-2 px-3">
+		<code
+			className="text-lg space-x-2 inline-flex w-fit shadow-lg py-4 px-5 cursor-pointer items-center"
+			onClick={handleCopy}
+		>
 			<span>{children}</span>
-			<button onClick={handleCopy}>
-				{copied ? (
-					<HiOutlineClipboardCheck className="text-green-600" />
-				) : (
-					<HiOutlineClipboardCopy />
-				)}
-			</button>
+			{copied ? (
+				<HiOutlineClipboardCheck
+					title="Copied!"
+					size={21}
+					className="text-guilded-gilded"
+				/>
+			) : (
+				<HiOutlineClipboardCopy title="Copy" size={21} />
+			)}
 		</code>
 	);
 }

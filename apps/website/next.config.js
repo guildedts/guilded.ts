@@ -25,6 +25,11 @@ module.exports = {
 				destination: 'https://guilded.gg/guildedts',
 				permanent: false,
 			},
+			{
+				source: '/npm',
+				destination: 'https://npmjs.com/package/guilded.ts',
+				permanent: false,
+			},
 		];
 	},
 };
