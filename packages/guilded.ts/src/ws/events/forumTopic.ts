@@ -14,8 +14,9 @@ import {
 } from 'guilded-api-typings';
 import { ForumChannel } from '../../structures/channel/ForumChannel';
 import { Client } from '../../structures/Client';
-import { ForumComment } from '../../structures/ForumComment';
-import { ForumTopic } from '../../structures/ForumTopic';
+import { ForumTopicComment } from '../../structures/forum/ForumTopicComment';
+import { ForumTopic } from '../../structures/forum/ForumTopic';
+import { ForumTopicCommentReaction } from '../../structures/forum/ForumTopicCommentReaction';
 
 /**
  * Handle the `ForumTopicCreated` event
@@ -105,7 +106,7 @@ export async function commentCreated(
 ) {
 	const channel = (await client.channels.fetch(data.forumTopicComment.channelId)) as ForumChannel;
 	const topic = await channel.topics.fetch(data.forumTopicComment.forumTopicId);
-	const comment = new ForumComment(channel, topic, data.forumTopicComment);
+	const comment = new ForumTopicComment(channel, topic, data.forumTopicComment);
 	client.emit('forumTopicCommentCreate', comment);
 }
 
@@ -119,7 +120,7 @@ export async function commentUpdated(
 	const channel = (await client.channels.fetch(data.forumTopicComment.channelId)) as ForumChannel;
 	const topic = await channel.topics.fetch(data.forumTopicComment.forumTopicId);
 	const oldComment = topic.comments.cache.get(data.forumTopicComment.id);
-	const newComment = new ForumComment(channel, topic, data.forumTopicComment);
+	const newComment = new ForumTopicComment(channel, topic, data.forumTopicComment);
 	client.emit('forumTopicCommentEdit', newComment, oldComment);
 }
 
@@ -132,7 +133,7 @@ export async function commentDeleted(
 ) {
 	const channel = (await client.channels.fetch(data.forumTopicComment.channelId)) as ForumChannel;
 	const topic = await channel.topics.fetch(data.forumTopicComment.forumTopicId);
-	const comment = new ForumComment(channel, topic, data.forumTopicComment);
+	const comment = new ForumTopicComment(channel, topic, data.forumTopicComment);
 	client.emit('forumTopicCommentDelete', comment);
 }
 
@@ -146,7 +147,8 @@ export async function commentReactionAdd(
 	const channel = (await client.channels.fetch(data.reaction.channelId)) as ForumChannel;
 	const topic = await channel.topics.fetch(data.reaction.forumTopicId);
 	const comment = await topic.comments.fetch(Number(data.reaction.forumTopicCommentId));
-	client.emit('forumTopicCommentReactionAdd', comment);
+	const reaction = new ForumTopicCommentReaction(channel, topic, comment, data.reaction);
+	client.emit('forumTopicCommentReactionAdd', reaction);
 }
 
 /**
@@ -159,5 +161,6 @@ export async function commentReactionRemove(
 	const channel = (await client.channels.fetch(data.reaction.channelId)) as ForumChannel;
 	const topic = await channel.topics.fetch(data.reaction.forumTopicId);
 	const comment = await topic.comments.fetch(Number(data.reaction.forumTopicCommentId));
-	client.emit('forumTopicCommentReactionRemove', comment);
+	const reaction = new ForumTopicCommentReaction(channel, topic, comment, data.reaction);
+	client.emit('forumTopicCommentReactionRemove', reaction);
 }

@@ -1,6 +1,6 @@
-import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
-import { ForumChannel } from '../structures/channel/ForumChannel';
-import { ForumTopic } from '../structures/ForumTopic';
+import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
+import { ForumChannel } from '../../structures/channel/ForumChannel';
+import { ForumTopic } from '../../structures/forum/ForumTopic';
 import {
 	RESTPatchForumTopicJSONBody,
 	RESTGetForumTopicsQuery,

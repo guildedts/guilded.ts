@@ -50,7 +50,7 @@ export class MessageReactionManager extends BaseManager<number, MessageReaction>
 	 * @param options The options for the message reaction collector
 	 * @returns The collected message reactions
 	 * @example
-	 * const reactions = await message.reactions.await({ time: 15 * 1000 });
+	 * const reactions = await message.reactions.awaitReactions({ time: 15 * 1000 });
 	 *
 	 * console.log(`Collected ${reactions.size} reactions!`);
 	 */

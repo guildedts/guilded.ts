@@ -23,7 +23,7 @@ export * from './managers/server/ServerRoleManager';
 export * from './managers/BaseManager';
 export * from './managers/DocManager';
 export * from './managers/ListItemManager';
-export * from './managers/ForumTopicManager';
+export * from './managers/forum/ForumTopicManager';
 export * from './managers/UserManager';
 
 // Structures
@@ -49,7 +49,7 @@ export * from './structures/CacheCollection';
 export * from './structures/Client';
 export * from './structures/Doc';
 export * from './structures/Group';
-export * from './structures/ForumTopic';
+export * from './structures/forum/ForumTopic';
 export * from './structures/User';
 export * from './structures/Webhook';
 

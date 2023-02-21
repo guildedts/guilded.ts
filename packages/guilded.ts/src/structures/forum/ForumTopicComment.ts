@@ -1,13 +1,19 @@
 import { APIForumTopicComment, RESTPatchForumTopicCommentJSONBody } from 'guilded-api-typings';
-import { FetchOptions } from '../managers/BaseManager';
-import { Base } from './Base';
-import { ForumChannel } from './channel/ForumChannel';
+import { FetchOptions } from '../../managers/BaseManager';
+import { Base } from '../Base';
+import { ForumChannel } from '../channel/ForumChannel';
 import { ForumTopic } from './ForumTopic';
+import { ForumTopicCommentReactionManager } from '../../managers/forum/ForumTopicCommentReactionManager';
 
 /**
  * Represents a forum comment on Guilded
  */
-export class ForumComment extends Base {
+export class ForumTopicComment extends Base {
+	/**
+	 * The manager for reactions
+	 */
+	readonly reactions: ForumTopicCommentReactionManager;
+
 	/**
 	 * @param channel The forum channel
 	 * @param data The data of the forum topic
@@ -20,6 +26,7 @@ export class ForumComment extends Base {
 		cache = channel.client.options.cacheForumTopicComments ?? true,
 	) {
 		super(channel.client);
+		this.reactions = new ForumTopicCommentReactionManager(this);
 		if (cache) this.forumTopic.comments.cache.set(this.id, this);
 	}
 

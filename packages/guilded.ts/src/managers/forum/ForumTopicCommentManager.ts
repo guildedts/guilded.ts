@@ -1,7 +1,7 @@
-import { BaseManager, FetchManyOptions, FetchOptions } from './BaseManager';
+import { BaseManager, FetchManyOptions, FetchOptions } from '../BaseManager';
 import { RESTGetForumTopicCommentsResult, APIForumTopicComment } from 'guilded-api-typings';
-import { ForumComment } from '../structures/ForumComment';
-import { ForumChannel } from '../structures/channel/ForumChannel';
+import { ForumTopicComment } from '../../structures/forum/ForumTopicComment';
+import { ForumChannel } from '../../structures/channel/ForumChannel';
 import {
 	APIForumTopic,
 	APIForumTopicSummary,
@@ -13,7 +13,7 @@ import { Collection } from '@discordjs/collection';
 /**
  * The manager for forum topic comments
  */
-export class ForumTopicCommentManager extends BaseManager<number, ForumComment> {
+export class ForumTopicCommentManager extends BaseManager<number, ForumTopicComment> {
 	/**
 	 * @param forumTopic The forum topic
 	 */
@@ -29,24 +29,37 @@ export class ForumTopicCommentManager extends BaseManager<number, ForumComment> 
 	 * @param options The options to fetch the forum topic comments with
 	 * @returns The fetched forum topic comments
 	 */
-	fetch(forumTopicComment: number | ForumComment, options?: FetchOptions): Promise<ForumComment>;
+	fetch(
+		forumTopicComment: number | ForumTopicComment,
+		options?: FetchOptions,
+	): Promise<ForumTopicComment>;
 	/**
 	 * Fetch the forum topic comment
 	 * @param forumTopicComment The forum topic comment
 	 * @param options The options to fetch the forum topic comments with
 	 * @returns The fetched forum topic comments
 	 */
-	fetch(options?: ForumTopicCommentFetchManyOptions): Promise<Collection<number, ForumComment>>;
-	fetch(arg1?: number | ForumComment | ForumTopicCommentFetchManyOptions, arg2?: FetchOptions) {
-		if (typeof arg1 === 'number' || arg1 instanceof ForumComment)
+	fetch(
+		options?: ForumTopicCommentFetchManyOptions,
+	): Promise<Collection<number, ForumTopicComment>>;
+	fetch(
+		arg1?: number | ForumTopicComment | ForumTopicCommentFetchManyOptions,
+		arg2?: FetchOptions,
+	) {
+		if (typeof arg1 === 'number' || arg1 instanceof ForumTopicComment)
 			return this.fetchSingle(arg1, arg2);
 		return this.fetchMany(arg1);
 	}
 
-	private async fetchSingle(forumTopicComment: number | ForumComment, options?: FetchOptions) {
+	private async fetchSingle(
+		forumTopicComment: number | ForumTopicComment,
+		options?: FetchOptions,
+	) {
 		const forumTopic = this.forumTopic.id;
 		forumTopicComment =
-			forumTopicComment instanceof ForumComment ? forumTopicComment.id : forumTopicComment;
+			forumTopicComment instanceof ForumTopicComment
+				? forumTopicComment.id
+				: forumTopicComment;
 		const cached = this.cache.get(forumTopicComment);
 		if (cached && !options?.force) return cached;
 		const raw = await this.client.api.forumTopicComments.fetch(
@@ -55,7 +68,7 @@ export class ForumTopicCommentManager extends BaseManager<number, ForumComment> 
 			forumTopicComment,
 		);
 		const topic = await this.channel.topics.fetch(forumTopic);
-		return new ForumComment(
+		return new ForumTopicComment(
 			this.channel,
 			topic,
 			Array.isArray(raw) ? raw[0] : raw,
@@ -70,10 +83,15 @@ export class ForumTopicCommentManager extends BaseManager<number, ForumComment> 
 			forumTopic,
 		)) as unknown as APIForumTopicComment[];
 		const topic = await this.channel.topics.fetch(forumTopic);
-		const forumComments = new Collection<number, ForumComment>();
+		const forumComments = new Collection<number, ForumTopicComment>();
 		for (const data of raw) {
-			const forumComment = new ForumComment(this.channel, topic, data, options?.cache);
-			forumComments.set(forumComment.id, forumComment);
+			const forumTopicComment = new ForumTopicComment(
+				this.channel,
+				topic,
+				data,
+				options?.cache,
+			);
+			forumComments.set(forumTopicComment.id, forumTopicComment);
 		}
 		return forumComments;
 	}
@@ -90,7 +108,7 @@ export class ForumTopicCommentManager extends BaseManager<number, ForumComment> 
 			options,
 		);
 		const topic = await this.channel.topics.fetch(this.forumTopic.id);
-		return new ForumComment(this.channel, topic, raw);
+		return new ForumTopicComment(this.channel, topic, raw);
 	}
 
 	/**
@@ -100,11 +118,13 @@ export class ForumTopicCommentManager extends BaseManager<number, ForumComment> 
 	 * @returns The updated forum topic
 	 */
 	async update(
-		forumTopicComment: number | ForumComment,
+		forumTopicComment: number | ForumTopicComment,
 		options: RESTPatchForumTopicCommentJSONBody,
 	) {
 		forumTopicComment =
-			forumTopicComment instanceof ForumComment ? forumTopicComment.id : forumTopicComment;
+			forumTopicComment instanceof ForumTopicComment
+				? forumTopicComment.id
+				: forumTopicComment;
 		const raw = await this.client.api.forumTopicComments.edit(
 			this.channel.id,
 			this.forumTopic.id,
@@ -112,16 +132,18 @@ export class ForumTopicCommentManager extends BaseManager<number, ForumComment> 
 			options,
 		);
 		const topic = await this.channel.topics.fetch(this.forumTopic.id);
-		return new ForumComment(this.channel, topic, raw);
+		return new ForumTopicComment(this.channel, topic, raw);
 	}
 
 	/**
 	 * Delete a forum topic comment from the channel
 	 * @param forumTopic The forum topic
 	 */
-	delete(forumTopicComment: number | ForumComment) {
+	delete(forumTopicComment: number | ForumTopicComment) {
 		forumTopicComment =
-			forumTopicComment instanceof ForumComment ? forumTopicComment.id : forumTopicComment;
+			forumTopicComment instanceof ForumTopicComment
+				? forumTopicComment.id
+				: forumTopicComment;
 		return this.client.api.forumTopicComments.delete(
 			this.channel.id,
 			this.forumTopic.id,

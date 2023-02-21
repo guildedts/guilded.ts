@@ -5,7 +5,7 @@ import {
 	RESTPostForumTopicCommentJSONBody,
 	RESTPatchForumTopicCommentJSONBody,
 } from 'guilded-api-typings';
-import { BaseRouter } from './BaseRouter';
+import { BaseRouter } from '../BaseRouter';
 
 /**
  * The forum topic router for the Guilded REST API

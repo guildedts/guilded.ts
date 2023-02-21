@@ -3,14 +3,14 @@ import {
 	RESTPatchForumTopicJSONBody,
 	APIForumTopicSummary,
 } from 'guilded-api-typings';
-import { FetchOptions } from '../managers/BaseManager';
-import { Base } from './Base';
-import { ForumChannel } from './channel/ForumChannel';
-import { ForumComment } from './ForumComment';
+import { FetchOptions } from '../../managers/BaseManager';
+import { Base } from '../Base';
+import { ForumChannel } from '../channel/ForumChannel';
+import { ForumTopicComment } from './ForumTopicComment';
 import {
 	ForumTopicCommentManager,
 	ForumTopicCommentFetchManyOptions,
-} from '../managers/ForumTopicCommentManager';
+} from '../../managers/forum/ForumTopicCommentManager';
 
 /**
  * Represents a forum topic on Guilded
@@ -135,9 +135,11 @@ export class ForumTopic extends Base {
 	 * @param options The options to fetch the comment of the forum topic with
 	 * @returns The fetched forum topic comment
 	 */
-	fetchComment(forumTopicComment: number | ForumComment, options?: FetchOptions) {
+	fetchComment(forumTopicComment: number | ForumTopicComment, options?: FetchOptions) {
 		forumTopicComment =
-			forumTopicComment instanceof ForumComment ? forumTopicComment.id : forumTopicComment;
+			forumTopicComment instanceof ForumTopicComment
+				? forumTopicComment.id
+				: forumTopicComment;
 		return this.comments.fetch(forumTopicComment, options);
 	}
 

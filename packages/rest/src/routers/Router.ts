@@ -7,14 +7,15 @@ import { ServerRouter } from './server/ServerRouter';
 import { BaseRouter } from './BaseRouter';
 import { ChannelRouter } from './ChannelRouter';
 import { DocRouter } from './DocRouter';
-import { ForumTopicRouter } from './ForumTopicRouter';
+import { ForumTopicRouter } from './forum/ForumTopicRouter';
 import { GroupRouter } from './GroupRouter';
 import { ListItemRouter } from './ListItemRouter';
 import { MessageRouter } from './MessageRouter';
 import { ReactionRouter } from './ReactionRouter';
 import { WebhookRouter } from './WebhookRouter';
 import { RESTManager } from '../RESTManager';
-import { ForumTopicCommentRouter } from './ForumTopicCommentRouter';
+import { ForumTopicCommentRouter } from './forum/ForumTopicCommentRouter';
+import { ForumTopicCommentReactionRouter } from './forum/ForumTopicCommentReactionRouter';
 
 /**
  * The router for the Guilded REST API
@@ -57,6 +58,10 @@ export class Router extends BaseRouter {
 	 */
 	readonly reactions: ReactionRouter;
 	/**
+	 * The reaction router for the Guilded REST API
+	 */
+	readonly forumTopicCommentReactions: ForumTopicCommentReactionRouter;
+	/**
 	 * The server role router for the Guilded REST API
 	 */
 	readonly serverRoles: ServerRoleRouter;
@@ -95,6 +100,7 @@ export class Router extends BaseRouter {
 		this.listItems = new ListItemRouter(rest);
 		this.docs = new DocRouter(rest);
 		this.reactions = new ReactionRouter(rest);
+		this.forumTopicCommentReactions = new ForumTopicCommentReactionRouter(rest);
 		this.serverRoles = new ServerRoleRouter(rest);
 		this.groups = new GroupRouter(rest);
 		this.webhooks = new WebhookRouter(rest);
