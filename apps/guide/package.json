@@ -19,7 +19,7 @@
 	},
 	"dependencies": {
 		"@vuepress/client": "2.0.0-beta.60",
-		"@vuepress/plugin-search": "2.0.0-beta.60",
+		"@vuepress/plugin-search": "2.0.0-beta.50-pre.1",
 		"vue": "^3.2.47",
 		"vuepress-vite": "2.0.0-beta.60"
 	}
