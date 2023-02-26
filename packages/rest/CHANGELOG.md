@@ -1,5 +1,19 @@
 # @guildedts/rest
 
+## 0.15.0
+
+### Minor Changes
+
+-   33dc16c: refactor: properties and methods
+
+### Patch Changes
+
+-   9a2544a: refactor: guilded-api-typings
+-   dd4a1e9: refactor: tsdocs
+-   Updated dependencies [9a2544a]
+-   Updated dependencies [dd4a1e9]
+    -   guilded-api-typings@0.14.0
+
 ## 0.14.4
 
 ### Patch Changes

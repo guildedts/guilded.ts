@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/util",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "A set of utility functions and types used in guilded.ts packages.",
 	"repository": {
 		"url": "guildedts/guilded.ts",
