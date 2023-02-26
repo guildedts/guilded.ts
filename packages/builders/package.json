@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/builders",
-	"version": "0.2.10",
+	"version": "0.3.0",
 	"description": "A set of builders for creating a Guilded bot.",
 	"repository": {
 		"url": "guildedts/guilded.ts",

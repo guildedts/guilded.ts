@@ -1,5 +1,20 @@
 # @guildedts/builders
 
+## 0.3.0
+
+### Minor Changes
+
+-   e019292: refactor(builders): embed builder
+-   33dc16c: refactor: properties and methods
+
+### Patch Changes
+
+-   9a2544a: refactor: guilded-api-typings
+-   dd4a1e9: refactor: tsdocs
+-   Updated dependencies [e019292]
+-   Updated dependencies [dd4a1e9]
+    -   @guildedts/util@0.1.1
+
 ## 0.2.10
 
 ### Patch Changes

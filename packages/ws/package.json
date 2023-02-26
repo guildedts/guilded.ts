@@ -1,6 +1,6 @@
 {
 	"name": "@guildedts/ws",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"description": "The Websocket API manager for Guilded.TS.",
 	"repository": {
 		"url": "guildedts/guilded.ts",

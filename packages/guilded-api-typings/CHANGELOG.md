@@ -1,5 +1,15 @@
 # guilded-api-typings
 
+## 0.14.0
+
+### Minor Changes
+
+-   9a2544a: refactor: guilded-api-typings
+
+### Patch Changes
+
+-   dd4a1e9: refactor: tsdocs
+
 ## 0.13.2
 
 ### Patch Changes

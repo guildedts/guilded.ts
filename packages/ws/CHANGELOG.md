@@ -1,5 +1,16 @@
 # @guildedts/ws
 
+## 0.6.0
+
+### Minor Changes
+
+-   33dc16c: refactor: properties and methods
+
+### Patch Changes
+
+-   9a2544a: refactor: guilded-api-typings
+-   dd4a1e9: refactor: tsdocs
+
 ## 0.5.0
 
 ### Minor Changes
