@@ -18,7 +18,7 @@
 		"lint": "eslint src"
 	},
 	"dependencies": {
-		"@vuepress/client": "2.0.0-beta.60",
+		"@vuepress/client": "2.0.0-beta.50-pre.1",
 		"@vuepress/plugin-search": "2.0.0-beta.60",
 		"vue": "^3.2.47",
 		"vuepress-vite": "2.0.0-beta.60"
