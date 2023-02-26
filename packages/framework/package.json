@@ -33,12 +33,12 @@
 		"lint": "eslint src"
 	},
 	"dependencies": {
-		"@discordjs/collection": "^1.2.0",
+		"@discordjs/collection": "^1.3.0",
 		"chalk": "^4.1.2",
 		"commander": "^10.0.0",
 		"fast-glob": "^3.2.12",
 		"guilded.ts": "workspace:^",
-		"joi": "^17.6.4",
-		"yaml": "^2.1.3"
+		"joi": "^17.8.3",
+		"yaml": "^2.2.1"
 	}
 }

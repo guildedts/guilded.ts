@@ -30,8 +30,8 @@
 		"lint": "eslint src"
 	},
 	"dependencies": {
-		"@types/ws": "^8.5.3",
-		"ws": "^8.10.0"
+		"@types/ws": "^8.5.4",
+		"ws": "^8.12.1"
 	},
 	"devDependencies": {
 		"guilded-api-typings": "workspace:^"

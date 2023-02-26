@@ -16,6 +16,11 @@ module.exports = {
 				permanent: false,
 			},
 			{
+				source: '/npm',
+				destination: 'https://npmjs.com/package/guilded.ts',
+				permanent: false,
+			},
+			{
 				source: '/github',
 				destination: 'https://github.com/guildedts/guilded.ts',
 				permanent: false,

@@ -1,7 +1,8 @@
-import { SiGithub, SiGuilded } from 'react-icons/si';
+import { SiGithub, SiGuilded, SiNpm } from 'react-icons/si';
 import { IconType } from 'react-icons';
 
 const Links: Record<string, [href: string, Icon: IconType]> = {
+	NPM: ['/npm', SiNpm],
 	GitHub: ['/github', SiGithub],
 	'Support Server': ['/support', SiGuilded],
 };

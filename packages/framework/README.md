@@ -1,10 +1,10 @@
 <div align="center">
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS" />
     </a>
     <div>
-        <A href="https://guildedts.js.org/support">
-            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server">
+        <a href="https://guildedts.js.org/support">
+            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server" />
         </a>
         <a href="https://npmjs.com/@guildedts/framework">
             <img src="https://img.shields.io/npm/v/@guildedts/framework?style=for-the-badge" alt="Version" />
@@ -20,7 +20,7 @@
 
 # About
 
-@guildedts/framework is a powerful framework for creating a Guilded bot.
+`@guildedts/framework` is a powerful framework for creating a Guilded bot.
 
 # Links
 
@@ -39,9 +39,9 @@
 
 # Example usage
 
-`commands/echo.js`:
-
 ```js
+// commands/echo.js
+
 import { Command, StringArgument } from '@guildedts/framework';
 // Or
 const { Command, StringArgument } = require('@guildedts/framework');
@@ -64,8 +64,6 @@ export default Echo;
 // Or
 module.exports = Echo;
 ```
-
-Start the bot:
 
 ```sh
 # Start the bot

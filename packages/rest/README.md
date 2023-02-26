@@ -1,10 +1,10 @@
 <div align="center">
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS" />
     </a>
     <div>
-        <A href="https://guildedts.js.org/support">
-            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server">
+        <a href="https://guildedts.js.org/support">
+            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server" />
         </a>
         <a href="https://npmjs.com/@guildedts/rest">
             <img src="https://img.shields.io/npm/v/@guildedts/rest?style=for-the-badge" alt="Version" />
@@ -20,7 +20,7 @@
 
 # About
 
-@guildedts/rest is NPM package for interacting with the Guilded REST API.
+`@guildedts/rest` is NPM package for interacting with the Guilded REST API.
 
 # Links
 

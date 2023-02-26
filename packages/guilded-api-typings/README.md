@@ -1,10 +1,10 @@
 <div align="center">
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS" />
     </a>
     <div>
-        <A href="https://guildedts.js.org/support">
-            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server">
+        <a href="https://guildedts.js.org/support">
+            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server" />
         </a>
         <a href="https://npmjs.com/guilded-api-typings">
             <img src="https://img.shields.io/npm/v/guilded-api-typings?style=for-the-badge" alt="Version" />
@@ -20,7 +20,7 @@
 
 # About
 
-guilded-api-typings is a NPM package that provides typings for the Guilded API.
+`guilded-api-typings` is a NPM package that provides typings for the Guilded API.
 
 # Links
 
@@ -39,4 +39,4 @@ guilded-api-typings is a NPM package that provides typings for the Guilded API.
 
 ---
 
-**Maintained by [Gamertike](https://gamertike.com) | [Contribute](https://github.com/guildedts/guilded.ts/tree/main/.github/CONTRIBUTING.md) | Inspired by [discord.js](https://discord.js.org)**
+**Maintained by [Gamertike](https://gamertike.com) | [Contribute](https://github.com/guildedts/guilded.ts/tree/main/.github/CONTRIBUTING.md) | Inspired by [discord-api-types](https://discord-api-types.dev)**

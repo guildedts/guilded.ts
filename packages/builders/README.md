@@ -1,10 +1,10 @@
 <div align="center">
     <a href="https://guildedts.js.org">
-        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS"/>
+        <img src="https://guildedts.js.org/banner.png" width="700" alt="Guilded.TS" />
     </a>
     <div>
-        <A href="https://guildedts.js.org/support">
-            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server">
+        <a href="https://guildedts.js.org/support">
+            <img src="https://shields.yoki-labs.xyz/shields/vanity/guildedts?style=for-the-badge" alt="Guilded server" />
         </a>
         <a href="https://npmjs.com/@guildedts/builders">
             <img src="https://img.shields.io/npm/v/@guildedts/builders?style=for-the-badge" alt="Version" />
@@ -20,7 +20,7 @@
 
 # About
 
-@guildedts/builders is a NPM package with a set of builders for creating a Guilded bot.
+`@guildedts/builders` is a NPM package with a set of builders for creating a Guilded bot.
 
 # Links
 

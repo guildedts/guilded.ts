@@ -6,7 +6,13 @@ export default function Page() {
 	return (
 		<div className="space-y-5">
 			<div className="text-center">
-				<Image src="/banner.png" alt="Guilded.TS" width={1200} height={300} />
+				<Image
+					className="pointer-events-none"
+					src="/banner.png"
+					alt="Guilded.TS"
+					width={1200}
+					height={300}
+				/>
 				<Command>npm install guilded.ts</Command>
 			</div>
 			<div>
