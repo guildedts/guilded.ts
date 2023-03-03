@@ -1,7 +1,7 @@
 import { APIChannel } from 'guilded-api-typings';
 import { Client } from '../Client';
 import { Channel } from './Channel';
-import { ForumTopicManager } from '../../managers/ForumTopicManager';
+import { ForumTopicManager } from '../../managers/forum/ForumTopicManager';
 
 /**
  * Represents a forum channel on Guilded

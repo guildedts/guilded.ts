@@ -25,7 +25,9 @@ import { MessageReaction } from './message/MessageReaction';
 import { Channel } from './channel/Channel';
 import { Collection } from '@discordjs/collection';
 import { CalendarEventRsvp } from './calendarEvent/CalendarEventRsvp';
-import { ForumTopic } from './ForumTopic';
+import { ForumTopic } from './forum/ForumTopic';
+import { ForumTopicComment } from './forum/ForumTopicComment';
+import { ForumTopicCommentReaction } from './forum/ForumTopicCommentReaction';
 
 /**
  * The main hub for interacting with the Guilded API
@@ -335,6 +337,29 @@ export interface ClientEvents {
 	 */
 	forumTopicUnlock: [forumTopic: ForumTopic];
 	/**
+	 * Emitted whenever a forum topic comment is created
+	 */
+	forumTopicCommentCreate: [forumTopicComment: ForumTopicComment];
+	/**
+	 * Emitted whenever a forum topic comment is edited
+	 */
+	forumTopicCommentEdit: [
+		newForumTopicComment: ForumTopicComment,
+		oldForumTopicComment?: ForumTopicComment,
+	];
+	/**
+	 * Emitted whenever a forum topic comment is deleted
+	 */
+	forumTopicCommentDelete: [forumTopicComment: ForumTopicComment];
+	/**
+	 * Emitted whenever a forum topic comment reaction is added
+	 */
+	forumTopicCommentReactionAdd: [forumTopicCommentReaction: ForumTopicCommentReaction];
+	/**
+	 * Emitted whenever a forum topic comment reaction is removed
+	 */
+	forumTopicCommentReactionRemove: [forumTopicCommentReaction: ForumTopicCommentReaction];
+	/**
 	 * Emitted whenever a calendar event RSVP is edited
 	 */
 	calendarEventRsvpEdit: [
@@ -510,6 +535,30 @@ export interface ClientOptions {
 	 * Whether to dispose cached forum topics
 	 */
 	disposeCachedForumTopics?: boolean;
+	/**
+	 * Whether to cache forum topic comments
+	 */
+	cacheForumTopicComments?: boolean;
+	/**
+	 * The max cache size for forum topic comments
+	 */
+	maxForumTopicCommentCache?: number;
+	/**
+	 * Whether to dispose cached forum topic comments
+	 */
+	disposeCachedForumTopicComments?: boolean;
+	/**
+	 * Whether to cache forum topic comment reactions
+	 */
+	cacheForumTopicCommentReactions?: boolean;
+	/**
+	 * The max cache size for forum topic reactions
+	 */
+	maxForumTopicCommentReactionsCache?: number;
+	/**
+	 * Whether to dispose cached forum topic reactions
+	 */
+	disposeCachedForumTopicCommentReactions?: boolean;
 	/**
 	 * Whether to cache list items
 	 */

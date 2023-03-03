@@ -134,7 +134,7 @@ export class WebsocketManager extends EventEmitter {
 	}
 
 	/**
-	 * Handle recieved data
+	 * Handle received data
 	 * @param data The data
 	 */
 	private onSocketMessage(data: WebSocketPayload) {
